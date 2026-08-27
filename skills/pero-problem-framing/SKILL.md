@@ -11,7 +11,7 @@ Skill ini bertindak sebagai **"Dokter Diagnosa Masalah yang Bijak"**. Tugasnya a
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Wawancara Terarah**: **`REQUIRED SUB-SKILL`**: Gunakan `grill-me` untuk memandu tanya-jawab satu per satu dengan opsi pilihan ganda dan analogi sederhana ("Bahasa Bayi").
+- **Wawancara Terarah**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk memandu wawancara pohon keputusan (frontier rounds) dengan opsi pilihan ganda dan analogi sederhana ("Bahasa Bayi").
 - **Riset Pasar & Solusi Pembanding**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` untuk memeriksa bagaimana masalah serupa diselesaikan di industri.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 
@@ -28,7 +28,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 [4. Measurable Success Metrics]   <── [3. Boundary & Non-Goals] ────┘
 ```
 
-### 1. Discovery & Pain Point Extraction (via `grill-me`)
+### 1. Discovery & Pain Point Extraction (via `grilling`)
 - **Siapa yang Mengalami (Who)**: Target persona yang paling dirugikan jika masalah ini dibiarkan.
 - **Kondisi Saat Ini (Current Workarounds)**: Bagaimana cara mereka mengakali masalah ini sekarang, dan kenapa cara lama tersebut melelahkan/tidak efisien?
 

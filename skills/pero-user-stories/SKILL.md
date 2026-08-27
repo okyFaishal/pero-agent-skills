@@ -12,7 +12,7 @@ Skill ini bertindak sebagai **"Buku Komik Cerita Pengguna & Aturan Main Game"** 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md` untuk memastikan setiap cerita pengguna, model domain, dan endpoint API selaras 100% dengan ruang lingkup fitur MVP (P0) dan fase lanjutan (P1).
-- **Wawancara Skenario Ekstrem & Aturan Bisnis**: **`REQUIRED SUB-SKILL`**: Gunakan `grill-me` untuk membedah skenario aneh/ekstrem (*edge cases*), kondisi kegagalan, dan aturan bisnis yang ambigu satu per satu dengan analogi ramah ("Bahasa Bayi").
+- **Wawancara Skenario Ekstrem & Aturan Bisnis**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk membedah skenario aneh/ekstrem (*edge cases*), kondisi kegagalan, dan aturan bisnis yang ambigu via pohon keputusan terstruktur (frontier rounds) dengan analogi ramah ("Bahasa Bayi").
 - **Perancangan Kontrak Antarmuka & Pesan**: **`SUPPORTING SUB-SKILL`**: Gunakan `api-contract-design` untuk menyusun struktur payload endpoint REST, GraphQL, gRPC, WebSocket, atau pesan IPC secara konsisten (*envelope sukses & gagal*).
 - **Validasi Skema & Batasan Nilai**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk mendefinisikan batasan tipe data konkret (UUID, String, Int, Boolean, dll.), status wajib/opsional, dan batasan nilai (*boundary constraints*).
 - **Pencatatan Keputusan Sistem**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan perancangan sistem ke `docs/decisions/SDR-[YYYYMMDDHHmm].md`.

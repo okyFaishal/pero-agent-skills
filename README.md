@@ -71,7 +71,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 | 10 | `find-skill` | Tooling | Mesin pencari skill lokal di `.agents/skills/` |
 | 11 | `context-7` | Tooling | Integrasi dokumentasi API resmi via Context7 MCP |
 | 12 | `web-search` | Tooling | Riset internet terarah untuk pemecahan masalah & fakta |
-| 13 | `grill-me` | Discipline | Wawancara interaktif satu per satu untuk membedah ambiguitas |
+| 13 | `grilling` | Discipline | Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide |
 | 14 | `test-driven-development` | Discipline | Penegak Hukum Besi TDD (Red-Green-Refactor) polyglot |
 | 15 | `systematic-debugging` | Discipline | Investigasi ilmiah dan isolasi akar masalah bug |
 | 16 | `verification-before-completion` | Discipline | Bukti nyata eksekusi terminal sebelum klaim selesai |

@@ -12,7 +12,7 @@ Skill ini bertindak sebagai **"Buku Cetak Biru & Resep Utama Produk"**. Tugasnya
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/ProblemFraming.md` sebelum menyusun PRD agar ruang lingkup selaras dengan akar masalah.
-- **Wawancara Prioritas Fitur**: **`REQUIRED SUB-SKILL`**: Gunakan `grill-me` untuk membedah prioritas fitur MVP (P0) vs Future (P1/P2) satu per satu dengan analogi ramah ("Bahasa Bayi").
+- **Wawancara Prioritas Fitur**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk membedah prioritas fitur MVP (P0) vs Future (P1/P2) via pohon keputusan terstruktur (frontier rounds) dengan analogi ramah ("Bahasa Bayi").
 - **Riset Standar Fungsionalitas**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` jika perlu memvalidasi benchmark fitur sejenis di industri.
 - **Pencatatan Keputusan PRD**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan PRD ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 

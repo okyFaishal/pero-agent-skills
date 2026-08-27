@@ -106,7 +106,7 @@ SKILLS=(
   "find-skill"
   "context-7"
   "web-search"
-  "grill-me"
+  "grilling"
   "test-driven-development"
   "systematic-debugging"
   "verification-before-completion"

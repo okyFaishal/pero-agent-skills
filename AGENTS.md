@@ -22,7 +22,7 @@
 - **Systematic Debugging**: Dilarang melakukan trial-and-error saat debugging. Gunakan `systematic-debugging` untuk menemukan root cause terlebih dahulu.
 - **Evidence Before Assertions**: Dilarang mengklaim pekerjaan selesai tanpa bukti eksekusi nyata dari terminal (`verification-before-completion`).
 - **Environment & Safety**: Patuhi `env-guard`. Dilarang mengekspos credential/secrets dan dilarang menjalankan perintah destruktif tanpa konfirmasi.
-- **Grounding & Validation**: Validasi dokumentasi teknis via `context-7` atau `web-search`. Gunakan `grill-me` saat menghadapi trade-off atau kebutuhan yang ambigu.
+- **Grounding & Validation**: Validasi dokumentasi teknis via `context-7` atau `web-search`. Gunakan `grilling` saat menghadapi trade-off atau kebutuhan yang ambigu.
 
 ## 5. Local Workspace Skills Directory (Complete Pero SDLC & Engineering Suite)
 
@@ -41,7 +41,7 @@
 10. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas.
 11. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
 12. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal.
-13. `grill-me/` : Wawancara interaktif untuk membedah spesifikasi dan trade-off.
+13. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide.
 14. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
 15. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug.
 16. `verification-before-completion/` : Bukti verifikasi nyata terminal sebelum menyatakan selesai.
