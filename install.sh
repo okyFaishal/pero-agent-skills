@@ -8,6 +8,7 @@
 set -euo pipefail
 
 TARGET_DIR="${1:-$(pwd)}"
+mkdir -p "$TARGET_DIR"
 TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
 TARGET_SKILLS_DIR="${TARGET_DIR}/.agents/skills"
 TARGET_AGENTS_MD="${TARGET_DIR}/AGENTS.md"
