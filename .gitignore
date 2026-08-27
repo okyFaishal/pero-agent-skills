@@ -1,0 +1,16 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Secrets & Environment
+.env
+.env.*
+*.pem
+*.key
+*.cert
+
+# Scratch & Temporary
+.agents/scratch/
+*.bak.*
+tmp/
+temp/
