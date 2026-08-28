@@ -3,12 +3,12 @@ name: eli5
 description: Transform complex technical concepts, architectures, and documentation into clear, layered explanations using concrete analogies and plain language without losing technical rigor. Use when explaining technical concepts, clarifying dense engineering topics, or auditing documentation clarity.
 ---
 
-# ELI5 (Universal Technical Simplification & Layered Explanations)
+# ELI5 (Universal Technical Simplification & Natural Explanations)
 
 ## Overview
 Skill untuk mentransformasi konsep teknis yang padat, istilah asing (*jargon*), dan arsitektur rumit menjadi penjelasan yang mudah dicerna oleh siapa saja (Explain Like I'm 5 / ELI5) tanpa mengurangi ketepatan fakta teknis.
 
-Ibarat **penerjemah bahasa teknis ke bahasa manusia**: mengambil prinsip kerja mesin yang rumit dan menjelaskannya menggunakan perumpamaan benda sehari-hari yang sudah akrab bagi semua orang.
+Ibarat **penerjemah bahasa teknik ke bahasa manusia**: mengambil prinsip kerja mesin yang rumit dan menjelaskannya secara mengalir menggunakan perumpamaan benda sehari-hari yang sudah akrab bagi semua orang.
 
 ---
 
@@ -22,22 +22,12 @@ Ibarat **penerjemah bahasa teknis ke bahasa manusia**: mengambil prinsip kerja m
 
 ## Filosofi Inti & Standar Komunikasi
 
-### 1. Struktur Penjelasan 3-Lapis (*Layered Explanation*)
-Setiap penjelasan konsep teknis wajib disusun secara bertingkat:
+### 1. Penyampaian Mengalir & Alami (*Natural & Fluid Layered Explanations*)
+Penjelasan konsep teknis disusun secara bertingkat namun **mengalir alami tanpa menggunakan label heading/label kaku ("Lapis 1", "Lapis 2", "Lapis 3")**:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                 STRUKTUR 3-LAPIS (ELI5)                     │
-├─────────────────────────────────────────────────────────────┤
-│ Lapis 1: Analogi Nyata (Perumpamaan konkret sehari-hari)   │
-│ Lapis 2: Bahasa Awam   (Alur kerja tanpa istilah rumit)     │
-│ Lapis 3: Detail Teknis (Rincian mekanisme rekayasa senior)  │
-└─────────────────────────────────────────────────────────────┘
-```
-
-* **Lapis 1 (Analogi Konkret):** Gunakan objek fisik dunia nyata (misal: lemari berkas, loket kasir, pelayan restoran, polisi lalu lintas). Jangan gunakan analogi abstrak.
-* **Lapis 2 (Bahasa Awam):** Jelaskan alur kerja inti dan nilai manfaatnya (*why & what*) dengan kalimat ringkas dan mengalir.
-* **Lapis 3 (Detail Teknis):** Jelaskan mekanisme teknis spesifik (nama protokol, pola arsitektur, konkurensi) agar insinyur senior tetap mendapatkan nilai teknis penuh.
+1. **Awali dengan Perumpamaan Intuitif**: Buka topik dengan analogi objek fisik dunia nyata (misal: lemari berkas, loket kasir, pelayan restoran, polisi lalu lintas) agar pembaca langsung mendapat gambaran mental.
+2. **Jelaskan Alur Kerja dengan Bahasa Manusia**: Uraikan alur kerja inti dan nilai manfaatnya (*why & what*) dengan kalimat ringkas dan mengalir tanpa jargon membingungkan. Jika ada istilah teknis, sertakan artinya dalam satu kalimat sederhana.
+3. **Sertakan Rincian Teknis Secara Mulus**: Berikan mekanisme teknis spesifik (nama protokol, pola arsitektur, kode/konfigurasi) agar insinyur senior tetap mendapatkan nilai teknis penuh.
 
 ---
 
@@ -69,9 +59,8 @@ Jika dipanggil untuk menyederhanakan file dokumentasi (`.md`/`.mdx`):
    * Cari istilah teknis yang dipakai tanpa penjelasan konteks atau alasan mengapa fitur itu ada.
 2. **Buat Perbandingan Sebelum & Sesudah (*Before/After*):**
    * Sajikan cuplikan teks asli yang rumit.
-   * Sajikan versi baru yang sudah disederhanakan dengan struktur 3-lapis.
+   * Sajikan versi baru yang sudah disederhanakan dengan gaya bahasa mengalir ramah awam.
    * Jelaskan perbaikan apa yang dilakukan.
 3. **Pertahankan Integritas:**
    * Jangan menghapus blok kode asli atau diagram penting.
    * Tingkatkan penjelasan naratif di sekitar kode/diagram tersebut.
-

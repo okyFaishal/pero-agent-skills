@@ -20,3 +20,4 @@ labels: bug
 **Lingkungan Sistem:**
 - OS: [misal macOS Sonoma / Ubuntu 22.04 / Windows WSL2]
 - Shell: [misal bash 5.2 / zsh 5.9]
+

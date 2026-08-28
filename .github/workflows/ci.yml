@@ -68,3 +68,4 @@ jobs:
             exit 1
           fi
           echo "✓ All $(ls -d skills/* | wc -l | tr -d ' ') skills have valid YAML frontmatter."
+

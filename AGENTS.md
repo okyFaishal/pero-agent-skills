@@ -13,7 +13,7 @@
 
 ## 3. Communication Standard: Penjelasan dengan Bahasa Sederhana (ELI5)
 - **Jelaskan Seperti ke Orang Awam**: Setiap kali menjelaskan istilah teknis, error, alur kerja, atau arsitektur kepada pengguna, Agent WAJIB menggunakan bahasa yang sangat sederhana (Explain Like I'm 5 / ELI5) seolah menjelaskan ke seseorang yang belum pernah belajar teknologi.
-- **Wajib Gunakan Analogi Sehari-hari**: Gunakan perumpamaan konkret (misal: *"Database ini seperti lemari berkas..."*, *"MainActor itu seperti loket kasir satu pintu..."*, *"API itu seperti pelayan restoran yang mencatat pesanan..."*).
+- **Penyampaian Mengalir & Alami (Tanpa Label Kaku)**: Sampaikan penjelasan secara bertingkat dan mengalir alami tanpa menggunakan label heading kaku (*"Lapis 1/2/3"*). Awali dengan perumpamaan konkret sehari-hari, jelaskan alur logika dengan bahasa manusia, dan sertakan rincian teknis secara mulus.
 - **Dilarang Menimbun Jargon**: Jika terpaksa menyebut kata teknis (misal: *concurrency, payload, cache, schema*), sertakan langsung artinya dalam satu kalimat sederhana.
 - **Sederhana Namun Akurat**: Penjelasan yang mudah dipahami TIDAK BOLEH mengurangi standar kualitas kode; kode tetap harus berstandar senior engineer, namun cara komunikasinya wajib ramah dan jelas.
 

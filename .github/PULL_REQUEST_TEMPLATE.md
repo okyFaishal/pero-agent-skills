@@ -10,3 +10,4 @@ Closes #
 - [ ] Tidak ada file rahasia/credentials (.env) yang terekspos
 - [ ] Dokumentasi `README.md` dan `AGENTS.md` disinkronkan jika jumlah skill bertambah
 - [ ] Mematuhi aturan `anti-slop` (tanpa boilerplate berlebih atau komentar sepele)
+
