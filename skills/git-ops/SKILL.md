@@ -9,7 +9,7 @@ description: Master Git and GitHub operations guide. Use when creating branches,
 **Origin**: *Conventional Commits + Caveman Commit Pattern + GitHub Enterprise Standards*.  
 Skill ini adalah **"Manajer Gedung Arsip & Pengendali Sistem GitHub"**. Mengatur alur kerja kontrol versi (*version control*), isolasi meja kerja agen (*worktrees*), standar penulisan pesan commit ultra-padat, template tata kelola repositori (`.github/`), dan operasi terminal via `gh` CLI.
 
-> **Analogi Sederhana ("Bahasa Bayi" / ELI5):**  
+> **Analogi Sederhana (ELI5):**  
 > - **Git** seperti **buku catatan riwayat proyek**: mencatat setiap perubahan, siapa yang mengubah, dan kapan diubah agar tidak ada halaman yang hilang.  
 > - **GitHub** seperti **gedung pusat penyimpanan buku arsip online**: tempat tim bekerja bersama dan membuat formulir kerja (*PR & Issue templates*).  
 > - **Skill `git-ops`** adalah **buku aturan satpam gedung**: memastikan meja kerja rapi, tidak ada sampah yang masuk, pesan catatan ditulis singkat padat (tanpa dongeng), dan brankas utama (`main`) selalu digembok aman.

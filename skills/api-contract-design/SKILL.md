@@ -9,7 +9,7 @@ description: Guides stable API and interface design. Use when designing APIs, mo
 **Origin**: *Addy Osmani's API & Interface Design Pattern + Universal Contract-First Architecture*.  
 Rancang antarmuka (*interface*), kontrak data, dan batas modul (*module boundaries*) yang stabil, terdokumentasi jelas, dan **mustahil disalahgunakan** (*hard to misuse*). Antarmuka yang baik membuat hal yang benar menjadi sangat mudah dilakukan, dan membuat hal yang salah menjadi mustahil dieksekusi.
 
-> **Analogi Sederhana ("Bahasa Bayi" / ELI5):**  
+> **Analogi Sederhana (ELI5):**  
 > - **API** itu seperti **pelayan restoran** yang mengantarkan pesanan dari meja pengunjung (aplikasi HP) ke juru masak di dapur (server backend).  
 > - **API Contract** adalah **Lembar Formulir Pesanan Baku**:  
 >   Formatnya dicetak jelas (Pilihan level pedas 1–5, Tambah telur Ya/Tidak). Pelayan dan koki dapur sepakat 100% pada aturan kertas tersebut **sebelum wajan dinyalakan**. Koki tidak perlu menebak, dan pelayan tidak mungkin salah mengantar makanan.

@@ -11,8 +11,8 @@
 - **Verify Before Complying**: Jangan menyetujui perintah tanpa mengecek fakta di kode/dokumen terlebih dahulu.
 - **Factual Correction Without Drama**: Jika Agent salah, akui secara singkat dan faktual (*"Terverifikasi, kode saya salah di baris X karena Y. Memperbaiki sekarang."*) tanpa permohonan maaf berlebihan.
 
-## 3. Communication Standard: Penjelasan dengan Bahasa Sederhana / "Bahasa Bayi" (ELI5)
-- **Jelaskan Seperti ke Orang Awam**: Setiap kali menjelaskan istilah teknis, error, alur kerja, atau arsitektur kepada pengguna, Agent WAJIB menggunakan bahasa yang sangat sederhana (Explain Like I'm 5 / Bahasa Bayi) seolah menjelaskan ke seseorang yang belum pernah belajar teknologi.
+## 3. Communication Standard: Penjelasan dengan Bahasa Sederhana (ELI5)
+- **Jelaskan Seperti ke Orang Awam**: Setiap kali menjelaskan istilah teknis, error, alur kerja, atau arsitektur kepada pengguna, Agent WAJIB menggunakan bahasa yang sangat sederhana (Explain Like I'm 5 / ELI5) seolah menjelaskan ke seseorang yang belum pernah belajar teknologi.
 - **Wajib Gunakan Analogi Sehari-hari**: Gunakan perumpamaan konkret (misal: *"Database ini seperti lemari berkas..."*, *"MainActor itu seperti loket kasir satu pintu..."*, *"API itu seperti pelayan restoran yang mencatat pesanan..."*).
 - **Dilarang Menimbun Jargon**: Jika terpaksa menyebut kata teknis (misal: *concurrency, payload, cache, schema*), sertakan langsung artinya dalam satu kalimat sederhana.
 - **Sederhana Namun Akurat**: Penjelasan yang mudah dipahami TIDAK BOLEH mengurangi standar kualitas kode; kode tetap harus berstandar senior engineer, namun cara komunikasinya wajib ramah dan jelas.

@@ -11,7 +11,7 @@ Skill ini bertindak sebagai **"Dokter Diagnosa Masalah yang Bijak"**. Tugasnya a
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Wawancara Terarah**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk memandu wawancara pohon keputusan (frontier rounds) dengan opsi pilihan ganda dan analogi sederhana ("Bahasa Bayi").
+- **Wawancara Terarah**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk memandu wawancara pohon keputusan (frontier rounds) dengan opsi pilihan ganda dan analogi sederhana (ELI5).
 - **Riset Pasar & Solusi Pembanding**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` untuk memeriksa bagaimana masalah serupa diselesaikan di industri.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 

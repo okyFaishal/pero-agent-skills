@@ -32,7 +32,7 @@ Ibarat **arsitek yang membedah denah pohon keputusan (*Design Tree*) bersama pem
 Format setiap ronde wajib menggunakan struktur standar berikut:
 
 ```
-❓ **Q1** - **<Judul Keputusan>**: <Penjelasan masalah dalam bahasa sederhana, berikan 2–4 pilihan konkret (A/B/C/D) dengan analogi sehari-hari ("Bahasa Bayi")>
+❓ **Q1** - **<Judul Keputusan>**: <Penjelasan masalah dalam bahasa sederhana, berikan 2–4 pilihan konkret (A/B/C/D) dengan analogi sehari-hari (ELI5)>
 
 ➡️ **Rekomendasi**: <Pilihan rekomendasi terbaik menurut AI beserta alasan teknisnya yang kuat>
 
@@ -49,7 +49,7 @@ Format setiap ronde wajib menggunakan struktur standar berikut:
   - Jika pencarian fakta sedang berjalan (misal sub-agen sedang riset), jangan memblokir pertanyaan lain: ajukan pertanyaan frontier lain yang sudah siap sekarang.
 - **Mengambil Keputusan adalah Hak Pengguna**: Sajikan opsi dan rekomendasi secara transparan, lalu tunggu jawaban pengguna sebelum membuka ronde berikutnya.
 
-### 4. Standar Komunikasi Ramah ("Bahasa Bayi" / ELI5)
+### 4. Standar Komunikasi Ramah (ELI5)
 - Setiap opsi teknis wajib dijelaskan dengan **analogi dunia nyata** (misal: *"Database NoSQL ini seperti kotak kardus serbaguna tempat menaruh barang bentuk apa saja, sedangkan Relational Database seperti lemari berkas dengan sekat berlabel kaku"*).
 - Hindari menumpuk istilah tanpa penjelasan: sertakan definisi 1 kalimat sederhana untuk setiap istilah teknis yang digunakan.
 
