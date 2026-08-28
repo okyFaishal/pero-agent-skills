@@ -80,3 +80,4 @@ Sebelum menyatakan pekerjaan selesai atau membuka Pull Request, agen wajib memas
 - [ ] **Block 2: Noise Elimination** $\rightarrow$ Bebas dari komentar sepele dan placeholder pemotongan kode.
 - [ ] **Block 3: Real Execution** $\rightarrow$ Seluruh pengujian lulus di terminal nyata (bukan sekadar mock hijau).
 - [ ] **Block 4: Grounded Imports** $\rightarrow$ Seluruh dependensi terdaftar resmi di manifest proyek.
+
