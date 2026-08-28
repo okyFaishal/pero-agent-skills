@@ -1,7 +1,7 @@
 # Pero Agent Skills (`pero-agent-skills`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills: 23 Universal](https://img.shields.io/badge/Skills-23%20Universal-brightgreen.svg)](#katalog-lengkap-23-skill-universal)
+[![Skills: 24 Universal](https://img.shields.io/badge/Skills-24%20Universal-brightgreen.svg)](#katalog-lengkap-24-skill-universal)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#)
 
 > **Ekosistem Standar SDLC & Rekayasa Agen AI Universal (Polyglot) yang Disiplin, Anti-Sycophancy, dan Berbahasa Ramah (ELI5).**
@@ -15,6 +15,7 @@
 > - **Tidak Asal Tebak**: Selalu mendiagnosa akar masalah terlebih dahulu sebelum meresepkan solusi (*Problem Framing & Systematic Debugging*).
 > - **Membangun dengan Denah Matang**: Menyusun fondasi dan aturan kualitas sebelum menyuruh tukang bekerja (*SDLC Pipeline*).
 > - **Anti-Pujian Palsu (*Anti-Sycophancy*)**: Jujur berbasis bukti teknis dan berani menolak ide yang berisiko merusak sistem.
+> - **Bebas Sampah Sintetis (*Anti-Slop*)**: Menolak kode berlebih (YAGNI), komentar sepele, dan kode tiruan palsu (*anti-slop*).
 > - **Wajib Bukti Nyata (*Evidence Before Assertions*)**: Dilarang mengklaim selesai sebelum ada bukti tes terminal yang 100% lulus.
 > - **Bahasa Ramah**: Menjelaskan konsep rumit dengan analogi sehari-hari yang mudah dimengerti siapa saja (*ELI5*).
 
@@ -22,7 +23,7 @@
 
 ## Instalasi Cepat (1-Line Command)
 
-Pasang seluruh 23 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
+Pasang seluruh 24 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
@@ -38,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 
 ## Peta Navigasi Ekosistem Pero
 
-Diagram di bawah menggambarkan bagaimana ke-23 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
+Diagram di bawah menggambarkan bagaimana ke-24 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
 
 ```mermaid
 flowchart TB
@@ -80,6 +81,7 @@ flowchart TB
         GIT["git-ops"]:::engine
         TDD["test-driven-development"]:::engine
         DBG["systematic-debugging"]:::engine
+        AS["anti-slop"]:::guard
         VBC["verification-before-completion"]:::engine
         REV["code-reviewer"]:::engine
     end
@@ -107,9 +109,10 @@ flowchart TB
     S8 ==> GIT
     
     GIT --> TDD
-    TDD --> DBG
+    TDD --> AS
+    AS --> DBG
     DBG --> TDD
-    TDD --> VBC
+    AS --> VBC
     VBC --> REV
     REV --> DOC
     DOC --> GIT
@@ -156,6 +159,7 @@ flowchart TD
     %% Cabang 6: Eksekusi Koding & TDD
     Q1 -->|Mulai ngoding tugas| SK_GIT1["git-ops (Buat branch fitur)"]
     SK_GIT1 --> SK_TDD["test-driven-development (Red -> Green -> Refactor)"]
+    SK_TDD --> SK_AS["anti-slop (Filter YAGNI & Komentar Sampah)"]
 
     %% Cabang 7: Troubleshooting / Bug
     Q1 -->|Ketemu bug / Tes error| SK_DBG["systematic-debugging (Reproduksi -> Isolasi -> Fix)"]
@@ -172,6 +176,7 @@ flowchart TD
     style SK_PRD fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
     style SK_ARCH fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
     style SK_TDD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style SK_AS fill:#ffebee,stroke:#d32f2f,stroke-width:2px
     style SK_DBG fill:#ffebee,stroke:#d32f2f,stroke-width:2px
     style SK_VBC fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
@@ -227,6 +232,7 @@ sequenceDiagram
     actor Dev as Agent / Developer
     participant Git as git-ops
     participant TDD as test-driven-dev
+    participant AS as anti-slop
     participant DBG as systematic-debugging
     participant VBC as verification-before-completion
     participant Rev as code-reviewer
@@ -236,6 +242,7 @@ sequenceDiagram
     Note over TDD: Jalankan test -> Wajib Gagal
     Dev->>TDD: Tulis Kode Implementasi Minimal (GREEN)
     Note over TDD: Jalankan test -> Wajib Lulus
+    Dev->>AS: Audit Bebas Slop (YAGNI & Hapus Komentar Sampah)
     Dev->>TDD: Refactor Kode (REFACTOR)
     
     opt Jika Muncul Bug / Regresi Tak Terduga
@@ -251,7 +258,7 @@ sequenceDiagram
 
 ---
 
-## Katalog Lengkap 23 Skill Universal
+## Katalog Lengkap 24 Skill Universal
 
 | No | Skill | Kategori | Kapan Digunakan (*Trigger*) | Input ➡️ Output Utama |
 |---|---|---|---|---|
@@ -278,17 +285,20 @@ sequenceDiagram
 | 21 | `git-ops` | Operations | Operasi branching, commit Caveman, template PR, dan gh CLI | Perubahan Kode ➡️ Git Branch & PR Bersih |
 | 22 | `env-guard` | Security | Melindungi file `.env`, kredensial, & filter perintah bahaya | Seluruh Operasi ➡️ Proteksi Rahasia & Keamanan |
 | 23 | `eli5` | Tooling / Discipline | Menyederhanakan konsep teknis rumit, audit kejelasan dokumen teknis, & analogi awam | Teks/Konsep rumit ➡️ Penjelasan 3-Lapis (Analogi, Awam, Detail Teknis) |
+| 24 | `anti-slop` | Discipline / Quality | Menolak kode berlebih (YAGNI), komentar sepele, basa-basi AI, dan mock palsu | Perubahan Kode/Teks ➡️ Hasil Bersih, Ringkas & Bebas Slop |
 
 ---
 
-## Tiga Pilar Tata Kelola Inti
+## Empat Pilar Tata Kelola Inti
 
 1. **Skill-First Protocol**: Agent wajib mengecek `.agents/skills/` sebelum mengambil tindakan apa pun.
 2. **Anti-Sycophancy & Technical Rigor**: Kebenaran teknis di atas menyenangkan pengguna. Dilarang menggunakan pujian kosong (*"Ide hebat!"*).
 3. **Bahasa Sederhana (ELI5)**: Setiap konsep teknis wajib dijelaskan dengan analogi konkret sehari-hari tanpa menimbun jargon membingungkan.
+4. **Anti-Slop Engineering**: Menghilangkan boilerplate berlebih (YAGNI), komentar tidak penting, dan kode tiruan palsu.
 
 ---
 
 ## Lisensi
 Distributed under the MIT License. Created by **Pero**.
+
 

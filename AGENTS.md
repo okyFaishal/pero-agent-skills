@@ -23,6 +23,7 @@
 - **Evidence Before Assertions**: Dilarang mengklaim pekerjaan selesai tanpa bukti eksekusi nyata dari terminal (`verification-before-completion`).
 - **Environment & Safety**: Patuhi `env-guard`. Dilarang mengekspos credential/secrets dan dilarang menjalankan perintah destruktif tanpa konfirmasi.
 - **Grounding & Validation**: Validasi dokumentasi teknis via `context-7` atau `web-search`. Gunakan `grilling` saat menghadapi trade-off atau kebutuhan yang ambigu.
+- **Anti-Slop Protocol**: Patuhi `anti-slop`. Dilarang menghasilkan kode over-engineered (YAGNI), komentar sepele yang menjelaskan apa yang dilakukan kode, atau kode tiruan/mock palsu.
 
 ## 5. Local Workspace Skills Directory (Complete Pero SDLC & Engineering Suite)
 
@@ -52,3 +53,4 @@
 21. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
 22. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.
 23. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan 3-lapis ramah awam (`eli5`).
+24. `anti-slop/` : Eliminasi boilerplate berlebih, komentar sampah, basa-basi AI, dan over-engineering (`anti-slop`).

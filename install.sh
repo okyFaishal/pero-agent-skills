@@ -10,7 +10,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/okyFaishal/pero-agent-skills.git"
 
-# 23 Universal Engineering & SDLC Skills
+# 24 Universal Engineering & SDLC Skills
 SKILLS=(
   "pero-problem-framing"
   "pero-prd-writing"
@@ -35,6 +35,7 @@ SKILLS=(
   "git-ops"
   "env-guard"
   "eli5"
+  "anti-slop"
 )
 
 # Parse Arguments
