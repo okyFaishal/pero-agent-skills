@@ -10,7 +10,9 @@ Thumbs.db
 *.cert
 
 # Scratch & Temporary
-.agents/scratch/
+.agents/
+*.bak
 *.bak.*
 tmp/
 temp/
+credentials.json

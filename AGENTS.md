@@ -51,3 +51,4 @@
 20. `living-doc-sync/` : Sinkronisasi diagram & dokumentasi arsitektur hidup.
 21. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
 22. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.
+23. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan 3-lapis ramah awam (`eli5`).

@@ -10,7 +10,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/okyFaishal/pero-agent-skills.git"
 
-# 22 Universal Engineering & SDLC Skills
+# 23 Universal Engineering & SDLC Skills
 SKILLS=(
   "pero-problem-framing"
   "pero-prd-writing"
@@ -34,6 +34,7 @@ SKILLS=(
   "living-doc-sync"
   "git-ops"
   "env-guard"
+  "eli5"
 )
 
 # Parse Arguments
@@ -50,7 +51,7 @@ while [[ $# -gt 0 ]]; do
       echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
       echo ""
       echo "Opsi:"
-      echo "  --check       Memeriksa integritas 22 modul skill dan AGENTS.md"
+      echo "  --check       Memeriksa integritas 23 modul skill dan AGENTS.md"
       echo "  --help, -h    Tampilkan panduan bantuan ini"
       exit 0
       ;;
@@ -138,7 +139,7 @@ else
   fi
 fi
 
-# Salin 22 Skill Universal
+# Salin 23 Skill Universal
 echo "-> Menyebarkan ${#SKILLS[@]} modul skill ke ${TARGET_SKILLS_DIR}..."
 for skill in "${SKILLS[@]}"; do
   if [[ -d "${SOURCE_SKILLS}/${skill}" ]]; then
@@ -152,11 +153,13 @@ done
 
 # Salin AGENTS.md jika belum ada atau perbarui
 echo "-> Menyiapkan aturan tata kelola AGENTS.md..."
-if [[ -f "$TARGET_AGENTS_MD" ]]; then
-  echo "   [i] AGENTS.md sudah ada. Membuat cadangan AGENTS.md.bak..."
-  cp "$TARGET_AGENTS_MD" "${TARGET_AGENTS_MD}.bak"
+if [[ "$SOURCE_AGENTS_MD" != "$TARGET_AGENTS_MD" ]]; then
+  if [[ -f "$TARGET_AGENTS_MD" ]]; then
+    echo "   [i] AGENTS.md sudah ada. Membuat cadangan AGENTS.md.bak..."
+    cp "$TARGET_AGENTS_MD" "${TARGET_AGENTS_MD}.bak"
+  fi
+  cp "$SOURCE_AGENTS_MD" "$TARGET_AGENTS_MD"
 fi
-cp "$SOURCE_AGENTS_MD" "$TARGET_AGENTS_MD"
 echo "   [✓] AGENTS.md aktif di root workspace."
 
 # Proteksi .gitignore Otomatis
@@ -193,6 +196,6 @@ if [[ -n "$TEMP_DIR" && -d "$TEMP_DIR" ]]; then
 fi
 
 echo "================================================================="
-echo " ✨ Berhasil! 22 Skill Pero & AGENTS.md siap digunakan di:"
+echo " ✨ Berhasil! 23 Skill Pero & AGENTS.md siap digunakan di:"
 echo " 📂 ${TARGET_DIR}"
 echo "================================================================="
