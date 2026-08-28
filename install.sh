@@ -197,6 +197,6 @@ if [[ -n "$TEMP_DIR" && -d "$TEMP_DIR" ]]; then
 fi
 
 echo "================================================================="
-echo " ✨ Berhasil! 23 Skill Pero & AGENTS.md siap digunakan di:"
+echo " ✨ Berhasil! ${#SKILLS[@]} Skill Pero & AGENTS.md siap digunakan di:"
 echo " 📂 ${TARGET_DIR}"
 echo "================================================================="

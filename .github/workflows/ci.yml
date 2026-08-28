@@ -1,0 +1,70 @@
+name: CI Integrity & Skills Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate Skills & Installer (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Lint Shell Script Syntax
+        run: |
+          bash -n install.sh
+
+      - name: Run Repository Health Check
+        run: |
+          bash install.sh --check
+
+      - name: Test Sandbox Installation & Verification
+        run: |
+          SANDBOX_DIR="$(mktemp -d)"
+          echo "Testing installation in: ${SANDBOX_DIR}"
+          bash install.sh "${SANDBOX_DIR}"
+          bash install.sh "${SANDBOX_DIR}" --check
+
+      - name: Verify Frontmatter Schema in All Skills
+        run: |
+          FAILED=0
+          for skill_dir in skills/*; do
+            skill_name="$(basename "$skill_dir")"
+            skill_file="${skill_dir}/SKILL.md"
+            
+            if [ ! -f "$skill_file" ]; then
+              echo "❌ Missing SKILL.md in: ${skill_dir}"
+              FAILED=$((FAILED + 1))
+              continue
+            fi
+            
+            # Verify YAML frontmatter
+            if ! head -n 1 "$skill_file" | grep -q "^---"; then
+              echo "❌ Missing opening frontmatter '---' in: ${skill_file}"
+              FAILED=$((FAILED + 1))
+            fi
+            
+            if ! head -n 5 "$skill_file" | grep -q "^name: ${skill_name}"; then
+              echo "❌ Invalid or missing 'name: ${skill_name}' in: ${skill_file}"
+              FAILED=$((FAILED + 1))
+            fi
+            
+            if ! head -n 5 "$skill_file" | grep -q "^description:"; then
+              echo "❌ Missing 'description:' in: ${skill_file}"
+              FAILED=$((FAILED + 1))
+            fi
+          done
+
+          if [ $FAILED -gt 0 ]; then
+            echo "❌ Total failed skill validations: ${FAILED}"
+            exit 1
+          fi
+          echo "✓ All $(ls -d skills/* | wc -l | tr -d ' ') skills have valid YAML frontmatter."
