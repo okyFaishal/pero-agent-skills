@@ -27,28 +27,27 @@
 ## 5. Local Workspace Skills Directory (Complete Pero SDLC & Engineering Suite)
 
 ### A. Pero Custom SDLC Pipeline Suite (`pero:*`)
-1. `pero-workspace-setup/` : Manajemen instalasi, update & portabilitas ekosistem Pero (`pero:workspace-setup`).
-2. `pero-problem-framing/` : Diagnosa akar masalah, persona, batasan non-goals & metrik (`pero:problem-framing`).
-3. `pero-prd-writing/` : Penyusunan Product Requirements Document & matriks fitur MVP (`pero:prd-writing`).
-4. `pero-user-stories/` : Translasi PRD ke Gherkin stories, domain models & API contracts (`pero:user-stories`).
-5. `pero-system-architecture/` : Perancangan arsitektur sistem, pemilihan tech stack & diagram Mermaid (`pero:system-architecture`).
-6. `pero-quality-governance/` : Standar tata kelola kualitas, aturan konkurensi & gerbang review (`pero:quality-governance`).
-7. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog tugas berfase lintas domain (`pero:task-decomposition`).
-8. `pero-granular-refinement/` : Penajaman kartu tugas spesifik, signature metode & failing tests (`pero:granular-refinement`).
-9. `pero-context-validation/` : Validasi konsistensi silang antar dokumen & audit diagram Mermaid (`pero:context-validation`).
+1. `pero-problem-framing/` : Diagnosa akar masalah, persona, batasan non-goals & metrik (`pero:problem-framing`).
+2. `pero-prd-writing/` : Penyusunan Product Requirements Document & matriks fitur MVP (`pero:prd-writing`).
+3. `pero-user-stories/` : Translasi PRD ke Gherkin stories, domain models & API contracts (`pero:user-stories`).
+4. `pero-system-architecture/` : Perancangan arsitektur sistem, pemilihan tech stack & diagram Mermaid (`pero:system-architecture`).
+5. `pero-quality-governance/` : Standar tata kelola kualitas, aturan konkurensi & gerbang review (`pero:quality-governance`).
+6. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog tugas berfase lintas domain (`pero:task-decomposition`).
+7. `pero-granular-refinement/` : Penajaman kartu tugas spesifik, signature metode & failing tests (`pero:granular-refinement`).
+8. `pero-context-validation/` : Validasi konsistensi silang antar dokumen & audit diagram Mermaid (`pero:context-validation`).
 
 ### B. Standard Engineering & Tooling Skills
-10. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas.
-11. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
-12. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal.
-13. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide.
-14. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
-15. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug.
-16. `verification-before-completion/` : Bukti verifikasi nyata terminal sebelum menyatakan selesai.
-17. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan.
-18. `api-contract-design/` : Perancangan kontrak data, endpoint & envelope API.
-19. `schema-validator/` : Validasi JSON schema, DTO dan model serialisasi.
-20. `decision-recorder/` : Pencatatan riwayat keputusan teknis di `docs/decisions/`.
-21. `living-doc-sync/` : Sinkronisasi diagram & dokumentasi arsitektur hidup.
-22. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
-23. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.
+9. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas.
+10. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
+11. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal.
+12. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide.
+13. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
+14. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug.
+15. `verification-before-completion/` : Bukti verifikasi nyata terminal sebelum menyatakan selesai.
+16. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan.
+17. `api-contract-design/` : Perancangan kontrak data, endpoint & envelope API.
+18. `schema-validator/` : Validasi JSON schema, DTO dan model serialisasi.
+19. `decision-recorder/` : Pencatatan riwayat keputusan teknis di `docs/decisions/`.
+20. `living-doc-sync/` : Sinkronisasi diagram & dokumentasi arsitektur hidup.
+21. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
+22. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.
