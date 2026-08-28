@@ -50,5 +50,5 @@
 19. `schema-validator/` : Validasi JSON schema, DTO dan model serialisasi.
 20. `decision-recorder/` : Pencatatan riwayat keputusan teknis di `docs/decisions/`.
 21. `living-doc-sync/` : Sinkronisasi diagram & dokumentasi arsitektur hidup.
-22. `git-ops/` : Standar kontrol versi, worktree, dan commit semantik.
+22. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
 23. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.

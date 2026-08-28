@@ -80,7 +80,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 | 19 | `schema-validator` | Data | Validasi integritas skema JSON, DTO & model data |
 | 20 | `decision-recorder` | Governance | Pencatatan riwayat keputusan proyek (`ADR`, `PDR`, `SDR`, `GDR`, `TDR`) |
 | 21 | `living-doc-sync` | Docs | Sinkronisasi dokumen hidup dan diagram arsitektur |
-| 22 | `git-ops` | Operations | Standar manajemen branch, worktree, dan semantic commit |
+| 22 | `git-ops` | Operations | Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI |
 | 23 | `env-guard` | Security | Perlindungan kunci rahasia & penyaring perintah berbahaya |
 
 ---
