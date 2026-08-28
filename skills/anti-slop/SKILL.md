@@ -76,8 +76,8 @@ Skill ini adalah **"Filter Pemurni Kualitas Rekayasa & Anti-Sampah Sintetis"**. 
 
 Sebelum menyatakan pekerjaan selesai atau membuka Pull Request, agen wajib memastikan seluruh 4 blok ini terpenuhi:
 
-- [ ] **Block 1: Code Leanliness** $\rightarrow$ Tidak ada kode berlebih di luar acceptance criteria (YAGNI).
-- [ ] **Block 2: Noise Elimination** $\rightarrow$ Bebas dari komentar sepele dan placeholder pemotongan kode.
-- [ ] **Block 3: Real Execution** $\rightarrow$ Seluruh pengujian lulus di terminal nyata (bukan sekadar mock hijau).
-- [ ] **Block 4: Grounded Imports** $\rightarrow$ Seluruh dependensi terdaftar resmi di manifest proyek.
+- [ ] **Block 1: Code Leanliness** → Tidak ada kode berlebih di luar acceptance criteria (YAGNI).
+- [ ] **Block 2: Noise Elimination** → Bebas dari komentar sepele dan placeholder pemotongan kode.
+- [ ] **Block 3: Real Execution** → Seluruh pengujian lulus di terminal nyata (bukan sekadar mock hijau).
+- [ ] **Block 4: Grounded Imports** → Seluruh dependensi terdaftar resmi di manifest proyek.
 

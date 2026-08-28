@@ -64,8 +64,8 @@ Dalam menjalankan validasi konteks, agent WAJIB mengorkestrasi sub-skill berikut
 Ketika terjadi perubahan di salah satu dokumen (misal: penambahan fitur di PRD atau pergantian database di Architecture):
 1. **Identifikasi Titik Perubahan**: Temukan dokumen paling hulu yang berubah.
 2. **Telusuri Rantai Ketergantungan (*Trace Downward*)**:
-   - Jika `PRD` berubah $\rightarrow$ Perbarui `SystemSpec` $\rightarrow$ Perbarui `Architecture` $\rightarrow$ Perbarui `TaskBacklog`.
-   - Jika `Architecture` berubah $\rightarrow$ Perbarui `Governance` $\rightarrow$ Perbarui `TaskBacklog`.
+   - Jika `PRD` berubah → Perbarui `SystemSpec` → Perbarui `Architecture` → Perbarui `TaskBacklog`.
+   - Jika `Architecture` berubah → Perbarui `Governance` → Perbarui `TaskBacklog`.
 3. **Catat Keputusan Baru**: Gunakan `decision-recorder` untuk membuat ADR/PDR baru yang mencatat alasan perubahan.
 4. **Verifikasi Ulang**: Jalankan audit validasi konteks untuk memastikan tidak ada dokumen yang tertinggal.
 
