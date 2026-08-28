@@ -1,4 +1,4 @@
-name: CI Integrity & Skills Check
+name: CI Integrity & Quality Gates
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   validate:
-    name: Validate Skills & Installer (${{ matrix.os }})
+    name: Validate Skills, Gates & Installer (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -18,22 +18,69 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Lint Shell Script Syntax
+      - name: Gate 1: Lint Shell Script Syntax
         run: |
           bash -n install.sh
 
-      - name: Run Repository Health Check
+      - name: Gate 2: ShellCheck Static Analysis
         run: |
-          bash install.sh --check
+          if ! command -v shellcheck &> /dev/null; then
+            if [[ "$RUNNER_OS" == "macOS" ]]; then
+              brew install shellcheck
+            else
+              sudo apt-get update && sudo apt-get install -y shellcheck
+            fi
+          fi
+          shellcheck install.sh
 
-      - name: Test Sandbox Installation & Verification
+      - name: Gate 3: Test Installer Dry-Run Mode
+        run: |
+          bash install.sh --dry-run
+
+      - name: Gate 4: Test Sandbox Installation & Sync Verification
         run: |
           SANDBOX_DIR="$(mktemp -d)"
-          echo "Testing installation in: ${SANDBOX_DIR}"
+          echo "Testing installation in sandbox: ${SANDBOX_DIR}"
           bash install.sh "${SANDBOX_DIR}"
           bash install.sh "${SANDBOX_DIR}" --check
+          diff -r skills/ "${SANDBOX_DIR}/.agents/skills/"
+          rm -rf "${SANDBOX_DIR}"
 
-      - name: Verify Frontmatter Schema in All Skills
+      - name: Gate 5: Workspace Skills Synchronization (diff -r)
+        run: |
+          bash install.sh .
+          diff -r skills/ .agents/skills/
+          bash install.sh --check
+
+      - name: Gate 6: Skill Catalog Registry Validation (install.sh & AGENTS.md)
+        run: |
+          FAILED=0
+          for skill_dir in skills/*; do
+            skill="$(basename "$skill_dir")"
+            if ! grep -q "\"$skill\"" install.sh; then
+              echo "❌ Skill '$skill' tidak terdaftar di array SKILLS pada install.sh"
+              FAILED=$((FAILED + 1))
+            fi
+            if ! grep -q "$skill" AGENTS.md; then
+              echo "❌ Skill '$skill' tidak terdaftar di AGENTS.md"
+              FAILED=$((FAILED + 1))
+            fi
+          done
+
+          TOTAL_SKILLS=$(grep -E '^\s+"[a-zA-Z0-9_-]+"' install.sh | wc -l | tr -d ' ')
+          FOLDER_COUNT=$(ls -d skills/* | wc -l | tr -d ' ')
+          if [ "$TOTAL_SKILLS" -ne "$FOLDER_COUNT" ]; then
+            echo "❌ Jumlah skill di install.sh ($TOTAL_SKILLS) tidak sama dengan folder di skills/ ($FOLDER_COUNT)"
+            FAILED=$((FAILED + 1))
+          fi
+
+          if [ $FAILED -gt 0 ]; then
+            echo "❌ Total kegagalan konsistensi katalog: $FAILED"
+            exit 1
+          fi
+          echo "✓ Seluruh $FOLDER_COUNT skill terdaftar konsisten di install.sh dan AGENTS.md"
+
+      - name: Gate 7: Verify Frontmatter Schema & Clean Markdown in All Skills
         run: |
           FAILED=0
           for skill_dir in skills/*; do

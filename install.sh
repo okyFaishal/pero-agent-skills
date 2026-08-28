@@ -4,7 +4,7 @@
 # Creator: Pero (https://github.com/okyFaishal/pero-agent-skills)
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
-#   Or: bash install.sh [TARGET_DIR] [--check]
+#   Or: bash install.sh [TARGET_DIR] [--check] [--dry-run]
 # ==============================================================================
 set -euo pipefail
 
@@ -41,6 +41,7 @@ SKILLS=(
 # Parse Arguments
 TARGET_DIR=""
 CHECK_ONLY=false
+DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -48,11 +49,16 @@ while [[ $# -gt 0 ]]; do
       CHECK_ONLY=true
       shift
       ;;
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
     --help|-h)
       echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
       echo ""
       echo "Opsi:"
-      echo "  --check       Memeriksa integritas 23 modul skill dan AGENTS.md"
+      echo "  --check       Memeriksa integritas 24 modul skill dan AGENTS.md"
+      echo "  --dry-run     Menampilkan simulasi tindakan tanpa menyalin berkas"
       echo "  --help, -h    Tampilkan panduan bantuan ini"
       exit 0
       ;;
@@ -66,8 +72,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 TARGET_DIR="${TARGET_DIR:-$(pwd)}"
-mkdir -p "$TARGET_DIR"
-TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
+if [[ "$DRY_RUN" == false ]]; then
+  mkdir -p "$TARGET_DIR"
+fi
+TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"
 TARGET_SKILLS_DIR="${TARGET_DIR}/.agents/skills"
 TARGET_AGENTS_MD="${TARGET_DIR}/AGENTS.md"
 TARGET_GITIGNORE="${TARGET_DIR}/.gitignore"
@@ -75,6 +83,9 @@ TARGET_GITIGNORE="${TARGET_DIR}/.gitignore"
 echo "================================================================="
 echo " 🚀 Pero Agent Skills Universal Installer (v3.0 Standalone)"
 echo " 📂 Target Workspace: ${TARGET_DIR}"
+if [[ "$DRY_RUN" == true ]]; then
+  echo " 🔍 Mode: DRY-RUN (Simulasi saja, tidak ada file yang diubah)"
+fi
 echo "================================================================="
 
 # ------------------------------------------------------------------------------
@@ -114,10 +125,8 @@ if [[ "$CHECK_ONLY" == true ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-# 2. Mode Pemasangan (Installation Mode)
+# 2. Mode Pemasangan (Installation Mode) & Dry-Run
 # ------------------------------------------------------------------------------
-mkdir -p "${TARGET_SKILLS_DIR}"
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "")"
 SOURCE_SKILLS=""
 SOURCE_AGENTS_MD=""
@@ -140,35 +149,54 @@ else
   fi
 fi
 
-# Salin 23 Skill Universal
+if [[ "$DRY_RUN" == true ]]; then
+  echo "-> [DRY-RUN] Akan membuat direktori: ${TARGET_SKILLS_DIR}"
+else
+  mkdir -p "${TARGET_SKILLS_DIR}"
+fi
+
+# Salin 24 Skill Universal
 echo "-> Menyebarkan ${#SKILLS[@]} modul skill ke ${TARGET_SKILLS_DIR}..."
 for skill in "${SKILLS[@]}"; do
   if [[ -d "${SOURCE_SKILLS}/${skill}" ]]; then
-    mkdir -p "${TARGET_SKILLS_DIR}/${skill}"
-    cp -r "${SOURCE_SKILLS}/${skill}/"* "${TARGET_SKILLS_DIR}/${skill}/"
-    echo "   [✓] ${skill} terpasang."
+    if [[ "$DRY_RUN" == true ]]; then
+      echo "   [🔍 DRY-RUN] Akan memasang: ${skill}"
+    else
+      mkdir -p "${TARGET_SKILLS_DIR}/${skill}"
+      cp -r "${SOURCE_SKILLS}/${skill}/"* "${TARGET_SKILLS_DIR}/${skill}/"
+      echo "   [✓] ${skill} terpasang."
+    fi
   else
     echo "   [⚠️ ] Warning: Modul ${skill} tidak ditemukan di sumber."
   fi
 done
 
-# Salin AGENTS.md jika belum ada atau perbarui
+# Salin AGENTS.md jika belum ada atau perbarui dengan backup ber-timestamp
 echo "-> Menyiapkan aturan tata kelola AGENTS.md..."
 if [[ "$SOURCE_AGENTS_MD" != "$TARGET_AGENTS_MD" ]]; then
   if [[ -f "$TARGET_AGENTS_MD" ]]; then
-    echo "   [i] AGENTS.md sudah ada. Membuat cadangan AGENTS.md.bak..."
-    cp "$TARGET_AGENTS_MD" "${TARGET_AGENTS_MD}.bak"
+    TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
+    BACKUP_FILE="${TARGET_DIR}/AGENTS.md.bak_${TIMESTAMP}"
+    if [[ "$DRY_RUN" == true ]]; then
+      echo "   [🔍 DRY-RUN] Akan membuat cadangan: ${BACKUP_FILE}"
+    else
+      echo "   [i] AGENTS.md sudah ada. Membuat cadangan ${BACKUP_FILE}..."
+      cp "$TARGET_AGENTS_MD" "$BACKUP_FILE"
+    fi
   fi
-  cp "$SOURCE_AGENTS_MD" "$TARGET_AGENTS_MD"
+  if [[ "$DRY_RUN" == true ]]; then
+    echo "   [🔍 DRY-RUN] Akan memperbarui: ${TARGET_AGENTS_MD}"
+  else
+    cp "$SOURCE_AGENTS_MD" "$TARGET_AGENTS_MD"
+    echo "   [✓] AGENTS.md aktif di root workspace."
+  fi
+else
+  echo "   [✓] AGENTS.md sudah berada di root sumber."
 fi
-echo "   [✓] AGENTS.md aktif di root workspace."
 
 # Proteksi .gitignore Otomatis
 echo "-> Memeriksa perlindungan keamanan di .gitignore..."
 TOUCHED_GITIGNORE=false
-if [[ ! -f "$TARGET_GITIGNORE" ]]; then
-  touch "$TARGET_GITIGNORE"
-fi
 
 SECURITY_RULES=(
   ".env"
@@ -178,17 +206,31 @@ SECURITY_RULES=(
   "credentials.json"
 )
 
-for rule in "${SECURITY_RULES[@]}"; do
-  if ! grep -Fxq "$rule" "$TARGET_GITIGNORE" 2>/dev/null; then
-    echo "$rule" >> "$TARGET_GITIGNORE"
-    TOUCHED_GITIGNORE=true
+if [[ "$DRY_RUN" == true ]]; then
+  for rule in "${SECURITY_RULES[@]}"; do
+    if [[ ! -f "$TARGET_GITIGNORE" ]] || ! grep -Fxq "$rule" "$TARGET_GITIGNORE" 2>/dev/null; then
+      echo "   [🔍 DRY-RUN] Aturan proteksi akan ditambahkan ke .gitignore: ${rule}"
+      TOUCHED_GITIGNORE=true
+    fi
+  done
+  if [[ "$TOUCHED_GITIGNORE" == false ]]; then
+    echo "   [✓] .gitignore sudah terlindungi aman."
   fi
-done
-
-if [[ "$TOUCHED_GITIGNORE" == true ]]; then
-  echo "   [🛡️ ] Menambahkan aturan proteksi file rahasia ke .gitignore."
 else
-  echo "   [✓] .gitignore sudah terlindungi aman."
+  if [[ ! -f "$TARGET_GITIGNORE" ]]; then
+    touch "$TARGET_GITIGNORE"
+  fi
+  for rule in "${SECURITY_RULES[@]}"; do
+    if ! grep -Fxq "$rule" "$TARGET_GITIGNORE" 2>/dev/null; then
+      echo "$rule" >> "$TARGET_GITIGNORE"
+      TOUCHED_GITIGNORE=true
+    fi
+  done
+  if [[ "$TOUCHED_GITIGNORE" == true ]]; then
+    echo "   [🛡️ ] Menambahkan aturan proteksi file rahasia ke .gitignore."
+  else
+    echo "   [✓] .gitignore sudah terlindungi aman."
+  fi
 fi
 
 # Bersihkan temp dir jika ada
@@ -197,6 +239,11 @@ if [[ -n "$TEMP_DIR" && -d "$TEMP_DIR" ]]; then
 fi
 
 echo "================================================================="
-echo " ✨ Berhasil! ${#SKILLS[@]} Skill Pero & AGENTS.md siap digunakan di:"
-echo " 📂 ${TARGET_DIR}"
+if [[ "$DRY_RUN" == true ]]; then
+  echo " 🔍 Simulasi Selesai! Tidak ada berkas yang diubah pada workspace."
+else
+  echo " ✨ Berhasil! ${#SKILLS[@]} Skill Pero & AGENTS.md siap digunakan di:"
+  echo " 📂 ${TARGET_DIR}"
+fi
 echo "================================================================="
+
