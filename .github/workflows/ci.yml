@@ -33,18 +33,20 @@ jobs:
           fi
           shellcheck install.sh
 
-      - name: Gate 3: Test Installer Dry-Run Mode
+      - name: Gate 3: Test Installer Dry-Run Mode & Version Flag
         run: |
           bash install.sh --dry-run
+          bash install.sh --version | grep -q "pero-agent-skills installer"
 
-      - name: Gate 4: Test Sandbox Installation & Sync Verification
+      - name: Gate 4: Test Sandbox Installation & Space-Path Handling
         run: |
-          SANDBOX_DIR="$(mktemp -d)"
-          echo "Testing installation in sandbox: ${SANDBOX_DIR}"
+          SANDBOX_ROOT="$(mktemp -d)"
+          SANDBOX_DIR="${SANDBOX_ROOT}/target workspace with spaces"
+          echo "Testing installation in sandbox with spaces: ${SANDBOX_DIR}"
           bash install.sh "${SANDBOX_DIR}"
           bash install.sh "${SANDBOX_DIR}" --check
           diff -r skills/ "${SANDBOX_DIR}/.agents/skills/"
-          rm -rf "${SANDBOX_DIR}"
+          rm -rf "${SANDBOX_ROOT}"
 
       - name: Gate 5: Workspace Skills Synchronization (diff -r)
         run: |
@@ -115,4 +117,46 @@ jobs:
             exit 1
           fi
           echo "✓ All $(ls -d skills/* | wc -l | tr -d ' ') skills have valid YAML frontmatter."
+
+      - name: Gate 8: Line-Ending & Trailing Newline Hygiene
+        run: |
+          FAILED=0
+          for f in $(git ls-files "*.md" "*.sh" "*.yml"); do
+            if [ -f "$f" ]; then
+              if grep -q $'\r' "$f"; then
+                echo "❌ CRLF character found in $f"
+                FAILED=$((FAILED + 1))
+              fi
+              if [ -n "$(tail -c 1 "$f")" ]; then
+                echo "❌ Missing EOF trailing newline in $f"
+                FAILED=$((FAILED + 1))
+              fi
+            fi
+          done
+          if [ $FAILED -gt 0 ]; then
+            echo "❌ Total file hygiene violations: $FAILED"
+            exit 1
+          fi
+          echo "✓ All tracked markdown, shell, and YAML files have clean UNIX line endings."
+
+      - name: Gate 9: Validate Local Relative File Paths in Markdown
+        run: |
+          FAILED=0
+          for md_file in README.md AGENTS.md skills/*/SKILL.md; do
+            if [ -f "$md_file" ]; then
+              # Verify that any referenced docs/*.md or skills/*/SKILL.md exists if referenced as relative path
+              for ref in $(grep -oE '\(skills/[a-zA-Z0-9_-]+/SKILL\.md\)' "$md_file" | tr -d '()' || true); do
+                if [ ! -f "$ref" ]; then
+                  echo "❌ Broken skill reference '$ref' in $md_file"
+                  FAILED=$((FAILED + 1))
+                fi
+              done
+            fi
+          done
+          if [ $FAILED -gt 0 ]; then
+            echo "❌ Total broken markdown references: $FAILED"
+            exit 1
+          fi
+          echo "✓ All local markdown relative links are intact."
+
 

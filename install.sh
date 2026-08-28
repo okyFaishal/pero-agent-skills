@@ -53,13 +53,18 @@ while [[ $# -gt 0 ]]; do
       DRY_RUN=true
       shift
       ;;
+    --version|-v)
+      echo "pero-agent-skills installer v3.0.0 (standalone)"
+      exit 0
+      ;;
     --help|-h)
       echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
       echo ""
       echo "Opsi:"
-      echo "  --check       Memeriksa integritas 24 modul skill dan AGENTS.md"
-      echo "  --dry-run     Menampilkan simulasi tindakan tanpa menyalin berkas"
-      echo "  --help, -h    Tampilkan panduan bantuan ini"
+      echo "  --check        Memeriksa integritas 24 modul skill dan AGENTS.md"
+      echo "  --dry-run      Menampilkan simulasi tindakan tanpa menyalin berkas"
+      echo "  --version, -v  Tampilkan versi installer resmi"
+      echo "  --help, -h     Tampilkan panduan bantuan ini"
       exit 0
       ;;
     *)
