@@ -12,6 +12,7 @@ Skill ini bertindak sebagai **"Dokter Diagnosa Masalah yang Bijak"**. Tugasnya a
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Wawancara Terarah**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk memandu wawancara pohon keputusan (frontier rounds) dengan opsi pilihan ganda dan analogi sederhana (ELI5).
+- **Musyawarah Keputusan Strategis**: **`SUPPORTING / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menggelar sidang dewan 5 persona AI ketika menghadapi kebuntuan arah produk, menimbang pivot masalah berisiko tinggi, atau memilih target persona yang bertolak belakang.
 - **Riset Pasar & Solusi Pembanding**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` untuk memeriksa bagaimana masalah serupa diselesaikan di industri.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 

@@ -1,7 +1,7 @@
 # Pero Agent Skills (`pero-agent-skills`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills: 24 Universal](https://img.shields.io/badge/Skills-24%20Universal-brightgreen.svg)](#katalog-lengkap-24-skill-universal)
+[![Skills: 25 Universal](https://img.shields.io/badge/Skills-25%20Universal-brightgreen.svg)](#katalog-lengkap-25-skill-universal)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#)
 
 > **Ekosistem Standar SDLC & Rekayasa Agen AI Universal (Polyglot) yang Disiplin, Anti-Sycophancy, dan Berbahasa Ramah (ELI5).**
@@ -14,7 +14,7 @@
 > - Ketika dipasang di proyek apa pun (Web, Mobile, Backend, AI, Database), asisten AI Anda otomatis bertransformasi menjadi **Insinyur Senior yang Sangat Disiplin**:
 > - **Tidak Asal Tebak**: Selalu mendiagnosa akar masalah terlebih dahulu sebelum meresepkan solusi (*Problem Framing & Systematic Debugging*).
 > - **Membangun dengan Denah Matang**: Menyusun fondasi dan aturan kualitas sebelum menyuruh tukang bekerja (*SDLC Pipeline*).
-> - **Anti-Pujian Palsu (*Anti-Sycophancy*)**: Jujur berbasis bukti teknis dan berani menolak ide yang berisiko merusak sistem.
+> - **Anti-Pujian Palsu (*Anti-Sycophancy*)**: Jujur berbasis bukti teknis dan berani menolak ide yang berisiko merusak sistem (*LLM Council*).
 > - **Bebas Sampah Sintetis (*Anti-Slop*)**: Menolak kode berlebih (YAGNI), komentar sepele, dan kode tiruan palsu (*anti-slop*).
 > - **Wajib Bukti Nyata (*Evidence Before Assertions*)**: Dilarang mengklaim selesai sebelum ada bukti tes terminal yang 100% lulus.
 > - **Bahasa Ramah**: Menjelaskan konsep rumit dengan analogi sehari-hari yang mudah dimengerti siapa saja (*ELI5*).
@@ -23,7 +23,7 @@
 
 ## Instalasi Cepat (1-Line Command)
 
-Pasang seluruh 24 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
+Pasang seluruh 25 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 
 ## Peta Navigasi Ekosistem Pero
 
-Diagram di bawah menggambarkan bagaimana ke-24 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
+Diagram di bawah menggambarkan bagaimana ke-25 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
 
 ```mermaid
 flowchart TB
@@ -55,6 +55,7 @@ flowchart TB
         C7["context-7 (Docs API Resmi)"]:::tool
         WS["web-search (Riset Eksternal)"]:::tool
         GRL["grilling (Stress-Test Ide)"]:::tool
+        COU["llm-council (Dewan 5 Penasihat)"]:::tool
         ELI5["eli5 (Simplifikasi Awam)"]:::tool
     end
 
@@ -92,6 +93,9 @@ flowchart TB
     
     GRL --- S1
     GRL --- S4
+    COU --- S1
+    COU --- S2
+    COU --- S4
     
     S1 --> S2
     S2 --> S3
@@ -135,14 +139,17 @@ flowchart TD
     Q1 -->|Mulai ide baru / Eksplorasi fitur| A1["Pahami akar masalah & batasan non-goals"]
     A1 --> SK_PF["pero-problem-framing"]
     SK_PF -->|Ide masih ambigu?| SK_GRL["grilling (Wawancara mendalam)"]
+    SK_PF -->|Pivot berisiko / Dilema arah?| SK_COU1["llm-council (Dewan 5 Penasihat)"]
 
     %% Cabang 2: Menyusun Spesifikasi & Cerita
     Q1 -->|Menyusun spek MVP & Prioritas| SK_PRD["pero-prd-writing"]
+    SK_PRD -->|Trade-off prioritas P0 vs P1?| SK_COU2["llm-council (Dewan 5 Penasihat)"]
     SK_PRD --> SK_US["pero-user-stories (Gherkin & Entity)"]
 
     %% Cabang 3: Arsitektur & Kontrak
     Q1 -->|Rancang arsitektur & pilih library| SK_ARCH["pero-system-architecture"]
     SK_ARCH --> SK_C7["context-7 (Dokumentasi resmi API)"]
+    SK_ARCH -->|Trade-off arsitektur berat?| SK_COU3["llm-council (Musyawarah Dewan)"]
     SK_ARCH --> SK_API["api-contract-design & schema-validator"]
     SK_ARCH --> SK_ADR["decision-recorder (Catat ADR)"]
 
@@ -258,7 +265,7 @@ sequenceDiagram
 
 ---
 
-## Katalog Lengkap 24 Skill Universal
+## Katalog Lengkap 25 Skill Universal
 
 | No | Skill | Kategori | Kapan Digunakan (*Trigger*) | Input ➡️ Output Utama |
 |---|---|---|---|---|
@@ -286,6 +293,7 @@ sequenceDiagram
 | 22 | `env-guard` | Security | Melindungi file `.env`, kredensial, & filter perintah bahaya | Seluruh Operasi ➡️ Proteksi Rahasia & Keamanan |
 | 23 | `eli5` | Tooling / Discipline | Menyederhanakan konsep teknis rumit, audit kejelasan dokumen teknis, & analogi awam | Teks/Konsep rumit ➡️ Penjelasan Sederhana, Beranalogi & Mengalir Alami |
 | 24 | `anti-slop` | Discipline / Quality | Menolak kode berlebih (YAGNI), komentar sepele, basa-basi AI, dan mock palsu | Perubahan Kode/Teks ➡️ Hasil Bersih, Ringkas & Bebas Slop |
+| 25 | `llm-council` | Discipline / Architecture | Musyawarah 5 sudut pandang AI, peer-review anonim & vonis ketua untuk keputusan berisiko tinggi | Dilema Keputusan / Trade-Off ➡️ Rekomendasi Sintesis Dewan |
 
 ---
 

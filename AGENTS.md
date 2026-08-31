@@ -54,3 +54,4 @@
 22. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.
 23. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan 3-lapis ramah awam (`eli5`).
 24. `anti-slop/` : Eliminasi boilerplate berlebih, komentar sampah, basa-basi AI, dan over-engineering (`anti-slop`).
+25. `llm-council/` : Musyawarah 5 sudut pandang AI, peer-review anonim & sintesis dewan untuk keputusan berisiko tinggi (`llm-council`).

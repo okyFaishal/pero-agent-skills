@@ -13,6 +13,7 @@ Skill ini bertindak sebagai **"Gambar Denah & Pondasi Bangunan Rumah"** (Menentu
 Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md` dan `docs/SystemSpec.md` untuk memastikan arsitektur secara langsung menopang seluruh kebutuhan fitur MVP, kontrak API, dan entitas domain tanpa ada yang terlewat.
 - **Verifikasi Dokumentasi API & Versi Library**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk mengecek dokumentasi resmi, kompatibilitas versi terbaru, dan signature method/library pihak ketiga sebelum menetapkan pilihan teknologi.
+- **Musyawarah Dewan Arsitektur**: **`SUPPORTING / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arsitektural berdampak besar (Monolith vs Microservices, Relasional vs Dokumen, REST vs Event-Driven, Pola Konkurensi) dan menyalurkan vonis sintesisnya ke dokumen ADR.
 - **Riset Benchmark & Pembanding Teknologi**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, stabilitas rilis, dan perbandingan teknis antar framework di industri.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
 - **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural (pemilihan database, framework, pola konkurensi) ke `docs/decisions/ADR-[YYYYMMDDHHmm].md`.
@@ -39,9 +40,9 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 - Visualisasi hubungan antar komponen utama (Klien/UI, Gateway/API, Application Core, Worker/Queue, Database, External Services) menggunakan diagram Mermaid (`graph TB` atau `flowchart LR`).
 - Memberikan gambaran alur data dari hulu ke hilir dengan node yang diberi label jelas dan aman dari error parsing (gunakan tanda petik dua pada label berkurung/simbol).
 
-### 2. Tech Stack Selection & Trade-Off Matrix (Verified via `context-7`)
+### 2. Tech Stack Selection & Trade-Off Matrix (Verified via `context-7` & `llm-council`)
 - Matriks pemilihan teknologi untuk setiap lapisan sistem (Runtime, Web/UI Framework, API Server, Database, Cache, Message Broker, Testing Tools).
-- Setiap pilihan wajib didasari verifikasi resmi via `context-7` (memeriksa versi LTS/terkini, kompatibilitas, dan status pemeliharaan) serta mencatat alternatif yang ditolak beserta alasannya.
+- Setiap pilihan wajib didasari verifikasi resmi via `context-7` (memeriksa versi LTS/terkini, kompatibilitas, dan status pemeliharaan) serta mencatat alternatif yang ditolak beserta alasannya. Jika terdapat pilihan bertolak belakang dengan risiko tinggi, sidangkan opsi melalui `llm-council`.
 
 ### 3. Component & Module Breakdown (Clean / Hexagonal / Layered)
 - Pemisahan tanggung jawab (*Separation of Concerns*) yang tegas:
