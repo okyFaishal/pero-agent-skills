@@ -12,7 +12,7 @@ Skill ini adalah **"Mesin Pencari Cerdas & Pemandu Navigasi Keterampilan Agen"**
 > **Analogi Sederhana (ELI5):**  
 > Bayangkan **Resepsionis Navigasi Cerdas di Rumah Sakit Raksasa**:
 > - **AI Tanpa Find-Skill (Tersesat & Salah Kamar)**: Pasien datang dengan keluhan patah tulang, tetapi diarahkan ke dokter gigi hanya karena dokter gigi sedang menganggur.
-> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 25 dokter spesialis yang bertugas (*katalog skill*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
+> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 26 dokter spesialis yang bertugas (*katalog skill*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
 
 ---
 
@@ -40,7 +40,7 @@ Penanganan percabangan menggunakan pohon taksonomi terstruktur dan mekanisme pen
 
 ---
 
-## Matriks Pemetaan Pemicu 25 Skill (*Trigger-to-Skill Dispatch Matrix*)
+## Matriks Pemetaan Pemicu 26 Skill (*Trigger-to-Skill Dispatch Matrix*)
 
 Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan dipatuhi:
 
@@ -58,6 +58,7 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Riset Web/Error** | "Cari solusi web", "error di internet", "changelog release", "search" | [web-search](file:///Users/okyfaishal/project/pero-agent-skills/skills/web-search/SKILL.md) |
 | **Stress-Test Ide** | "Grill me", "uji ide ini", "trade-off arsitektur", "bedah keputusan" | [grilling](file:///Users/okyfaishal/project/pero-agent-skills/skills/grilling/SKILL.md) |
 | **Musyawarah Dewan** | "Council this", "run the council", "dewan AI", "war room", "multi-perspektif", "debatkan opsi", "trade-off besar" | [llm-council](file:///Users/okyfaishal/project/pero-agent-skills/skills/llm-council/SKILL.md) |
+| **Delegasi Paralel** | "Dispatch parallel", "agen paralel", "parallel subagents", "kerjakan bersamaan", "tugas independen", "mass debugging" | [dispatching-parallel-agents](file:///Users/okyfaishal/project/pero-agent-skills/skills/dispatching-parallel-agents/SKILL.md) |
 | **Koding Fitur/Fix** | "Mulai ngoding", "tulis fungsi", "implementasi fitur", "TDD" | [test-driven-development](file:///Users/okyfaishal/project/pero-agent-skills/skills/test-driven-development/SKILL.md) |
 | **Investigasi Bug** | "Ada bug", "tes gagal", "aplikasi crash", "investigasi error" | [systematic-debugging](file:///Users/okyfaishal/project/pero-agent-skills/skills/systematic-debugging/SKILL.md) |
 | **Klaim Selesai** | "Sudah selesai", "semua beres", "cek hasil kerja", "siap commit" | [verification-before-completion](file:///Users/okyfaishal/project/pero-agent-skills/skills/verification-before-completion/SKILL.md) |

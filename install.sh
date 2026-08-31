@@ -10,7 +10,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/okyFaishal/pero-agent-skills.git"
 
-# 25 Universal Engineering & SDLC Skills
+# 26 Universal Engineering & SDLC Skills
 SKILLS=(
   "pero-problem-framing"
   "pero-prd-writing"
@@ -37,6 +37,7 @@ SKILLS=(
   "eli5"
   "anti-slop"
   "llm-council"
+  "dispatching-parallel-agents"
 )
 
 # Parse Arguments
@@ -62,7 +63,7 @@ while [[ $# -gt 0 ]]; do
       echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
       echo ""
       echo "Opsi:"
-      echo "  --check        Memeriksa integritas 25 modul skill dan AGENTS.md"
+      echo "  --check        Memeriksa integritas 26 modul skill dan AGENTS.md"
       echo "  --dry-run      Menampilkan simulasi tindakan tanpa menyalin berkas"
       echo "  --version, -v  Tampilkan versi installer resmi"
       echo "  --help, -h     Tampilkan panduan bantuan ini"
@@ -161,7 +162,7 @@ else
   mkdir -p "${TARGET_SKILLS_DIR}"
 fi
 
-# Salin 25 Skill Universal
+# Salin 26 Skill Universal
 echo "-> Menyebarkan ${#SKILLS[@]} modul skill ke ${TARGET_SKILLS_DIR}..."
 for skill in "${SKILLS[@]}"; do
   if [[ -d "${SOURCE_SKILLS}/${skill}" ]]; then

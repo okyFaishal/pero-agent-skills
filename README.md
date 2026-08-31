@@ -1,7 +1,7 @@
 # Pero Agent Skills (`pero-agent-skills`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills: 25 Universal](https://img.shields.io/badge/Skills-25%20Universal-brightgreen.svg)](#katalog-lengkap-25-skill-universal)
+[![Skills: 26 Universal](https://img.shields.io/badge/Skills-26%20Universal-brightgreen.svg)](#katalog-lengkap-26-skill-universal)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#)
 
 > **Ekosistem Standar SDLC & Rekayasa Agen AI Universal (Polyglot) yang Disiplin, Anti-Sycophancy, dan Berbahasa Ramah (ELI5).**
@@ -23,7 +23,7 @@
 
 ## Instalasi Cepat (1-Line Command)
 
-Pasang seluruh 25 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
+Pasang seluruh 26 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 
 ## Peta Navigasi Ekosistem Pero
 
-Diagram di bawah menggambarkan bagaimana ke-25 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
+Diagram di bawah menggambarkan bagaimana ke-26 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
 
 ```mermaid
 flowchart TB
@@ -56,6 +56,7 @@ flowchart TB
         WS["web-search (Riset Eksternal)"]:::tool
         GRL["grilling (Stress-Test Ide)"]:::tool
         COU["llm-council (Dewan 5 Penasihat)"]:::tool
+        DPA["dispatching-parallel-agents (Delegasi Paralel)"]:::tool
         ELI5["eli5 (Simplifikasi Awam)"]:::tool
     end
 
@@ -96,6 +97,10 @@ flowchart TB
     COU --- S1
     COU --- S2
     COU --- S4
+    DPA -.-> S6
+    DPA -.-> S7
+    DPA -.-> DBG
+    DPA -.-> S4
     
     S1 --> S2
     S2 --> S3
@@ -150,6 +155,7 @@ flowchart TD
     Q1 -->|Rancang arsitektur & pilih library| SK_ARCH["pero-system-architecture"]
     SK_ARCH --> SK_C7["context-7 (Dokumentasi resmi API)"]
     SK_ARCH -->|Trade-off arsitektur berat?| SK_COU3["llm-council (Musyawarah Dewan)"]
+    SK_ARCH -->|Riset pustaka / prototipe paralel?| SK_DPA0["dispatching-parallel-agents"]
     SK_ARCH --> SK_API["api-contract-design & schema-validator"]
     SK_ARCH --> SK_ADR["decision-recorder (Catat ADR)"]
 
@@ -160,6 +166,7 @@ flowchart TD
 
     %% Cabang 5: Pemecahan Tugas & Refinement
     Q1 -->|Pecah arsitektur jadi backlog| SK_DECOMP["pero-task-decomposition"]
+    SK_DECOMP -->|Tugas independen lintas domain?| SK_DPA1["dispatching-parallel-agents (Eksekusi Paralel)"]
     SK_DECOMP --> SK_GRAN["pero-granular-refinement (File paths & Failing tests)"]
     SK_GRAN --> SK_VALID["pero-context-validation (Audit dokumen)"]
 
@@ -170,6 +177,7 @@ flowchart TD
 
     %% Cabang 7: Troubleshooting / Bug
     Q1 -->|Ketemu bug / Tes error| SK_DBG["systematic-debugging (Reproduksi -> Isolasi -> Fix)"]
+    SK_DBG -->|Banyak berkas tes gagal mandiri?| SK_DPA2["dispatching-parallel-agents (Mass Debugging)"]
     SK_DBG --> SK_TDD
 
     %% Cabang 8: Selesai & Review
@@ -265,7 +273,7 @@ sequenceDiagram
 
 ---
 
-## Katalog Lengkap 25 Skill Universal
+## Katalog Lengkap 26 Skill Universal
 
 | No | Skill | Kategori | Kapan Digunakan (*Trigger*) | Input ➡️ Output Utama |
 |---|---|---|---|---|
@@ -294,6 +302,7 @@ sequenceDiagram
 | 23 | `eli5` | Tooling / Discipline | Menyederhanakan konsep teknis rumit, audit kejelasan dokumen teknis, & analogi awam | Teks/Konsep rumit ➡️ Penjelasan Sederhana, Beranalogi & Mengalir Alami |
 | 24 | `anti-slop` | Discipline / Quality | Menolak kode berlebih (YAGNI), komentar sepele, basa-basi AI, dan mock palsu | Perubahan Kode/Teks ➡️ Hasil Bersih, Ringkas & Bebas Slop |
 | 25 | `llm-council` | Discipline / Architecture | Musyawarah 5 sudut pandang AI, peer-review anonim & vonis ketua untuk keputusan berisiko tinggi | Dilema Keputusan / Trade-Off ➡️ Rekomendasi Sintesis Dewan |
+| 26 | `dispatching-parallel-agents` | Tooling / Operations | Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state | Backlog/Error Mandiri ➡️ Eksekusi Sub-Agen Serentak & Lolos Uji |
 
 ---
 
