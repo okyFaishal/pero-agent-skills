@@ -1,7 +1,7 @@
 # Pero Agent Skills (`pero-agent-skills`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills: 26 Universal](https://img.shields.io/badge/Skills-26%20Universal-brightgreen.svg)](#katalog-lengkap-26-skill-universal)
+[![Skills: 27 Universal](https://img.shields.io/badge/Skills-27%20Universal-brightgreen.svg)](#katalog-lengkap-27-skill-universal)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#)
 
 > **Ekosistem Standar SDLC & Rekayasa Agen AI Universal (Polyglot) yang Disiplin, Anti-Sycophancy, dan Berbahasa Ramah (ELI5).**
@@ -23,7 +23,7 @@
 
 ## Instalasi Cepat (1-Line Command)
 
-Pasang seluruh 26 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
+Pasang seluruh 27 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 
 ## Peta Navigasi Ekosistem Pero
 
-Diagram di bawah menggambarkan bagaimana ke-26 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
+Diagram di bawah menggambarkan bagaimana ke-27 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
 
 ```mermaid
 flowchart TB
@@ -57,6 +57,7 @@ flowchart TB
         GRL["grilling (Stress-Test Ide)"]:::tool
         COU["llm-council (Dewan 5 Penasihat)"]:::tool
         DPA["dispatching-parallel-agents (Delegasi Paralel)"]:::tool
+        SDD["subagent-driven-development (Eksekutor Otonom)"]:::tool
         ELI5["eli5 (Simplifikasi Awam)"]:::tool
     end
 
@@ -101,6 +102,9 @@ flowchart TB
     DPA -.-> S7
     DPA -.-> DBG
     DPA -.-> S4
+    SDD ==> S6
+    SDD ==> S7
+    SDD ==> ENGINE
     
     S1 --> S2
     S2 --> S3
@@ -171,7 +175,9 @@ flowchart TD
     SK_GRAN --> SK_VALID["pero-context-validation (Audit dokumen)"]
 
     %% Cabang 6: Eksekusi Koding & TDD
-    Q1 -->|Mulai ngoding tugas| SK_GIT1["git-ops (Buat branch fitur)"]
+    Q1 -->|Mau eksekusi seluruh backlog otomatis?| SK_SDD["subagent-driven-development (Loop Otonom Sub-Agen)"]
+    SK_SDD --> SK_GIT1["git-ops (Buat branch fitur)"]
+    Q1 -->|Mulai ngoding tugas manual| SK_GIT1
     SK_GIT1 --> SK_TDD["test-driven-development (Red -> Green -> Refactor)"]
     SK_TDD --> SK_AS["anti-slop (Filter YAGNI & Komentar Sampah)"]
 
@@ -273,7 +279,7 @@ sequenceDiagram
 
 ---
 
-## Katalog Lengkap 26 Skill Universal
+## Katalog Lengkap 27 Skill Universal
 
 | No | Skill | Kategori | Kapan Digunakan (*Trigger*) | Input ➡️ Output Utama |
 |---|---|---|---|---|
@@ -303,6 +309,7 @@ sequenceDiagram
 | 24 | `anti-slop` | Discipline / Quality | Menolak kode berlebih (YAGNI), komentar sepele, basa-basi AI, dan mock palsu | Perubahan Kode/Teks ➡️ Hasil Bersih, Ringkas & Bebas Slop |
 | 25 | `llm-council` | Discipline / Architecture | Musyawarah 5 sudut pandang AI, peer-review anonim & vonis ketua untuk keputusan berisiko tinggi | Dilema Keputusan / Trade-Off ➡️ Rekomendasi Sintesis Dewan |
 | 26 | `dispatching-parallel-agents` | Tooling / Operations | Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state | Backlog/Error Mandiri ➡️ Eksekusi Sub-Agen Serentak & Lolos Uji |
+| 27 | `subagent-driven-development` | Discipline / Operations | Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate | Task Backlog ➡️ Implementasi Teruji & PR Siap Merge |
 
 ---
 

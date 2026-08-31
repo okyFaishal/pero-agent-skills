@@ -14,6 +14,12 @@ Skill ini adalah **"Gerbang Audit Kualitas Dua Tahap & Penjaga Keamanan Kode"**.
 > - **Petugas 1 (Kesesuaian Tiket & Identitas / Gate 1 - Spec Match)**: Memeriksa apakah nama penumpang cocok dengan tiket pesawat dan tujuan penerbangan sesuai jadwal (apakah fitur yang dibuat benar-benar yang diminta pengguna).
 > - **Petugas 2 (Mesin X-Ray & Bea Cukai / Gate 2 - Security & Safety)**: Memindai koper untuk mendeteksi barang berbahaya, bahan peledak, atau kebocoran racun (memeriksa celah keamanan SQL injection, kebocoran memori, race condition, dan kualitas kode bersih).
 
+## Sub-Skill Integration (Perkakas Pendukung)
+Dalam menjalankan proses audit peninjauan kode, agent WAJIB mengorkestrasi sub-skill berikut:
+- **Pengawas Mutu Task Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk menjalankan peran Task Reviewer Subagent (verifikasi git diff per task) dan Final Merge Reviewer di akhir cabang.
+- **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` untuk memastikan tidak ada kode berlebih (YAGNI), komentar sepele, atau mock palsu yang lolos review.
+- **Verifikasi Bukti Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk memastikan tes terminal benar-benar hijau sebelum memberi persetujuan (*approval*).
+
 ---
 
 ## Landasan Teori & Referensi Industri Nyata

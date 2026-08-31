@@ -140,6 +140,7 @@ Kembalikan:
 
 ## Integrasi dengan Skill Lain di Repositori
 
+*   **[`subagent-driven-development`](file:///Users/okyfaishal/project/pero-agent-skills/skills/subagent-driven-development/SKILL.md)**: Mesin konveyor eksekusi sekuensial yang dapat memanggil `dispatching-parallel-agents` saat mendeteksi tugas-tugas independen dalam satu fase.
 *   **[`pero-task-decomposition`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-task-decomposition/SKILL.md)**: Mengelompokkan backlog tugas ke dalam kelompok-kelompok fase independen yang siap dieksekusi secara paralel.
 *   **[`pero-granular-refinement`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-granular-refinement/SKILL.md)**: Menyusun kartu tugas dengan batasan file path presisi sehingga langsung siap menjadi prompt sub-agen terisolasi.
 *   **[`systematic-debugging`](file:///Users/okyfaishal/project/pero-agent-skills/skills/systematic-debugging/SKILL.md)**: Menerjunkan sub-agen terpisah untuk mengisolasi dan memperbaiki kegagalan tes di berbagai subsistem secara serentak (*Mass Debugging*).

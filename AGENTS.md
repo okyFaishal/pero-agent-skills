@@ -56,3 +56,4 @@
 24. `anti-slop/` : Eliminasi boilerplate berlebih, komentar sampah, basa-basi AI, dan over-engineering (`anti-slop`).
 25. `llm-council/` : Musyawarah 5 sudut pandang AI, peer-review anonim & sintesis dewan untuk keputusan berisiko tinggi (`llm-council`).
 26. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
+27. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate (`subagent-driven-development`).

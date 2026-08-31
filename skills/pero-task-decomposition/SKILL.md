@@ -12,6 +12,7 @@ Skill ini bertindak sebagai **"Buku Agenda Kerja & Daftar Ceklis Mandor Bangunan
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen hulu (`docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, dan `docs/Governance.md`) sebelum memecah tugas, untuk memastikan tidak ada fitur MVP, entitas data, kontrak API, aturan konkurensi, atau pagar keamanan yang terlewat tanpa alokasi tugas.
+- **Mesin Eksekusi Backlog Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk mengeksekusi seluruh urutan kartu tugas secara berkesinambungan menggunakan sub-agen segar per tugas tanpa interupsi.
 - **Orkestrasi Eksekusi Backlog Paralel**: **`SUPPORTING SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mengelompokkan tugas-tugas independen lintas domain dalam fase yang sama agar dapat dieksekusi secara serentak oleh sub-agen tanpa konflik berkas.
 - **Pencatatan Keputusan Dekomposisi Tugas**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan pemisahan fase dan strategi backlog ke `docs/decisions/TDR-[YYYYMMDDHHmm].md`.
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk memastikan setiap butir tugas teknis mewajibkan penulisan failing test terlebih dahulu sebelum kode implementasi.

@@ -14,6 +14,12 @@ Skill ini adalah **"Penegak Hukum Koding Disiplin & Gerbang Uji Sebelum Implemen
 > - **Koding Tanpa TDD (Asal Bangun)**: Pekerja langsung memasang aspal dan rel kereta di atas jurang, lalu menyuruh kereta berpenumpang melintas untuk melihat apakah jembatannya roboh atau tidak. Jika ada yang retak, mereka menambalnya sambil kereta melaju kencang.
 > - **Dengan TDD (Disiplin Teruji)**: Insinyur memasang sensor beban dan tali penahan uji coba terlebih dahulu (*Failing Test*). Ketika sensor berbunyi "Belum Ada Penyangga" (*RED*), mereka memasang tiang baja minimal yang kokoh (*GREEN*). Setelah sensor menunjukkan status aman 100%, mereka merapikan cat dan mengencangkan baut (*REFACTOR*).
 
+## Sub-Skill Integration (Perkakas Pendukung)
+Dalam menjalankan siklus pengujian TDD, agent WAJIB mengorkestrasi sub-skill berikut:
+- **Mesin Eksekusi Sub-Agen Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk menjalankan siklus Red-Green-Refactor di dalam memori terisolasi per kartu tugas.
+- **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` pada tahap Refactor untuk membuang duplikasi kode, komentar sepele, dan kode tiruan palsu.
+- **Verifikasi Bukti Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk membuktikan kelulusan tes secara faktual di terminal.
+
 ---
 
 ## Landasan Teori & Referensi Industri Nyata
