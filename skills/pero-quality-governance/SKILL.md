@@ -12,11 +12,32 @@ Skill ini bertindak sebagai **"Papan Tata Tertib Satpam & Polisi Mutu di Pabrik 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md`, `docs/SystemSpec.md`, dan `docs/Architecture.md` untuk memastikan seluruh aturan tata kelola, kebijakan keamanan, dan gerbang mutu selaras dengan kebutuhan produk dan rancangan teknis yang telah disepakati.
+- **Dekomposisi Riset Tata Kelola Paralel**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen spesialis tata kelola secara paralel (*Sub-agen 1: Security, Privacy & Secret Protection via env-guard, Sub-agen 2: Concurrency, Thread-Safety & Performance Standards, Sub-agen 3: Testing Quality Gates & Review Standards*) guna memperluas cakupan regulasi dan mencegah celah kepatuhan.
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk menegakkan hukum besi TDD (*Red-Green-Refactor*): tidak ada baris kode implementasi sebelum failing test ditulis.
 - **Validasi Bukti Terminal Sebelum Selesai**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk mewajibkan bukti eksekusi terminal nyata (exit code 0 dan 0 failure threshold) sebelum pekerjaan diklaim selesai.
 - **Gerbang Pemeriksaan Kode 2 Lapis**: **`REQUIRED SUB-SKILL`**: Gunakan `code-reviewer` untuk menetapkan inspeksi gerbang ganda (*Stage 1: Spec Compliance* dan *Stage 2: Code Quality, Concurrency & Security*).
 - **Proteksi Variabel Rahasia & Perintah Destruktif**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk isolasi kunci rahasia (*zero hardcoded credentials*) dan penyaringan perintah terminal berbahaya.
 - **Pencatatan Keputusan Tata Kelola**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan tata kelola ke `docs/decisions/GDR-[YYYYMMDDHHmm].md`.
+
+## Protokol Eksekusi Riset Tata Kelola Multi-Agen (*Mandatory Governance Protocol*)
+Sebelum menyusun dokumen `docs/Governance.md`, agen **WAJIB mendelegasikan 3 sub-agen spesialis paralel** untuk memperluas cakupan konteks:
+
+```
+[Pendelegasian 3 Sub-Agen Tata Kelola Paralel (dispatching-parallel-agents)]
+   │
+   ├──> Sub-Agen 1: Security, Privacy & Secret Protection (env-guard & OWASP)
+   ├──> Sub-Agen 2: Concurrency, Thread-Safety & Mutex/Lock Isolation Rules
+   └──> Sub-Agen 3: Testing Standards, 0-Failure Gate & 2-Stage Review Protocols
+   │
+[Sintesis Konsensus Standar & Penyusunan docs/Governance.md]
+```
+
+1. **Sub-Agen 1 — Security, Privacy & Secret Guard Specialist**:
+   * Menetapkan perimeter isolasi rahasia (*zero plaintext credentials*), aturan `.gitignore` otomatis, mitigasi OWASP Top-10, sanitasi input, dan prinsip *Least Privilege*.
+2. **Sub-Agen 2 — Concurrency & State Isolation Specialist**:
+   * Menetapkan aturan thread-safety universal (Actor Model, Mutex/Locks, Immutable state, Channels), penanganan deadlock/race condition, dan operasi non-blocking I/O.
+3. **Sub-Agen 3 — Quality Gates & Review Specialist**:
+   * Menetapkan hukum besi TDD (*Red -> Green -> Refactor*), ambang batas kegagalan nol (*0 failure threshold* terminal exit code 0), checklist review 2 lapis (`code-reviewer`), dan standar semantic git flow.
 
 ## When to Use
 - Menetapkan standar kualitas kode (*Coding Standards & Linting*) sebelum penulisan kode atau dekomposisi tugas dimulai.
