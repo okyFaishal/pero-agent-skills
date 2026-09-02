@@ -94,28 +94,34 @@ flowchart TB
     FS -.->|"Intent Dispatch"| S1
     FS -.->|"Scan Manifest & JIT MCP"| S4
     FS -.->|"Skill Match"| TDD
-    
+
     GRL --- S1
     GRL --- S4
-    COU --- S1
-    COU --- S2
-    COU --- S4
-    
+    COU ---|"Strategic Deliberation"| S1
+    COU ---|"MVP Scope Review"| S2
+    COU ---|"Architecture Review"| S4
+
     TS -.->|"UI Brief & Design System"| S4
     TS -.->|"Alokasi Dial & Scope"| S6
     TS -.->|"3 Dials & Token Hex"| S7
     TS -.->|"UI Pre-Flight Audit"| AS
-    
+
+    WS -.->|"Problem Research & Citations"| S1
     WS -.->|"External Docs & Benchmark"| S4
     WS -.->|"Error Research"| DBG
-    C7 -.->|"Live API Specs"| S4
-    C7 -.->|"SDK Signatures"| S7
-    
-    DPA -.->|"Parallel Prototyping"| S4
-    DPA -.->|"Domain Batching"| S6
+
+    C7 -.->|"Live API Specs & MCP Specs"| S4
+    C7 -.->|"SDK Signatures & Type Contracts"| S7
+
+    DPA -.->|"Parallel Problem Framing"| S1
+    DPA -.->|"Parallel Persona & Market Research"| S2
+    DPA -.->|"Parallel Story & Spec Drafting"| S3
+    DPA -.->|"Parallel Prototyping & Spikes"| S4
+    DPA -.->|"Parallel Governance Benchmarks"| S5
+    DPA -.->|"Domain Task Batching"| S6
     DPA -.->|"Parallel Card Prep"| S7
     DPA -.->|"Mass Debugging"| DBG
-    
+
     SDD ==>|"Autonomous Task Flow"| S6
     SDD ==>|"Iterative Refinement"| S7
     SDD ==>|"Continuous Execution"| ENGINE
@@ -129,11 +135,17 @@ flowchart TB
     S6 --> S7
     S7 --> S8
 
+    %% Context Validation Audit Connections
+    S8 -.->|"Audit Problem Alignment"| S1
+    S8 -.->|"Audit PRD Scope Match"| S2
+    S8 -.->|"Audit Story & Entity Model"| S3
+    S8 -.->|"Cross-Document Integrity Audit"| S4
+
     %% SDLC to Contracts & Governance
     S3 -.-> API
     API -.-> SCH
     S4 -.-> ADR
-    
+
     %% SDLC to Engineering Execution
     S8 ==> GIT
 
@@ -166,63 +178,76 @@ flowchart TD
 
     %% Cabang 0: Penemuan Skill & Stack Detection via find-skill
     Q_DISCOVER -->|"Belum / Butuh Setup Stack & MCP"| SK_FS["find-skill<br/>(Pindai Manifest & Auto-Provisioning MCP)"]
-    SK_FS -->|"Rekomendasi Skill & Setup Tools"| Q1{"Kategori Tugas"}
-    Q_DISCOVER -->|"Sudah Tahu Kategori Tugas"| Q1
+    SK_FS -->|"Rekomendasi Skill & Setup Tools"| Q_CAT{"Pilih Kategori Tugas"}
+    Q_DISCOVER -->|"Sudah Tahu Kategori Tugas"| Q_CAT
 
-    %% Cabang 1: Ide Baru / Problem Framing
-    Q1 -->|"Mulai ide baru / Eksplorasi masalah"| A1["Pahami akar masalah & batasan non-goals"]
-    A1 --> SK_PF["pero-problem-framing"]
-    SK_PF -->|"Ide masih ambigu?"| SK_GRL["grilling (Wawancara mendalam)"]
-    SK_PF -->|"Pivot berisiko / Dilema arah?"| SK_COU1["llm-council (Dewan 5 Penasihat)"]
+    %% Cabang 1: Tahap S1 - Problem Framing
+    Q_CAT -->|"1. Mulai ide baru / Eksplorasi masalah"| SK_PF["pero-problem-framing<br/>(Akar Masalah & Non-Goals)"]
+    SK_PF -->|"Ide masih ambigu & butuh stress-test?"| SK_GRL1["grilling<br/>(Wawancara Mendalam & Uji Asumsi)"]
+    SK_PF -->|"Riset masalah & pasar masif paralel?"| SK_DPA_S1["dispatching-parallel-agents<br/>(Sub-Agen Riset Masalah Paralel)"]
+    SK_PF -->|"Validasi data pasar & fakta eksternal?"| SK_WS_S1["web-search<br/>(Riset Web Terarah & Sitasi)"]
+    SK_PF -->|"Pivot berisiko / Dilema arah strategis?"| SK_COU1["llm-council<br/>(Musyawarah 5 Penasihat AI)"]
 
-    %% Cabang 2: Menyusun Spesifikasi & Cerita
-    Q1 -->|"Menyusun spek MVP & Prioritas"| SK_PRD["pero-prd-writing"]
-    SK_PRD -->|"Trade-off prioritas P0 vs P1?"| SK_COU2["llm-council (Dewan 5 Penasihat)"]
-    SK_PRD --> SK_US["pero-user-stories (Gherkin & Entity)"]
+    %% Cabang 2: Tahap S2 - PRD Writing
+    Q_CAT -->|"2. Susun spek MVP & Prioritas Fitur"| SK_PRD["pero-prd-writing<br/>(Dokumen PRD & Matriks P0/P1/P2)"]
+    SK_PRD -->|"Eksplorasi persona & analisis kompetitor paralel?"| SK_DPA_S2["dispatching-parallel-agents<br/>(Sub-Agen Analisis Persona)"]
+    SK_PRD -->|"Trade-off prioritas P0 vs P1 berisiko?"| SK_COU2["llm-council<br/>(Musyawarah Dewan Penasihat)"]
+    SK_PRD --> SK_US["pero-user-stories<br/>(Gherkin & Model Entitas)"]
 
-    %% Cabang 3: Desain UI / Frontend Estetis via taste-skill
-    Q1 -->|"Desain UI / Landing Page / Portofolio"| SK_TS["taste-skill<br/>(Brief Inference & 3 Dials Anti-Slop UI)"]
-    SK_TS -->|"Tetapkan Design System"| SK_ARCH["pero-system-architecture"]
-    SK_TS -->|"Spesifikasi Visual & Motion Dial"| SK_GRAN["pero-granular-refinement"]
+    %% Cabang 3: Tahap S3 - User Stories & Contracts
+    Q_CAT -->|"3. Rancang user stories & skenario uji"| SK_US
+    SK_US -->|"Drafting story lintas modul paralel?"| SK_DPA_S3["dispatching-parallel-agents<br/>(Sub-Agen Story Lintas Domain)"]
+    SK_US --> SK_API["api-contract-design & schema-validator<br/>(Kontrak Endpoint & Schema DTO)"]
 
-    %% Cabang 4: Arsitektur & Kontrak
-    Q1 -->|"Rancang arsitektur & pilih library"| SK_ARCH
-    SK_ARCH --> SK_C7["context-7 (Dokumentasi resmi API)"]
-    SK_ARCH -->|"Deklarasi Toolchain & Server MCP"| SK_MCP["Server MCP & Toolchain Domain"]
-    SK_ARCH -->|"Trade-off arsitektur berat?"| SK_COU3["llm-council (Musyawarah Dewan)"]
-    SK_ARCH -->|"Riset pustaka / prototipe paralel?"| SK_DPA0["dispatching-parallel-agents"]
-    SK_ARCH --> SK_API["api-contract-design & schema-validator"]
-    SK_ARCH --> SK_ADR["decision-recorder (Catat ADR)"]
+    %% Cabang 4: Desain Frontend UI via taste-skill
+    Q_CAT -->|"4. Desain UI / Landing Page / Portofolio"| SK_TS["taste-skill<br/>(Brief Inference & 3 Dials Anti-Slop UI)"]
+    SK_TS -->|"Tetapkan Design System & Token Hex"| SK_ARCH["pero-system-architecture<br/>(Tech Stack & Server MCP)"]
+    SK_TS -->|"Spesifikasi Motion & Tipografi Detail"| SK_GRAN["pero-granular-refinement<br/>(Kartu Tugas Siap Koding)"]
 
-    %% Cabang 5: Feedback Loop Fitur Baru di Arsitektur
-    Q1 -->|"Mau tambah fitur saat di Arsitektur?"| Q_FEAT{"Skala Perubahan Fitur?"}
-    Q_FEAT -->|"Fitur Besar / Ubah Masalah"| SK_PF
-    Q_FEAT -->|"Fitur Tambahan / MVP Baru"| SK_PRD
+    %% Cabang 5: Tahap S4 - Arsitektur & Teknologi
+    Q_CAT -->|"5. Rancang arsitektur & teknologi sistem"| SK_ARCH
+    SK_ARCH -->|"Eksplorasi prototipe / spike paralel?"| SK_DPA_S4["dispatching-parallel-agents<br/>(Sub-Agen Prototipe & Spike)"]
+    SK_ARCH -->|"Butuh dokumentasi resmi library via MCP?"| SK_C7["context-7<br/>(Dokumentasi Resmi API / MCP)"]
+    SK_ARCH -->|"Riset arsitektur eksternal & benchmark?"| SK_WS_S4["web-search<br/>(Riset Web Terarah)"]
+    SK_ARCH -->|"Trade-off arsitektur berat / Dilema stack?"| SK_COU3["llm-council<br/>(Musyawarah Arsitektur Dewan)"]
+    SK_ARCH -->|"Catat riwayat keputusan arsitektur?"| SK_ADR["decision-recorder<br/>(Dokumentasi ADR / PDR)"]
 
-    %% Cabang 6: Pemecahan Tugas & Refinement
-    Q1 -->|"Pecah arsitektur jadi backlog"| SK_DECOMP["pero-task-decomposition"]
-    SK_DECOMP -->|"Tugas independen lintas domain?"| SK_DPA1["dispatching-parallel-agents (Eksekusi Paralel)"]
+    %% Cabang 6: Tahap S5 - Tata Kelola Kualitas
+    Q_CAT -->|"6. Tetapkan standar kualitas & konkurensi"| SK_GOV["pero-quality-governance<br/>(Thread-Safety & Review Gates)"]
+    SK_GOV -->|"Benchmarking standar keamanan paralel?"| SK_DPA_S5["dispatching-parallel-agents<br/>(Sub-Agen Audit Keamanan Paralel)"]
+
+    %% Cabang 7: Feedback Loop Fitur Baru di Arsitektur
+    Q_CAT -->|"7. Ingin tambah fitur saat di Arsitektur?"| Q_FEAT{"Skala Perubahan Fitur?"}
+    Q_FEAT -->|"Perubahan Masalah Pokok (Pivot)"| SK_PF
+    Q_FEAT -->|"Fitur Baru / Perubahan Scope MVP"| SK_PRD
+
+    %% Cabang 8: Tahap S6 & S7 - Dekomposisi & Refinement
+    Q_CAT -->|"8. Pecah arsitektur jadi backlog berfase"| SK_DECOMP["pero-task-decomposition<br/>(Backlog 6 Domain)"]
+    SK_DECOMP -->|"Pecah backlog independen ke sub-agen?"| SK_DPA_S6["dispatching-parallel-agents<br/>(Domain Task Batching)"]
     SK_DECOMP --> SK_GRAN
-    SK_GRAN --> SK_VALID["pero-context-validation (Audit dokumen)"]
+    SK_GRAN -->|"Penajaman kartu tugas massal paralel?"| SK_DPA_S7["dispatching-parallel-agents<br/>(Sub-Agen Penajaman Kartu)"]
+    SK_GRAN -->|"Ambil signature SDK resmi via Context7?"| SK_C7_S7["context-7<br/>(SDK Method Signatures)"]
+    SK_GRAN --> SK_VALID["pero-context-validation<br/>(Audit Konsistensi Lintas Dokumen)"]
 
-    %% Cabang 7: Eksekusi Koding & TDD
-    Q1 -->|"Eksekusi seluruh backlog otomatis"| SK_SDD["subagent-driven-development (Loop Otonom Sub-Agen)"]
-    SK_SDD --> SK_GIT1["git-ops (Buat branch fitur)"]
-    Q1 -->|"Mulai ngoding tugas manual"| SK_GIT1
-    SK_GIT1 --> SK_TDD["test-driven-development (Red -> Green -> Refactor)"]
-    SK_TDD --> SK_AS["anti-slop (Filter YAGNI & Komentar Sampah)"]
+    %% Cabang 9: Tahap Eksekusi Koding & TDD
+    Q_CAT -->|"9. Eksekusi backlog otonom berkelanjutan"| SK_SDD["subagent-driven-development<br/>(Loop Otonom Sub-Agen)"]
+    SK_SDD --> SK_GIT1["git-ops<br/>(Buat Feature Branch)"]
+    Q_CAT -->|"10. Mulai koding tugas spesifik manual"| SK_GIT1
+    SK_GIT1 --> SK_TDD["test-driven-development<br/>(Red -> Green -> Refactor)"]
+    SK_TDD --> SK_AS["anti-slop<br/>(Filter YAGNI & Komentar Sampah)"]
 
-    %% Cabang 8: Troubleshooting / Bug
-    Q1 -->|"Ketemu bug / Tes error"| SK_DBG["systematic-debugging (Reproduksi -> Isolasi -> Fix)"]
-    SK_DBG -->|"Banyak berkas tes gagal mandiri?"| SK_DPA2["dispatching-parallel-agents (Mass Debugging)"]
+    %% Cabang 10: Troubleshooting & Mass Debugging
+    Q_CAT -->|"11. Menemukan bug / Test error"| SK_DBG["systematic-debugging<br/>(4-Fase Isolasi Akar Masalah)"]
+    SK_DBG -->|"Banyak berkas tes gagal mandiri?"| SK_DPA_DBG["dispatching-parallel-agents<br/>(Mass Debugging Sub-Agen)"]
+    SK_DBG -->|"Riset pola error eksternal?"| SK_WS_DBG["web-search<br/>(Investigasi Error Online)"]
     SK_DBG --> SK_TDD
 
-    %% Cabang 9: Selesai, Review & Penjelasan Awam
-    Q1 -->|"Mau klaim selesai / Buka PR"| SK_VBC["verification-before-completion (Bukti terminal)"]
-    SK_VBC --> SK_REV["code-reviewer (Audit 2-Lapis)"]
-    SK_REV --> SK_SYNC["living-doc-sync (Update diagram docs)"]
-    SK_SYNC --> SK_GIT2["git-ops (Commit Caveman & PR)"]
-    SK_GIT2 --> SK_ELI5["eli5 (Penjelasan Ramah Awam ke Pengguna)"]
+    %% Cabang 11: Selesai, Review, Sinkronisasi & ELI5
+    Q_CAT -->|"12. Mau klaim selesai / Buka PR"| SK_VBC["verification-before-completion<br/>(Bukti Terminal Exit 0)"]
+    SK_VBC --> SK_REV["code-reviewer<br/>(Audit 2-Lapis Spek & Kualitas)"]
+    SK_REV --> SK_SYNC["living-doc-sync<br/>(Update Diagram docs)"]
+    SK_SYNC --> SK_GIT2["git-ops<br/>(Commit Caveman & PR)"]
+    SK_GIT2 --> SK_ELI5["eli5<br/>(Penjelasan Ramah Awam ke Pengguna)"]
 
     %% Node Styling
     style START fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
@@ -230,7 +255,9 @@ flowchart TD
     style SK_TS fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
     style SK_PF fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
     style SK_PRD fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_US fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
     style SK_ARCH fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_GOV fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
     style SK_DECOMP fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
     style SK_GRAN fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
     style SK_VALID fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
@@ -255,21 +282,21 @@ flowchart LR
     classDef highlight fill:#e0f2fe,stroke:#0369a1,stroke-width:2px,color:#0c4a6e;
 
     subgraph PHASE1 ["Tahap 1 - 4: Perumusan Konsep, Spesifikasi & Arsitektur"]
-        P1["1. pero-problem-framing<br/><b>(Akar Masalah & Non-Goals)</b>"]:::stage
-        P2["2. pero-prd-writing<br/><b>(Fitur MVP & Matriks Prioritas)</b>"]:::stage
-        P3["3. pero-user-stories<br/><b>(Gherkin & Model Entitas Domain)</b>"]:::stage
-        P4["4. pero-system-architecture<br/><b>(Tech Stack & Deklarasi Server MCP)</b>"]:::highlight
-        
+        P1["1. pero-problem-framing<br/><b>(Akar Masalah & Non-Goals)</b><br/><i>Protokol: Multi-Agent Framing & Deliberasi Council</i>"]:::stage
+        P2["2. pero-prd-writing<br/><b>(Fitur MVP & Matriks Prioritas)</b><br/><i>Protokol: Multi-Agent Persona & Riset Pasar</i>"]:::stage
+        P3["3. pero-user-stories<br/><b>(Gherkin & Model Entitas Domain)</b><br/><i>Protokol: Multi-Agent Drafting Lintas Modul</i>"]:::stage
+        P4["4. pero-system-architecture<br/><b>(Tech Stack & Server MCP)</b><br/><i>Protokol: Multi-Agent Prototyping & Architecture Spike</i>"]:::highlight
+
         P1 --> P2
         P2 --> P3
         P3 --> P4
     end
 
     subgraph PHASE2 ["Tahap 5 - 8: Tata Kelola, Dekomposisi & Validasi"]
-        P5["5. pero-quality-governance<br/><b>(Batas Kualitas & Concurrency Rules)</b>"]:::stage
-        P6["6. pero-task-decomposition<br/><b>(Backlog Berfase 6-Domain)</b>"]:::stage
-        P7["7. pero-granular-refinement<br/><b>(Failing Test & Dial Estetika UI)</b>"]:::highlight
-        P8["8. pero-context-validation<br/><b>(Audit Lintas Dokumen & Diagram)</b>"]:::stage
+        P5["5. pero-quality-governance<br/><b>(Batas Kualitas & Concurrency)</b><br/><i>Protokol: Multi-Agent Security & Standard Audit</i>"]:::stage
+        P6["6. pero-task-decomposition<br/><b>(Backlog Berfase 6-Domain)</b><br/><i>Protokol: Multi-Agent Domain Batching (DPA/SDD)</i>"]:::stage
+        P7["7. pero-granular-refinement<br/><b>(Failing Test & Dial UI)</b><br/><i>Protokol: Multi-Agent Card Refinement & Taste Engine</i>"]:::highlight
+        P8["8. pero-context-validation<br/><b>(Audit Lintas Dokumen & Diagram)</b><br/><i>Protokol: Multi-Agent Cross-Document Verification</i>"]:::stage
 
         P5 --> P6
         P6 --> P7
@@ -280,10 +307,12 @@ flowchart LR
     P4 --> P5
 
     %% Feedback loops
-    P4 -.->|"Ingin Tambah Fitur Baru"| P2
+    P4 -.->|"Ingin Tambah Fitur Baru di Arsitektur"| P2
     P4 -.->|"Akar Masalah Berubah (Pivot)"| P1
     P8 -.->|"Ditemukan Inkonsistensi Arsitektur"| P4
-    P8 -.->|"Inkonsistensi Spek / Scope"| P2
+    P8 -.->|"Inkonsistensi Spek / Scope MVP"| P2
+    P8 -.->|"Inkonsistensi Masalah Pokok"| P1
+    P8 -.->|"Inkonsistensi Skenario User Story"| P3
 ```
 
 > **Catatan Mengenai Umpan Balik (*Feedback Loop*)**:
@@ -298,41 +327,55 @@ Setelah perencanaan selesai, setiap tugas dieksekusi melalui siklus koding teruj
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Dev as Agent / Developer
-    participant FS as find-skill (MCP/Stack)
-    participant Git as git-ops
-    participant TDD as test-driven-dev
-    participant TS as taste-skill (UI Guard)
-    participant AS as anti-slop
-    participant DBG as systematic-debugging
-    participant VBC as verification-before-completion
-    participant Rev as code-reviewer
+    actor Dev as "Agent / Developer"
+    participant FS as "find-skill (MCP/Stack)"
+    participant DPA as "dispatching-parallel-agents"
+    participant Git as "git-ops"
+    participant TDD as "test-driven-dev"
+    participant TS as "taste-skill (UI Guard)"
+    participant AS as "anti-slop"
+    participant DBG as "systematic-debugging"
+    participant VBC as "verification-before-completion"
+    participant Rev as "code-reviewer"
+    participant Doc as "living-doc-sync"
+    participant ELI5 as "eli5"
 
-    Dev->>FS: Verifikasi Manifest Stack & Server MCP
-    FS-->>Dev: Toolchain & MCP Runtime Aktif
+    Dev->>FS: Verifikasi Manifest Stack & Auto-Provisioning Server MCP
+    FS-->>Dev: Toolchain & MCP Runtime Siap Digunakan
+
+    opt Jika Backlog Besar / Tugas Mandiri
+        Dev->>DPA: Delegasikan Tugas ke Sub-Agen Paralel
+        DPA-->>Dev: Sub-Agen Mandiri Terisolasi Siap Bekerja
+    end
+
     Dev->>Git: Buat feature branch baru
-    Dev->>TDD: Tulis Failing Test (RED)
-    Note over TDD: Jalankan test -> Wajib Gagal
-    Dev->>TDD: Tulis Kode Implementasi Minimal (GREEN)
-    Note over TDD: Jalankan test -> Wajib Lulus
-    
+    Dev->>TDD: Tulis Failing Test Pertama (RED Phase)
+    Note over TDD: Jalankan test di terminal -> Wajib Gagal
+    Dev->>TDD: Tulis Kode Implementasi Minimal (GREEN Phase)
+    Note over TDD: Jalankan test di terminal -> Wajib Lulus
+
     opt Jika Tugas Antarmuka / Frontend UI
-        Dev->>TS: Audit Estetika (3 Dial, Kontras WCAG AA & Hero Bounds)
-        TS-->>Dev: Verifikasi UI Anti-Slop Lolos
+        Dev->>TS: Audit Estetika (3 Dials, Kontras WCAG AA & Hero Bounds)
+        TS-->>Dev: Verifikasi UI Anti-Slop Lolos & Token Sesuai
     end
 
-    Dev->>AS: Audit Bebas Slop (YAGNI & Hapus Komentar Sampah)
-    Dev->>TDD: Refactor Kode (REFACTOR)
-    
+    Dev->>AS: Audit Bebas Slop (Filter YAGNI & Hapus Komentar Sampah)
+    AS-->>Dev: Kode Bersih, Ringkas & High-Signal
+    Dev->>TDD: Refactor Kode Tanpa Mengubah Perilaku (REFACTOR Phase)
+
     opt Jika Muncul Bug / Regresi Tak Terduga
-        Dev->>DBG: Investigasi Akar Masalah (4-Fase Ilmiah)
-        DBG-->>TDD: Tulis regression test baru
+        Dev->>DBG: Investigasi Akar Masalah (4-Fase Isolasi Ilmiah)
+        DBG-->>TDD: Tulis regression test baru (Kembali ke RED)
     end
 
-    Dev->>VBC: Jalankan Full Suite Test di Terminal
-    Note over VBC: Verifikasi bukti nyata (Exit code 0)
+    Dev->>VBC: Jalankan Full Suite Test di Terminal (Bukti Nyata)
+    Note over VBC: Verifikasi bukti eksekusi nyata (Exit code 0)
     Dev->>Rev: Audit 2-Lapis (Spec Match & Clean Code)
     Rev-->>Git: Kode disetujui -> Commit Caveman & Buat PR
+    Dev->>Doc: Sinkronisasi Diagram Arsitektur & Dokumentasi docs/
+    Doc-->>Dev: Dokumentasi docs/ Terbarui & Konsisten
+    Dev->>ELI5: Susun Ringkasan Hasil Kerja Bahasa Ramah Awam
+    ELI5-->>Dev: Laporan Siap Disampaikan ke Pengguna Tanpa Jargon
 ```
 
 ---
