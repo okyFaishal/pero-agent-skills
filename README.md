@@ -1,7 +1,7 @@
 # Pero Agent Skills (`pero-agent-skills`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills: 27 Universal](https://img.shields.io/badge/Skills-27%20Universal-brightgreen.svg)](#katalog-lengkap-27-skill-universal)
+[![Skills: 28 Universal](https://img.shields.io/badge/Skills-28%20Universal-brightgreen.svg)](#katalog-lengkap-28-skill-universal)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#)
 
 > **Ekosistem Standar SDLC & Rekayasa Agen AI Universal (Polyglot) yang Disiplin, Anti-Sycophancy, dan Berbahasa Ramah (ELI5).**
@@ -23,7 +23,7 @@
 
 ## Instalasi Cepat (1-Line Command)
 
-Pasang seluruh 27 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
+Pasang seluruh 28 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 
 ## Peta Navigasi Ekosistem Pero
 
-Diagram di bawah menggambarkan bagaimana ke-27 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
+Diagram di bawah menggambarkan bagaimana ke-28 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
 
 ```mermaid
 flowchart TB
@@ -50,29 +50,30 @@ flowchart TB
     classDef tool fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c;
     classDef guard fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#b71c1c;
 
-    subgraph TOOLING [1. Universal Tooling and Research]
-        FS["find-skill (Pencari Skill)"]:::tool
-        C7["context-7 (Docs API Resmi)"]:::tool
-        WS["web-search (Riset Eksternal)"]:::tool
-        GRL["grilling (Stress-Test Ide)"]:::tool
-        COU["llm-council (Dewan 5 Penasihat)"]:::tool
-        DPA["dispatching-parallel-agents (Delegasi Paralel)"]:::tool
-        SDD["subagent-driven-development (Eksekutor Otonom)"]:::tool
-        ELI5["eli5 (Simplifikasi Awam)"]:::tool
+    subgraph TOOLING ["1. Universal Tooling, Discovery & Multi-Agent Dispatch"]
+        FS["find-skill<br/>(Stack Fingerprinting & JIT MCP)"]:::tool
+        C7["context-7<br/>(Official API Docs via MCP)"]:::tool
+        WS["web-search<br/>(Targeted Web Research)"]:::tool
+        GRL["grilling<br/>(Idea & Spec Stress-Test)"]:::tool
+        COU["llm-council<br/>(5-Advisor AI Council)"]:::tool
+        DPA["dispatching-parallel-agents<br/>(Parallel Subagents)"]:::tool
+        SDD["subagent-driven-development<br/>(Autonomous Backlog Loop)"]:::tool
+        TS["taste-skill<br/>(Anti-Slop UI & 3-Dial Engine)"]:::tool
+        ELI5["eli5<br/>(Plain English Explanation)"]:::tool
     end
 
-    subgraph SDLC [2. Pero SDLC Planning Pipeline]
+    subgraph SDLC ["2. Pero SDLC Planning Pipeline (Universal)"]
         S1["1. pero-problem-framing"]:::sdlc
         S2["2. pero-prd-writing"]:::sdlc
         S3["3. pero-user-stories"]:::sdlc
-        S4["4. pero-system-architecture"]:::sdlc
+        S4["4. pero-system-architecture<br/>(Toolchain & MCP Server)"]:::sdlc
         S5["5. pero-quality-governance"]:::sdlc
         S6["6. pero-task-decomposition"]:::sdlc
         S7["7. pero-granular-refinement"]:::sdlc
         S8["8. pero-context-validation"]:::sdlc
     end
 
-    subgraph CONTRACTS [3. Governance, Contracts and Data]
+    subgraph CONTRACTS ["3. Governance, Contracts & Data Architecture"]
         API["api-contract-design"]:::govern
         SCH["schema-validator"]:::govern
         ADR["decision-recorder"]:::govern
@@ -80,7 +81,7 @@ flowchart TB
         ENV["env-guard"]:::guard
     end
 
-    subgraph ENGINE [4. Core Engineering Inner Loop]
+    subgraph ENGINE ["4. Core Engineering Inner Loop"]
         GIT["git-ops"]:::engine
         TDD["test-driven-development"]:::engine
         DBG["systematic-debugging"]:::engine
@@ -89,23 +90,37 @@ flowchart TB
         REV["code-reviewer"]:::engine
     end
 
-    %% Connections
-    FS -.-> S1
-    FS -.-> TDD
+    %% Discovery & Tooling Connections
+    FS -.->|"Intent Dispatch"| S1
+    FS -.->|"Scan Manifest & JIT MCP"| S4
+    FS -.->|"Skill Match"| TDD
     
     GRL --- S1
     GRL --- S4
     COU --- S1
     COU --- S2
     COU --- S4
-    DPA -.-> S6
-    DPA -.-> S7
-    DPA -.-> DBG
-    DPA -.-> S4
-    SDD ==> S6
-    SDD ==> S7
-    SDD ==> ENGINE
     
+    TS -.->|"UI Brief & Design System"| S4
+    TS -.->|"Alokasi Dial & Scope"| S6
+    TS -.->|"3 Dials & Token Hex"| S7
+    TS -.->|"UI Pre-Flight Audit"| AS
+    
+    WS -.->|"External Docs & Benchmark"| S4
+    WS -.->|"Error Research"| DBG
+    C7 -.->|"Live API Specs"| S4
+    C7 -.->|"SDK Signatures"| S7
+    
+    DPA -.->|"Parallel Prototyping"| S4
+    DPA -.->|"Domain Batching"| S6
+    DPA -.->|"Parallel Card Prep"| S7
+    DPA -.->|"Mass Debugging"| DBG
+    
+    SDD ==>|"Autonomous Task Flow"| S6
+    SDD ==>|"Iterative Refinement"| S7
+    SDD ==>|"Continuous Execution"| ENGINE
+
+    %% SDLC Pipeline Flow
     S1 --> S2
     S2 --> S3
     S3 --> S4
@@ -113,14 +128,16 @@ flowchart TB
     S5 --> S6
     S6 --> S7
     S7 --> S8
-    
+
+    %% SDLC to Contracts & Governance
     S3 -.-> API
     API -.-> SCH
-    S4 -.-> C7
     S4 -.-> ADR
     
+    %% SDLC to Engineering Execution
     S8 ==> GIT
-    
+
+    %% Engineering Inner Loop
     GIT --> TDD
     TDD --> AS
     AS --> DBG
@@ -130,8 +147,11 @@ flowchart TB
     REV --> DOC
     DOC --> GIT
 
-    ENV -.-> TDD
-    ENV -.-> S1
+    %% Security & Communication Overlays
+    ENV -.->|"Secret & Command Guard"| ENGINE
+    ENV -.->|"Perimeter Safety"| S1
+    ELI5 -.->|"ELI5 Output Translation"| SDLC
+    ELI5 -.->|"User-Friendly Explanation"| ENGINE
 ```
 
 ---
@@ -142,64 +162,84 @@ Gunakan diagram alur keputusan (*Decision Flowchart*) berikut untuk menentukan s
 
 ```mermaid
 flowchart TD
-    START["Kondisi atau Kebutuhan Tugas"] --> Q1{Kategori Tugas}
+    START["Kondisi atau Kebutuhan Tugas"] --> Q_DISCOVER{"Apakah sudah tahu skill yang tepat?"}
 
-    %% Cabang 1: Ide Baru / Problem
-    Q1 -->|Mulai ide baru / Eksplorasi fitur| A1["Pahami akar masalah & batasan non-goals"]
+    %% Cabang 0: Penemuan Skill & Stack Detection via find-skill
+    Q_DISCOVER -->|"Belum / Butuh Setup Stack & MCP"| SK_FS["find-skill<br/>(Pindai Manifest & Auto-Provisioning MCP)"]
+    SK_FS -->|"Rekomendasi Skill & Setup Tools"| Q1{"Kategori Tugas"}
+    Q_DISCOVER -->|"Sudah Tahu Kategori Tugas"| Q1
+
+    %% Cabang 1: Ide Baru / Problem Framing
+    Q1 -->|"Mulai ide baru / Eksplorasi masalah"| A1["Pahami akar masalah & batasan non-goals"]
     A1 --> SK_PF["pero-problem-framing"]
-    SK_PF -->|Ide masih ambigu?| SK_GRL["grilling (Wawancara mendalam)"]
-    SK_PF -->|Pivot berisiko / Dilema arah?| SK_COU1["llm-council (Dewan 5 Penasihat)"]
+    SK_PF -->|"Ide masih ambigu?"| SK_GRL["grilling (Wawancara mendalam)"]
+    SK_PF -->|"Pivot berisiko / Dilema arah?"| SK_COU1["llm-council (Dewan 5 Penasihat)"]
 
     %% Cabang 2: Menyusun Spesifikasi & Cerita
-    Q1 -->|Menyusun spek MVP & Prioritas| SK_PRD["pero-prd-writing"]
-    SK_PRD -->|Trade-off prioritas P0 vs P1?| SK_COU2["llm-council (Dewan 5 Penasihat)"]
+    Q1 -->|"Menyusun spek MVP & Prioritas"| SK_PRD["pero-prd-writing"]
+    SK_PRD -->|"Trade-off prioritas P0 vs P1?"| SK_COU2["llm-council (Dewan 5 Penasihat)"]
     SK_PRD --> SK_US["pero-user-stories (Gherkin & Entity)"]
 
-    %% Cabang 3: Arsitektur & Kontrak
-    Q1 -->|Rancang arsitektur & pilih library| SK_ARCH["pero-system-architecture"]
+    %% Cabang 3: Desain UI / Frontend Estetis via taste-skill
+    Q1 -->|"Desain UI / Landing Page / Portofolio"| SK_TS["taste-skill<br/>(Brief Inference & 3 Dials Anti-Slop UI)"]
+    SK_TS -->|"Tetapkan Design System"| SK_ARCH["pero-system-architecture"]
+    SK_TS -->|"Spesifikasi Visual & Motion Dial"| SK_GRAN["pero-granular-refinement"]
+
+    %% Cabang 4: Arsitektur & Kontrak
+    Q1 -->|"Rancang arsitektur & pilih library"| SK_ARCH
     SK_ARCH --> SK_C7["context-7 (Dokumentasi resmi API)"]
-    SK_ARCH -->|Trade-off arsitektur berat?| SK_COU3["llm-council (Musyawarah Dewan)"]
-    SK_ARCH -->|Riset pustaka / prototipe paralel?| SK_DPA0["dispatching-parallel-agents"]
+    SK_ARCH -->|"Deklarasi Toolchain & Server MCP"| SK_MCP["Server MCP & Toolchain Domain"]
+    SK_ARCH -->|"Trade-off arsitektur berat?"| SK_COU3["llm-council (Musyawarah Dewan)"]
+    SK_ARCH -->|"Riset pustaka / prototipe paralel?"| SK_DPA0["dispatching-parallel-agents"]
     SK_ARCH --> SK_API["api-contract-design & schema-validator"]
     SK_ARCH --> SK_ADR["decision-recorder (Catat ADR)"]
 
-    %% Cabang 4: Menambah Fitur di Arsitektur
-    Q1 -->|Mau tambah fitur saat di Arsitektur?| Q_FEAT{Skala Perubahan Fitur?}
-    Q_FEAT -->|Fitur Besar / Ubah Masalah| SK_PF
-    Q_FEAT -->|Fitur Tambahan / MVP Baru| SK_PRD
+    %% Cabang 5: Feedback Loop Fitur Baru di Arsitektur
+    Q1 -->|"Mau tambah fitur saat di Arsitektur?"| Q_FEAT{"Skala Perubahan Fitur?"}
+    Q_FEAT -->|"Fitur Besar / Ubah Masalah"| SK_PF
+    Q_FEAT -->|"Fitur Tambahan / MVP Baru"| SK_PRD
 
-    %% Cabang 5: Pemecahan Tugas & Refinement
-    Q1 -->|Pecah arsitektur jadi backlog| SK_DECOMP["pero-task-decomposition"]
-    SK_DECOMP -->|Tugas independen lintas domain?| SK_DPA1["dispatching-parallel-agents (Eksekusi Paralel)"]
-    SK_DECOMP --> SK_GRAN["pero-granular-refinement (File paths & Failing tests)"]
+    %% Cabang 6: Pemecahan Tugas & Refinement
+    Q1 -->|"Pecah arsitektur jadi backlog"| SK_DECOMP["pero-task-decomposition"]
+    SK_DECOMP -->|"Tugas independen lintas domain?"| SK_DPA1["dispatching-parallel-agents (Eksekusi Paralel)"]
+    SK_DECOMP --> SK_GRAN
     SK_GRAN --> SK_VALID["pero-context-validation (Audit dokumen)"]
 
-    %% Cabang 6: Eksekusi Koding & TDD
-    Q1 -->|Mau eksekusi seluruh backlog otomatis?| SK_SDD["subagent-driven-development (Loop Otonom Sub-Agen)"]
+    %% Cabang 7: Eksekusi Koding & TDD
+    Q1 -->|"Eksekusi seluruh backlog otomatis"| SK_SDD["subagent-driven-development (Loop Otonom Sub-Agen)"]
     SK_SDD --> SK_GIT1["git-ops (Buat branch fitur)"]
-    Q1 -->|Mulai ngoding tugas manual| SK_GIT1
+    Q1 -->|"Mulai ngoding tugas manual"| SK_GIT1
     SK_GIT1 --> SK_TDD["test-driven-development (Red -> Green -> Refactor)"]
     SK_TDD --> SK_AS["anti-slop (Filter YAGNI & Komentar Sampah)"]
 
-    %% Cabang 7: Troubleshooting / Bug
-    Q1 -->|Ketemu bug / Tes error| SK_DBG["systematic-debugging (Reproduksi -> Isolasi -> Fix)"]
-    SK_DBG -->|Banyak berkas tes gagal mandiri?| SK_DPA2["dispatching-parallel-agents (Mass Debugging)"]
+    %% Cabang 8: Troubleshooting / Bug
+    Q1 -->|"Ketemu bug / Tes error"| SK_DBG["systematic-debugging (Reproduksi -> Isolasi -> Fix)"]
+    SK_DBG -->|"Banyak berkas tes gagal mandiri?"| SK_DPA2["dispatching-parallel-agents (Mass Debugging)"]
     SK_DBG --> SK_TDD
 
-    %% Cabang 8: Selesai & Review
-    Q1 -->|Mau klaim selesai / Buka PR| SK_VBC["verification-before-completion (Bukti terminal)"]
+    %% Cabang 9: Selesai, Review & Penjelasan Awam
+    Q1 -->|"Mau klaim selesai / Buka PR"| SK_VBC["verification-before-completion (Bukti terminal)"]
     SK_VBC --> SK_REV["code-reviewer (Audit 2-Lapis)"]
     SK_REV --> SK_SYNC["living-doc-sync (Update diagram docs)"]
     SK_SYNC --> SK_GIT2["git-ops (Commit Caveman & PR)"]
+    SK_GIT2 --> SK_ELI5["eli5 (Penjelasan Ramah Awam ke Pengguna)"]
 
-    style START fill:#f9f,stroke:#333,stroke-width:2px
-    style SK_PF fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style SK_PRD fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style SK_ARCH fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style SK_TDD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style SK_AS fill:#ffebee,stroke:#d32f2f,stroke-width:2px
-    style SK_DBG fill:#ffebee,stroke:#d32f2f,stroke-width:2px
-    style SK_VBC fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    %% Node Styling
+    style START fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+    style SK_FS fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+    style SK_TS fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+    style SK_PF fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_PRD fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_ARCH fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_DECOMP fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_GRAN fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_VALID fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b
+    style SK_TDD fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20
+    style SK_AS fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#b71c1c
+    style SK_DBG fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#b71c1c
+    style SK_VBC fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20
+    style SK_REV fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20
+    style SK_ELI5 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
 ```
 
 ---
@@ -210,32 +250,40 @@ Pipeline perencanaan Pero mengalir secara bertahap dari tahap hulu ke hilir. Jik
 
 ```mermaid
 flowchart LR
-    subgraph PHASE1 [Tahap 1 - 4: Perumusan Konsep & Desain]
-        P1["1. problem-framing"] --> P2["2. prd-writing"]
-        P2 --> P3["3. user-stories"]
-        P3 --> P4["4. system-architecture"]
+    %% STYLING
+    classDef stage fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef highlight fill:#e0f2fe,stroke:#0369a1,stroke-width:2px,color:#0c4a6e;
+
+    subgraph PHASE1 ["Tahap 1 - 4: Perumusan Konsep, Spesifikasi & Arsitektur"]
+        P1["1. pero-problem-framing<br/><b>(Akar Masalah & Non-Goals)</b>"]:::stage
+        P2["2. pero-prd-writing<br/><b>(Fitur MVP & Matriks Prioritas)</b>"]:::stage
+        P3["3. pero-user-stories<br/><b>(Gherkin & Model Entitas Domain)</b>"]:::stage
+        P4["4. pero-system-architecture<br/><b>(Tech Stack & Deklarasi Server MCP)</b>"]:::highlight
+        
+        P1 --> P2
+        P2 --> P3
+        P3 --> P4
     end
 
-    subgraph PHASE2 [Tahap 5 - 8: Tata Kelola & Dekomposisi]
-        P4 --> P5["5. quality-governance"]
-        P5 --> P6["6. task-decomposition"]
-        P6 --> P7["7. granular-refinement"]
-        P7 --> P8["8. context-validation"]
+    subgraph PHASE2 ["Tahap 5 - 8: Tata Kelola, Dekomposisi & Validasi"]
+        P5["5. pero-quality-governance<br/><b>(Batas Kualitas & Concurrency Rules)</b>"]:::stage
+        P6["6. pero-task-decomposition<br/><b>(Backlog Berfase 6-Domain)</b>"]:::stage
+        P7["7. pero-granular-refinement<br/><b>(Failing Test & Dial Estetika UI)</b>"]:::highlight
+        P8["8. pero-context-validation<br/><b>(Audit Lintas Dokumen & Diagram)</b>"]:::stage
+
+        P5 --> P6
+        P6 --> P7
+        P7 --> P8
     end
+
+    %% Pipeline Inter-Phase Connection
+    P4 --> P5
 
     %% Feedback loops
-    P4 -.->|Ingin Tambah Fitur Baru| P2
-    P4 -.->|Masalah Dasar Berubah| P1
-    P8 -.->|Ditemukan Inkonsistensi| P4
-
-    style P1 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P2 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P3 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P4 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P5 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P6 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P7 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style P8 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    P4 -.->|"Ingin Tambah Fitur Baru"| P2
+    P4 -.->|"Akar Masalah Berubah (Pivot)"| P1
+    P8 -.->|"Ditemukan Inkonsistensi Arsitektur"| P4
+    P8 -.->|"Inkonsistensi Spek / Scope"| P2
 ```
 
 > **Catatan Mengenai Umpan Balik (*Feedback Loop*)**:
@@ -251,18 +299,28 @@ Setelah perencanaan selesai, setiap tugas dieksekusi melalui siklus koding teruj
 sequenceDiagram
     autonumber
     actor Dev as Agent / Developer
+    participant FS as find-skill (MCP/Stack)
     participant Git as git-ops
     participant TDD as test-driven-dev
+    participant TS as taste-skill (UI Guard)
     participant AS as anti-slop
     participant DBG as systematic-debugging
     participant VBC as verification-before-completion
     participant Rev as code-reviewer
 
+    Dev->>FS: Verifikasi Manifest Stack & Server MCP
+    FS-->>Dev: Toolchain & MCP Runtime Aktif
     Dev->>Git: Buat feature branch baru
     Dev->>TDD: Tulis Failing Test (RED)
     Note over TDD: Jalankan test -> Wajib Gagal
     Dev->>TDD: Tulis Kode Implementasi Minimal (GREEN)
     Note over TDD: Jalankan test -> Wajib Lulus
+    
+    opt Jika Tugas Antarmuka / Frontend UI
+        Dev->>TS: Audit Estetika (3 Dial, Kontras WCAG AA & Hero Bounds)
+        TS-->>Dev: Verifikasi UI Anti-Slop Lolos
+    end
+
     Dev->>AS: Audit Bebas Slop (YAGNI & Hapus Komentar Sampah)
     Dev->>TDD: Refactor Kode (REFACTOR)
     
@@ -279,7 +337,7 @@ sequenceDiagram
 
 ---
 
-## Katalog Lengkap 27 Skill Universal
+## Katalog Lengkap 28 Skill Universal
 
 | No | Skill | Kategori | Kapan Digunakan (*Trigger*) | Input ➡️ Output Utama |
 |---|---|---|---|---|
@@ -310,6 +368,7 @@ sequenceDiagram
 | 25 | `llm-council` | Discipline / Architecture | Musyawarah 5 sudut pandang AI, peer-review anonim & vonis ketua untuk keputusan berisiko tinggi | Dilema Keputusan / Trade-Off ➡️ Rekomendasi Sintesis Dewan |
 | 26 | `dispatching-parallel-agents` | Tooling / Operations | Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state | Backlog/Error Mandiri ➡️ Eksekusi Sub-Agen Serentak & Lolos Uji |
 | 27 | `subagent-driven-development` | Discipline / Operations | Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate | Task Backlog ➡️ Implementasi Teruji & PR Siap Merge |
+| 28 | `taste-skill` | Tooling / Quality | Merancang landing page, portofolio & redesign bebas AI slop | Brief Pengguna ➡️ UI Estetis, Motion Dial & Tipografi Berkarakter |
 
 ---
 
