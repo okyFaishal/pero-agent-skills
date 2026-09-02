@@ -17,6 +17,7 @@ Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-s
 - **Validasi Bukti Terminal Sebelum Selesai**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk mewajibkan bukti eksekusi terminal nyata (exit code 0 dan 0 failure threshold) sebelum pekerjaan diklaim selesai.
 - **Gerbang Pemeriksaan Kode 2 Lapis**: **`REQUIRED SUB-SKILL`**: Gunakan `code-reviewer` untuk menetapkan inspeksi gerbang ganda (*Stage 1: Spec Compliance* dan *Stage 2: Code Quality, Concurrency & Security*).
 - **Proteksi Variabel Rahasia & Perintah Destruktif**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk isolasi kunci rahasia (*zero hardcoded credentials*) dan penyaringan perintah terminal berbahaya.
+- **Audit Konsistensi Tata Kelola**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan aturan kualitas dan keamanan selaras dengan arsitektur dan spesifikasi hulu.
 - **Pencatatan Keputusan Tata Kelola**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan tata kelola ke `docs/decisions/GDR-[YYYYMMDDHHmm].md`.
 
 ## Protokol Eksekusi Riset Tata Kelola Multi-Agen (*Mandatory Governance Protocol*)
@@ -95,8 +96,8 @@ Sebelum menyusun dokumen `docs/Governance.md`, agen **WAJIB mendelegasikan 3 sub
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](file:///docs/PRD.md), [docs/SystemSpec.md](file:///docs/SystemSpec.md), & [docs/Architecture.md](file:///docs/Architecture.md)
-- **Decision Record**: [docs/decisions/GDR-[YYYYMMDDHHmm].md](file:///docs/decisions/GDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [docs/PRD.md](docs/PRD.md), [docs/SystemSpec.md](docs/SystemSpec.md), & [docs/Architecture.md](docs/Architecture.md)
+- **Decision Record**: [docs/decisions/GDR-[YYYYMMDDHHmm].md](docs/decisions/GDR-[YYYYMMDDHHmm].md)
 
 ## 1. Concurrency, State Safety & Thread Isolation Rules
 [Jelaskan aturan persimpangan jalan agar tidak ada tabrakan data dalam analogi sederhana seperti lampu lalu lintas dan loket kasir satu pintu].

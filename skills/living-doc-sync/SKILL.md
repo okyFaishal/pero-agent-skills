@@ -48,7 +48,7 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 |---|---|---|
 | **Lapis 1: High-Level Architecture** | `docs/Architecture.md` / `README.md` | Diagram relasi modul (Mermaid), daftar teknologi, batas domain context. |
 | **Lapis 2: Contract & Interface Spec** | `docs/SystemSpec.md` / `docs/api/` | Skema payload JSON, header request, status code HTTP, rute endpoint. |
-| **Lapis 3: Technical Decision (ADR)** | `docs/decisions/NNNN-*.md` | Alasan keputusan teknis non-sepele (*why*), trade-off, dan opsi yang ditolak. |
+| **Lapis 3: Technical Decision (ADR)** | `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` | Alasan keputusan teknis non-sepele (*why*), trade-off, dan opsi yang ditolak. |
 
 ---
 
@@ -58,18 +58,20 @@ Setiap kali memperbarui diagram Mermaid pada file Markdown:
    - Berikan tanda kutip ganda pada label dengan karakter khusus: `id["User Service (Auth & RBAC)"]`.
    - Hindari tag HTML langsung di dalam node Mermaid.
 2. **Gunakan Tautan Relatif yang Valid**:
-   - Pastikan setiap link dokumen `[File](file:///path/to/file)` atau `[Doc](./docs/file.md)` mengarah ke berkas nyata yang benar-benar ada.
+   - Pastikan setiap link dokumen mengarah ke berkas nyata yang benar-benar ada.
 
 ---
 
 ## Contoh Penyelarasan: Menambah Modul Baru
 
+**Sebelum Sinkronisasi (Contoh Drift - Diagram Usang):**
 ```mermaid
-%% ❌ CONTOH DRIFT (Diagram usang: Modul Notification belum tercatat)
 flowchart LR
     Client --> API_Gateway --> Order_Service --> DB[(Order DB)]
+```
 
-%% ✅ CONTOH LIVING SYNC (Diagram disinkronkan dengan penambahan Notification Service)
+**Setelah Sinkronisasi (Contoh Living Sync - Sinkron dengan Kode):**
+```mermaid
 flowchart LR
     Client --> API_Gateway
     API_Gateway --> Order_Service

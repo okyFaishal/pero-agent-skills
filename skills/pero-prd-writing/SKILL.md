@@ -66,13 +66,14 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 
 ## Template: `docs/PRD.md`
 
-```markdown
+````markdown
 # Product Requirements Document (PRD): [Nama Produk]
 
 - **Versi**: 1.0 (MVP)
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/ProblemFraming.md](file:///docs/ProblemFraming.md)
+- **Dokumen Induk**: [docs/ProblemFraming.md](docs/ProblemFraming.md)
+- **Decision Record**: [docs/decisions/PDR-[YYYYMMDDHHmm].md](docs/decisions/PDR-[YYYYMMDDHHmm].md)
 
 ## 1. Executive Summary & Visi Produk
 [Jelaskan visi produk dalam 1 paragraf dengan analogi sederhana (ELI5)]
@@ -122,7 +123,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Kesesuaian Masalah Inti**: [✓] 100% Fitur P0 menjawab akar masalah di `ProblemFraming.md`.
 - **Kepatuhan Batasan Non-Goals**: [✓] Tidak ada fitur yang melanggar daftar *Non-Goals* Tahap 1.
 - **Konsensus Sidang Dewan AI**: [Ringkasan keputusan pemangkasan scope oleh llm-council].
-```
+````
 
 ## Anti-Patterns & Common Mistakes
 - **Scope Overload / P0 Bloat**: Memasukkan terlalu banyak fitur ke dalam P0 tanpa sidang pemangkasan dewan, sehingga MVP gagal rilis tepat waktu.

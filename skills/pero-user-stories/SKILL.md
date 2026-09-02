@@ -74,14 +74,14 @@ Untuk mencegah kerusakan tampilan berkas (*broken markdown format*), agen WAJIB 
 
 ## Template: `docs/SystemSpec.md`
 
-```markdown
+````markdown
 # System Specification: [Nama Sistem / Modul]
 
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](file:///docs/PRD.md)
-- **Decision Record**: [docs/decisions/SDR-[YYYYMMDDHHmm].md](file:///docs/decisions/SDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [docs/PRD.md](docs/PRD.md)
+- **Decision Record**: [docs/decisions/SDR-[YYYYMMDDHHmm].md](docs/decisions/SDR-[YYYYMMDDHHmm].md)
 
 ## 1. Traceability Matrix & Functional Scope
 
@@ -195,7 +195,7 @@ erDiagram
 | `ERR_UNAUTHORIZED` | 401 | Token kadaluarsa atau otentikasi hilang | "Sesi masuk Anda telah berakhir. Silakan login kembali." | Arahkan pengguna ke antarmuka login. |
 | `ERR_FORBIDDEN` | 403 | Pengguna tidak memiliki izin hak akses | "Anda tidak memiliki izin untuk membuka bagian ini." | Hubungi administrator sistem. |
 | `ERR_INTERNAL_SERVER` | 500 | Kegagalan sistem internal tak terduga | "Sistem sedang mengalami kendala teknis. Tim kami sedang menanganinya." | Log detail error ke server, sediakan tombol coba lagi. |
-```
+````
 
 ## Anti-Patterns & Common Mistakes
 - **Broken Markdown Formatting**: Menulis tabel dengan pipa tidak ter-escape (`|` tanpa `\|`) atau blok kode tidak tertutup, yang merusak render dokumen.

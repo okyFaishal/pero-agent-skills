@@ -18,6 +18,7 @@ Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skil
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk memastikan setiap butir tugas teknis mewajibkan penulisan failing test terlebih dahulu sebelum kode implementasi.
 - **Verifikasi Bukti Eksekusi Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk menetapkan perintah verifikasi terminal yang presisi (*exact verification commands*) dengan ambang batas `exit code 0` dan `0 failure`.
 - **Proteksi Variabel Rahasia & Lingkungan**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk mengawal tugas-tugas konfigurasi infrastruktur dan memastikan kredensial terisolasi aman di `.env`.
+- **Audit Konsistensi Dekomposisi Tugas**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan seluruh fitur PRD, kontrak endpoint, dan batasan arsitektur teralokasi ke dalam kartu tugas tanpa ada yang terlewat (*100% Backlog Coverage*).
 - **Klasifikasi Backlog UI & Dial Estetika**: **`CONDITIONAL SUB-SKILL`**: Jika backlog mencakup tugas penambahan atau perubahan fitur antarmuka (Domain Web / Mobile UI), gunakan `taste-skill` untuk menyematkan arahan visual awal (*UI Variance, Motion, & Density*) pada kartu tugas terkait di `docs/TaskBacklog.md`. Jika tugas tidak menyentuh UI, sub-skill ini tidak digunakan.
 
 ## When to Use
@@ -92,11 +93,11 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
 - **Dokumen Induk**:
-  - [docs/PRD.md](file:///docs/PRD.md)
-  - [docs/SystemSpec.md](file:///docs/SystemSpec.md)
-  - [docs/Architecture.md](file:///docs/Architecture.md)
-  - [docs/Governance.md](file:///docs/Governance.md)
-- **Decision Record**: [docs/decisions/TDR-[YYYYMMDDHHmm].md](file:///docs/decisions/TDR-[YYYYMMDDHHmm].md)
+  - [docs/PRD.md](docs/PRD.md)
+  - [docs/SystemSpec.md](docs/SystemSpec.md)
+  - [docs/Architecture.md](docs/Architecture.md)
+  - [docs/Governance.md](docs/Governance.md)
+- **Decision Record**: [docs/decisions/TDR-[YYYYMMDDHHmm].md](docs/decisions/TDR-[YYYYMMDDHHmm].md)
 
 ## 1. Executive Summary & Strategy
 [Jelaskan strategi urutan pengerjaan proyek dalam 1-2 paragraf dengan analogi sederhana seperti mandor yang mengatur tukang batu, tukang pipa, dan tukang cat secara bergiliran agar tidak saling bertabrakan].

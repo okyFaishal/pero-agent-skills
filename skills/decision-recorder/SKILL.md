@@ -40,15 +40,16 @@ Penyaringan rasional agar tidak membebani tim dengan pencatatan hal sepele yang 
 
 ---
 
-## 5 Jenis Dokumen Keputusan Universal
+## 6 Jenis Dokumen Keputusan Universal
 
 Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDDHHmm].md`
 
-1. **PDR (Product Decision Record)**: Keputusan cakupan fitur MVP, batasan persona, dan penolakan fitur sampingan.
-2. **SDR (System Design Record)**: Desain modul, aliran event, dan batasan konteks (*bounded context*).
-3. **ADR (Architectural Decision Record)**: Pemilihan database, kerangka kerja (framework), protokol API, atau strategi caching.
-4. **GDR (Governance Decision Record)**: Standar thread-safety, aturan keamanan sandi, dan kebijakan lisensi dependensi.
-5. **TDR (Task Decision Record)**: Strategi pemecahan fase tugas, urutan dependensi koding, dan mitigasi risiko teknis.
+1. **PFDR (Problem Framing Decision Record)**: Keputusan definisi akar masalah, penolakan asumsi bias, dan batasan Non-Goals hulu (Stage 1).
+2. **PDR (Product Decision Record)**: Keputusan ruang lingkup fitur MVP (P0 vs P1/P2) dan matriks alur produk (Stage 2).
+3. **SDR (System Design Record)**: Kontrak API envelope, model entitas ERD, dan skenario Gherkin (Stage 3).
+4. **ADR (Architectural Decision Record)**: Pemilihan stack teknologi, database, deklarasi server MCP, dan pola konkurensi (Stage 4).
+5. **GDR (Governance Decision Record)**: Standar thread-safety, batas keamanan rahasia env-guard, dan quality gates (Stage 5).
+6. **TDR (Task Decision Record)**: Strategi pemecahan fase backlog dan mitigasi dependensi koding (Stage 6).
 
 ---
 

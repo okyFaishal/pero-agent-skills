@@ -17,8 +17,11 @@ Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi su
 - **Penyalur Eksekusi Otonom Sub-Agen**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk menyalurkan kartu tugas yang sudah dipertajam menjadi *task brief* mandiri yang siap dieksekusi oleh Implementer Subagent.
 - **Pendelegasian Tugas Terisolasi Paralel**: **`SUPPORTING SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk membungkus setiap kartu tugas yang telah memiliki target file path terisolasi menjadi instruksi mandiri agar dapat dieksekusi secara serentak oleh sub-agen koding.
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk merancang spesifikasi failing test (*Red step*) secara eksplisit di awal—mencakup nama fungsi test, input mock/fixtures, dan assertion yang diharapkan gagal sebelum implementasi ada.
+- **Verifikasi Bukti Eksekusi Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk menetapkan perintah eksekusi terminal dan kriteria lulus exit code 0 tanpa toleransi kegagalan.
 - **Verifikasi Dokumentasi Library & SDK**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk memeriksa dokumentasi resmi paket/library pihak ketiga, memastikan tanda tangan fungsi (*method signatures*), tipe data argumen, dan lifecycle method sesuai rilis API mutakhir, bukan hasil halusinasi.
+- **Perancangan Kontrak & Tanda Tangan Metode**: **`SUPPORTING SUB-SKILL`**: Gunakan `api-contract-design` untuk menyusun struktur parameter method, return envelope, dan status kode error secara konsisten.
 - **Validasi Skema & Batasan Payload**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk memvalidasi struktur tipe data DTO, payload request/response, dan batasan batas (*boundary constraints*) pada interface.
+- **Audit Konsistensi Penajaman Tugas**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan kartu tugas tidak mengalami *drift* dari arsitektur dan spesifikasi hulu.
 - **Proteksi Rahasia & Lingkungan**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk memastikan tidak ada kunci rahasia atau kredensial yang dituliskan langsung dalam fixtures kartu tugas.
 - **Spesifikasi Estetika & Dial Visual Antarmuka**: **`CONDITIONAL SUB-SKILL`**: Jika kartu tugas menargetkan pembuatan atau modifikasi komponen antarmuka pengguna (Frontend/UI/Landing Page), gunakan `taste-skill` untuk menetapkan *Brief Inference*, nilai 3 Dial (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`), pasangan tipografi, 4–6 token warna Hex, dan aturan *anti-slop* visual pada kartu tugas. Jika kartu tugas murni backend/core/data tanpa perubahan UI, sub-skill ini tidak digunakan.
 
@@ -121,6 +124,10 @@ Setiap tugas yang dipertajam **WAJIB** memiliki 5 anatomi presisi berikut:
 ### Langkah 5: Penerbitan Kartu Tugas Granular
 - Output kartu tugas dalam format terstandarisasi yang langsung dapat diserahkan ke subagent pelaksana koding.
 
+## Deliverables & Output Artifacts
+
+1. **Living Artifact**: `docs/tasks/TASK-[ID].md` (atau lampiran brief pada `docs/TaskBacklog.md`)
+
 ---
 
 ## Output Artifact Format: Granular Task Specification Card
@@ -132,8 +139,8 @@ Setiap penajaman tugas menghasilkan kartu berformat berikut:
 
 - **Status**: Ready for Implementation (TDD Phase)
 - **Domain**: [Web | Mobile | Backend | Database | Security | Core]
-- **Sumber Backlog**: [docs/TaskBacklog.md](file:///docs/TaskBacklog.md) (Task X.Y)
-- **Referensi Desain**: [docs/SystemSpec.md](file:///docs/SystemSpec.md) & [docs/Architecture.md](file:///docs/Architecture.md)
+- **Sumber Backlog**: [docs/TaskBacklog.md](docs/TaskBacklog.md) (Task X.Y)
+- **Referensi Desain**: [docs/SystemSpec.md](docs/SystemSpec.md) & [docs/Architecture.md](docs/Architecture.md)
 
 ---
 

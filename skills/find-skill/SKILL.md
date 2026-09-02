@@ -12,7 +12,7 @@ Skill ini adalah **"Mesin Pencari Cerdas & Pemandu Navigasi Keterampilan Agen"**
 > **Analogi Sederhana (ELI5):**  
 > Bayangkan **Resepsionis Navigasi Cerdas di Rumah Sakit Raksasa**:
 > - **AI Tanpa Find-Skill (Tersesat & Salah Kamar)**: Pasien datang dengan keluhan patah tulang, tetapi diarahkan ke dokter gigi hanya karena dokter gigi sedang menganggur.
-> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 27 dokter spesialis yang bertugas (*katalog skill*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
+> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 28 dokter spesialis yang bertugas (*katalog skill*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
 
 ---
 
@@ -40,40 +40,40 @@ Penanganan percabangan menggunakan pohon taksonomi terstruktur dan mekanisme pen
 
 ---
 
-## Matriks Pemetaan Pemicu 27 Skill (*Trigger-to-Skill Dispatch Matrix*)
+## Matriks Pemetaan Pemicu 28 Skill (*Trigger-to-Skill Dispatch Matrix*)
 
 Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan dipatuhi:
 
 | Kategori Tugas | Kata Kunci Masukan Pengguna (*Triggers*) | Modul Skill yang Wajib Diaktifkan |
 |---|---|---|
-| **Eksplorasi Ide** | "Saya punya ide", "fitur baru", "pain points", "masalah pengguna" | [pero-problem-framing](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-problem-framing/SKILL.md) |
-| **Penyusunan Spek** | "Tulis PRD", "MVP scope", "prioritas fitur P0/P1/P2", "NFR" | [pero-prd-writing](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-prd-writing/SKILL.md) |
-| **Skenario Uji** | "User story", "Gherkin", "Given When Then", "model entity" | [pero-user-stories](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-user-stories/SKILL.md) |
-| **Desain Sistem** | "Rancang arsitektur", "diagram Mermaid", "pilih tech stack", "monolith vs microservice" | [pero-system-architecture](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-system-architecture/SKILL.md) |
-| **Tata Kelola** | "Standar kualitas", "aturan thread-safety", "review gate", "concurrency rules" | [pero-quality-governance](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-quality-governance/SKILL.md) |
-| **Pecah Backlog** | "Pecah tugas", "breakdown backlog", "estimasi fase", "task decomposition" | [pero-task-decomposition](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-task-decomposition/SKILL.md) |
-| **Detail Kartu Tugas** | "Detailkan task", "file paths", "method signatures", "failing test spec" | [pero-granular-refinement](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-granular-refinement/SKILL.md) |
-| **Audit Dokumen** | "Validasi dokumen", "cek konsistensi spec", "audit diagram Mermaid" | [pero-context-validation](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-context-validation/SKILL.md) |
-| **Riset Docs Resmi** | "Dokumentasi resmi", "API library", "Context7", "package specs" | [context-7](file:///Users/okyfaishal/project/pero-agent-skills/skills/context-7/SKILL.md) |
-| **Riset Web/Error** | "Cari solusi web", "error di internet", "changelog release", "search" | [web-search](file:///Users/okyfaishal/project/pero-agent-skills/skills/web-search/SKILL.md) |
-| **Stress-Test Ide** | "Grill me", "uji ide ini", "trade-off arsitektur", "bedah keputusan" | [grilling](file:///Users/okyfaishal/project/pero-agent-skills/skills/grilling/SKILL.md) |
-| **Musyawarah Dewan** | "Council this", "run the council", "dewan AI", "war room", "multi-perspektif", "debatkan opsi", "trade-off besar" | [llm-council](file:///Users/okyfaishal/project/pero-agent-skills/skills/llm-council/SKILL.md) |
-| **Eksekusi Otonom** | "Jalankan seluruh task", "subagent driven development", "eksekusi otonom", "hands-free execution", "sdd", "continuous execution" | [subagent-driven-development](file:///Users/okyfaishal/project/pero-agent-skills/skills/subagent-driven-development/SKILL.md) |
-| **Delegasi Paralel** | "Dispatch parallel", "agen paralel", "parallel subagents", "kerjakan bersamaan", "tugas independen", "mass debugging" | [dispatching-parallel-agents](file:///Users/okyfaishal/project/pero-agent-skills/skills/dispatching-parallel-agents/SKILL.md) |
-| **Koding Fitur/Fix** | "Mulai ngoding", "tulis fungsi", "implementasi fitur", "TDD" | [test-driven-development](file:///Users/okyfaishal/project/pero-agent-skills/skills/test-driven-development/SKILL.md) |
-| **Investigasi Bug** | "Ada bug", "tes gagal", "aplikasi crash", "investigasi error" | [systematic-debugging](file:///Users/okyfaishal/project/pero-agent-skills/skills/systematic-debugging/SKILL.md) |
-| **Klaim Selesai** | "Sudah selesai", "semua beres", "cek hasil kerja", "siap commit" | [verification-before-completion](file:///Users/okyfaishal/project/pero-agent-skills/skills/verification-before-completion/SKILL.md) |
-| **Peninjauan Kode** | "Review kode", "audit PR", "cek kualitas", "pre-merge audit" | [code-reviewer](file:///Users/okyfaishal/project/pero-agent-skills/skills/code-reviewer/SKILL.md) |
-| **Kontrak API** | "Desain API", "endpoint REST/GraphQL/gRPC", "API envelope" | [api-contract-design](file:///Users/okyfaishal/project/pero-agent-skills/skills/api-contract-design/SKILL.md) |
-| **Validasi Skema** | "Validasi JSON schema", "DTO", "model serialisasi", "payload validator" | [schema-validator](file:///Users/okyfaishal/project/pero-agent-skills/skills/schema-validator/SKILL.md) |
-| **Catat Keputusan** | "Catat ADR", "arsip keputusan", "PDR", "decision log" | [decision-recorder](file:///Users/okyfaishal/project/pero-agent-skills/skills/decision-recorder/SKILL.md) |
-| **Sinkronisasi Dok** | "Update diagram", "sync arsitektur", "perbarui docs saat kode berubah" | [living-doc-sync](file:///Users/okyfaishal/project/pero-agent-skills/skills/living-doc-sync/SKILL.md) |
-| **Operasi Git** | "Buat branch", "commit Caveman", "buat PR", "git worktree", "gh CLI" | [git-ops](file:///Users/okyfaishal/project/pero-agent-skills/skills/git-ops/SKILL.md) |
-| **Keamanan & Env** | ".env file", "kunci rahasia", "perintah terminal destruktif", "credentials" | [env-guard](file:///Users/okyfaishal/project/pero-agent-skills/skills/env-guard/SKILL.md) |
-| **Bahasa Awam** | "Jelaskan dengan sederhana", "analogi awam", "ELI5", "bahasa manusia" | [eli5](file:///Users/okyfaishal/project/pero-agent-skills/skills/eli5/SKILL.md) |
-| **Pembersih Slop** | "Hapus kode sampah", "anti-slop", "YAGNI", "bersihkan komentar sepele" | [anti-slop](file:///Users/okyfaishal/project/pero-agent-skills/skills/anti-slop/SKILL.md) |
-| **Estetika UI Visual** | "Desain landing page", "taste-skill", "frontend estetis", "portofolio styling", "anti-slop UI", "motion UI" | [taste-skill](file:///Users/okyfaishal/project/pero-agent-skills/skills/taste-skill/SKILL.md) |
-| **Pencarian Skill** | "Skill apa yang cocok?", "cari instruksi", "panduan kerja" | [find-skill](file:///Users/okyfaishal/project/pero-agent-skills/skills/find-skill/SKILL.md) |
+| **Eksplorasi Ide** | "Saya punya ide", "fitur baru", "pain points", "masalah pengguna" | [`pero-problem-framing`](../pero-problem-framing/SKILL.md) |
+| **Penyusunan Spek** | "Tulis PRD", "MVP scope", "prioritas fitur P0/P1/P2", "NFR" | [`pero-prd-writing`](../pero-prd-writing/SKILL.md) |
+| **Skenario Uji** | "User story", "Gherkin", "Given When Then", "model entity" | [`pero-user-stories`](../pero-user-stories/SKILL.md) |
+| **Desain Sistem** | "Rancang arsitektur", "diagram Mermaid", "pilih tech stack", "monolith vs microservice" | [`pero-system-architecture`](../pero-system-architecture/SKILL.md) |
+| **Tata Kelola** | "Standar kualitas", "aturan thread-safety", "review gate", "concurrency rules" | [`pero-quality-governance`](../pero-quality-governance/SKILL.md) |
+| **Pecah Backlog** | "Pecah tugas", "breakdown backlog", "estimasi fase", "task decomposition" | [`pero-task-decomposition`](../pero-task-decomposition/SKILL.md) |
+| **Detail Kartu Tugas** | "Detailkan task", "file paths", "method signatures", "failing test spec" | [`pero-granular-refinement`](../pero-granular-refinement/SKILL.md) |
+| **Audit Dokumen** | "Validasi dokumen", "cek konsistensi spec", "audit diagram Mermaid" | [`pero-context-validation`](../pero-context-validation/SKILL.md) |
+| **Riset Docs Resmi** | "Dokumentasi resmi", "API library", "Context7", "package specs" | [`context-7`](../context-7/SKILL.md) |
+| **Riset Web/Error** | "Cari solusi web", "error di internet", "changelog release", "search" | [`web-search`](../web-search/SKILL.md) |
+| **Stress-Test Ide** | "Grill me", "uji ide ini", "trade-off arsitektur", "bedah keputusan" | [`grilling`](../grilling/SKILL.md) |
+| **Musyawarah Dewan** | "Council this", "run the council", "dewan AI", "war room", "multi-perspektif", "debatkan opsi", "trade-off besar" | [`llm-council`](../llm-council/SKILL.md) |
+| **Eksekusi Otonom** | "Jalankan seluruh task", "subagent driven development", "eksekusi otonom", "hands-free execution", "sdd", "continuous execution" | [`subagent-driven-development`](../subagent-driven-development/SKILL.md) |
+| **Delegasi Paralel** | "Dispatch parallel", "agen paralel", "parallel subagents", "kerjakan bersamaan", "tugas independen", "mass debugging" | [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md) |
+| **Koding Fitur/Fix** | "Mulai ngoding", "tulis fungsi", "implementasi fitur", "TDD" | [`test-driven-development`](../test-driven-development/SKILL.md) |
+| **Investigasi Bug** | "Ada bug", "tes gagal", "aplikasi crash", "investigasi error" | [`systematic-debugging`](../systematic-debugging/SKILL.md) |
+| **Klaim Selesai** | "Sudah selesai", "semua beres", "cek hasil kerja", "siap commit" | [`verification-before-completion`](../verification-before-completion/SKILL.md) |
+| **Peninjauan Kode** | "Review kode", "audit PR", "cek kualitas", "pre-merge audit" | [`code-reviewer`](../code-reviewer/SKILL.md) |
+| **Kontrak API** | "Desain API", "endpoint REST/GraphQL/gRPC", "API envelope" | [`api-contract-design`](../api-contract-design/SKILL.md) |
+| **Validasi Skema** | "Validasi JSON schema", "DTO", "model serialisasi", "payload validator" | [`schema-validator`](../schema-validator/SKILL.md) |
+| **Catat Keputusan** | "Catat ADR", "arsip keputusan", "PDR", "decision log" | [`decision-recorder`](../decision-recorder/SKILL.md) |
+| **Sinkronisasi Dok** | "Update diagram", "sync arsitektur", "perbarui docs saat kode berubah" | [`living-doc-sync`](../living-doc-sync/SKILL.md) |
+| **Operasi Git** | "Buat branch", "commit Caveman", "buat PR", "git worktree", "gh CLI" | [`git-ops`](../git-ops/SKILL.md) |
+| **Keamanan & Env** | ".env file", "kunci rahasia", "perintah terminal destruktif", "credentials" | [`env-guard`](../env-guard/SKILL.md) |
+| **Bahasa Awam** | "Jelaskan dengan sederhana", "analogi awam", "ELI5", "bahasa manusia" | [`eli5`](../eli5/SKILL.md) |
+| **Pembersih Slop** | "Hapus kode sampah", "anti-slop", "YAGNI", "bersihkan komentar sepele" | [`anti-slop`](../anti-slop/SKILL.md) |
+| **Estetika UI Visual** | "Desain landing page", "taste-skill", "frontend estetis", "portofolio styling", "anti-slop UI", "motion UI" | [`taste-skill`](../taste-skill/SKILL.md) |
+| **Pencarian Skill** | "Skill apa yang cocok?", "cari instruksi", "panduan kerja" | [`find-skill`](../find-skill/SKILL.md) |
 
 ---
 

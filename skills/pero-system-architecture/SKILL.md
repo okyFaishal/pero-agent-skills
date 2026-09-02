@@ -16,6 +16,8 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 - **Verifikasi Dokumentasi API & Versi Library Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk mengecek dokumentasi resmi, kompatibilitas versi LTS/terkini, dan tanda tangan fungsi (*method signatures*) rilis resmi dari pustaka/framework yang dipilih sebelum dicatat ke arsitektur.
 - **Riset Benchmark & Post-Mortem Industri**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, throughput, batas memori, dan laporan kegagalan (*post-mortem failure analysis*) dari tumpukan teknologi yang diusulkan.
 - **Musyawarah Dewan Arsitektur**: **`SUPPORTING / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arsitektural berdampak besar (Monolith vs Microservices, Relasional vs Dokumen, REST vs Event-Driven, Pola Konkurensi) dan menyalurkan vonis sintesisnya ke dokumen ADR.
+- **Stress-Test & Socratic Grilling Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `grilling` untuk menguji ketahanan desain, skenario lonjakan beban (spike), dan titik kegagalan tunggal (*single point of failure*).
+- **Audit Konsistensi Arsitektur & Deteksi Drift**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan cetak biru arsitektur tidak menyimpang (*zero architectural drift*) dari batasan di PRD dan SystemSpec.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
 - **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural (pemilihan database, framework, pola konkurensi) ke `docs/decisions/ADR-[YYYYMMDDHHmm].md`.
 - **Pemetaan Fondasi Design System UI**: **`CONDITIONAL SUB-SKILL`**: Jika perancangan mencakup antarmuka pengguna (Frontend/Landing Page/Web UI), gunakan `taste-skill` untuk memetakan arah desain (*Brief Inference*) dan menetapkan fondasi *Design System* resmi (Fluent, Material, Carbon, Radix, atau Tailwind) di `docs/Architecture.md`. Jika proyek murni backend/CLI/core tanpa UI, sub-skill ini tidak digunakan.
@@ -115,8 +117,8 @@ Sebelum menulis berkas `docs/Architecture.md`, agen **WAJIB mengeksekusi 4 fase 
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](file:///docs/PRD.md) & [docs/SystemSpec.md](file:///docs/SystemSpec.md)
-- **Decision Record**: [docs/decisions/ADR-[YYYYMMDDHHmm].md](file:///docs/decisions/ADR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [docs/PRD.md](docs/PRD.md) & [docs/SystemSpec.md](docs/SystemSpec.md)
+- **Decision Record**: [docs/decisions/ADR-[YYYYMMDDHHmm].md](docs/decisions/ADR-[YYYYMMDDHHmm].md)
 
 ## 1. High-Level Architecture Diagram
 [Jelaskan alur sistem secara global dalam 1-2 paragraf dengan analogi sederhana seperti denah rumah].

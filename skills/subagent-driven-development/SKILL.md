@@ -83,8 +83,8 @@ Sebelum meluncurkan Tugas #1:
   ```bash
   ./skills/subagent-driven-development/scripts/task-brief docs/TaskBacklog.md "1.1"
   ```
-- Koordinator meluncurkan Implementer Subagent menggunakan templat [`implementer-prompt.md`](file:///Users/okyfaishal/project/pero-agent-skills/skills/subagent-driven-development/implementer-prompt.md).
-- Sub-agen menjalankan siklus TDD terisolasi ([`test-driven-development`](file:///Users/okyfaishal/project/pero-agent-skills/skills/test-driven-development/SKILL.md)), membersihkan kode ([`anti-slop`](file:///Users/okyfaishal/project/pero-agent-skills/skills/anti-slop/SKILL.md)), dan membuat commit Caveman ([`git-ops`](file:///Users/okyfaishal/project/pero-agent-skills/skills/git-ops/SKILL.md)).
+- Koordinator meluncurkan Implementer Subagent menggunakan templat [`implementer-prompt.md`](./implementer-prompt.md).
+- Sub-agen menjalankan siklus TDD terisolasi ([`test-driven-development`](../test-driven-development/SKILL.md)), membersihkan kode ([`anti-slop`](../anti-slop/SKILL.md)), dan membuat commit Caveman ([`git-ops`](../git-ops/SKILL.md)).
 - Implementer menulis laporannya ke berkas `.pero/sdd/task-1.1-report.md`.
 
 ### 3. Dispatch Task Reviewer & Re-Review Loop (Audit Kualitas Dua Lapis)
@@ -92,11 +92,11 @@ Sebelum meluncurkan Tugas #1:
   ```bash
   ./skills/subagent-driven-development/scripts/review-package [BASE_SHA] [HEAD_SHA]
   ```
-- Koordinator meluncurkan Task Reviewer Subagent menggunakan templat [`task-reviewer-prompt.md`](file:///Users/okyfaishal/project/pero-agent-skills/skills/subagent-driven-development/task-reviewer-prompt.md).
+- Koordinator meluncurkan Task Reviewer Subagent menggunakan templat [`task-reviewer-prompt.md`](./task-reviewer-prompt.md).
 - Peninjau memeriksa perbedaan kode (*git diff*):
   1. **Spec Compliance**: Apakah semua kriteria kartu tugas terpenuhi? Apakah ada fitur berlebih di luar spek?
   2. **Code Quality**: Apakah ada celah error, penanganan boundary case yang bocor, atau pelanggaran anti-slop?
-- Jika ada temuan kritis (*Critical/Important*), panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](file:///Users/okyfaishal/project/pero-agent-skills/skills/subagent-driven-development/re-review-prompt.md) sampai peninjau memberikan status *Approved*.
+- Jika ada temuan kritis (*Critical/Important*), panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](./re-review-prompt.md) sampai peninjau memberikan status *Approved*.
 
 ### 4. Update Progress Ledger (Catat Kemajuan)
 - Perbarui centang di `docs/TaskBacklog.md` dari `- [ ]` menjadi `- [x]`.
@@ -104,10 +104,10 @@ Sebelum meluncurkan Tugas #1:
 
 ### 5. Final Whole-Branch Polish & PR (Penyelesaian Akhir)
 Setelah seluruh tugas selesai 100%:
-- Jalankan seluruh suite tes proyek di terminal untuk membuktikan nol regresi (*exit code 0* via [`verification-before-completion`](file:///Users/okyfaishal/project/pero-agent-skills/skills/verification-before-completion/SKILL.md)).
-- Jalankan audit review menyeluruh tingkat cabang ([`code-reviewer`](file:///Users/okyfaishal/project/pero-agent-skills/skills/code-reviewer/SKILL.md)).
-- Sinkronkan diagram dokumentasi ([`living-doc-sync`](file:///Users/okyfaishal/project/pero-agent-skills/skills/living-doc-sync/SKILL.md)).
-- Buat Pull Request resmi menggunakan [`git-ops`](file:///Users/okyfaishal/project/pero-agent-skills/skills/git-ops/SKILL.md).
+- Jalankan seluruh suite tes proyek di terminal untuk membuktikan nol regresi (*exit code 0* via [`verification-before-completion`](../verification-before-completion/SKILL.md)).
+- Jalankan audit review menyeluruh tingkat cabang ([`code-reviewer`](../code-reviewer/SKILL.md)).
+- Sinkronkan diagram dokumentasi ([`living-doc-sync`](../living-doc-sync/SKILL.md)).
+- Buat Pull Request resmi menggunakan [`git-ops`](../git-ops/SKILL.md).
 
 ---
 
@@ -129,13 +129,13 @@ skills/subagent-driven-development/
 
 ## Integrasi dengan Skill Lain di Repositori
 
-*   **[`pero-task-decomposition`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-task-decomposition/SKILL.md)**: Menyediakan urutan backlog tugas 5-fase yang siap dieksekusi oleh SDD.
-*   **[`pero-granular-refinement`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-granular-refinement/SKILL.md)**: Menyediakan kartu tugas presisi (path file, signatures, boundary cases) yang langsung menjadi prompt bagi Implementer.
-*   **[`test-driven-development`](file:///Users/okyfaishal/project/pero-agent-skills/skills/test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib dipatuhi oleh Implementer Subagent.
-*   **[`anti-slop`](file:///Users/okyfaishal/project/pero-agent-skills/skills/anti-slop/SKILL.md)**: Filter kualitas agar sub-agen tidak menghasilkan kode atau komentar sampah.
-*   **[`dispatching-parallel-agents`](file:///Users/okyfaishal/project/pero-agent-skills/skills/dispatching-parallel-agents/SKILL.md)**: Dipanggil oleh SDD ketika menemukan tugas-tugas di dalam fase yang sama yang sepenuhnya independen dan dapat dijalankan serentak.
-*   **[`verification-before-completion`](file:///Users/okyfaishal/project/pero-agent-skills/skills/verification-before-completion/SKILL.md)**: Penegak bukti eksekusi terminal sebelum cabang dianggap tuntas.
-*   **[`code-reviewer`](file:///Users/okyfaishal/project/pero-agent-skills/skills/code-reviewer/SKILL.md)**: Digunakan untuk Task Reviewer dan Final Merge Reviewer.
+*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)**: Menyediakan urutan backlog tugas 5-fase yang siap dieksekusi oleh SDD.
+*   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)**: Menyediakan kartu tugas presisi (path file, signatures, boundary cases) yang langsung menjadi prompt bagi Implementer.
+*   **[`test-driven-development`](../test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib dipatuhi oleh Implementer Subagent.
+*   **[`anti-slop`](../anti-slop/SKILL.md)**: Filter kualitas agar sub-agen tidak menghasilkan kode atau komentar sampah.
+*   **[`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md)**: Dipanggil oleh SDD ketika menemukan tugas-tugas di dalam fase yang sama yang sepenuhnya independen dan dapat dijalankan serentak.
+*   **[`verification-before-completion`](../verification-before-completion/SKILL.md)**: Penegak bukti eksekusi terminal sebelum cabang dianggap tuntas.
+*   **[`code-reviewer`](../code-reviewer/SKILL.md)**: Digunakan untuk Task Reviewer dan Final Merge Reviewer.
 
 ---
 

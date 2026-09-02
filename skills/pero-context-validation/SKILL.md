@@ -11,9 +11,13 @@ Skill ini bertindak sebagai **"Petugas Sensor Alarm & Pencocok Peta Proyek"**. F
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan validasi konteks, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Dokumentasi Hidup**: **`REQUIRED SUB-SKILL`**: Gunakan `living-doc-sync` untuk menyelaraskan diagram Mermaid dan denah sistem saat ada perubahan di kode atau dokumen.
-- **Audit Kualitas & Kepatuhan**: **`REQUIRED SUB-SKILL`**: Gunakan `code-reviewer` untuk melakukan pemeriksaan kepatuhan spesifikasi tingkat tinggi (*spec compliance*).
-- **Validasi Skema Data**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk memastikan struktur data payload konsisten antar spesifikasi.
+- **Audit Dokumen Paralel Multi-Agen**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk membagi audit lintas 6+ dokumen ke sub-agen independen secara simultan guna mendeteksi drift secara mendalam dan cepat.
+- **Sinkronisasi Dokumentasi Hidup**: **`REQUIRED SUB-SKILL`**: Gunakan `living-doc-sync` untuk menyelaraskan diagram Mermaid dan denah sistem saat ada perubahan di kode atau dokumen.
+- **Audit Kualitas & Kepatuhan Spesifikasi**: **`REQUIRED SUB-SKILL`**: Gunakan `code-reviewer` untuk melakukan pemeriksaan kepatuhan spesifikasi tingkat tinggi (*spec compliance*).
+- **Validasi Skema Data & Kontrak**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk memastikan struktur data payload konsisten antar spesifikasi.
+- **Pencatatan Keputusan Pemulihan**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan pemulihan saat mendeteksi *stale cascade drift*.
+- **Proteksi Perimeter Keamanan**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk memvalidasi bahwa seluruh aturan perlindungan rahasia terdefinisi tanpa ada kebocoran kredensial.
+- **Penegak Disiplin Pengujian TDD**: **`SUPPORTING SUB-SKILL`**: Gunakan `test-driven-development` untuk memvalidasi bahwa setiap butir tugas memiliki spesifikasi failing test terencana.
 
 ## When to Use
 - Setelah menyelesaikan penyusunan seluruh dokumen hulu sebelum tim mulai mengeksekusi koding massal.
@@ -21,9 +25,13 @@ Dalam menjalankan validasi konteks, agent WAJIB mengorkestrasi sub-skill berikut
 - Sebelum perilisan milestone besar untuk memastikan tidak ada fitur siluman (*phantom features*) atau tugas yang tertinggal (*orphaned tasks*).
 - Memverifikasi apakah semua blok diagram Mermaid bebas dari kesalahan sintaksis.
 
+## Deliverables & Output Artifacts
+
+1. **Living Document**: `docs/ValidationReport.md`
+
 ---
 
-## The 5 Cross-Document Integrity Rules (Traceability Matrix)
+## The 6 Cross-Document Integrity Rules (Traceability Matrix)
 
 ```
 [ProblemFraming.md] ──(1. Pain Point Match)──> [PRD.md]
@@ -35,6 +43,10 @@ Dalam menjalankan validasi konteks, agent WAJIB mengorkestrasi sub-skill berikut
  (4. Rule & Concurrency Match)
         ▼
 [Governance.md]     ──(5. Actionable Tasks)──> [TaskBacklog.md]
+                                                       │
+                                            (6. Granular Refinement)
+                                                       ▼
+                                               [TASK-X.Y Cards]
 ```
 
 ### 1. Problem-to-PRD Alignment
@@ -53,9 +65,12 @@ Dalam menjalankan validasi konteks, agent WAJIB mengorkestrasi sub-skill berikut
 - Pilihan teknologi, model thread/actor, dan manajemen memori di `docs/Architecture.md` wajib tunduk pada aturan ketat di `docs/Governance.md`.
 - Setiap komponen yang menangani data sensitif wajib mematuhi standar perlindungan kredensial `env-guard`.
 
-### 5. Governance-to-TaskBacklog Alignment
+### 5. Architecture-to-TaskBacklog Alignment
 - Seluruh modul di `docs/Architecture.md` wajib memiliki kartu tugas konkret yang dapat dieksekusi di `docs/TaskBacklog.md`.
 - Setiap kartu tugas wajib menyertakan perintah verifikasi terminal dan menerapkan disiplin TDD (`test-driven-development`).
+
+### 6. TaskBacklog-to-GranularRefinement Alignment
+- Setiap kartu tugas makro yang akan dieksekusi wajib dipertajam menjadi kartu tugas granular (`pero-granular-refinement`) dengan target file path pasti, typed method signatures, dan failing test specifications.
 
 ---
 
@@ -74,7 +89,7 @@ Ketika terjadi perubahan di salah satu dokumen (misal: penambahan fitur di PRD a
 ## Audit Diagram Mermaid
 
 Agent wajib memeriksa setiap blok code fenced ````mermaid```` di seluruh dokumen:
-- Pastikan penamaan node tidak mengandung karakter terlarang tanpa tanda kutip.
+- Pastikan penamaan node tidak mengandung karakter terlarang tanpa tanda kutip ganda `""`.
 - Hindari tag HTML mentah di dalam label diagram.
 - Pastikan relasi panah (`-->`, `-.->`, `==>`) terhubung ke ID node yang valid.
 
@@ -82,7 +97,7 @@ Agent wajib memeriksa setiap blok code fenced ````mermaid```` di seluruh dokumen
 
 ## Template: `docs/ValidationReport.md`
 
-```markdown
+````markdown
 # Context Validation Report: [Nama Proyek]
 
 - **Tanggal Audit**: [YYYY-MM-DD]
@@ -95,6 +110,7 @@ Agent wajib memeriksa setiap blok code fenced ````mermaid```` di seluruh dokumen
 - [x] **Rule 3: SystemSpec -> Architecture**: Semua entitas domain memiliki komponen pemilik di denah sistem.
 - [x] **Rule 4: Architecture -> Governance**: Model konkurensi dan keamanan sesuai standar tata kelola.
 - [x] **Rule 5: Architecture -> TaskBacklog**: Seluruh komponen terurai menjadi tugas berfase dengan perintah verifikasi.
+- [x] **Rule 6: TaskBacklog -> GranularRefinement**: Kartu tugas memiliki file path pasti dan failing test spec.
 
 ## 2. Mermaid Diagrams Health Check
 - `docs/Architecture.md`: [✓ Valid Sintaksis]
@@ -106,7 +122,7 @@ Agent wajib memeriksa setiap blok code fenced ````mermaid```` di seluruh dokumen
 
 ## 4. Kesimpulan Kesiapan Eksekusi
 [Pernyataan apakah proyek siap dieksekusi ke tahap koding TDD atau memerlukan perbaikan dokumen]
-```
+````
 
 ---
 

@@ -65,7 +65,7 @@ while [[ $# -gt 0 ]]; do
       echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
       echo ""
       echo "Opsi:"
-      echo "  --check        Memeriksa integritas 27 modul skill dan AGENTS.md"
+      echo "  --check        Memeriksa integritas 28 modul skill dan AGENTS.md"
       echo "  --dry-run      Menampilkan simulasi tindakan tanpa menyalin berkas"
       echo "  --version, -v  Tampilkan versi installer resmi"
       echo "  --help, -h     Tampilkan panduan bantuan ini"
@@ -74,61 +74,52 @@ while [[ $# -gt 0 ]]; do
     *)
       if [[ -z "$TARGET_DIR" && ! "$1" =~ ^-- ]]; then
         TARGET_DIR="$1"
+        shift
+      else
+        echo "Error: Opsi tidak dikenal: $1" >&2
+        echo "Gunakan 'install.sh --help' untuk melihat daftar opsi yang tersedia." >&2
+        exit 1
       fi
-      shift
       ;;
   esac
 done
 
-TARGET_DIR="${TARGET_DIR:-$(pwd)}"
-if [[ "$DRY_RUN" == false ]]; then
-  mkdir -p "$TARGET_DIR"
-fi
+TARGET_DIR="${TARGET_DIR:-.}"
 TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"
 TARGET_SKILLS_DIR="${TARGET_DIR}/.agents/skills"
 TARGET_AGENTS_MD="${TARGET_DIR}/AGENTS.md"
 TARGET_GITIGNORE="${TARGET_DIR}/.gitignore"
 
-echo "================================================================="
-echo " 🚀 Pero Agent Skills Universal Installer (v3.0 Standalone)"
-echo " 📂 Target Workspace: ${TARGET_DIR}"
-if [[ "$DRY_RUN" == true ]]; then
-  echo " 🔍 Mode: DRY-RUN (Simulasi saja, tidak ada file yang diubah)"
-fi
-echo "================================================================="
-
-# ------------------------------------------------------------------------------
-# 1. Mode Health Check (--check)
-# ------------------------------------------------------------------------------
+# Mode Pemeriksaan Status Integritas (--check)
 if [[ "$CHECK_ONLY" == true ]]; then
+  echo "================================================================="
+  echo " 🚀 Pero Agent Skills Universal Installer (v3.0 Standalone)"
+  echo " 📂 Target Workspace: ${TARGET_DIR}"
+  echo "================================================================="
   echo "-> Memeriksa status kesehatan ${#SKILLS[@]} modul skill di target workspace..."
-  ERRORS=0
+  MISSING=0
   for skill in "${SKILLS[@]}"; do
-    skill_file="${TARGET_SKILLS_DIR}/${skill}/SKILL.md"
-    if [[ ! -f "$skill_file" ]]; then
-      echo "   [❌] ${skill}: File SKILL.md tidak ditemukan."
-      ERRORS=$((ERRORS + 1))
-    elif ! head -n 5 "$skill_file" | grep -q "^name: ${skill}"; then
-      echo "   [⚠️ ] ${skill}: Frontmatter name tidak valid."
-      ERRORS=$((ERRORS + 1))
-    else
+    if [[ -d "${TARGET_SKILLS_DIR}/${skill}" && -f "${TARGET_SKILLS_DIR}/${skill}/SKILL.md" ]]; then
       echo "   [✓] ${skill}: Sehat & aktif."
+    else
+      echo "   [✗] ${skill}: HILANG atau TIDAK LENGKAP."
+      MISSING=$((MISSING + 1))
     fi
   done
-
   if [[ -f "$TARGET_AGENTS_MD" ]]; then
     echo "   [✓] AGENTS.md: Terverifikasi ada di root."
   else
-    echo "   [❌] AGENTS.md: Tidak ditemukan di root workspace."
-    ERRORS=$((ERRORS + 1))
+    echo "   [✗] AGENTS.md: HILANG di root workspace."
+    MISSING=$((MISSING + 1))
   fi
-
   echo "================================================================="
-  if [[ $ERRORS -eq 0 ]]; then
+  if [[ $MISSING -eq 0 ]]; then
     echo " ✨ Seluruh ${#SKILLS[@]} modul skill Pero SEHAT 100%!"
+    echo ""
     exit 0
   else
-    echo " ⚠️  Ditemukan ${ERRORS} masalah pada target workspace."
+    echo " ⚠️  Ditemukan ${MISSING} masalah integritas. Jalankan 'install.sh ${TARGET_DIR}' untuk memperbaiki."
+    echo ""
     exit 1
   fi
 fi
@@ -158,13 +149,19 @@ else
   fi
 fi
 
+# Banner Instalasi
+echo "================================================================="
+echo " 🚀 Pero Agent Skills Universal Installer (v3.0 Standalone)"
+echo " 📂 Target Workspace: ${TARGET_DIR}"
+echo "================================================================="
+
 if [[ "$DRY_RUN" == true ]]; then
   echo "-> [DRY-RUN] Akan membuat direktori: ${TARGET_SKILLS_DIR}"
 else
   mkdir -p "${TARGET_SKILLS_DIR}"
 fi
 
-# Salin 27 Skill Universal
+# Salin 28 Skill Universal
 echo "-> Menyebarkan ${#SKILLS[@]} modul skill ke ${TARGET_SKILLS_DIR}..."
 for skill in "${SKILLS[@]}"; do
   if [[ -d "${SOURCE_SKILLS}/${skill}" ]]; then
@@ -215,6 +212,7 @@ SECURITY_RULES=(
   ".env.*"
   "*.pem"
   "*.key"
+  "*.cert"
   "credentials.json"
 )
 

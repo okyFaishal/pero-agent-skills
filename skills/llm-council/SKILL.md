@@ -159,10 +159,10 @@ Ketua sidang merangkum hasil musyawarah menjadi format laporan resmi.
 
 ## Integrasi dengan Skill Lain
 
-*   **[`pero-problem-framing`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-problem-framing/SKILL.md)**: Gunakan dewan saat memilih target persona utama atau menimbang arah pivot masalah.
-*   **[`pero-prd-writing`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-prd-writing/SKILL.md)**: Gunakan dewan saat memotong cakupan fitur MVP (P0 vs P1) yang kontroversial.
-*   **[`pero-system-architecture`](file:///Users/okyfaishal/project/pero-agent-skills/skills/pero-system-architecture/SKILL.md)**: Gunakan dewan saat memilih teknologi dan arsitektur sistem tingkat tinggi.
-*   **[`decision-recorder`](file:///Users/okyfaishal/project/pero-agent-skills/skills/decision-recorder/SKILL.md)**: Simpan langsung hasil sintesis dewan ke arsip keputusan resmi `docs/decisions/`.
+*   **[`pero-problem-framing`](../pero-problem-framing/SKILL.md)**: Gunakan dewan saat memilih target persona utama atau menimbang arah pivot masalah.
+*   **[`pero-prd-writing`](../pero-prd-writing/SKILL.md)**: Gunakan dewan saat memotong cakupan fitur MVP (P0 vs P1) yang kontroversial.
+*   **[`pero-system-architecture`](../pero-system-architecture/SKILL.md)**: Gunakan dewan saat memilih teknologi dan arsitektur sistem tingkat tinggi.
+*   **[`decision-recorder`](../decision-recorder/SKILL.md)**: Simpan langsung hasil sintesis dewan ke arsip keputusan resmi `docs/decisions/`.
 
 ---
 

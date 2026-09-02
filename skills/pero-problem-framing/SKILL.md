@@ -16,7 +16,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Musyawarah 5 Sudut Pandang AI**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji rumusan masalah dari 5 perspektif ahli (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membasmi bias sudut pandang sempit.
 - **Wawancara Socratic & Stress-Test 5-Whys**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk menguji asumsi dasar, membedah 5-Whys hingga ke akar terdalam, dan mendeteksi inkonsistensi sejak awal.
 - **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
-- **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
+- **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PFDR-[YYYYMMDDHHmm].md`.
 
 ## When to Use
 - Memulai proyek baru atau merancang fitur/kemampuan baru berskala besar.
@@ -27,26 +27,21 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 ## The 5-Pillar Problem Framing Framework
 
 ```
-[1. Multi-Dimensional Discovery (Parallel Agents)] ──> [2. Empirical Evidence & Citations (Web Search)]
-                                                                               │
-[4. AI Council Review & Consensus (LLM Council)]   <── [3. Root Cause Analysis & 5-Whys (Grilling)]
+[1. 3-Track Discovery (DPA)] ──> [2. Empirical Evidence (Web Search)]
+                                                  │
+[4. AI Council Peer Review]  <── [3. 5-Whys Root Cause & Grilling]
               │
 [5. Boundaries (Non-Goals) & Success Metrics]
 ```
 
-### 1. Multi-Dimensional Discovery (via `dispatching-parallel-agents`)
-- Membagi eksplorasi masalah ke 3 sub-agen mandiri:
-  1. *Persona & Workflow Track*: Siapa yang paling dirugikan, cara lama (*workaround*) yang melelahkan, dan friksi operasional harian.
-  2. *Market & Competitor Track*: Bagaimana pemain industri lain menyelesaikan masalah serupa dan di mana letak kelemahannya.
-  3. *Feasibility & Regulatory Track*: Batasan regulasi, kepatuhan data, dan kendala teknis umum di domain tersebut.
+### 1. Pembedahan 3 Jalur Riset Paralel (via `dispatching-parallel-agents`)
+- Mendelegasikan 3 sub-agen spesialis independen (*Sub-agen 1: Persona & Masalah Pengguna, Sub-agen 2: Riset Pasar & Kompetitor, Sub-agen 3: Batasan Kelayakan Teknis & Regulasi*) untuk mengumpulkan data multi-dimensi secara komprehensif.
 
-### 2. Empirical Evidence & Verified Sources (via `web-search`)
-- Menghubungkan setiap klaim masalah dengan data faktual di lapangan.
-- Wajib menyertakan minimal 3 tautan URL resmi yang dapat diakses (studi kasus industri, laporan riset, statistik, atau standar RFC/Whitepaper).
+### 2. Bukti Empiris Terverifikasi (via `web-search`)
+- Menemukan minimal 3 sumber/referensi eksternal valid dengan URL aktif yang membuktikan bahwa masalah ini dialami oleh pengguna nyata di industri.
 
-### 3. Root Cause Analysis (5-Whys via `grilling`)
-- Menguji asumsi pengguna menggunakan pertanyaan bertingkat untuk memisahkan "gejala" dari "akar penyebab utama".
-- Mencegah solusi palsu (misalnya: pengguna mengira butuh fitur AI canggih, padahal masalah aslinya adalah data input yang berantakan).
+### 3. Diagnosa Akar Masalah (5-Whys & `grilling`)
+- Melakukan wawancara kritis terstruktur (*Socratic Grilling*) untuk membedakan antara gejala permukaan (*symptoms*) dan akar penyebab masalah yang sebenarnya (*root cause*).
 
 ### 4. Multi-Perspective Peer Review (via `llm-council`)
 - Menyidangkan rumusan masalah ke 5 penasihat AI untuk menemukan titik buta (*blind spots*), mendeteksi kontradiksi logika, dan menyepakati definisi masalah yang paling kokoh.
@@ -58,18 +53,19 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 ## Deliverables & Output Artifacts
 
 1. **Living Document**: `docs/ProblemFraming.md`
-2. **Decision Record**: `docs/decisions/PDR-[YYYYMMDDHHmm].md`
+2. **Decision Record**: `docs/decisions/PFDR-[YYYYMMDDHHmm].md`
 
 ---
 
 ## Template: `docs/ProblemFraming.md`
 
-```markdown
+````markdown
 # Problem Framing: [Nama Proyek / Fitur]
 
 - **Tanggal**: [YYYY-MM-DD]
 - **Status**: Tervalidasi (Validated)
 - **Author / Lead**: Pero & Architect
+- **Decision Record**: [docs/decisions/PFDR-[YYYYMMDDHHmm].md](docs/decisions/PFDR-[YYYYMMDDHHmm].md)
 
 ## 1. Executive Problem Statement
 [Jelaskan masalah inti dalam 1-2 kalimat tajam dan jelas menggunakan analogi sederhana (ELI5)]
@@ -108,7 +104,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 ## 7. Hasil Musyawarah Dewan AI (Council Verdict)
 - **Konsensus Definisi Masalah**: [Ringkasan kesepakatan 5 persona AI]
 - **Titik Buta yang Berhasil Ditambal**: [Blind spot yang ditemukan dan dieliminasi]
-```
+````
 
 ## Anti-Patterns & Common Mistakes
 - **Unverified Hallucinated Problem**: Mengarang klaim masalah tanpa melampirkan bukti empiris atau riset web yang valid.
