@@ -11,37 +11,49 @@ Skill ini bertindak sebagai **"Dokter Diagnosa Masalah yang Bijak"**. Tugasnya a
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Wawancara Terarah**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk memandu wawancara pohon keputusan (frontier rounds) dengan opsi pilihan ganda dan analogi sederhana (ELI5).
-- **Musyawarah Keputusan Strategis**: **`SUPPORTING / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menggelar sidang dewan 5 persona AI ketika menghadapi kebuntuan arah produk, menimbang pivot masalah berisiko tinggi, atau memilih target persona yang bertolak belakang.
-- **Riset Pasar & Solusi Pembanding**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` untuk memeriksa bagaimana masalah serupa diselesaikan di industri.
+- **Riset Multi-Dimensi Paralel**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen riset independen secara paralel (*Sub-agen 1: Analisis Pain Point Persona, Sub-agen 2: Studi Kasus Kompetitor & Industri, Sub-agen 3: Batasan Teknis & Regulasi*) guna memperluas cakupan konteks tanpa membebani context window tunggal.
+- **Verifikasi Bukti Empiris & Sumber Valid**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` untuk menghimpun data statistik nyata, benchmark pasar, regulasi industri, dan studi kasus kegagalan/keberhasilan dengan sitasi URL valid (minimal 3 sumber resmi).
+- **Musyawarah 5 Sudut Pandang AI**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji rumusan masalah dari 5 perspektif ahli (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membasmi bias sudut pandang sempit.
+- **Wawancara Socratic & Stress-Test 5-Whys**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk menguji asumsi dasar, membedah 5-Whys hingga ke akar terdalam, dan mendeteksi inkonsistensi sejak awal.
+- **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 
 ## When to Use
 - Memulai proyek baru atau merancang fitur/kemampuan baru berskala besar.
-- Pengguna memiliki ide konseptual yang masih samar atau terlalu luas.
-- Ingin membedah apakah keluhan pengguna adalah akar masalah atau hanya gejala permukaan.
+- Pengguna memiliki ide konseptual yang masih samar, terlalu sempit, atau terlalu luas.
+- Ingin membedah apakah keluhan pengguna adalah akar masalah atau hanya gejala permukaan dengan dukungan bukti empiris.
+- Menghilangkan bias asumsi dan inkonsistensi sebelum masuk ke tahap pembuatan PRD (`pero-prd-writing`).
 
-## The 4-Pillar Problem Framing Workflow
+## The 5-Pillar Problem Framing Framework
 
 ```
-[1. Deep Discovery & Pain Point] ──> [2. Root Cause Analysis (5-Whys)]
-                                                    │
-[4. Measurable Success Metrics]   <── [3. Boundary & Non-Goals] ────┘
+[1. Multi-Dimensional Discovery (Parallel Agents)] ──> [2. Empirical Evidence & Citations (Web Search)]
+                                                                               │
+[4. AI Council Review & Consensus (LLM Council)]   <── [3. Root Cause Analysis & 5-Whys (Grilling)]
+              │
+[5. Boundaries (Non-Goals) & Success Metrics]
 ```
 
-### 1. Discovery & Pain Point Extraction (via `grilling`)
-- **Siapa yang Mengalami (Who)**: Target persona yang paling dirugikan jika masalah ini dibiarkan.
-- **Kondisi Saat Ini (Current Workarounds)**: Bagaimana cara mereka mengakali masalah ini sekarang, dan kenapa cara lama tersebut melelahkan/tidak efisien?
+### 1. Multi-Dimensional Discovery (via `dispatching-parallel-agents`)
+- Membagi eksplorasi masalah ke 3 sub-agen mandiri:
+  1. *Persona & Workflow Track*: Siapa yang paling dirugikan, cara lama (*workaround*) yang melelahkan, dan friksi operasional harian.
+  2. *Market & Competitor Track*: Bagaimana pemain industri lain menyelesaikan masalah serupa dan di mana letak kelemahannya.
+  3. *Feasibility & Regulatory Track*: Batasan regulasi, kepatuhan data, dan kendala teknis umum di domain tersebut.
 
-### 2. Analisis Akar Masalah (5-Whys Root Cause)
-- Tanyakan "Mengapa" berulang kali hingga menemukan sumber masalah utama, bukan hanya menambal gejala di permukaan.
-- *Contoh Analogi*: Mobil mogok bukan karena "lampu indikator menyala" (gejala), tapi karena "oli mesin bocor dan habis" (akar masalah).
+### 2. Empirical Evidence & Verified Sources (via `web-search`)
+- Menghubungkan setiap klaim masalah dengan data faktual di lapangan.
+- Wajib menyertakan minimal 3 tautan URL resmi yang dapat diakses (studi kasus industri, laporan riset, statistik, atau standar RFC/Whitepaper).
 
-### 3. Pagar Batasan (In-Scope vs Out-of-Scope / Non-Goals)
-- Tuliskan secara eksplisit apa yang **AKAN** dikerjakan (MVP problem) dan apa yang **DILARANG / TIDAK AKAN** disentuh pada tahap ini (mencegah *scope creep*).
+### 3. Root Cause Analysis (5-Whys via `grilling`)
+- Menguji asumsi pengguna menggunakan pertanyaan bertingkat untuk memisahkan "gejala" dari "akar penyebab utama".
+- Mencegah solusi palsu (misalnya: pengguna mengira butuh fitur AI canggih, padahal masalah aslinya adalah data input yang berantakan).
 
-### 4. Metrik Keberhasilan Terukur (Success Metrics)
-- Tentukan indikator konkret kapan masalah ini dianggap berhasil diatasi (misal: "Waktu pencatatan data turun dari 15 menit ke 30 detik", "Tingkat error pengguna berkurang 90%").
+### 4. Multi-Perspective Peer Review (via `llm-council`)
+- Menyidangkan rumusan masalah ke 5 penasihat AI untuk menemukan titik buta (*blind spots*), mendeteksi kontradiksi logika, dan menyepakati definisi masalah yang paling kokoh.
+
+### 5. Pagar Batasan (Boundaries) & Metrik Keberhasilan
+- Menetapkan daftar **Non-Goals (Out-of-Scope)** secara tegas untuk mencegah pelebaran ruang lingkup (*scope creep*).
+- Menentukan indikator keberhasilan terukur (kuantitatif & kualitatif).
 
 ## Deliverables & Output Artifacts
 
@@ -60,17 +72,19 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Author / Lead**: Pero & Architect
 
 ## 1. Executive Problem Statement
-[Jelaskan masalah inti dalam 1-2 kalimat tajam dan jelas menggunakan analogi sederhana]
+[Jelaskan masalah inti dalam 1-2 kalimat tajam dan jelas menggunakan analogi sederhana (ELI5)]
 
 ## 2. Target Persona & Pain Points
 - **Target Pengguna**: [Siapa yang mengalami masalah ini]
-- **Cara Lama yang Melelahkan**: [Workaround saat ini dan letak kesulitannya]
-- **Dampak Kerugian**: [Apa kerugian jika masalah ini diabaikan]
+- **Cara Lama yang Melelahkan (Workarounds)**: [Cara kerja saat ini dan letak kesulitannya]
+- **Dampak Kerugian**: [Apa kerugian finansial/waktu jika masalah ini diabaikan]
 
 ## 3. Root Cause Analysis (5-Whys)
 1. *Mengapa masalah ini terjadi?* -> [Jawaban 1]
 2. *Mengapa [Jawaban 1] terjadi?* -> [Jawaban 2]
-3. *Mengapa [Jawaban 2] terjadi?* -> [Jawaban 3 (Akar Masalah Utama)]
+3. *Mengapa [Jawaban 2] terjadi?* -> [Jawaban 3]
+4. *Mengapa [Jawaban 3] terjadi?* -> [Jawaban 4]
+5. *Mengapa [Jawaban 4] terjadi?* -> [Jawaban 5 (Akar Masalah Utama)]
 
 ## 4. Ruang Lingkup & Pagar Batasan (Boundaries)
 - **Fokus Utama (In-Scope)**:
@@ -80,12 +94,24 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
   - [Non-Goal 1: Hal yang sengaja TIDAK akan dibuat sekarang]
   - [Non-Goal 2]
 
-## 5. Ukuran Keberhasilan (Success Metrics)
-- **Metrik Utama**: [Angka / Target Terukur]
-- **Kondisi Selesai**: [Kriteria saat masalah ini resmi teratasi]
+## 5. Bukti Empiris & Referensi Industri Terverifikasi
+| No | Sumber / Publikasi | URL Referensi | Temuan Kunci / Fakta Empiris |
+|:---|:---|:---|:---|
+| 1 | [Nama Studi Kasus / Sumber] | `https://...` | [Fakta / Statistik Konkret] |
+| 2 | [Laporan Riset Pasar / Standar] | `https://...` | [Temuan Kunci] |
+| 3 | [Analisis Benchmark Kompetitor] | `https://...` | [Bukti Validasi] |
+
+## 6. Ukuran Keberhasilan (Success Metrics)
+- **Metrik Utama**: [Angka / Target Terukur, misal: Reduksi waktu kerja 80%]
+- **Kondisi Selesai**: [Kriteria konkret saat masalah ini resmi teratasi]
+
+## 7. Hasil Musyawarah Dewan AI (Council Verdict)
+- **Konsensus Definisi Masalah**: [Ringkasan kesepakatan 5 persona AI]
+- **Titik Buta yang Berhasil Ditambal**: [Blind spot yang ditemukan dan dieliminasi]
 ```
 
 ## Anti-Patterns & Common Mistakes
-- **Langsung Melompat ke Solusi Koding**: Membicarakan database apa yang dipakai atau tombol warna apa yang dibuat sebelum membuktikan masalah aslinya.
-- **Menganggap Gejala Sebagai Masalah**: Mengira user butuh tombol export Excel, padahal user cuma butuh ringkasan angka per minggu.
-- **Lupa Menulis Non-Goals**: Tidak membuat daftar batasan, sehingga proyek melebar tanpa ujung.
+- **Unverified Hallucinated Problem**: Mengarang klaim masalah tanpa melampirkan bukti empiris atau riset web yang valid.
+- **Narrow Tunnel Vision**: Merumuskan masalah hanya dari satu sudut pandang sempit tanpa validasi multi-agen paralel atau dewan AI.
+- **Inconsistent Scope**: Menuliskan akar masalah yang bertentangan dengan daftar Non-Goals.
+- **Langsung Melompat ke Solusi Koding**: Membicarakan stack database atau desain UI sebelum membuktikan bahwa masalah aslinya nyata.
