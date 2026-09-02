@@ -10,7 +10,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/okyFaishal/pero-agent-skills.git"
 
-# 27 Universal Engineering & SDLC Skills
+# 28 Universal Engineering & SDLC Skills
 SKILLS=(
   "pero-problem-framing"
   "pero-prd-writing"
@@ -39,6 +39,7 @@ SKILLS=(
   "llm-council"
   "dispatching-parallel-agents"
   "subagent-driven-development"
+  "taste-skill"
 )
 
 # Parse Arguments
@@ -247,6 +248,40 @@ fi
 # Bersihkan temp dir jika ada
 if [[ -n "$TEMP_DIR" && -d "$TEMP_DIR" ]]; then
   rm -rf "$TEMP_DIR"
+fi
+
+# ------------------------------------------------------------------------------
+# 5. Deteksi Stack Proyek & Penyiapan MCP Dinamis (Dynamic Stack Provisioning)
+# ------------------------------------------------------------------------------
+echo "-> Memeriksa manifest proyek untuk penyelarasan MCP spesifik stack..."
+DETECTED_STACKS=()
+
+if [[ -f "${TARGET_DIR}/Package.swift" ]] || compgen -G "${TARGET_DIR}/*.xcodeproj" > /dev/null 2>&1 || compgen -G "${TARGET_DIR}/*.xcworkspace" > /dev/null 2>&1; then
+  DETECTED_STACKS+=("Swift/Apple (xcodebuild-mcp)")
+fi
+
+if [[ -f "${TARGET_DIR}/pyproject.toml" ]] || [[ -f "${TARGET_DIR}/requirements.txt" ]] || [[ -f "${TARGET_DIR}/Pipfile" ]]; then
+  DETECTED_STACKS+=("Python (Environment & Linter MCP)")
+fi
+
+if [[ -f "${TARGET_DIR}/Cargo.toml" ]]; then
+  DETECTED_STACKS+=("Rust (Cargo & Analyzer MCP)")
+fi
+
+if [[ -f "${TARGET_DIR}/go.mod" ]]; then
+  DETECTED_STACKS+=("Go (gopls Toolchain MCP)")
+fi
+
+if [[ -f "${TARGET_DIR}/package.json" ]]; then
+  DETECTED_STACKS+=("Node.js/Web (Chrome DevTools & Web APIs)")
+fi
+
+if [[ ${#DETECTED_STACKS[@]} -gt 0 ]]; then
+  for stack in "${DETECTED_STACKS[@]}"; do
+    echo "   [⚡] Terdeteksi stack: ${stack} (Siap disinkronkan otomatis)"
+  done
+else
+  echo "   [✓] Repositori universal (Polyglot core aktif tanpa dependensi khusus)."
 fi
 
 echo "================================================================="

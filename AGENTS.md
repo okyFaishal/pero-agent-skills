@@ -57,3 +57,4 @@
 25. `llm-council/` : Musyawarah 5 sudut pandang AI, peer-review anonim & sintesis dewan untuk keputusan berisiko tinggi (`llm-council`).
 26. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
 27. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate (`subagent-driven-development`).
+28. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, kontrol motion, dan typography untuk landing page & portofolio (`taste-skill`).
