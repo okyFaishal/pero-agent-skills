@@ -20,6 +20,7 @@ Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi su
 - **Verifikasi Dokumentasi Library & SDK**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk memeriksa dokumentasi resmi paket/library pihak ketiga, memastikan tanda tangan fungsi (*method signatures*), tipe data argumen, dan lifecycle method sesuai rilis API mutakhir, bukan hasil halusinasi.
 - **Validasi Skema & Batasan Payload**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk memvalidasi struktur tipe data DTO, payload request/response, dan batasan batas (*boundary constraints*) pada interface.
 - **Proteksi Rahasia & Lingkungan**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk memastikan tidak ada kunci rahasia atau kredensial yang dituliskan langsung dalam fixtures kartu tugas.
+- **Spesifikasi Estetika & Dial Visual Antarmuka**: **`CONDITIONAL SUB-SKILL`**: Jika kartu tugas menargetkan pembuatan atau modifikasi komponen antarmuka pengguna (Frontend/UI/Landing Page), gunakan `taste-skill` untuk menetapkan *Brief Inference*, nilai 3 Dial (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`), pasangan tipografi, 4–6 token warna Hex, dan aturan *anti-slop* visual pada kartu tugas. Jika kartu tugas murni backend/core/data tanpa perubahan UI, sub-skill ini tidak digunakan.
 
 ## When to Use
 - Sebelum subagent, pengembang, atau pelaksana koding mengeksekusi tugas apa pun dari `docs/TaskBacklog.md`.

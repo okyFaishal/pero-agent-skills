@@ -18,6 +18,7 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 - **Riset Benchmark & Pembanding Teknologi**: **`SUPPORTING SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, stabilitas rilis, dan perbandingan teknis antar framework di industri.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
 - **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural (pemilihan database, framework, pola konkurensi) ke `docs/decisions/ADR-[YYYYMMDDHHmm].md`.
+- **Pemetaan Fondasi Design System UI**: **`CONDITIONAL SUB-SKILL`**: Jika perancangan mencakup antarmuka pengguna (Frontend/Landing Page/Web UI), gunakan `taste-skill` untuk memetakan arah desain (*Brief Inference*) dan menetapkan fondasi *Design System* resmi (Fluent, Material, Carbon, Radix, atau Tailwind) di `docs/Architecture.md`. Jika proyek murni backend/CLI/core tanpa UI, sub-skill ini tidak digunakan.
 
 ## When to Use
 - Merancang arsitektur sistem tingkat tinggi (*High-Level Architecture*) sebelum koding dimulai.
@@ -41,8 +42,9 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 - Visualisasi hubungan antar komponen utama (Klien/UI, Gateway/API, Application Core, Worker/Queue, Database, External Services) menggunakan diagram Mermaid (`graph TB` atau `flowchart LR`).
 - Memberikan gambaran alur data dari hulu ke hilir dengan node yang diberi label jelas dan aman dari error parsing (gunakan tanda petik dua pada label berkurung/simbol).
 
-### 2. Tech Stack Selection & Trade-Off Matrix (Verified via `context-7` & `llm-council`)
+### 2. Tech Stack Selection, Toolchain & MCP Server Declaration
 - Matriks pemilihan teknologi untuk setiap lapisan sistem (Runtime, Web/UI Framework, API Server, Database, Cache, Message Broker, Testing Tools).
+- **Deklarasi Toolchain & Server MCP**: Menetapkan kebutuhan perkakas pengembangan dan server MCP (*Model Context Protocol*) spesifik domain (misalnya: `xcodebuild-mcp` untuk ekosistem Apple/Swift, `gopls` untuk Go, `postgres-mcp` untuk database, atau `chrome-devtools` untuk web) yang akan disiapkan oleh `find-skill` / installer.
 - Setiap pilihan wajib didasari verifikasi resmi via `context-7` (memeriksa versi LTS/terkini, kompatibilitas, dan status pemeliharaan) serta mencatat alternatif yang ditolak beserta alasannya. Jika terdapat pilihan bertolak belakang dengan risiko tinggi, sidangkan opsi melalui `llm-council`.
 
 ### 3. Component & Module Breakdown (Clean / Hexagonal / Layered)

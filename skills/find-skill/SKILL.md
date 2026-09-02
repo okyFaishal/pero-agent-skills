@@ -72,6 +72,7 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Keamanan & Env** | ".env file", "kunci rahasia", "perintah terminal destruktif", "credentials" | [env-guard](file:///Users/okyfaishal/project/pero-agent-skills/skills/env-guard/SKILL.md) |
 | **Bahasa Awam** | "Jelaskan dengan sederhana", "analogi awam", "ELI5", "bahasa manusia" | [eli5](file:///Users/okyfaishal/project/pero-agent-skills/skills/eli5/SKILL.md) |
 | **Pembersih Slop** | "Hapus kode sampah", "anti-slop", "YAGNI", "bersihkan komentar sepele" | [anti-slop](file:///Users/okyfaishal/project/pero-agent-skills/skills/anti-slop/SKILL.md) |
+| **Estetika UI Visual** | "Desain landing page", "taste-skill", "frontend estetis", "portofolio styling", "anti-slop UI", "motion UI" | [taste-skill](file:///Users/okyfaishal/project/pero-agent-skills/skills/taste-skill/SKILL.md) |
 | **Pencarian Skill** | "Skill apa yang cocok?", "cari instruksi", "panduan kerja" | [find-skill](file:///Users/okyfaishal/project/pero-agent-skills/skills/find-skill/SKILL.md) |
 
 ---
@@ -104,6 +105,26 @@ Jika sebuah permintaan tidak memiliki padanan langsung dalam matriks:
 
 ---
 
+## Dynamic Tech-Stack Fingerprinting & JIT Skill/MCP Auto-Provisioning
+
+Selain mencocokkan kata kunci tugas, `find-skill` bertindak sebagai **Mesin Penyedia Otomatis (*Just-In-Time Provisioning Engine*)** yang memindai berkas manifest repositori untuk mendeteksi kebutuhan perkakas dan server MCP (*Model Context Protocol*) spesifik domain:
+
+1. **Pemindaian Manifest Otomatis**:
+   - `Package.swift` / `*.xcodeproj` / `*.xcworkspace` ➡️ Menyiapkan toolchain **Apple/Swift** & server MCP `xcodebuild-mcp`.
+   - `pyproject.toml` / `requirements.txt` / `Pipfile` ➡️ Menyiapkan toolchain **Python** (linter, pytest, database MCP).
+   - `Cargo.toml` ➡️ Menyiapkan toolchain **Rust** (cargo & analyzer MCP).
+   - `go.mod` ➡️ Menyiapkan toolchain **Go** (gopls toolchain MCP).
+   - `package.json` ➡️ Menyiapkan toolchain **Node.js/Web** (Chrome DevTools & modern web guidelines).
+
+2. **Prinsip Nol Penghapusan (*Zero Deletion of Universal Skills*)**:
+   - Seluruh 28 skill universal Pero tetap utuh dan aktif sebagai pondasi utama repositori.
+   - Skill dan konfigurasi MCP spesifik stack ditambahkan sebagai ekstensi pelengkap (*dynamic overlay*) tanpa menimpa konfigurasi universal yang sudah ada.
+
+3. **Penyelarasan Runtime MCP (.mcp_config.json)**:
+   - Jika proyek membutuhkan interaksi langsung dengan compiler/simulator native (seperti Xcode atau Chrome), `find-skill` menyelaraskan konfigurasi MCP ke `.mcp_config.json` lokal atau file konfigurasi agen terkait agar tools langsung tersedia di sesi kerja.
+
+---
+
 ## Tabel Anti-Pola Penemuan Skill (*Find-Skill Anti-Patterns*)
 
 | Pola Terlarang | Mengapa Dilarang Keras? | Solusi Wajib |
@@ -111,6 +132,7 @@ Jika sebuah permintaan tidak memiliki padanan langsung dalam matriks:
 | **Blind Assumption Execution** | Langsung membuat kode tanpa pernah mengecek apakah ada skill lokal yang mengatur domain tersebut. | Wajib panggil `find-skill` dan baca `SKILL.md` sebelum menulis satu baris kode pun. |
 | **Surface-Level Scanning** | Hanya membaca judul skill tanpa membaca detail aturan dan checklist di dalam `SKILL.md`. | Baca seluruh berkas `SKILL.md` yang relevan sebelum mengeksekusi tugas. |
 | **Skipping Upstream SDLC** | Langsung melompat ke koding saat pengguna memberikan ide baru yang belum memiliki PRD atau arsitektur. | Arahkan kembali ke alur SDLC Pero hulu (`problem-framing` -> `prd-writing`). |
+| **Ignoring Project Manifest** | Menggunakan tool generic tanpa memeriksa apakah proyek memiliki manifest spesifik (Swift, Rust, Python, Go) yang membutuhkan MCP khusus. | Jalankan deteksi manifest via `find-skill` untuk mengaktifkan MCP yang sesuai. |
 
 ---
 
