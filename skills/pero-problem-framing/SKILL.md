@@ -125,7 +125,7 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 - **Tanggal**: [YYYY-MM-DD]
 - **Status**: Tervalidasi (Validated)
 - **Author / Lead**: Pero & Architect
-- **Decision Record**: [docs/decisions/PFDR-[YYYYMMDDHHmm].md](docs/decisions/PFDR-[YYYYMMDDHHmm].md)
+- **Decision Record**: [docs/decisions/PFDR-[YYYYMMDDHHmm].md](decisions/PFDR-[YYYYMMDDHHmm].md)
 
 ## 1. Executive Problem Statement
 [Jelaskan masalah inti dalam 1-2 kalimat tajam dan jelas menggunakan analogi sederhana (ELI5)]
@@ -140,13 +140,13 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 2. *Mengapa [Jawaban 1] terjadi?* -> [Jawaban 2]
 3. *Mengapa [Jawaban 2] terjadi?* -> [Jawaban 3]
 4. *Mengapa [Jawaban 3] terjadi?* -> [Jawaban 4]
-5. *Mengapa [Jawaban 4] terjadi?* -> [Jawaban 5 (Akar Masalah Utama)]
+5. *Mengapa [Jawaban 4] terjadi?* -> [Akar Masalah Fundamental]
 
-## 4. Ruang Lingkup & Pagar Batasan (Boundaries)
-- **Fokus Utama (In-Scope)**:
-  - [Fokus 1]
-  - [Fokus 2]
-- **Bukan Sasaran / Dilarang (Non-Goals / Out-of-Scope)**:
+## 4. Boundaries & Scope Constraints
+- **In-Scope (Fokus Utama)**:
+  - [Ruang lingkup 1]
+  - [Ruang lingkup 2]
+- **Non-Goals (Dilarang Dibuat / Batasan Ketat)**:
   - [Non-Goal 1: Hal yang sengaja TIDAK akan dibuat sekarang]
   - [Non-Goal 2]
 
@@ -169,6 +169,36 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 - **Konsensus Definisi Masalah**: [Ringkasan kesepakatan 5 persona AI]
 - **Titik Buta & Kritik Tajam Dewan**: [Blind spot dan risiko kritis yang diangkat persona dewan]
 - **Keputusan Strategis Pengguna (Hasil Grilling R2)**: [Pilihan opsi dan arahan pengguna atas kritik dewan]
+````
+
+---
+
+## Template: `docs/decisions/PFDR-[YYYYMMDDHHmm].md`
+
+````markdown
+# PFDR-[YYYYMMDDHHmm]: [Judul Keputusan Definisi Masalah & Batasan Non-Goals]
+
+- **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
+- **Tanggal**: [YYYY-MM-DD]
+- **Pengambil Keputusan**: Pengguna & Tim Problem Framing AI
+- **Dokumen Terkait**: [docs/ProblemFraming.md](../ProblemFraming.md)
+
+## 1. Konteks Masalah & Kebutuhan Penetapan Arah
+[Jelaskan latar belakang masalah inti dan mengapa batas non-goals perlu dikunci di awal].
+
+## 2. Batasan In-Scope vs Non-Goals yang Ditetapkan
+[Rincian hal yang masuk cakupan dan hal yang secara sengaja ditolak / ditunda ke fase rilis mendatang].
+
+## 3. Alternatif Pembingkaian Masalah yang Ditolak
+| Alternatif Framing | Alasan Penolakan |
+|:---|:---|
+| [Alternatif 1] | [Mengapa ditolak / bias asumsi / tidak didukung bukti empiris] |
+| [Alternatif 2] | [Kelemahan teknis / ruang lingkup terlalu luas / risiko YAGNI] |
+
+## 4. Konsekuensi Positif & Beban Operasional (Trade-offs)
+- **Konsekuensi Positif**: [Fokus tajam pada masalah inti, mencegah scope creep]
+- **Beban Operasional**: [Fitur sekunder ditolak sementara waktu]
+- **Strategi Mitigasi**: [Meninjau kembali non-goals setelah MVP divalidasi pengguna]
 ````
 
 ## Anti-Patterns & Common Mistakes

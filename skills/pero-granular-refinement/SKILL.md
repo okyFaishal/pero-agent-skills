@@ -177,8 +177,10 @@ Setiap penajaman tugas menghasilkan kartu berformat berikut:
 - **Status**: Ready for Implementation (TDD Phase)
 - **Domain**: [Web | Mobile | Backend | Database | Security | Core]
 - **Complexity / Size**: [S (1-2 files, ~100 lines) | M (3-4 files, ~200-300 lines)]
-- **Sumber Backlog**: [docs/TaskBacklog.md](docs/TaskBacklog.md) (Task X.Y)
-- **Referensi Desain**: [docs/SystemSpec.md](docs/SystemSpec.md) & [docs/Architecture.md](docs/Architecture.md)
+- **Depends On**: [Task ID | None]
+- **Parallel Safe?**: [Yes | No]
+- **Sumber Backlog**: [docs/TaskBacklog.md](../TaskBacklog.md) (Task X.Y)
+- **Referensi Desain**: [docs/SystemSpec.md](../SystemSpec.md) & [docs/Architecture.md](../Architecture.md)
 - **Decision Record**: [docs/decisions/RDR-[YYYYMMDDHHmm].md](../decisions/RDR-[YYYYMMDDHHmm].md)
 
 ---

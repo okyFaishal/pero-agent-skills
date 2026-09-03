@@ -74,6 +74,7 @@ flowchart TD
 
 ### 1. Pre-Flight Backlog Scan (Pindai Awal Sebelum Mulai)
 Sebelum meluncurkan Tugas #1:
+- **Verifikasi Gerbang Validasi Konteks (Stage 8 Gate)**: Periksa `docs/ValidationReport.md`. Pastikan status keseluruhan berstatus **🟢 GO (Pass)**. Jika berstatus **🔴 NO-GO (Blocker)**, eksekusi backlog otonom DILARANG berjalan sebelum blocker diselesaikan dan diselaraskan via `pero-context-validation`.
 - Pindai seluruh isi `docs/TaskBacklog.md` atau `implementation_plan.md`.
 - Pastikan urutan fase (Phase 1 ➡️ Phase 2 ➡️ dst.) logis dan tidak ada instruksi yang saling bertentangan.
 - Jika ada kontradiksi nyata di awal, ajukan 1 pertanyaan klarifikasi kepada pengguna sebelum mulai. Jika aman, **langsung mulai eksekusi tanpa menunggu persetujuan lanjutan**.

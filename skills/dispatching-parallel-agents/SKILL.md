@@ -140,11 +140,16 @@ Kembalikan:
 
 ## Integrasi dengan Skill Lain di Repositori
 
+*   **[`pero-problem-framing`](../pero-problem-framing/SKILL.md)** (Stage 1): Menerjunkan *Adaptive Squad* (3 agen inti + 1–3 agen spesialis) secara paralel untuk memvalidasi persona, pasar, dan kelayakan teknis.
+*   **[`pero-prd-writing`](../pero-prd-writing/SKILL.md)** (Stage 2): Menerjunkan *3-Track Research Squad* paralel untuk alur perjalanan pengguna, benchmark NFR, dan matriks prioritas MVP.
+*   **[`pero-user-stories`](../pero-user-stories/SKILL.md)** (Stage 3): Menerjunkan *Fixed 5-Specialist Squad* paralel untuk merumuskan skenario Gherkin, model data ERD, kontrak API, matriks RBAC, dan FSM.
+*   **[`pero-system-architecture`](../pero-system-architecture/SKILL.md)** (Stage 4): Menerjunkan *Fixed 5-Specialist Architecture Squad* paralel untuk mengevaluasi runtime, penyimpanan, model konkurensi, perimeter keamanan, dan toolchain.
+*   **[`pero-quality-governance`](../pero-quality-governance/SKILL.md)** (Stage 5): Menerjunkan *Fixed 5-Specialist Governance Squad* paralel untuk benchmarking standar keamanan, thread-safety, matriks linter, dan supply chain lockfile.
+*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)** (Stage 6): Menerjunkan *Fixed 5-Specialist Backlog Squad* paralel untuk menyusun backlog 5 fase dan 6 domain dengan pembagian tugas S/M.
+*   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)** (Stage 7): Menerjunkan *Fixed 5-Specialist Refinement Squad* paralel untuk menajamkan kartu tugas granular dengan 7 anatomi presisi dan failing test spec.
+*   **[`pero-context-validation`](../pero-context-validation/SKILL.md)** (Stage 8): Menerjunkan *Fixed 5-Specialist Validation Squad* paralel untuk mengaudit ketertelusuran 7-arah (*7-way traceability*) dan sintaksis diagram Mermaid.
 *   **[`subagent-driven-development`](../subagent-driven-development/SKILL.md)**: Mesin konveyor eksekusi sekuensial yang dapat memanggil `dispatching-parallel-agents` saat mendeteksi tugas-tugas independen dalam satu fase.
-*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)**: Mengelompokkan backlog tugas ke dalam kelompok-kelompok fase independen yang siap dieksekusi secara paralel.
-*   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)**: Menyusun kartu tugas dengan batasan file path presisi sehingga langsung siap menjadi prompt sub-agen terisolasi.
 *   **[`systematic-debugging`](../systematic-debugging/SKILL.md)**: Menerjunkan sub-agen terpisah untuk mengisolasi dan memperbaiki kegagalan tes di berbagai subsistem secara serentak (*Mass Debugging*).
-*   **[`pero-system-architecture`](../pero-system-architecture/SKILL.md)**: Melakukan riset komparasi pustaka atau pembuatan prototipe komponen arsitektur secara paralel.
 
 ---
 

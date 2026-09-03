@@ -28,33 +28,33 @@
 ## 5. Local Workspace Skills Directory (Complete Pero SDLC & Engineering Suite)
 
 ### A. Pero Custom SDLC Pipeline Suite (`pero:*`)
-1. `pero-problem-framing/` : Diagnosa akar masalah, persona, batasan non-goals & metrik (`pero:problem-framing`).
-2. `pero-prd-writing/` : Penyusunan Product Requirements Document & matriks fitur MVP (`pero:prd-writing`).
-3. `pero-user-stories/` : Translasi PRD ke Gherkin stories, domain models & API contracts (`pero:user-stories`).
-4. `pero-system-architecture/` : Perancangan arsitektur sistem, pemilihan tech stack & diagram Mermaid (`pero:system-architecture`).
-5. `pero-quality-governance/` : Standar tata kelola kualitas, aturan konkurensi & gerbang review (`pero:quality-governance`).
-6. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog tugas berfase lintas domain (`pero:task-decomposition`).
-7. `pero-granular-refinement/` : Penajaman kartu tugas spesifik, signature metode & failing tests (`pero:granular-refinement`).
-8. `pero-context-validation/` : Validasi konsistensi silang antar dokumen & audit diagram Mermaid (`pero:context-validation`).
+1. `pero-problem-framing/` : Diagnosa akar masalah, persona, batasan non-goals & metrik ➔ `docs/ProblemFraming.md` & `PFDR-[YYYYMMDDHHmm].md` (Adaptive Squad + Grilling R1/R2 Pause Gate).
+2. `pero-prd-writing/` : Penyusunan PRD formal, prioritas fitur MVP (P0/P1/P2) & NFR ➔ `docs/PRD.md` & `PDR-[YYYYMMDDHHmm].md` (3-Track Squad + Scope Grilling Pause Gate).
+3. `pero-user-stories/` : Translasi PRD ke Gherkin stories, domain ERD, RBAC & API contracts ➔ `docs/SystemSpec.md` & `SDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Contract Grilling Pause Gate).
+4. `pero-system-architecture/` : Perancangan arsitektur C4, tech stack, MCP & konkurensi ➔ `docs/Architecture.md` & `ADR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Architecture Grilling Pause Gate).
+5. `pero-quality-governance/` : Standar thread-safety, linter matrix, supply chain & review gates ➔ `docs/Governance.md` & `GDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Governance Grilling Pause Gate).
+6. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog 5 fase & 6 domain tugas S/M ➔ `docs/TaskBacklog.md` & `TDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Backlog Grilling Pause Gate).
+7. `pero-granular-refinement/` : Penajaman kartu tugas presisi (7 anatomi, invarian, blast radius, failing test) ➔ `docs/tasks/TASK-[ID].md` & `RDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Task Grilling Pause Gate).
+8. `pero-context-validation/` : Validasi ketertelusuran 7-arah, 3 severity tiers & audit Mermaid ➔ `docs/ValidationReport.md` & `VDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Go/No-Go Decision Gate).
 
 ### B. Standard Engineering & Tooling Skills
-9. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas.
+9. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas & stack auto-detection.
 10. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
-11. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal.
-12. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide.
+11. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal (min 2, max 5 search).
+12. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide/desain (min 5, max 10 tanya bertahap).
 13. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
-14. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug.
-15. `verification-before-completion/` : Bukti verifikasi nyata terminal sebelum menyatakan selesai.
-16. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan.
+14. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug (4-phase scientific debugging).
+15. `verification-before-completion/` : Bukti verifikasi nyata terminal (exit code 0, 0 failure) sebelum menyatakan selesai.
+16. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan/concurrency.
 17. `api-contract-design/` : Perancangan kontrak data, endpoint & envelope API.
 18. `schema-validator/` : Validasi JSON schema, DTO dan model serialisasi.
-19. `decision-recorder/` : Pencatatan riwayat keputusan teknis di `docs/decisions/`.
-20. `living-doc-sync/` : Sinkronisasi diagram & dokumentasi arsitektur hidup.
+19. `decision-recorder/` : Pencatatan riwayat keputusan teknis 8 tipe (`PFDR`, `PDR`, `SDR`, `ADR`, `GDR`, `TDR`, `RDR`, `VDR`) di `docs/decisions/`.
+20. `living-doc-sync/` : Sinkronisasi 8 dokumen inti `docs/` & rekam keputusan saat kode berubah (*Octa-Doc Ecosystem Sync*).
 21. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
-22. `env-guard/` : Proteksi file rahasia dan pencegahan perintah terminal berbahaya.
-23. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan 3-lapis ramah awam (`eli5`).
-24. `anti-slop/` : Eliminasi boilerplate berlebih, komentar sampah, basa-basi AI, dan over-engineering (`anti-slop`).
+22. `env-guard/` : Proteksi file rahasia, sensor kredensial otomatis, dan pencegahan perintah terminal berbahaya.
+23. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan ramah awam beranalogi alami tanpa label kaku (`eli5`).
+24. `anti-slop/` : Eliminasi boilerplate berlebih (YAGNI), komentar sampah, basa-basi AI, dan mock palsu (`anti-slop`).
 25. `llm-council/` : Musyawarah 5 sudut pandang AI, peer-review anonim & sintesis dewan untuk keputusan berisiko tinggi (`llm-council`).
-26. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
-27. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate (`subagent-driven-development`).
-28. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, kontrol motion, dan typography untuk landing page & portofolio (`taste-skill`).
+26. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri, squad spesialis SDLC, & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
+27. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate berlandaskan gerbang validasi Go (`subagent-driven-development`).
+28. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, 3 dials (Variance, Motion, Density), dan typography untuk frontend (`taste-skill`).

@@ -76,7 +76,7 @@ flowchart TB
     subgraph CONTRACTS ["3. Governance, Contracts & Data Architecture"]
         API["api-contract-design"]:::govern
         SCH["schema-validator"]:::govern
-        ADR["decision-recorder"]:::govern
+        DEC["decision-recorder<br/>(8 Types: PFDR to VDR)"]:::govern
         DOC["living-doc-sync"]:::govern
         ENV["env-guard"]:::guard
     end
@@ -99,6 +99,10 @@ flowchart TB
     GRL --- S2
     GRL --- S3
     GRL --- S4
+    GRL --- S5
+    GRL --- S6
+    GRL --- S7
+    GRL --- S8
     COU ---|"Strategic Deliberation"| S1
     COU ---|"MVP Scope Review"| S2
     COU ---|"Architecture Review"| S4
@@ -122,6 +126,7 @@ flowchart TB
     DPA -.->|"Parallel Governance Benchmarks"| S5
     DPA -.->|"Domain Task Batching"| S6
     DPA -.->|"Parallel Card Prep"| S7
+    DPA -.->|"Parallel 7-Way Audit Squad"| S8
     DPA -.->|"Mass Debugging"| DBG
 
     SDD ==>|"Autonomous Task Flow"| S6
@@ -147,9 +152,16 @@ flowchart TB
     S8 -.->|"Audit Task Refinement"| S7
 
     %% SDLC to Contracts & Governance
+    S1 -.->|"PFDR"| DEC
+    S2 -.->|"PDR"| DEC
     S3 -.-> API
+    S3 -.->|"SDR"| DEC
     API -.-> SCH
-    S4 -.-> ADR
+    S4 -.->|"ADR"| DEC
+    S5 -.->|"GDR"| DEC
+    S6 -.->|"TDR"| DEC
+    S7 -.->|"RDR"| DEC
+    S8 -.->|"VDR"| DEC
 
     %% SDLC to Engineering Execution
     S8 ==> GIT
@@ -217,7 +229,7 @@ flowchart TD
     SK_ARCH -->|"Butuh dokumentasi resmi library via MCP?"| SK_C7["context-7<br/>(Dokumentasi Resmi API / MCP)"]
     SK_ARCH -->|"Riset arsitektur eksternal & benchmark?"| SK_WS_S4["web-search<br/>(Riset Web Terarah)"]
     SK_ARCH -->|"Trade-off arsitektur berat / Dilema stack?"| SK_COU3["llm-council<br/>(Musyawarah Arsitektur Dewan)"]
-    SK_ARCH -->|"Catat riwayat keputusan arsitektur?"| SK_ADR["decision-recorder<br/>(Dokumentasi ADR / PDR)"]
+    SK_ARCH -->|"Catat riwayat keputusan arsitektur?"| SK_ADR["decision-recorder<br/>(Dokumentasi 8 Tipe: PFDR s/d VDR)"]
 
     %% Cabang 6: Tahap S5 - Tata Kelola Kualitas
     Q_CAT -->|"6. Tetapkan standar kualitas & konkurensi"| SK_GOV["pero-quality-governance<br/>(Thread-Safety & Review Gates)"]
@@ -234,7 +246,7 @@ flowchart TD
     SK_DECOMP --> SK_GRAN
     SK_GRAN -->|"Penajaman kartu tugas massal paralel?"| SK_DPA_S7["dispatching-parallel-agents<br/>(Sub-Agen Penajaman Kartu)"]
     SK_GRAN -->|"Ambil signature SDK resmi via Context7?"| SK_C7_S7["context-7<br/>(SDK Method Signatures)"]
-    SK_GRAN --> SK_VALID["pero-context-validation<br/>(Audit Konsistensi Lintas Dokumen)"]
+    SK_GRAN --> SK_VALID["pero-context-validation<br/>(Audit Ketertelusuran 7-Arah ➡️ ValidationReport & VDR)"]
 
     %% Cabang 9: Tahap Eksekusi Koding & TDD
     Q_CAT -->|"9. Eksekusi backlog otonom berkelanjutan"| SK_SDD["subagent-driven-development<br/>(Loop Otonom Sub-Agen)"]
@@ -293,10 +305,10 @@ flowchart LR
     classDef highlight fill:#e0f2fe,stroke:#0369a1,stroke-width:2px,color:#0c4a6e;
 
     subgraph PHASE1 ["Tahap 1 - 4: Perumusan Konsep, Spesifikasi & Arsitektur"]
-        P1["1. pero-problem-framing<br/><b>(Akar Masalah & Non-Goals)</b><br/><i>Protokol: Multi-Agent Framing & Deliberasi Council</i>"]:::stage
-        P2["2. pero-prd-writing<br/><b>(Fitur MVP & Matriks Prioritas)</b><br/><i>Protokol: Multi-Agent Persona & Riset Pasar</i>"]:::stage
-        P3["3. pero-user-stories<br/><b>(Gherkin & Model Entitas Domain)</b><br/><i>Protokol: Multi-Agent Drafting Lintas Modul</i>"]:::stage
-        P4["4. pero-system-architecture<br/><b>(Tech Stack & Server MCP)</b><br/><i>Protokol: Multi-Agent Prototyping & Architecture Spike</i>"]:::highlight
+        P1["1. pero-problem-framing<br/><b>(Akar Masalah & Non-Goals)</b><br/><i>Protokol: Adaptive Squad & Grilling Pause Gate</i>"]:::stage
+        P2["2. pero-prd-writing<br/><b>(Fitur MVP & Matriks Prioritas)</b><br/><i>Protokol: 3-Track Squad & Scope Pause Gate</i>"]:::stage
+        P3["3. pero-user-stories<br/><b>(Gherkin & Model Entitas Domain)</b><br/><i>Protokol: Fixed 5-Specialist Squad & Contract Gate</i>"]:::stage
+        P4["4. pero-system-architecture<br/><b>(Tech Stack & Server MCP)</b><br/><i>Protokol: Fixed 5-Specialist Architecture Squad</i>"]:::highlight
 
         P1 --> P2
         P2 --> P3
@@ -304,10 +316,10 @@ flowchart LR
     end
 
     subgraph PHASE2 ["Tahap 5 - 8: Tata Kelola, Dekomposisi & Validasi"]
-        P5["5. pero-quality-governance<br/><b>(Batas Kualitas & Concurrency)</b><br/><i>Protokol: Multi-Agent Security & Standard Audit</i>"]:::stage
-        P6["6. pero-task-decomposition<br/><b>(Backlog Berfase 6-Domain)</b><br/><i>Protokol: Multi-Agent Domain Batching (DPA/SDD)</i>"]:::stage
-        P7["7. pero-granular-refinement<br/><b>(Failing Test & Dial UI)</b><br/><i>Protokol: Multi-Agent Card Refinement & Taste Engine</i>"]:::highlight
-        P8["8. pero-context-validation<br/><b>(Audit Lintas Dokumen & Diagram)</b><br/><i>Protokol: Multi-Agent Cross-Document Verification</i>"]:::stage
+        P5["5. pero-quality-governance<br/><b>(Batas Kualitas & Concurrency)</b><br/><i>Protokol: Fixed 5-Specialist Governance Squad</i>"]:::stage
+        P6["6. pero-task-decomposition<br/><b>(Backlog Berfase 6-Domain)</b><br/><i>Protokol: Fixed 5-Specialist Backlog Squad</i>"]:::stage
+        P7["7. pero-granular-refinement<br/><b>(7 Anatomi Presisi & Red Spec)</b><br/><i>Protokol: Fixed 5-Specialist Refinement Squad</i>"]:::highlight
+        P8["8. pero-context-validation<br/><b>(Audit Lintas Dokumen & Diagram)</b><br/><i>Protokol: Fixed 5-Specialist Validation Squad (Go/No-Go)</i>"]:::stage
 
         P5 --> P6
         P6 --> P7
@@ -401,8 +413,8 @@ sequenceDiagram
 | 4 | [`pero-system-architecture`](.agents/skills/pero-system-architecture/SKILL.md) | Pero SDLC | Merancang denah arsitektur sistem, komponen, & diagram Mermaid | System Spec ➡️ `docs/Architecture.md` & `ADR` |
 | 5 | [`pero-quality-governance`](.agents/skills/pero-quality-governance/SKILL.md) | Pero SDLC | Menetapkan aturan thread-safety, batas kualitas & review gate | Architecture ➡️ `docs/Governance.md` & `GDR` |
 | 6 | [`pero-task-decomposition`](.agents/skills/pero-task-decomposition/SKILL.md) | Pero SDLC | Memecah spesifikasi sistem menjadi backlog 6 domain | Arsitektur & Spek ➡️ `docs/TaskBacklog.md` & `TDR` |
-| 7 | [`pero-granular-refinement`](.agents/skills/pero-granular-refinement/SKILL.md) | Pero SDLC | Menajamkan kartu tugas dengan file path, signature, & failing test | Task Backlog ➡️ `docs/tasks/TASK-[ID].md` |
-| 8 | [`pero-context-validation`](.agents/skills/pero-context-validation/SKILL.md) | Pero SDLC | Mengaudit konsistensi antar seluruh dokumen & diagram Mermaid | Seluruh `docs/*.md` ➡️ `docs/ValidationReport.md` |
+| 7 | [`pero-granular-refinement`](.agents/skills/pero-granular-refinement/SKILL.md) | Pero SDLC | Menajamkan kartu tugas dengan file path, signature, & failing test | Task Backlog ➡️ `docs/tasks/TASK-[ID].md` & `RDR` |
+| 8 | [`pero-context-validation`](.agents/skills/pero-context-validation/SKILL.md) | Pero SDLC | Mengaudit konsistensi antar seluruh dokumen & diagram Mermaid | Seluruh `docs/*.md` ➡️ `docs/ValidationReport.md` & `VDR` |
 | 9 | [`find-skill`](.agents/skills/find-skill/SKILL.md) | Tooling | Mencari skill yang relevan di folder `.agents/skills/` | Kata kunci tugas ➡️ Rekomendasi Skill |
 | 10 | [`context-7`](.agents/skills/context-7/SKILL.md) | Tooling | Membaca dokumentasi resmi library/API via Context7 MCP | Nama paket/library ➡️ Dokumentasi Resmi Terverifikasi |
 | 11 | [`web-search`](.agents/skills/web-search/SKILL.md) | Tooling | Riset internet terarah untuk pemecahan masalah & fakta rilis | Query pencarian ➡️ Fakta & Solusi Teruji |
@@ -413,8 +425,8 @@ sequenceDiagram
 | 16 | [`code-reviewer`](.agents/skills/code-reviewer/SKILL.md) | Discipline | Review 2-lapis sebelum merge: Kesesuaian spek & kode bersih | Diff Kode ➡️ Checklist Audit Kualitas |
 | 17 | [`api-contract-design`](.agents/skills/api-contract-design/SKILL.md) | Architecture | Merancang kontrak antarmuka data REST, GraphQL, atau gRPC | Kebutuhan API ➡️ Dokumen Kontrak & Endpoint |
 | 18 | [`schema-validator`](.agents/skills/schema-validator/SKILL.md) | Data | Memvalidasi integritas skema JSON, DTO, dan serialisasi | Data Payload ➡️ Status Validasi Skema |
-| 19 | [`decision-recorder`](.agents/skills/decision-recorder/SKILL.md) | Governance | Mencatat riwayat keputusan arsitektur/teknis (`ADR`/`PDR`/`PFDR`) | Keputusan Desain ➡️ `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` |
-| 20 | [`living-doc-sync`](.agents/skills/living-doc-sync/SKILL.md) | Docs | Menyinkronkan diagram & dokumentasi saat kode berubah | Perubahan Kode ➡️ Update Diagram Arsitektur |
+| 19 | [`decision-recorder`](.agents/skills/decision-recorder/SKILL.md) | Governance | Mencatat riwayat keputusan teknis (`PFDR`, `PDR`, `SDR`, `ADR`, `GDR`, `TDR`, `RDR`, `VDR`) | Keputusan Desain ➡️ `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` |
+| 20 | [`living-doc-sync`](.agents/skills/living-doc-sync/SKILL.md) | Docs | Menyinkronkan diagram & dokumentasi saat kode berubah | Perubahan Kode ➡️ Sinkronisasi 8 Dokumen `docs/` & Decision Records |
 | 21 | [`git-ops`](.agents/skills/git-ops/SKILL.md) | Operations | Operasi branching, commit Caveman, template PR, dan gh CLI | Perubahan Kode ➡️ Git Branch & PR Bersih |
 | 22 | [`env-guard`](.agents/skills/env-guard/SKILL.md) | Security | Melindungi file `.env`, kredensial, & filter perintah bahaya | Seluruh Operasi ➡️ Proteksi Rahasia & Keamanan |
 | 23 | [`eli5`](.agents/skills/eli5/SKILL.md) | Tooling / Discipline | Menyederhanakan konsep teknis rumit, audit kejelasan dokumen teknis, & analogi awam | Teks/Konsep rumit ➡️ Penjelasan Sederhana, Beranalogi & Mengalir Alami |

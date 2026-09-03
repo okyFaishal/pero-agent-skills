@@ -67,8 +67,8 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 4. **Spesialis 4: Audit Kelengkapan Backlog & Cakupan Tugas (*Task Backlog & Coverage Specialist*)**:
    - *Fokus*: Memeriksa alur `PRD.md` (P0/P1) + `SystemSpec.md` (Gherkin stories) $\rightarrow$ `TaskBacklog.md` $\rightarrow$ `docs/tasks/`.
    - *Misi*: Menegakkan *100% Backlog Coverage* (tidak boleh ada user story yang tidak memiliki kartu tugas), memeriksa batasan ukuran tugas (S/M), `Depends On`, dan `Parallel Safe`.
-5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & ADR/GDR/TDR/RDR Integrity Specialist*)**:
-   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (ADR, GDR, TDR, RDR, PDR).
+5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & 8-Stage Integrity Specialist*)**:
+   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `GDR`, `TDR`, `RDR`, `VDR`).
    - *Misi*: Memastikan setiap keputusan arsitektur/tata kelola terdokumentasi rapi, tidak ada kontradiksi antar keputusan, dan status keputusan (*Accepted vs Superseded*) konsisten.
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
@@ -166,7 +166,7 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 - Setiap kartu tugas makro yang siap dieksekusi wajib dipertajam menjadi kartu tugas granular di `docs/tasks/TASK-[ID].md` yang mematuhi **7 Anatomi Presisi** (termasuk pre/post-conditions dan blast radius).
 
 ### 7. Cross-Cutting-to-DecisionRecords Alignment (Rule 7)
-- Setiap keputusan teknis penting di arsitektur (ADR), tata kelola (GDR), dekomposisi backlog (TDR), penajaman tugas (RDR), dan validasi (VDR) wajib terdokumentasi di `docs/decisions/` tanpa ada kontradiksi status (*Accepted vs Superseded*).
+- Setiap keputusan penting di seluruh 8 tahap (PFDR di Framing, PDR di PRD, SDR di Spec, ADR di Architecture, GDR di Governance, TDR di Backlog, RDR di Refinement, dan VDR di Validation) wajib terdokumentasi rapi di `docs/decisions/` tanpa ada kontradiksi status (*Accepted vs Superseded*).
 
 ---
 
@@ -225,7 +225,7 @@ Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 | **Rule 4: Architecture -> Governance** | `Architecture` $\rightarrow$ `Governance` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan model konkurensi & supply chain security] |
 | **Rule 5: Architecture -> TaskBacklog** | `Architecture` $\rightarrow$ `TaskBacklog` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan 100% Backlog Coverage & ukuran S/M] |
 | **Rule 6: TaskBacklog -> GranularRefinement**| `TaskBacklog` $\rightarrow$ `TASK-[ID]` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan 7 Anatomi Presisi & TDD Red Spec] |
-| **Rule 7: Cross-Cutting -> DecisionRecords** | `All Docs` $\rightarrow$ `decisions/` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan kelengkapan ADR, GDR, TDR, RDR] |
+| **Rule 7: Cross-Cutting -> DecisionRecords** | `All Docs` $\rightarrow$ `decisions/` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan kelengkapan PFDR, PDR, SDR, ADR, GDR, TDR, RDR, VDR] |
 
 ## 2. Mermaid Diagrams Health Check
 

@@ -96,8 +96,8 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Versi**: 1.0 (MVP)
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/ProblemFraming.md](docs/ProblemFraming.md)
-- **Decision Record**: [docs/decisions/PDR-[YYYYMMDDHHmm].md](docs/decisions/PDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [docs/ProblemFraming.md](ProblemFraming.md)
+- **Decision Record**: [docs/decisions/PDR-[YYYYMMDDHHmm].md](decisions/PDR-[YYYYMMDDHHmm].md)
 
 ## 1. Executive Summary & Visi Produk
 [Jelaskan visi produk dalam 1 paragraf dengan analogi sederhana (ELI5)]
@@ -148,6 +148,36 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Kepatuhan Batasan Non-Goals**: [✓] Tidak ada fitur yang melanggar daftar *Non-Goals* Tahap 1.
 - **Konsensus Sidang Dewan AI**: [Ringkasan pemangkasan fitur P0 vs P1 oleh 5 persona dewan].
 - **Keputusan Strategis Pengguna**: [Pilihan keputusan yang disepakati pengguna pada sesi Grilling Tahap 3].
+````
+
+---
+
+## Template: `docs/decisions/PDR-[YYYYMMDDHHmm].md`
+
+````markdown
+# PDR-[YYYYMMDDHHmm]: [Judul Keputusan Ruang Lingkup MVP & Prioritas Fitur P0/P1/P2]
+
+- **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
+- **Tanggal**: [YYYY-MM-DD]
+- **Pengambil Keputusan**: Pengguna & Tim PRD Writing AI
+- **Dokumen Terkait**: [docs/PRD.md](../PRD.md) & [docs/ProblemFraming.md](../ProblemFraming.md)
+
+## 1. Konteks Produk & Kebutuhan Penetapan MVP Scope
+[Jelaskan alasan mengapa ruang lingkup fitur perlu dibatasi dan dipangkas menjadi P0, P1, dan P2].
+
+## 2. Fitur MVP (P0) yang Ditetapkan & Batasan Rilis
+[Daftar fitur P0 yang disepakati untuk rilis pertama berserta Definition of Done-nya].
+
+## 3. Alternatif Fitur yang Dipangkas / Ditunda (P1 & P2)
+| Fitur yang Ditunda | Alasan Penundaan ke Fase P1/P2 |
+|:---|:---|
+| [Fitur A] | [Mengapa ditunda / bukan masalah primer / risiko kompleksitas tinggi] |
+| [Fitur B] | [Beban teknis / membutuhkan data tambahan / YAGNI] |
+
+## 4. Konsekuensi Positif & Beban Operasional (Trade-offs)
+- **Konsekuensi Positif**: [Rilis MVP lebih cepat, risiko kegagalan teknis minimal]
+- **Beban Operasional**: [Pengguna belum mendapatkan fitur otomatisasi sekunder]
+- **Strategi Mitigasi**: [Jadwalkan evaluasi backlog P1 setelah metrik adopsi P0 tercapai]
 ````
 
 ## Anti-Patterns & Common Mistakes

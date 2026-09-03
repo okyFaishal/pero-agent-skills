@@ -66,8 +66,8 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Peninjauan Kode** | "Review kode", "audit PR", "cek kualitas", "pre-merge audit" | [`code-reviewer`](../code-reviewer/SKILL.md) |
 | **Kontrak API** | "Desain API", "endpoint REST/GraphQL/gRPC", "API envelope" | [`api-contract-design`](../api-contract-design/SKILL.md) |
 | **Validasi Skema** | "Validasi JSON schema", "DTO", "model serialisasi", "payload validator" | [`schema-validator`](../schema-validator/SKILL.md) |
-| **Catat Keputusan** | "Catat ADR", "arsip keputusan", "PDR", "decision log" | [`decision-recorder`](../decision-recorder/SKILL.md) |
-| **Sinkronisasi Dok** | "Update diagram", "sync arsitektur", "perbarui docs saat kode berubah" | [`living-doc-sync`](../living-doc-sync/SKILL.md) |
+| **Catat Keputusan** | "Catat ADR", "arsip keputusan", "PDR", "PFDR", "SDR", "GDR", "TDR", "RDR", "VDR", "decision log", "catat keputusan" | [`decision-recorder`](../decision-recorder/SKILL.md) |
+| **Sinkronisasi Dok** | "Update diagram", "sync arsitektur", "perbarui docs saat kode berubah", "cegah documentation drift", "sync living docs" | [`living-doc-sync`](../living-doc-sync/SKILL.md) |
 | **Operasi Git** | "Buat branch", "commit Caveman", "buat PR", "git worktree", "gh CLI" | [`git-ops`](../git-ops/SKILL.md) |
 | **Keamanan & Env** | ".env file", "kunci rahasia", "perintah terminal destruktif", "credentials" | [`env-guard`](../env-guard/SKILL.md) |
 | **Bahasa Awam** | "Jelaskan dengan sederhana", "analogi awam", "ELI5", "bahasa manusia" | [`eli5`](../eli5/SKILL.md) |

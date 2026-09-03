@@ -130,8 +130,8 @@ Untuk mencegah pemaksaan masalah palsu (*over-engineering*) pada proyek sederhan
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](docs/PRD.md)
-- **Decision Record**: [docs/decisions/SDR-[YYYYMMDDHHmm].md](docs/decisions/SDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [docs/PRD.md](PRD.md)
+- **Decision Record**: [docs/decisions/SDR-[YYYYMMDDHHmm].md](decisions/SDR-[YYYYMMDDHHmm].md)
 
 ## 1. Traceability Matrix & Functional Scope
 
@@ -316,6 +316,36 @@ erDiagram
 | `ERR_UNAUTHORIZED` | 401 | Token kadaluarsa atau otentikasi hilang | "Sesi masuk Anda telah berakhir. Silakan login kembali." | Arahkan pengguna ke antarmuka login. |
 | `ERR_FORBIDDEN` | 403 | Pengguna tidak memiliki izin hak akses | "Anda tidak memiliki izin untuk membuka bagian ini." | Hubungi administrator sistem. |
 | `ERR_INTERNAL_SERVER` | 500 | Kegagalan sistem internal tak terduga | "Sistem sedang mengalami kendala teknis. Tim kami sedang menanganinya." | Log detail error ke server, sediakan tombol coba lagi. |
+````
+
+---
+
+## Template: `docs/decisions/SDR-[YYYYMMDDHHmm].md`
+
+````markdown
+# SDR-[YYYYMMDDHHmm]: [Judul Keputusan Kontrak Sistem, Model Entitas & Spesifikasi BDD]
+
+- **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
+- **Tanggal**: [YYYY-MM-DD]
+- **Pengambil Keputusan**: Pengguna & Tim User Stories AI
+- **Dokumen Terkait**: [docs/SystemSpec.md](../SystemSpec.md) & [docs/PRD.md](../PRD.md)
+
+## 1. Konteks Spesifikasi & Kebutuhan Kontrak Sistem
+[Jelaskan latar belakang perumusan model domain, envelope API, dan aturan transisi state].
+
+## 2. Kontrak Sistem, Envelope Data & Aturan FSM yang Ditetapkan
+[Rincian keputusan struktur response envelope, strategi idempotency, dan tabel matriks transisi status FSM].
+
+## 3. Alternatif Desain Kontrak yang Ditolak
+| Alternatif Kontrak | Alasan Penolakan |
+|:---|:---|
+| [Alternatif 1] | [Mengapa ditolak / risiko inkonsistensi payload / tidak aman konkurensi] |
+| [Alternatif 2] | [Kelemahan teknis / skema data terlalu longgar / overhead serialisasi] |
+
+## 4. Konsekuensi Positif & Beban Operasional (Trade-offs)
+- **Konsekuensi Positif**: [Kontrak data seragam hulu-ke-hilir, kriteria BDD jelas dan dapat diuji otomatis]
+- **Beban Operasional**: [Semua endpoint dan handler wajib membungkus payload sesuai envelope standar]
+- **Strategi Mitigasi**: [Gunakan middleware serializer dan validator skema otomatis]
 ````
 
 ## Anti-Patterns & Common Mistakes

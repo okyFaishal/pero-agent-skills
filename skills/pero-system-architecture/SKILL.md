@@ -163,8 +163,8 @@ Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-a
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](docs/PRD.md) & [docs/SystemSpec.md](docs/SystemSpec.md)
-- **Decision Record**: [docs/decisions/ADR-[YYYYMMDDHHmm].md](docs/decisions/ADR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [docs/PRD.md](PRD.md) & [docs/SystemSpec.md](SystemSpec.md)
+- **Decision Record**: [docs/decisions/ADR-[YYYYMMDDHHmm].md](decisions/ADR-[YYYYMMDDHHmm].md)
 
 ## 1. C4 Architecture Diagrams
 
@@ -335,7 +335,7 @@ flowchart LR
 ## Template: `docs/decisions/ADR-[YYYYMMDDHHmm].md`
 
 ````markdown
-# ADR-[Nomor]: [Judul Keputusan Arsitektur, misal: Pemilihan PostgreSQL sebagai Primary DB]
+# ADR-[YYYYMMDDHHmm]: [Judul Keputusan Arsitektur, misal: Pemilihan PostgreSQL sebagai Primary DB]
 
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
