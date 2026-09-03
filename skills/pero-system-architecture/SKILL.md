@@ -12,95 +12,141 @@ Skill ini bertindak sebagai **"Gambar Denah & Pondasi Bangunan Rumah"** (Menentu
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md` dan `docs/SystemSpec.md` untuk memastikan arsitektur secara langsung menopang seluruh kebutuhan fitur MVP, kontrak API, dan entitas domain tanpa ada yang terlewat.
-- **Dekomposisi Riset Arsitektur Paralel**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen riset independen secara paralel (*Sub-agen 1: Validasi API & Library via Context7, Sub-agen 2: Riset Benchmark & Industri via Web Search, Sub-agen 3: Desain Konkurensi & Storage Strategy*) guna menghindari halusinasi stack dan memperluas cakupan analisis.
+- **Dekomposisi Riset Arsitektur 5 Spesialis Tetap (*Fixed Architecture Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Arsitektur Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan dengan PRD, agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Dokumentasi API & Versi Library Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk mengecek dokumentasi resmi, kompatibilitas versi LTS/terkini, dan tanda tangan fungsi (*method signatures*) rilis resmi dari pustaka/framework yang dipilih sebelum dicatat ke arsitektur.
 - **Riset Benchmark & Post-Mortem Industri**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, throughput, batas memori, dan laporan kegagalan (*post-mortem failure analysis*) dari tumpukan teknologi yang diusulkan.
-- **Musyawarah Dewan Arsitektur**: **`SUPPORTING / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arsitektural berdampak besar (Monolith vs Microservices, Relasional vs Dokumen, REST vs Event-Driven, Pola Konkurensi) dan menyalurkan vonis sintesisnya ke dokumen ADR.
-- **Stress-Test & Socratic Grilling Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `grilling` untuk menguji ketahanan desain, skenario lonjakan beban (spike), dan titik kegagalan tunggal (*single point of failure*).
-- **Audit Konsistensi Arsitektur & Deteksi Drift**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan cetak biru arsitektur tidak menyimpang (*zero architectural drift*) dari batasan di PRD dan SystemSpec.
+- **Musyawarah Dewan Arsitektur**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arsitektural berdampak besar (Monolith Modular vs Microservices, Relasional vs Dokumen, REST vs Event-Driven, Pola Konkurensi) melalui sidang 5 persona AI.
+- **Wawancara Penguncian Arsitektur di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk mengunci preferensi teknologi, lingkungan hosting, dan toleransi kegagalan. Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG memilih stack sepihak.
+- **Audit Konsistensi Arsitektur & Deteksi Drift**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan cetak biru arsitektur tidak menyimpang (*zero architectural drift*) dari batasan di PRD dan SystemSpec.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
-- **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural (pemilihan database, framework, pola konkurensi) ke `docs/decisions/ADR-[YYYYMMDDHHmm].md`.
+- **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` menggunakan format baku.
 - **Pemetaan Fondasi Design System UI**: **`CONDITIONAL SUB-SKILL`**: Jika perancangan mencakup antarmuka pengguna (Frontend/Landing Page/Web UI), gunakan `taste-skill` untuk memetakan arah desain (*Brief Inference*) dan menetapkan fondasi *Design System* resmi (Fluent, Material, Carbon, Radix, atau Tailwind) di `docs/Architecture.md`. Jika proyek murni backend/CLI/core tanpa UI, sub-skill ini tidak digunakan.
 
-## Protokol Eksekusi Riset Nyata Arsitektur (*Mandatory Execution Protocol*)
-Sebelum menulis berkas `docs/Architecture.md`, agen **WAJIB mengeksekusi 4 fase riset nyata di terminal/alat bantu**:
+## The 5-Stage System Architecture Framework
 
 ```
-[Fase 1: Pendelegasian 3 Sub-Agen Riset Paralel (dispatching-parallel-agents)]
-   │
-   ├──> Sub-Agen 1: Riset Live API Specs & LTS Versi via Context7 (context-7)
-   ├──> Sub-Agen 2: Riset Benchmark Nyata & Post-Mortem Industri (web-search)
-   └──> Sub-Agen 3: Riset Pola Konkurensi & Isolasi State Transaksional
-   │
-[Fase 2: Sidang Trade-Off Arsitektur Berisiko Tinggi (llm-council)]
-   │
-[Fase 3: Deklarasi Toolchain & Server MCP Spesifik Stack (JIT MCP Provisioning)]
-   │
-[Fase 4: Penyusunan Cetak Biru docs/Architecture.md & Pencatatan ADR]
+[0. Ingestion docs/PRD.md & docs/SystemSpec.md]
+                       │
+                       ▼
+[1. Riset 5 Spesialis Arsitektur + Context7 & Web Search]
+    (Runtime, Storage, Concurrency, Security, Infra dengan Early-Exit N/A)
+                       │
+                       ▼
+[2. Sidang Trade-Off Arsitektur Kritis (LLM Council)]
+    (5 Persona AI membedah Monolith vs Microservices, SQL vs NoSQL, dsb.)
+                       │
+                       ▼
+[3. Wawancara Penguncian Arsitektur di Chat (Grilling Rambu Henti)]
+    (Min 5, Max 10 Tanya: kunci hosting/infra, stack constraints, toleransi risiko)
+                       │
+                       ▼
+[4. Penyusunan Dokumen Architecture.md (C4 Model & Deployment Topology)]
+                       │
+                       ▼
+[5. Pembukuan Rekam Keputusan ADR Formal & Audit Konsistensi]
 ```
 
-1. **Fase 1 — Eksekusi Riset Paralel 3 Jalur**:
-   * **Sub-Agen 1 (Pustaka & SDK via `context-7`)**: Menjalankan query MCP Context7 (`resolve-library-id` dan `query-docs`) untuk memeriksa method signature nyata, tipe data argumen, dan lifecycle method resmi (misal: Fastify v4/v5, Axum, SwiftUI, Pydantic v2).
-   * **Sub-Agen 2 (Benchmark Industri via `web-search`)**: Menjalankan pencarian web terarah untuk mendapatkan data throughput, latensi p99, batas memori, dan komparasi kegagalan teknis di industri.
-   * **Sub-Agen 3 (Pola Konkurensi & Storage)**: Menentukan model isolasi mutasi state (Actor, Event Loop, Goroutines, Channels, Mutex) dan transaksi database ACID.
+### 1. Dekomposisi Riset Paralel Berbasis 5 Spesialis Arsitektur Tetap
+Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-agents` yang masing-masing dibekali alat `context-7` dan `web-search`:
 
-2. **Fase 2 — Sidang Dewan AI untuk Keputusan Kritis (`llm-council`)**:
-   * Jika terdapat trade-off dengan konsekuensi jangka panjang (misal: SQLite vs PostgreSQL, Monolith Modular vs Microservices, REST vs WebSocket/gRPC), sidangkan opsi tersebut ke 5 persona AI untuk mendapatkan sintesis konsensus.
+#### A. 5 Peran Spesialis Arsitektur Tetap (*Fixed Architecture Roles*):
+1. **Spesialis 1: Runtime, Bahasa & Web Framework (*Runtime & Framework Specialist*)**:
+   - *Fokus*: Memeriksa versi LTS resmi, tipe data, method signature resmi via `context-7`, benchmark throughput req/sec serta batas memori via `web-search`, dan menyusun perhitungan kasar estimasi beban throughput (*Queries Per Second / QPS: rata-rata vs jam sibuk*).
+2. **Spesialis 2: Penyimpanan Data, ORM & Strategi Caching (*Storage & Caching Specialist*)**:
+   - *Fokus*: Meneliti pemilihan basis data (Relasional vs Embedded vs Dokumen), driver/ORM resmi, strategi pooling koneksi, indeks query, masa berlaku cache (*cache eviction*), serta menyusun estimasi pertumbuhan kapasitas penyimpanan data tahunan (*Storage Capacity Sizing*).
+3. **Spesialis 3: Konkurensi, Background Worker & Aliran Event (*Concurrency & Events Specialist*)**:
+   - *Fokus*: Meneliti model konkurensi (Actor / Event Loop / Goroutines / Thread-Pool), pencegahan *deadlock/race condition*, serta antrian pesan latar belakang (Redis / RabbitMQ / Kafka).
+4. **Spesialis 4: Perimeter Keamanan, Middleware & Manajemen Rahasia (*Security & Secrets Specialist*)**:
+   - *Fokus*: Meneliti proteksi rahasia (`env-guard`), mitigasi OWASP API Security, enkripsi at-rest/in-transit, sanitasi perimeter, pembatasan laju (*rate limiting*), serta strategi korelasi log (*Correlation ID*).
+5. **Spesialis 5: Infrastruktur, Topologi Penerapan & Toolchain / MCP (*Infra & Toolchain Specialist*)**:
+   - *Fokus*: Meneliti containerization (Docker / Compose), kebutuhan runtime compiler, server MCP spesifik ekosistem proyek (`gopls`, `xcodebuild-mcp`, `postgres-mcp`), serta target pemulihan bencana (*RPO & RTO*).
 
-3. **Fase 3 — Deklarasi Toolchain & Server MCP**:
-   * Menetapkan server MCP dan compiler runtime yang dibutuhkan proyek (seperti `xcodebuild-mcp` untuk Swift, `gopls` untuk Go, `postgres-mcp` untuk DB) di Bagian 2 dokumen arsitektur.
+#### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
+- Setiap spesialis membaca `docs/PRD.md` dan `docs/SystemSpec.md` sebelum menjalankan riset.
+- Jika domain spesialis tersebut **sama sekali tidak relevan** (misalnya: Spesialis 3 pada aplikasi CLI sekuensial tanpa proses latar belakang, atau Spesialis 4 pada modul lokal internal tanpa koneksi luar):
+  - Spesialis **WAJIB** mendeklarasikan: `Status: Not Applicable (N/A). Alasan: [Penjelasan mengapa domain ini tidak dibutuhkan]`.
+  - Agen berstatus `N/A` **DILARANG melakukan pencarian (0 search)** dan **DILARANG mengarang arsitektur palsu**.
 
-4. **Fase 4 — Sintesis Cetak Biru & Pembukuan ADR**:
-   * Menyusun dokumen `docs/Architecture.md` lengkap dengan diagram Mermaid yang tervalidasi dan mencatat keputusan ke `docs/decisions/ADR-[YYYYMMDDHHmm].md`.
+#### C. Pagar Batas Riset & Pencarian (*Guardrails*):
+- Untuk domain yang relevan: **Minimal 2 pencarian terarah** (wajib merujuk dokumentasi resmi Context7 atau benchmark web industri) dan **Maksimal 5 pencarian terarah** per agen.
+- Untuk domain `N/A`: **0 pencarian**.
+- Setiap agen spesialis aktif wajib menyertakan minimal 1 tautan URL / dokumentasi resmi dalam laporannya.
+
+### 2. Musyawarah Dewan Arsitektur (via `llm-council`)
+- Menyidangkan trade-off arsitektural berdampak besar ke 5 persona dewan AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review*.
+- Topik sidang: Monolith Modular vs Microservices, SQLite vs PostgreSQL, REST vs WebSocket/gRPC, Framework A vs Framework B.
+- Dewan menghasilkan sintesis konsensus, analisis risiko, dan opsi kompromi teknis (Opsi A vs Opsi B) untuk diserahkan ke sesi wawancara chat.
+
+### 3. Wawancara Penguncian Arsitektur di Chat (via `grilling`)
+- **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
+  - Agent **DILARANG** langsung membuat berkas `docs/Architecture.md` sebelum menyepakati pilihan teknologi, lingkungan penerapan (*deployment*), dan batasan operasional dengan pengguna di obrolan (*chat*).
+  - Dilarang keras menentukan stack atau penyedia hosting secara sepihak.
+- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh fondasi arsitektur) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
+  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 pertanyaan per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
+- **Fokus Topik Wawancara**:
+  1. Lingkungan Penerapan Target (*Target Hosting*: Server Docker/Compose, Cloud VPS, Serverless, atau Komputer Lokal).
+  2. Batasan Ekosistem Tim (*Team Stack Constraints*: Preferensi bahasa Go/Node/Swift/Python/Rust).
+  3. Strategi Basis Data Operasional (SQLite lokal mandiri vs PostgreSQL terkelola).
+  4. Estimasi Skala Lalu Lintas & Kapasitas Data (Perkiraan DAU, rata-rata vs puncak QPS, dan volume transaksi).
+  5. Toleransi Ketersediaan & Biaya (*High Availability vs Minimal Cost*).
+  6. Target Pemulihan Bencana (*Disaster Recovery*: Toleransi kehilangan data / RPO dan batas waktu server pulih / RTO).
+  7. Strategi Migrasi & Cadangan Data (*Backup & Recovery Window*).
+- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+
+### 4. Penyusunan Dokumen Architecture.md Formal
+- Menyusun dokumen lengkap `docs/Architecture.md` berbasis diagram standar **C4 Model** (Level 1 Context, Level 2 Container, Level 3 Component), perhitungan matematika estimasi kapasitas, pola observabilitas hulu-hilir, dan topologi deployment nyata.
+
+### 5. Pembukuan Rekam Keputusan ADR Formal & Audit Konsistensi
+- Membukukan seluruh keputusan arsitektural krusial ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` menggunakan template standar resmi.
+- Menjalankan audit konsistensi hulu-hilir via `pero-context-validation` untuk memastikan zero architectural drift terhadap PRD dan SystemSpec.
 
 ## When to Use
 - Merancang arsitektur sistem tingkat tinggi (*High-Level Architecture*) sebelum koding dimulai.
+- Menghitung estimasi kapasitas, throughput (QPS), dan pertumbuhan storage data secara matematis.
 - Menentukan pilihan teknologi (*Tech Stack Selection*) berbasis verifikasi resmi Context7 dan bukti benchmark industri nyata.
 - Membagi sistem menjadi modul-modul independen dengan batas pemisah yang jelas (*Layered / Clean / Hexagonal Architecture*).
 - Merancang model konkurensi, manajemen state, dan isolasi thread (*thread-safety* / actor model).
-- Menentukan strategi penyimpanan data (*persistence*), indeks, dan caching.
-- Menyusun perimeter keamanan, isolasi rahasia (*secret management*), serta strategi pemulihan kegagalan (*resilience & failover*).
+- Menentukan strategi penyimpanan data (*persistence*), indeks, migrasi tanpa henti layanan (*zero-downtime*), dan caching.
+- Menyusun perimeter keamanan, fondasi observabilitas (*Correlation ID & RED metrics*), isolasi rahasia (*secret management*), serta strategi pemulihan kegagalan dan bencana (*resilience, RPO/RTO*).
 
-## The 6-Section Architecture Framework
+## The 7-Section Architecture Framework
 
 ```
-[1. High-Level Diagram (Mermaid)] ──> [2. Tech Stack & MCP Declaration (Context7 & Web Search)]
-                                                                   │
-[4. Concurrency & State Safety]   <── [3. Module & Clean Boundaries (Layered/Hexagonal)]
+[1. C4 Architecture Diagrams (Mermaid)] ──> [2. Tech Stack & Sizing (Math Grounding)]
+                                                               │
+[4. Concurrency & State Safety]         <── [3. Module Breakdown (Clean Architecture)]
               │
-[5. Persistence & Cache Strategy] ──> [6. Security & Failure Recovery (Resilience)]
+[5. Persistence & Zero-Downtime DB]     ──> [6. Security, Observability & Resilience]
+                                                               │
+                                            [7. Deployment Topology & Disaster Recovery]
 ```
 
-### 1. High-Level Architecture Diagram
-- Visualisasi hubungan antar komponen utama (Klien/UI, Gateway/API, Application Core, Worker/Queue, Database, External Services) menggunakan diagram Mermaid (`graph TB` atau `flowchart LR`).
-- Memberikan gambaran alur data dari hulu ke hilir dengan node yang diberi label jelas dan aman dari error parsing (gunakan tanda petik dua pada label berkurung/simbol).
+### 1. C4 Architecture Diagrams (Context, Container, Component)
+- **Level 1 (System Context)**: Memetakan relasi antara Pengguna (*User Persona*), Batasan Sistem, dan Layanan Pihak Ketiga (*External Services*).
+- **Level 2 (Container / Services)**: Memetakan aplikasi/layanan yang berjalan terpisah (Frontend App, API Gateway, Database, In-Memory Cache, Background Worker).
+- **Level 3 (Component / Clean Architecture)**: Memetakan struktur modul internal di dalam kode (Presentation Ingress $\rightarrow$ Domain Core $\rightarrow$ Infrastructure Adapters).
 
-### 2. Tech Stack Selection, Toolchain & MCP Server Declaration
-- Matriks pemilihan teknologi untuk setiap lapisan sistem (Runtime, Web/UI Framework, API Server, Database, Cache, Message Broker, Testing Tools).
-- **Deklarasi Toolchain & Server MCP**: Menetapkan kebutuhan perkakas pengembangan dan server MCP (*Model Context Protocol*) spesifik domain (misalnya: `xcodebuild-mcp` untuk ekosistem Apple/Swift, `gopls` untuk Go, `postgres-mcp` untuk database, atau `chrome-devtools` untuk web) yang akan disiapkan oleh `find-skill` / installer.
-- Setiap pilihan wajib didasari verifikasi resmi via `context-7` (memeriksa versi LTS/terkini, kompatibilitas, dan status pemeliharaan) serta verifikasi benchmark via `web-search`. Jika terdapat pilihan bertolak belakang dengan risiko tinggi, sidangkan opsi melalui `llm-council`.
+### 2. Tech Stack Selection, Capacity Sizing & MCP Declaration
+- **Perhitungan Kasar Matematika (*Back-of-the-Envelope Estimation*)**: Estimasi QPS rata-rata vs puncak dan proyeksi pertumbuhan storage 1 tahun ke depan untuk menjustifikasi pemilihan teknologi secara objektif.
+- Matriks pemilihan teknologi resmi terverifikasi via `context-7` (versi LTS, method signatures) dan bukti benchmark nyata via `web-search`.
+- Deklarasi server MCP spesifik ekosistem proyek (`gopls`, `xcodebuild-mcp`, `postgres-mcp`, `chrome-devtools`) untuk otomatisasi perkakas.
 
-### 3. Component & Module Breakdown (Clean / Hexagonal / Layered)
-- Pemisahan tanggung jawab (*Separation of Concerns*) yang tegas:
-  - **Presentation / Interface Layer**: Menangani HTTP request, WebSocket, CLI input, atau rendering UI (tanpa logika bisnis).
-  - **Domain / Application Core Layer**: Menampung aturan bisnis murni, use cases, dan entitas data independen dari framework.
-  - **Data / Infrastructure Layer**: Implementasi akses database, panggilan API eksternal, filesystem, dan messaging.
-  - **Dependency Inversion / Ports & Adapters**: Core mendefinisikan interface/port, infrastructure mengimplementasikan adapter.
+### 3. Component & Module Breakdown (Clean / Hexagonal Architecture)
+- Pemisahan tanggung jawab (*Separation of Concerns*): Presentation / Ingress $\rightarrow$ Domain Core $\rightarrow$ Infrastructure Adapters berbasis *Ports & Adapters*.
 
 ### 4. Concurrency Model, State Management & Thread Isolation
-- Strategi menangani banyak tugas sekaligus secara aman (*Universal Concurrency & Thread-Safety*):
-  - Model eksekusi (misal: Async/Await Event Loop di Node/Python, Goroutines/Channels di Go, Actors/Tasks di Swift/Rust/Erlang, Thread Pool di Java/C#).
-  - Immutability & isolasi mutasi state (mencegah *race condition* atau *deadlock*).
-  - Sinkronisasi transaksi dan mekanisme locking jika data diakses bersamaan.
+- Strategi model konkurensi (Event Loop / Goroutines / Actors / Thread-Pool), pencegahan *race conditions*, dan isolasi mutasi state bersama.
 
-### 5. Persistence, Caching & Data Storage Strategy
-- Pemilihan media penyimpanan data utama (Relational vs Document vs Key-Value vs Embedded).
-- Skema indexing untuk query berfrekuensi tinggi, strategi migrasi skema database, dan kebijakan transactional boundary (ACID).
-- Strategi caching (In-Memory / Redis / LRU Cache), Time-to-Live (TTL), serta kebijakan invalidasi cache (*Cache Invalidation*).
+### 5. Persistence, Caching & Zero-Downtime Migration Strategy
+- Pemilihan media penyimpanan data (transaksi ACID), indeks query utama, strategi caching dan invalidasi, serta pola migrasi skema tanpa henti layanan (*Zero-Downtime Expand-and-Contract Pattern*).
 
-### 6. External Dependencies, Security Boundaries & Failure Recovery
-- **Security Boundaries**: Isolasi token dan credential (mematuhi `env-guard`), sanitasi input di perimeter terluar, enkripsi at-rest dan in-transit.
-- **Resilience & Fallback**: Pola *Timeout*, *Retry with Exponential Backoff*, *Circuit Breaker*, dan *Graceful Degradation* jika layanan pihak ketiga tumbang.
+### 6. Security Boundaries, Observability & Failure Recovery
+- Proteksi rahasia (`env-guard`), sanitasi perimeter, dan fondasi observabilitas (*Structured Logging, Distributed Correlation ID, RED Metrics: Rate/Errors/Duration*).
+- Batas timeout, *retry with exponential backoff*, dan pola *circuit breaker*.
+
+### 7. Deployment Topology, Environment Matrix & Disaster Recovery
+- Topologi lingkungan (Local Dev, Docker Compose, Staging, Production), spesifikasi resource minimum, prosedur health check, serta target pemulihan bencana (*RPO & RTO Targets*).
 
 ## Deliverables & Output Artifacts
 
@@ -120,48 +166,90 @@ Sebelum menulis berkas `docs/Architecture.md`, agen **WAJIB mengeksekusi 4 fase 
 - **Dokumen Induk**: [docs/PRD.md](docs/PRD.md) & [docs/SystemSpec.md](docs/SystemSpec.md)
 - **Decision Record**: [docs/decisions/ADR-[YYYYMMDDHHmm].md](docs/decisions/ADR-[YYYYMMDDHHmm].md)
 
-## 1. High-Level Architecture Diagram
-[Jelaskan alur sistem secara global dalam 1-2 paragraf dengan analogi sederhana seperti denah rumah].
+## 1. C4 Architecture Diagrams
+
+### 1.1. Level 1: System Context Diagram
+[Jelaskan posisi sistem terhadap pengguna dan layanan eksternal dalam analogi sederhana].
 
 ```mermaid
 flowchart TB
-  subgraph ClientLayer["🖥️ Client / Presentation Layer"]
-    UI["Web / Mobile App / CLI"]
-  end
+  User["👤 Pengguna / Klien"]
+  SystemBoundary["🏢 [Nama Sistem Utama]"]
+  ExtService["☁️ Layanan Eksternal (OAuth / Payment / 3rd Party API)"]
 
-  subgraph GatewayLayer["🚪 API Gateway / Ingress"]
-    GW["Router & Auth Middleware"]
-  end
-
-  subgraph CoreLayer["⚙️ Application Core (Clean Architecture)"]
-    UseCases["Business Use Cases"]
-    DomainEntities["Domain Entities"]
-  end
-
-  subgraph InfraLayer["🗄️ Infrastructure & Adapters"]
-    DBAdapter["Database Adapter"]
-    ExtAdapter["External Service Adapter"]
-  end
-
-  subgraph StorageLayer["💾 Data & External Services"]
-    DB[("Primary Database")]
-    Cache[("In-Memory Cache")]
-    ThirdParty["External API / 3rd Party"]
-  end
-
-  UI -->|"HTTP / WebSocket"| GW
-  GW -->|"Validated Requests"| UseCases
-  UseCases --> DomainEntities
-  UseCases -->|"Ports / Interfaces"| DBAdapter
-  UseCases -->|"Ports / Interfaces"| ExtAdapter
-  DBAdapter --> DB
-  DBAdapter --> Cache
-  ExtAdapter --> ThirdParty
+  User -->|"Mengakses antarmuka (HTTP/CLI)"| SystemBoundary
+  SystemBoundary -->|"Integrasi data aman"| ExtService
 ```
 
-## 2. Tech Stack Selection, Toolchain & MCP Server Declaration
+### 1.2. Level 2: Container / Services Diagram
+[Jelaskan aplikasi dan layanan terpisah yang menyusun sistem ini].
 
-### 2.1. Matriks Teknologi Terverifikasi (Grounding via Context7 & Web Search)
+```mermaid
+flowchart TB
+  subgraph ClientEnv["🖥️ Client Environment"]
+    UI["Web Frontend / Mobile / CLI App"]
+  end
+
+  subgraph ServerEnv["☁️ Server Runtime / Application Containers"]
+    Gateway["🚪 API Gateway / Ingress Router"]
+    Backend["⚙️ Application Backend Server"]
+    Worker["🔄 Background Task Worker"]
+  end
+
+  subgraph StorageEnv["💾 Data Storage & Caching Layer"]
+    DB[("Primary Database (PostgreSQL / SQLite)")]
+    Cache[("In-Memory Cache (Redis / LRU)")]
+    Queue[("Message Queue / PubSub")]
+  end
+
+  UI -->|"HTTPS / WebSocket"| Gateway
+  Gateway -->|"Route & Authenticate"| Backend
+  Backend -->|"Query & Transaksi ACID"| DB
+  Backend -->|"Cache-aside (Sub-ms)"| Cache
+  Backend -->|"Publish Job / Event"| Queue
+  Worker -->|"Consume Task"| Queue
+  Worker -->|"Persist Batch"| DB
+```
+
+### 1.3. Level 3: Component Breakdown Diagram (Clean Architecture)
+```mermaid
+flowchart LR
+  subgraph PresentationLayer["1. Presentation Layer"]
+    Handlers["HTTP Controllers\nCLI Resolvers"]
+    Middlewares["Auth & Validation\nMiddlewares"]
+  end
+
+  subgraph CoreLayer["2. Domain / Application Core"]
+    UseCases["Business Use Cases\nOrchestrators"]
+    Entities["Domain Entities\nPure Logic"]
+  end
+
+  subgraph InfraLayer["3. Infrastructure Layer"]
+    RepoAdapter["Database Repository\nAdapters"]
+    ExtAdapter["External Service\nAdapters"]
+  end
+
+  Handlers --> Middlewares
+  Middlewares -->|"DTO Valid"| UseCases
+  UseCases --> Entities
+  UseCases -->|"Ports / Interfaces"| RepoAdapter
+  UseCases -->|"Ports / Interfaces"| ExtAdapter
+```
+
+## 2. Tech Stack Selection, Capacity Sizing & MCP Server Declaration
+
+### 2.1. Estimasi Kapasitas, Throughput & Pertumbuhan Storage (Back-of-the-Envelope Calculation)
+- **Estimasi Pengguna Aktif & Lalu Lintas (Traffic Sizing)**:
+  - Target Pengguna Harian (*DAU*): [e.g. 10.000 pengguna aktif]
+  - Rata-rata Throughput (*Average QPS*): [e.g. 5 req/sec]
+  - Beban Puncak Jam Sibuk (*Peak QPS - 5x buffer*): [e.g. 25–50 req/sec]
+- **Estimasi Volume & Pertumbuhan Data (*Storage Capacity Sizing*)**:
+  - Ukuran Rata-rata Record / Transaksi: [e.g. 2 KB per record]
+  - Pertumbuhan Data Harian: [e.g. 5.000 transaksi/hari × 2 KB = 10 MB/hari]
+  - Proyeksi Storage 1 Tahun: [e.g. 10 MB × 365 ≈ 3,65 GB/tahun (Sangat aman untuk single-node DB tanpa sharding)]
+- **Justifikasi Sizing**: [Alasan matematis mengapa stack dan spesifikasi server/DB yang dipilih proporsional dan tidak over-engineered].
+
+### 2.2. Matriks Teknologi Terverifikasi (Grounding via Context7 & Web Search)
 
 | Lapisan / Komponen | Teknologi Terpilih | Versi Resmi (Context7) | Bukti Benchmark (Web Search) | Alasan Pemilihan & Nilai Tambah | Alternatif yang Ditolak |
 |:---|:---|:---|:---|:---|:---|
@@ -170,7 +258,7 @@ flowchart TB
 | **Primary Database** | [e.g. PostgreSQL / SQLite] | [Versi Resmi] | [ACID integrity benchmark] | [Integritas relasional, indeks query] | [Alt Z: NoSQL unneeded] |
 | **Caching Layer** | [e.g. Redis / In-Memory LRU] | [Versi Resmi] | [Latensi sub-milidetik] | [Mengurangi beban query database] | [Alt W: Overkill MVP] |
 
-### 2.2. Deklarasi Server MCP & Development Toolchains
+### 2.3. Deklarasi Server MCP & Development Toolchains
 | Tumpukan Stack Proyek | Server MCP Terpilih | Runner / Command | Peran Khusus dalam Pipeline |
 |:---|:---|:---|:---|
 | [e.g. Apple / Swift] | `xcodebuild-mcp` | `npx -y @modelcontextprotocol/server-xcodebuild` | Eksekusi build, testing simulator iOS |
@@ -178,20 +266,6 @@ flowchart TB
 | [e.g. Database Core] | `postgres-mcp` | `npx -y @modelcontextprotocol/server-postgres` | Inspeksi skema & query migrasi DB |
 
 ## 3. Component & Module Breakdown (Clean Architecture)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ 1. Presentation Layer (Controllers, Resolvers, CLI Handlers) │
-└──────────────────────────────┬──────────────────────────────┘
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ 2. Domain / Core Layer (Entities, Use Cases, Port Interfaces)│
-└──────────────────────────────┬──────────────────────────────┘
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ 3. Infrastructure Layer (DB Repositories, Third-Party SDKs) │
-└─────────────────────────────────────────────────────────────┘
-```
 
 - **Presentation / Ingress**: Bertindak seperti resepsionis/kasir yang menerima pesanan dari pengguna, memvalidasi tiket/token, dan meneruskan pesanan ke dapur tanpa memasak sendiri.
 - **Domain Core**: Dapur utama yang berisi resep rahasia (aturan bisnis). Lapisan ini tidak boleh bergantung langsung pada merk wajan atau kompor (database/framework) tertentu.
@@ -210,21 +284,90 @@ flowchart TB
   - Pola: *Cache-Aside* / *Read-Through* / *Write-Through*.
   - TTL (Masa Berlaku): [misal: 60 detik untuk data dinamis, 24 jam untuk data statis].
   - Kebijakan Invalidasi: Cache dihapus seketika saat data induk diperbarui (*event-driven eviction*).
-- **Migrasi Skema**: Setiap perubahan struktur database wajib menggunakan berkas migrasi berversi terurut (*versioned migrations*) yang dapat di-*rollback*.
+- **Migrasi Skema Tanpa Henti Layanan (Zero-Downtime Expand-and-Contract Pattern)**:
+  - Setiap perubahan struktur tabel yang memecah kompatibilitas (*breaking schema change*) wajib mengikuti 3 langkah:
+    1. **Langkah 1 (Expand / Perluas)**: Tambahkan kolom/tabel baru berdampingan dengan kolom lama. Kode backend baru menulis ke kedua kolom sekaligus.
+    2. **Langkah 2 (Migrate / Salin)**: Pindahkan data historis dari kolom lama ke kolom baru menggunakan background worker tanpa mengganggu query aktif.
+    3. **Langkah 3 (Contract / Ciutkan)**: Arahkan seluruh pembacaan ke kolom baru. Setelah aman dan terverifikasi, hapus kolom lama pada siklus rilis berikutnya.
+  - Seluruh migrasi wajib menggunakan berkas migrasi berversi terurut (*versioned migrations*) yang dapat di-*rollback*.
 
-## 6. External Dependencies, Security & Failure Recovery
+## 6. External Dependencies, Security, Observability & Failure Recovery
 
 ### 6.1. Security Perimeter & Secrets Isolation
 - **Secret Protection**: Tidak ada API key, token, atau password yang disimpan di kode sumber. Semua variabel rahasia dimuat dari file `.env` yang dilindungi oleh `env-guard`.
 - **Sanitasi Perimeter**: Semua input dari luar disaring ketat di lapisan terluar sebelum menyentuh domain core.
 
-### 6.2. Failure Recovery & Resilience
+### 6.2. Observability, Telemetry & Distributed Tracing
+- **Structured Logging**: Seluruh log aplikasi ditulis dalam format JSON terstruktur dengan timestamp UTC, level log (`debug`/`info`/`warn`/`error`), dan modul sumber.
+- **Distributed Correlation ID (`X-Correlation-ID`)**: Setiap permintaan dari klien diberikan tiket pelacak unik (UUID v4) di Gateway. ID ini disematkan ke setiap log, transaksi database, dan antrian worker latar belakang untuk investigasi insiden instan dari hulu ke hilir.
+- **Metrik Kunci (Metode RED)**:
+  - **Rate**: Mengukur jumlah permintaan per detik (RPS).
+  - **Errors**: Mengukur rasio kegagalan permintaan (HTTP 5xx / timeout).
+  - **Duration**: Mengukur latensi respon pada persentil p50, p95, dan p99.
+
+### 6.3. Failure Recovery & Resilience
 - **Timeout**: Setiap panggilan jaringan eksternal dibatasi maksimal [misal: 3000ms].
 - **Retry with Exponential Backoff**: Panggilan gagal yang bersifat sementara (*transient error*) dicoba ulang bertahap (100ms -> 200ms -> 400ms) maksimal 3 kali.
 - **Circuit Breaker & Fallback**: Jika layanan eksternal mati terus-menerus, sistem memutus sementara sambungan dan memberikan jawaban cadangan (*fallback / graceful degradation*) tanpa membuat seluruh sistem lumpuh (*crash*).
+
+## 7. Deployment Topology, Environment Matrix & Disaster Recovery
+
+### 7.1. Matriks Lingkungan Sistem (Environment Matrix)
+| Parameter | Pengembangan Lokal (Local Dev) | Pementasan (Staging) | Produksi (Production) |
+|:---|:---|:---|:---|
+| **Runtime Mode** | Local Process / Hot Reload | Docker Compose / Container | Docker / Cloud Kubernetes |
+| **Primary Database** | SQLite / Local PostgreSQL | Dockerized PostgreSQL | Managed Cloud DB (Multi-AZ) |
+| **Cache & Queue** | In-Memory / Local Redis | Dockerized Redis | Managed Redis Cluster |
+| **Log Level** | `debug` (Console output) | `info` (Structured JSON) | `warn` / `error` (Structured Log) |
+
+### 7.2. Prosedur Uji Kesehatan Sistem (Health Check Protocol)
+- **Liveness Probe**: `GET /health/live` (Mengembalikan 200 OK jika proses server berjalan dan merespon).
+- **Readiness Probe**: `GET /health/ready` (Mengembalikan 200 OK jika koneksi database utama dan cache aktif dan siap menerima query).
+
+### 7.3. Rencana Pemulihan Bencana (Disaster Recovery: RPO & RTO Targets)
+- **Target RPO (Recovery Point Objective)**: Maksimal [misal: 0 detik untuk transaksi finansial via replikasi multi-AZ / 1 jam untuk data analitik]. Batas toleransi kehilangan data saat insiden fatal.
+- **Target RTO (Recovery Time Objective)**: Maksimal [misal: 15–30 menit] untuk mengembalikan layanan ke kondisi beroperasi penuh setelah server cadangan diaktifkan.
+- **Strategi Pencadangan**: Snapshot harian terotomatisasi + pengarsipan log transaksi (*Write-Ahead Log / Point-in-Time Recovery*) yang disimpan di lokasi penyimpanan terpisah (*off-site / multi-region*).
+````
+
+---
+
+## Template: `docs/decisions/ADR-[YYYYMMDDHHmm].md`
+
+````markdown
+# ADR-[Nomor]: [Judul Keputusan Arsitektur, misal: Pemilihan PostgreSQL sebagai Primary DB]
+
+- **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
+- **Tanggal**: [YYYY-MM-DD]
+- **Pengambil Keputusan**: Pengguna & Dewan Arsitektur AI
+- **Dokumen Terkait**: [docs/Architecture.md](../Architecture.md)
+
+## 1. Konteks Masalah
+[Jelaskan latar belakang masalah teknis, batasan bisnis, atau kebutuhan spesifik yang memicu perlunya keputusan arsitektur ini].
+
+## 2. Keputusan yang Diambil
+[Jelaskan secara tegas pilihan arsitektur atau teknologi yang disepakati bersama pengguna beserta argumen rasionalnya].
+
+## 3. Alternatif yang Dipertimbangkan & Ditolak
+| Alternatif Opsi | Alasan Penolakan |
+|:---|:---|
+| [Opsi Alternatif 1] | [Mengapa tidak dipilih / risiko yang tidak dapat ditoleransi] |
+| [Opsi Alternatif 2] | [Kelemahan teknis / beban operasional berlebih] |
+
+## 4. Konsekuensi & Kompromi (Trade-offs)
+- **Konsekuensi Positif**: [Keuntungan performa, kestabilan, atau kecepatan pengembangan yang diperoleh]
+- **Konsekuensi Negatif / Beban**: [Tantangan teknis atau beban pemeliharaan yang harus dimitigasi tim]
+- **Strategi Mitigasi**: [Langkah konkret untuk meredam dampak negatif di atas]
 ````
 
 ## Anti-Patterns & Common Mistakes
+- **Simulated Architecture Deciding**: Menentukan sendiri bahasa pemrograman, database, atau penyedia hosting di dalam dokumen tanpa pernah melakukan wawancara grilling di chat bersama pengguna.
+- **Zero-Math Architecture (Ungrounded Capacity Sizing)**: Memilih framework, database, atau ukuran instans server tanpa menghitung estimasi matematis QPS dan proyeksi pertumbuhan storage data.
+- **Unobservable Blind Systems**: Merancang sistem tanpa correlation ID dan log terstruktur, sehingga tim pengembang meraba-raba di kegelapan saat terjadi error di produksi.
+- **Destructive Database Migrations**: Mengubah atau menghapus kolom database secara langsung tanpa pola *Expand-and-Contract*, memicu downtime atau error fatal pada aplikasi yang sedang berjalan.
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, bertanya kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas 10 pertanyaan pada Tahap 3 (memicu kelelahan pengguna dan *analysis paralysis*).
+- **Forced Irrelevant Specialization**: Memaksakan riset arsitektur yang tidak dibutuhkan proyek (misalnya memaksakan arsitektur event-streaming Kafka rumit pada skrip batch sekuensial sederhana), alih-alih mendeklarasikan status `N/A`.
+- **Unbounded Web Search Avalanche**: Melakukan kurang dari 2 pencarian terarah pada domain yang relevan (riset dangkal tanpa dasar standar), melampaui batas 5 pencarian per agen, atau tetap mencari pada domain `N/A`.
 - **Overengineering & Premature Complexity**: Memaksakan arsitektur Microservices atau Kafka untuk aplikasi tahap awal yang seharusnya cukup Monolith modular atau SQLite/PostgreSQL sederhana.
 - **Ungrounded Tech Stack Choices**: Memilih library atau framework hanya karena tren, tanpa memverifikasi dokumentasi resmi dan status pemeliharaan via `context-7`.
 - **Global Mutable State (Race Conditions)**: Menggunakan variabel global yang dapat dimutasi secara acak dari berbagai thread/fungsi tanpa mekanisme isolasi atau synchronization lock.
