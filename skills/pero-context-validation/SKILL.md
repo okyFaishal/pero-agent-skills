@@ -6,14 +6,14 @@ description: Use when validating cross-document consistency, detecting documenta
 # Pero Context & Living Document Validation (`pero:context-validation`)
 
 ## Overview
-**Origin**: *Pero Custom SDLC Pipeline - Stage 8 (Universal - Capstone)*.
+**Origin**: *Pero Custom SDLC Pipeline - Stage 9 (Universal - Capstone)*.
 Skill ini bertindak sebagai **"Petugas Sensor Alarm & Menara Pengawas Garis Start (*Pre-Flight Safety Officer*)"** (Mencocokkan seluruh baut dan kabel di buku manual pesawat terhadap mesin fisik di landasan sebelum izin terbang diberikan). 
 
-Tugasnya adalah mengaudit dan memverifikasi konsistensi silang 100% di antara seluruh dokumen artefak proyek (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, `docs/tasks/`, dan `docs/decisions/`), mendeteksi dokumen usang (*documentation drift*), memvalidasi sintaksis diagram Mermaid, mengklasifikasikan tingkat keparahan anomali (*severity tiers*), dan memberikan gerbang keputusan akhir apakah proyek diizinkan melangkah ke tahap koding TDD massal (**Go / No-Go Decision**).
+Tugasnya adalah mengaudit dan memverifikasi konsistensi silang 100% di antara seluruh dokumen artefak proyek (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, `docs/tasks/`, dan `docs/decisions/`), mendeteksi dokumen usang (*documentation drift*), memvalidasi sintaksis diagram Mermaid, mengklasifikasikan tingkat keparahan anomali (*severity tiers*), dan memberikan gerbang keputusan akhir apakah proyek diizinkan melangkah ke tahap koding TDD massal (**Go / No-Go Decision**).
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen artefak repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, kartu tugas di `docs/tasks/`, dan seluruh rekam keputusan di `docs/decisions/`) untuk mendeteksi kontradiksi, celah kepatuhan, atau spesifikasi yang tertinggal.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen artefak repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, kartu tugas di `docs/tasks/`, dan seluruh rekam keputusan di `docs/decisions/`) untuk mendeteksi kontradiksi, celah kepatuhan, atau spesifikasi yang tertinggal.
 - **Dekomposisi Riset 5 Spesialis Validasi Konteks Tetap (*Fixed Validation Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Validasi Konteks Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika ada validasi standar eksternal (misal sintaksis Mermaid modern atau parser Markdown), agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika audit murni internal terhadap file lokal, agen wajib mendeklarasikan *Early-Exit* (`N/A: Internal Audit Only`) dan dilarang melakukan pencarian web.
 - **Musyawarah Dewan Audit Mutu & Keabsahan Sistem**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan anomali dokumen, klasifikasi keparahan drift (Critical Blocker vs Warning), dan kompromi rekonsiliasi spesifikasi melalui 5 persona AI.
 - **Wawancara Penguncian Laporan Validasi di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan kelulusan audit (*PASS*) secara sepihak (*anti-rubber-stamping*).
@@ -33,7 +33,7 @@ Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi
                            │
                            ▼
 [1. Audit Paralel 5 Spesialis Validasi Konteks Tetap]
-    (Product/Phantom, Architecture/Mermaid, Governance, Backlog, Decisions)
+    (Product, Architecture/Design, Governance, Backlog, Decisions)
                            │
                            ▼
 [2. Sidang Dewan Audit Mutu & Keabsahan Sistem (LLM Council)]
@@ -45,7 +45,7 @@ Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi
                            │
                            ▼
 [4. Penyusunan Dokumen docs/ValidationReport.md Formal]
-    (Matriks 7-Arah, Mermaid Health, Anomali Matrix, Verdict Status)
+    (Matriks 8-Arah, Mermaid Health, Anomali Matrix, Verdict Status)
                            │
                            ▼
 [5. Pembukuan Rekam Keputusan VDR Formal & Penyelarasan Dokumen Hidup]
@@ -58,18 +58,18 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 1. **Spesialis 1: Audit Penyelarasan Kebutuhan & Fitur Siluman (*Product & Requirement Traceability Specialist*)**:
    - *Fokus*: Memeriksa alur `ProblemFraming.md` $\rightarrow$ `PRD.md` $\rightarrow$ `SystemSpec.md`.
    - *Misi*: Mendeteksi *Phantom Features* (fitur di PRD/Spec tanpa akar masalah di Framing) dan *Orphaned Pain Points* (masalah pengguna yang tidak tersentuh fitur P0/MVP).
-2. **Spesialis 2: Audit Integritas Arsitektur & Denah Diagram (*Architecture, Contracts & Mermaid Specialist*)**:
-   - *Fokus*: Memeriksa alur `SystemSpec.md` (Domain Entities & Contracts) $\rightarrow$ `Architecture.md` (C4 Models, Clean Architecture, Tech Stack).
-   - *Misi*: Memvalidasi kelengkapan modul per entitas, kesesuaian envelope respons, serta audit sintaksis diagram Mermaid di seluruh repositori.
+2. **Spesialis 2: Audit Integritas Arsitektur, Desain UI & Diagram (*Architecture, DesignSystem & Mermaid Specialist*)**:
+   - *Fokus*: Memeriksa alur `SystemSpec.md` $\rightarrow$ `Architecture.md` $\rightarrow$ `DesignSystem.md`.
+   - *Misi*: Memvalidasi kelengkapan modul per entitas, kesesuaian token desain & wireframe terhadap alur pengguna, serta audit sintaksis diagram Mermaid di seluruh repositori.
 3. **Spesialis 3: Audit Kepatuhan Tata Kelola & Keamanan (*Governance, Concurrency & Security Specialist*)**:
-   - *Fokus*: Memeriksa alur `Architecture.md` $\rightarrow$ `Governance.md`.
-   - *Misi*: Memverifikasi model konkurensi (Actor/Mutex/Channel), aturan thread-safety, protokol proteksi kredensial `env-guard`, protokol anti-slop, dan aturan lockfile / supply chain security.
+   - *Fokus*: Memeriksa alur `Architecture.md` + `DesignSystem.md` $\rightarrow$ `Governance.md`.
+   - *Misi*: Memverifikasi model konkurensi (Actor/Mutex/Channel), aturan thread-safety, protokol proteksi kredensial `env-guard`, protokol anti-slop, aturan aksesibilitas WCAG, dan aturan lockfile / supply chain security.
 4. **Spesialis 4: Audit Kelengkapan Backlog & Cakupan Tugas (*Task Backlog & Coverage Specialist*)**:
-   - *Fokus*: Memeriksa alur `PRD.md` (P0/P1) + `SystemSpec.md` (Gherkin stories) $\rightarrow$ `TaskBacklog.md` $\rightarrow$ `docs/tasks/`.
-   - *Misi*: Menegakkan *100% Backlog Coverage* (tidak boleh ada user story yang tidak memiliki kartu tugas), memeriksa batasan ukuran tugas (S/M), `Depends On`, dan `Parallel Safe`.
-5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & 8-Stage Integrity Specialist*)**:
-   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `GDR`, `TDR`, `RDR`, `VDR`).
-   - *Misi*: Memastikan setiap keputusan arsitektur/tata kelola terdokumentasi rapi, tidak ada kontradiksi antar keputusan, dan status keputusan (*Accepted vs Superseded*) konsisten.
+   - *Fokus*: Memeriksa alur `PRD.md` (P0/P1) + `SystemSpec.md` (Gherkin stories) + `DesignSystem.md` $\rightarrow$ `TaskBacklog.md` $\rightarrow$ `docs/tasks/`.
+   - *Misi*: Menegakkan *100% Backlog Coverage* (tidak boleh ada user story atau komponen UI yang tidak memiliki kartu tugas), memeriksa batasan ukuran tugas (S/M), `Depends On`, dan `Parallel Safe`.
+5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & 9-Stage Integrity Specialist*)**:
+   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`).
+   - *Misi*: Memastikan setiap keputusan arsitektur, desain, dan tata kelola terdokumentasi rapi, tidak ada kontradiksi antar keputusan, dan status keputusan (*Accepted vs Superseded*) konsisten.
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
 - Setiap spesialis membaca dokumen target sebelum menjalankan audit.
@@ -155,19 +155,23 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 - Semua entitas domain, atribut data unik/terindeks, dan kontrak API di `docs/SystemSpec.md` wajib memiliki modul pemilik, skema tabel/DDL, dan alur konkurensi yang jelas di `docs/Architecture.md`.
 - Alur data (*data flow*) pada diagram arsitektur wajib mencakup seluruh skenario interaksi sistem.
 
-### 4. Architecture-to-Governance Alignment (Rule 4)
-- Pilihan teknologi, model thread/actor, dan batasan memori di `docs/Architecture.md` wajib tunduk pada aturan ketat di `docs/Governance.md`.
+### 4. SystemSpec/Architecture-to-DesignSystem Alignment (Rule 4)
+- Skenario alur antarmuka pengguna di `docs/SystemSpec.md` dan teknologi client di `docs/Architecture.md` wajib dipetakan ke token desain, denah wireframe layar, dan matriks 5 status interaksi di `docs/DesignSystem.md`.
+- Jika proyek bersifat headless, deklarasi *Headless / CLI Architecture* wajib tercatat rapi di `docs/DesignSystem.md`.
+
+### 5. Architecture/DesignSystem-to-Governance Alignment (Rule 5)
+- Pilihan teknologi, model thread/actor, dan batasan memori di `docs/Architecture.md` serta standar aksesibilitas tampilan di `docs/DesignSystem.md` wajib tunduk pada aturan ketat di `docs/Governance.md`.
 - Setiap komponen yang menangani data sensitif wajib mematuhi standar enkripsi PII, penyensoran log otomatis (*log redaction*), dan disiplin lockfile `env-guard`.
 
-### 5. Architecture/Governance-to-TaskBacklog Alignment (Rule 5)
-- Seluruh modul di `docs/Architecture.md` wajib memiliki kartu tugas konkret yang dapat dieksekusi di `docs/TaskBacklog.md` (*100% Backlog Coverage*).
+### 6. Architecture/DesignSystem/Governance-to-TaskBacklog Alignment (Rule 6)
+- Seluruh modul di `docs/Architecture.md` dan komponen UI di `docs/DesignSystem.md` wajib memiliki kartu tugas konkret yang dapat dieksekusi di `docs/TaskBacklog.md` (*100% Backlog Coverage*).
 - Setiap kartu tugas wajib memiliki ukuran kompleksitas (S/M), batasan dependensi (`Depends On`), status keamanan paralel (`Parallel Safe`), dan perintah verifikasi terminal 0-failure.
 
-### 6. TaskBacklog-to-GranularRefinement Alignment (Rule 6)
-- Setiap kartu tugas makro yang siap dieksekusi wajib dipertajam menjadi kartu tugas granular di `docs/tasks/TASK-[ID].md` yang mematuhi **7 Anatomi Presisi** (termasuk pre/post-conditions dan blast radius).
+### 7. TaskBacklog-to-GranularRefinement Alignment (Rule 7)
+- Setiap kartu tugas makro yang siap dieksekusi wajib dipertajam menjadi kartu tugas granular di `docs/tasks/TASK-[ID].md` yang mematuhi **7 Anatomi Presisi** (termasuk pre/post-conditions, token desain untuk tugas UI, dan blast radius).
 
-### 7. Cross-Cutting-to-DecisionRecords Alignment (Rule 7)
-- Setiap keputusan penting di seluruh 8 tahap (PFDR di Framing, PDR di PRD, SDR di Spec, ADR di Architecture, GDR di Governance, TDR di Backlog, RDR di Refinement, dan VDR di Validation) wajib terdokumentasi rapi di `docs/decisions/` tanpa ada kontradiksi status (*Accepted vs Superseded*).
+### 8. Cross-Cutting-to-DecisionRecords Alignment (Rule 8)
+- Setiap keputusan penting di seluruh 9 tahap (PFDR di Framing, PDR di PRD, SDR di Spec, ADR di Architecture, DDR di Design System, GDR di Governance, TDR di Backlog, RDR di Refinement, dan VDR di Validation) wajib terdokumentasi rapi di `docs/decisions/` tanpa ada kontradiksi status (*Accepted vs Superseded*).
 
 ---
 

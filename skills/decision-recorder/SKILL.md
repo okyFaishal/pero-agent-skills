@@ -40,7 +40,7 @@ Penyaringan rasional agar tidak membebani tim dengan pencatatan hal sepele yang 
 
 ---
 
-## 8 Jenis Dokumen Keputusan Universal
+## 9 Jenis Dokumen Keputusan Universal
 
 Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDDHHmm].md`
 
@@ -48,10 +48,11 @@ Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDD
 2. **PDR (Product Decision Record)**: Keputusan ruang lingkup fitur MVP (P0 vs P1/P2) dan matriks alur produk (Stage 2 - `pero-prd-writing`).
 3. **SDR (System Design Record)**: Kontrak API envelope, model entitas ERD, dan skenario Gherkin (Stage 3 - `pero-user-stories`).
 4. **ADR (Architectural Decision Record)**: Pemilihan stack teknologi, database, deklarasi server MCP, dan pola konkurensi (Stage 4 - `pero-system-architecture`).
-5. **GDR (Governance Decision Record)**: Standar thread-safety, batas keamanan rahasia env-guard, linter matrix, dan quality gates (Stage 5 - `pero-quality-governance`).
-6. **TDR (Task Decision Record)**: Strategi pemecahan fase backlog 6 domain dan mitigasi dependensi koding (Stage 6 - `pero-task-decomposition`).
-7. **RDR (Refinement Decision Record)**: Keputusan tanda tangan metode bertipe ketat, invarian pre/post-conditions, kasus batas ekstrem, dan blast radius kartu tugas granular (Stage 7 - `pero-granular-refinement`).
-8. **VDR (Validation Decision Record)**: Keputusan hasil audit ketertelusuran 7-arah (*7-way traceability*), rekonsiliasi cascade drift, verifikasi Mermaid, dan vonis akhir Go/No-Go sebelum fase koding TDD (Stage 8 - `pero-context-validation`).
+5. **DDR (Design Decision Record)**: Keputusan arah estetika, konfigurasi 3 Dial, token warna semantik, skala tipografi, wireframe layar, dan matriks 5 state komponen antarmuka (Stage 5 - `pero-uiux-design`).
+6. **GDR (Governance Decision Record)**: Standar thread-safety, batas keamanan rahasia env-guard, linter matrix, dan quality gates (Stage 6 - `pero-quality-governance`).
+7. **TDR (Task Decision Record)**: Strategi pemecahan fase backlog 6 domain dan mitigasi dependensi koding (Stage 7 - `pero-task-decomposition`).
+8. **RDR (Refinement Decision Record)**: Keputusan tanda tangan metode bertipe ketat, invarian pre/post-conditions, kasus batas ekstrem, dan blast radius kartu tugas granular (Stage 8 - `pero-granular-refinement`).
+9. **VDR (Validation Decision Record)**: Keputusan hasil audit ketertelusuran 8-arah (*8-way traceability*), rekonsiliasi cascade drift, verifikasi Mermaid, dan vonis akhir Go/No-Go sebelum fase koding TDD (Stage 9 - `pero-context-validation`).
 
 ---
 
@@ -146,7 +147,7 @@ Untuk mencegah penumpukan dokumen sampah (*documentation bloat*), ikuti aturan p
 ## Checklist Verifikasi Mandiri (*Self-Validation Gate*)
 
 Sebelum menyimpan rekaman keputusan baru:
-- [ ] Format nama berkas sesuai standar: `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` (dengan TYPE salah satu dari: `PFDR`, `PDR`, `SDR`, `ADR`, `GDR`, `TDR`, `RDR`, `VDR`).
+- [ ] Format nama berkas sesuai standar: `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` (dengan TYPE salah satu dari: `PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`).
 - [ ] Berkas memuat status siklus hidup yang jelas (Draft/Proposed/Accepted/Superseded).
 - [ ] Konteks masalah dijelaskan dengan analogi ramah (ELI5).
 - [ ] Mencantumkan minimal 2 opsi pembanding dengan analisis untung-rugi nyata.

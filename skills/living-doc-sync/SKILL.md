@@ -23,7 +23,7 @@ Skill ini adalah **"Penjaga Keselarasan Arsitektur Hidup & Anti-Dokumentasi Basi
 │          3 SIKLUS LIVING DOCUMENTATION RECONCILIATION       │
 ├─────────────────────────────────────────────────────────────┤
 │ 1. Drift Detection  : Deteksi perubahan via git diff        │
-│ 2. Octa-Doc Sync    : Sinkronkan 8 Dokumen Inti & Keputusan │
+│ 2. Nona-Doc Sync    : Sinkronkan 9 Dokumen Inti & Keputusan │
 │ 3. Syntax Guard     : Audit diagram Mermaid & link berkas   │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -40,15 +40,16 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 2. **Perubahan Lingkup Fitur MVP**: Jika ada penambahan/pemangkasan fitur P0/P1/P2 → Wajib perbarui `docs/PRD.md` & `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 3. **Perubahan Kontrak API / DTO / Model Domain**: Jika ada modifikasi schema payload, endpoint, atau model entitas → Wajib perbarui `docs/SystemSpec.md` & `docs/decisions/SDR-[YYYYMMDDHHmm].md`.
 4. **Perubahan Arsitektural / Komponen**: Jika ada penambahan modul, folder baru, database baru, atau protokol komunikasi baru → Wajib perbarui `docs/Architecture.md` & `docs/decisions/ADR-[YYYYMMDDHHmm].md` serta `README.md`.
-5. **Perubahan Standar Kualitas / Aturan Thread**: Jika ada perubahan linter, concurrency model, atau secret policy → Wajib perbarui `docs/Governance.md` & `docs/decisions/GDR-[YYYYMMDDHHmm].md`.
-6. **Perubahan Backlog Tugas**: Jika tugas selesai, dipecah, atau dependensi berubah → Wajib perbarui `docs/TaskBacklog.md` & `docs/decisions/TDR-[YYYYMMDDHHmm].md`.
-7. **Perubahan Spesifikasi Tugas Granular**: Jika file path, signature method, kasus batas, atau failing test berubah → Wajib perbarui `docs/tasks/TASK-[ID].md` & `docs/decisions/RDR-[YYYYMMDDHHmm].md`.
-8. **Perubahan Audit Integritas & Status Rilis**: Jika ada cascade update atau perubahan status kesiapan rilis → Wajib perbarui `docs/ValidationReport.md` & `docs/decisions/VDR-[YYYYMMDDHHmm].md`.
-9. **Perubahan Dependensi / Cara Menjalankan**: Jika ada package baru atau script run/build berubah → Wajib perbarui `README.md`.
+5. **Perubahan Sistem Desain / Token UI / Tata Letak**: Jika ada perubahan palet warna, tipografi, wireframe layar, atau status komponen antarmuka → Wajib perbarui `docs/DesignSystem.md` & `docs/decisions/DDR-[YYYYMMDDHHmm].md`.
+6. **Perubahan Standar Kualitas / Aturan Thread**: Jika ada perubahan linter, concurrency model, atau secret policy → Wajib perbarui `docs/Governance.md` & `docs/decisions/GDR-[YYYYMMDDHHmm].md`.
+7. **Perubahan Backlog Tugas**: Jika tugas selesai, dipecah, atau dependensi berubah → Wajib perbarui `docs/TaskBacklog.md` & `docs/decisions/TDR-[YYYYMMDDHHmm].md`.
+8. **Perubahan Spesifikasi Tugas Granular**: Jika file path, signature method, kasus batas, atau failing test berubah → Wajib perbarui `docs/tasks/TASK-[ID].md` & `docs/decisions/RDR-[YYYYMMDDHHmm].md`.
+9. **Perubahan Audit Integritas & Status Rilis**: Jika ada cascade update atau perubahan status kesiapan rilis → Wajib perbarui `docs/ValidationReport.md` & `docs/decisions/VDR-[YYYYMMDDHHmm].md`.
+10. **Perubahan Dependensi / Cara Menjalankan**: Jika ada package baru atau script run/build berubah → Wajib perbarui `README.md`.
 
 ---
 
-### Siklus 2: Octa-Doc Synchronization (Penyelarasan 8 Lapis Ekosistem)
+### Siklus 2: Nona-Doc Synchronization (Penyelarasan 9 Lapis Ekosistem)
 
 | Lapisan Dokumen | Berkas Target | Hal yang Wajib Diselaraskan |
 |---|---|---|
@@ -56,10 +57,11 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 | **Lapis 2: Product Requirements** | `docs/PRD.md` / `PDR` | Matriks prioritas P0/P1/P2, user persona, user workflow. |
 | **Lapis 3: System Specification** | `docs/SystemSpec.md` / `SDR` | Skenario uji Gherkin, model entitas domain (ERD), kontrak API/event. |
 | **Lapis 4: System Architecture** | `docs/Architecture.md` / `ADR` | Diagram C4 (Context/Container), komponen Clean Architecture, MCP server. |
-| **Lapis 5: Quality Governance** | `docs/Governance.md` / `GDR` | Aturan thread-safety, linter matrix, mutation testing, PII log masking. |
-| **Lapis 6: Task Backlog** | `docs/TaskBacklog.md` / `TDR` | Alur 5 fase backlog, ukuran S/M, dependensi `Depends On`, `Parallel Safe`. |
-| **Lapis 7: Granular Refinement** | `docs/tasks/TASK-[ID].md` / `RDR`| 7 Anatomi presisi, invarian pre/post-conditions, blast radius, Red spec. |
-| **Lapis 8: Context Validation** | `docs/ValidationReport.md` / `VDR`| Matriks ketertelusuran 7-arah, 3 severity tiers, vonis Go/No-Go. |
+| **Lapis 5: UI/UX Design System** | `docs/DesignSystem.md` / `DDR` | Visi estetika 3 dial, token warna/tipografi, wireframe, matriks 5 state. |
+| **Lapis 6: Quality Governance** | `docs/Governance.md` / `GDR` | Aturan thread-safety, linter matrix, mutation testing, PII log masking. |
+| **Lapis 7: Task Backlog** | `docs/TaskBacklog.md` / `TDR` | Alur 5 fase backlog, ukuran S/M, dependensi `Depends On`, `Parallel Safe`. |
+| **Lapis 8: Granular Refinement** | `docs/tasks/TASK-[ID].md` / `RDR`| 7 Anatomi presisi, invarian pre/post-conditions, blast radius, Red spec. |
+| **Lapis 9: Context Validation** | `docs/ValidationReport.md` / `VDR`| Matriks ketertelusuran 8-arah, 3 severity tiers, vonis Go/No-Go. |
 | **Etalase Ekosistem** | `README.md` | Diagram alur, katalog skill, instruksi instalasi & dependensi. |
 
 ---

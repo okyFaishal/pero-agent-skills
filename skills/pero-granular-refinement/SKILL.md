@@ -6,14 +6,14 @@ description: Use when sharpening technical task cards with exact file paths, met
 # Pero Granular Task Refinement (`pero:granular-refinement`)
 
 ## Overview
-**Origin**: *Pero Custom SDLC Pipeline - Stage 7 (Universal)*.
+**Origin**: *Pero Custom SDLC Pipeline - Stage 8 (Universal)*.
 Skill ini bertindak sebagai **"Kaca Pembesar Tukang Jam / Sketsa Bedah Presisi"** (Sebelum dokter bedah membuat sayatan pertama atau tukang jam membongkar roda gigi halus, mereka melihat lewat kaca pembesar berdaya tinggi untuk menandai urat persis mana yang dipegang, baut nomor berapa yang diputar, dan apa tanda jika roda gigi sudah terpasang kencang). 
 
-Tugasnya adalah mempertajam butir tugas makro dari `docs/TaskBacklog.md` menjadi **Kartu Spesifikasi Tugas Granular (*Granular Task Specification Card*)** yang sangat presisi, konkret, dan bebas tebak-tebakan. Dokumen ini membekali subagent atau engineer dengan path file target yang pasti, tanda tangan metode bertipe ketat (*typed signatures*), skenario uji batas ekstrem (*edge cases*), dan spesifikasi failing test TDD awal (*Red step*) sebelum satu baris pun kode implementasi ditulis.
+Tugasnya adalah mempertajam butir tugas makro dari `docs/TaskBacklog.md` menjadi **Kartu Spesifikasi Tugas Granular (*Granular Task Specification Card*)** yang sangat presisi, konkret, dan bebas tebak-tebakan. Dokumen ini membekali subagent atau engineer dengan path file target yang pasti, tanda tangan metode bertipe ketat (*typed signatures*), rujukan token dan wireframe dari `docs/DesignSystem.md` (untuk tugas UI), skenario uji batas ekstrem (*edge cases*), dan spesifikasi failing test TDD awal (*Red step*) sebelum satu baris pun kode implementasi ditulis.
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca butir tugas spesifik dari `docs/TaskBacklog.md` serta memeriksa kontrak terkait di `docs/SystemSpec.md`, cetak biru modul di `docs/Architecture.md`, dan batas kualitas di `docs/Governance.md`.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca butir tugas spesifik dari `docs/TaskBacklog.md` serta memeriksa kontrak terkait di `docs/SystemSpec.md`, cetak biru modul di `docs/Architecture.md`, standar antarmuka di `docs/DesignSystem.md`, dan batas kualitas di `docs/Governance.md`.
 - **Dekomposisi Riset 5 Spesialis Penajaman Tetap (*Fixed Refinement Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Penajaman Granular Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan (misal SDK eksternal pada tugas logika murni tanpa dependensi), agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Dokumentasi Library & SDK Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` dan `web-search` untuk memeriksa dokumentasi resmi paket/library pihak ketiga, memastikan tanda tangan fungsi (*method signatures*), tipe data argumen, dan lifecycle method sesuai rilis API mutakhir, bukan hasil halusinasi.
 - **Penegakan Kode Bersih & Anti-Slop**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` untuk melarang over-engineering (YAGNI), mengeliminasi komentar sepele yang redundan, dan melarang mock data palsu yang tidak menguji kegagalan nyata.
@@ -27,7 +27,7 @@ Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi su
 - **Penyalur Eksekusi Otonom Sub-Agen**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk menyalurkan kartu tugas yang sudah dipertajam menjadi *task brief* mandiri yang siap dieksekusi oleh Implementer Subagent.
 - **Pencatatan Keputusan Penajaman Tugas**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan desain mikro, strategi error handling, dan mitigasi dependensi ke `docs/decisions/RDR-[YYYYMMDDHHmm].md` menggunakan template standar resmi.
 - **Audit Konsistensi Penajaman Tugas**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan kartu tugas tidak mengalami *drift* dari arsitektur, tata kelola, dan spesifikasi hulu.
-- **Spesifikasi Estetika & Dial Visual Antarmuka**: **`CONDITIONAL SUB-SKILL`**: Jika kartu tugas menargetkan pembuatan atau modifikasi komponen antarmuka pengguna (Frontend/UI/Landing Page), gunakan `taste-skill` untuk menetapkan *Brief Inference*, nilai 3 Dial (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`), pasangan tipografi, 4–6 token warna Hex, dan aturan *anti-slop* visual pada kartu tugas. Jika kartu tugas murni backend/core/data tanpa perubahan UI, sub-skill ini tidak digunakan.
+- **Spesifikasi Estetika & Grounding Design System**: **`CONDITIONAL SUB-SKILL`**: Jika kartu tugas menargetkan komponen antarmuka pengguna (Frontend/UI/Client), agen wajib menyematkan rujukan token desain (`docs/DesignSystem.md`), sketsa wireframe, 5 matriks status interaksi (default, hover, skeleton, empty, error), dan parameter anti-slop `taste-skill`. Jika tugas murni backend/core tanpa UI, sub-skill ini tidak digunakan.
 
 ## The 5-Stage Granular Refinement Framework
 
@@ -65,8 +65,8 @@ Mendelegasikan tim 5 agen spesialis penajaman tetap via `dispatching-parallel-ag
    - *Fokus*: Merancang nama fungsi test deskriptif, mock fixtures deterministik terisolasi, dan assertions yang tajam (menolak mock data kosong yang tidak menguji logika).
 4. **Spesialis 4: Dokumentasi Library Pihak Ketiga & Grounding API (*Third-Party SDK & Library Grounding Specialist*)**:
    - *Fokus*: Memeriksa dokumentasi resmi SDK pihak ketiga via `context-7` dan `web-search` untuk memastikan method signatures dan lifecycle API 100% mutakhir dan anti-halusinasi.
-5. **Spesialis 5: Pagar Anti-Slop, Keamanan Data & Estetika (*Anti-Slop, Data Masking & Taste Specialist*)**:
-   - *Fokus*: Memastikan kartu tugas mematuhi `anti-slop` (bebas over-engineering/YAGNI, bebas komentar sepele), proteksi credential (`env-guard`), penyensoran log PII, dan menyematkan parameter visual `taste-skill` jika menyentuh antarmuka UI.
+5. **Spesialis 5: Pagar Anti-Slop, Keamanan Data & Grounding Desain (*Anti-Slop, Data Masking & Design System Specialist*)**:
+   - *Fokus*: Memastikan kartu tugas mematuhi `anti-slop` (bebas over-engineering/YAGNI, bebas komentar sepele), proteksi credential (`env-guard`), penyensoran log PII, serta menyematkan rujukan token desain (`docs/DesignSystem.md`), wireframe layout, dan spesifikasi 5 status interaksi (default, hover, skeleton, empty, error) jika menyentuh antarmuka UI.
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
 - Setiap spesialis membaca konteks tugas sebelum menjalankan riset.

@@ -1,11 +1,11 @@
 ---
 name: taste-skill
-description: Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.
+description: Anti-slop frontend skill for landing pages, portfolios, SaaS applications, dashboards, and product UI. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.
 ---
 
 # tasteskill: Anti-Slop Frontend Skill
 
-> Landing pages, portfolios, and redesigns. Not dashboards, not data tables, not multi-step product UI.
+> Universal Frontend Anti-Slop: Landing pages, portfolios, SaaS applications, dashboards, data tables, and multi-step product UI.
 > Every rule below is **contextual**. None of it fires automatically. First read the brief, then pull only what fits.
 
 ---
@@ -227,9 +227,42 @@ LLMs default to "static successful state only." Always implement full cycles:
 * **NO DUPLICATE CTA INTENT (mandatory):** Two CTAs with the same intent on one page is a Pre-Flight Fail. Examples of same intent: "Get in touch" + "Contact us" + "Let's talk" + "Start a project" + "Start something" + "Reach out" = all "contact" intent → pick ONE label and use it everywhere on the page (nav, hero, footer). Same for "Try free" + "Get started" + "Sign up free" (all "signup" intent) and "View work" + "See selected work" + "Browse projects" (all "portfolio" intent). One label per intent.
 * **FORM CONTRAST CHECK (mandatory, a11y):** Form inputs, placeholder text, focus rings, helper text, and error text all pass WCAG AA contrast against the section background. Light placeholders on a near-white form, white form on white page section, form labels grayer than 4.5:1 contrast → all banned. Audit every form before shipping.
 
-### 4.6 Data & Form Patterns
-* Label ABOVE input. Helper text optional but present in markup. Error text BELOW input. Standard `gap-2` for input blocks.
-* No placeholder-as-label. Ever.
+### 4.6 Product UI, Dashboard & Data Patterns
+
+* **4.6.A Form & Input Discipline:**
+  * Label ALWAYS ABOVE input. Helper text optional but present in markup. Error text BELOW input. Standard `gap-2` for input blocks.
+  * **No placeholder-as-label. Ever.** Placeholders disappear on type, leaving screen readers and distracted users without context.
+  * Provide explicit required indicator (`*` with `aria-hidden="true"` and `required` attribute).
+  * Password inputs must provide a visible, accessible show/hide toggle.
+  * Inputs must show visible focus rings (`focus-visible:ring-2 focus-visible:ring-offset-2`).
+
+* **4.6.B Dashboards & Metric Cards:**
+  * **Visual Density Tuning:** For analytics dashboards (`VISUAL_DENSITY > 6`), eliminate decorative padding fluff. Use compact cards (`p-4 md:p-5`) with subtle 1px border (`border-zinc-200 dark:border-zinc-800`).
+  * **KPI Metric Hierarchy:** Primary metric number must use prominent display typography (`text-2xl md:text-3xl font-bold tracking-tight`), with muted semantic label above or below (`text-xs font-medium text-zinc-500 uppercase tracking-wider`).
+  * **Trend Indicators:** Render positive/negative delta as an inline pill or text with directional arrow glyph (`+12.4%` in emerald, `-3.2%` in rose). Always provide comparison baseline context (`"vs last month"`, not just a floating percentage).
+  * **Anti-Card Clutter:** Do not wrap every single line of text in its own separate card container. Group related metrics into cohesive panels with subtle dividers (`divide-y` or `divide-x`).
+
+* **4.6.C Data Tables (Enterprise Anti-Slop):**
+  * **Column Alignment Standard:** Text columns (names, emails, titles, descriptions) align LEFT. Numeric values (quantities, prices, percentages, balances) align RIGHT. Status badges, dates, and action menus align CENTER or RIGHT.
+  * **Header Pinning:** When table exceeds 10 rows, table header must be sticky (`sticky top-0 bg-background/95 backdrop-blur z-10`).
+  * **Subtle Borders over Heavy Grids:** Avoid thick black grid lines. Use delicate horizontal dividers (`border-b border-zinc-100 dark:border-zinc-800/60`). Zebra striping is banned unless rows exceed 15 columns of dense data.
+  * **Row Hover & Selection:** Rows should react to hover with a faint tint (`hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors`). Checkbox selection must highlight the active row clearly.
+  * **Graceful Truncation:** Long strings must truncate cleanly (`truncate max-w-[240px]`) with a native `title` attribute or hover tooltip displaying the full content.
+  * **Empty Cell Handling:** Never leave cells blank or empty. Render a muted dash (`-` or `N/A`) in `text-zinc-400`.
+  * **Pagination & Counts:** Always show item ranges (`"Showing 1-10 of 142 items"`) and clean page controls. Do not hide total count.
+
+* **4.6.D Multi-Step Wizards & Workflows:**
+  * **Step Progression:** Provide a clear step indicator (numbered pills or labeled progress bar) visible on desktop and mobile.
+  * **State Preservation:** Form state must persist when navigating backward (`"Previous"` button must never wipe filled inputs).
+  * **Destructive Action Safeguards:** Destructive operations (Delete, Cancel Project, Revoke Access) must require a secondary confirmation modal or explicit confirmation typing.
+  * **Final Review Summary:** Multi-step workflows must conclude with a comprehensive review screen summarizing all entered parameters before final submission.
+
+* **4.6.E Dialogs, Modals, Drawers & Popovers:**
+  * **Backdrop Scrim:** Modals must use an ambient, semi-transparent backdrop scrim (`bg-black/40 dark:bg-black/60 backdrop-blur-sm`).
+  * **Keyboard & Focus Safety:** Pressing `Escape` must close the overlay. Focus must be trapped inside the modal while open and restored to the trigger element on close.
+  * **Mobile Drawers:** On screens `< 768px`, complex modals should gracefully transition into bottom sheets / slide-over drawers for thumb-friendly reachability.
+  * **Action Placement:** Primary confirmation button sits on the bottom-right, preceded by the "Cancel" button.
+
 
 ### 4.7 Layout Discipline (Hard Rules. Failing any of these is shipping broken work)
 
