@@ -72,11 +72,17 @@ Saat mengevaluasi hasil pencarian, prioritaskan sumber berdasarkan tingkat keper
 
 ---
 
-## Protokol Triangulasi Anti-Halusinasi
+## Protokol Triangulasi Anti-Halusinasi & Integritas Tautan Hidup
 
 1. **Cocokkan Versi SemVer**: Pastikan solusi yang ditemukan sesuai dengan versi dependensi yang tercantum di `package.json`, `go.mod`, `Cargo.toml`, atau `pyproject.toml` lokal.
 2. **Verifikasi Tanda Tangan Fungsi (*Function Signature*)**: Jangan mengasumsikan parameter baru ada jika belum diverifikasi pada dokumentasi resmi rilis terkait.
-3. **Sertakan Atribusi URL**: Setiap kali mengusulkan perbaikan berbasis riset web, cantumkan tautan URL sumber primer sebagai bukti pendukung.
+3. **Kuncian Tautan Persis (*Verbatim URL Pinning*)**: DILARANG KERAS mereka-reka, memodifikasi, mempercantik, atau menyintesis struktur tautan URL dari ingatan internal (*parametric memory*). URL wajib disalin persis (karakter demi karakter) langsung dari keluaran perkakas `search_web`.
+4. **Uji Kesehatan Tautan Pra-Terbit (*Pre-Flight Link Health Check*)**: Sebelum mencantumkan URL ke dalam dokumen atau laporan, agen WAJIB memverifikasi ketersediaan fisik halaman web:
+   - Gunakan verifikasi HTTP ringan: `curl -Is -L --max-time 5 "<URL>" | head -n 1` atau perkakas `read_url_content`.
+   - Hanya tautan dengan kode respon status `200 OK` (atau pengalihan `301`/`302` yang berhasil berujung ke status `200`) yang diizinkan dicantumkan.
+   - Jika menerima status `404 Not Found`, `403 Forbidden`, atau waktu tunggu habis (*timeout*), tautan tersebut dinyatakan TIDAK VALID (*invalid*) dan dilarang dicantumkan.
+5. **Jaring Pengaman Portal Resmi (*Domain Portal Fallback*)**: Jika tautan ke artikel spesifik atau laporan tertentu gagal uji kesehatan, agen WAJIB beralih (*fallback*) ke akar portal dokumentasi resmi vendor yang permanen dan stabil (misalnya: `https://docs.docker.com/` alih-alih artikel pihak ketiga yang sudah dihapus).
+6. **Sertakan Atribusi URL Terverifikasi**: Setiap kali mengusulkan perbaikan atau mencantumkan bukti empiris, cantumkan tautan URL primer yang telah lolos uji status `200 OK`.
 
 ---
 
@@ -87,6 +93,7 @@ Saat mengevaluasi hasil pencarian, prioritaskan sumber berdasarkan tingkat keper
 | **Hallucinated Package** | Menyarankan library eksternal yang sebenarnya tidak pernah ada di registry resmi. | Lakukan pencarian registry (`npm`, `pypi`, `crates.io`) untuk memverifikasi eksistensi paket. |
 | **Outdated Recipe** | Mengambil cuplikan kode dari artikel tahun 2018 yang menggunakan API usang (*deprecated*). | Tambahkan filter tahun atau kata kunci versi spesifik pada query pencarian. |
 | **Unattributed Claim** | Mengklaim *"Library X sekarang mendukung fitur Y"* tanpa menyertakan tautan changelog resmi. | Sertakan tautan rilis atau dokumentasi resmi vendor terkait. |
+| **Hallucinated / Broken URL** | Menuliskan tautan fiktif hasil rekaan AI yang menghasilkan halaman 404 atau rusak saat diklik pengguna. | Lakukan *Verbatim Pinning* langsung dari hasil search dan uji status HTTP dengan `curl -Is -L` atau `read_url_content` sebelum disajikan. |
 
 ---
 
@@ -96,5 +103,8 @@ Sebelum menyajikan hasil riset web kepada pengguna atau menerapkannya ke kode:
 - [ ] Menggunakan formula pencarian presisi (pesan error lengkap + nama paket + versi).
 - [ ] Informasi berasal dari sumber Tier 1 atau Tier 2 yang terverifikasi.
 - [ ] Memastikan kompatibilitas versi semantik (SemVer) sesuai dengan proyek lokal.
-- [ ] Menyertakan URL referensi resmi pada penjelasan perbaikan.
+- [ ] Menerapkan *Verbatim URL Pinning* (URL disalin persis dari hasil pencarian tanpa modifikasi).
+- [ ] Melakukan *Pre-Flight Link Health Check* dan memastikan tautan merespon dengan status HTTP 200 OK.
+- [ ] Menggunakan *Domain Portal Fallback* jika tautan artikel spesifik tidak dapat diakses secara stabil.
+
 

@@ -14,7 +14,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Riset Multi-Dimensi Paralel & Bukti Empiris Web (Adaptive Squad: 3 Wajib + 1–3 Spesialis)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim agen riset independen secara paralel yang masing-masing dibekali alat `web-search`.
   - **3 Agen Wajib**: *Persona & Pain Points*, *Pasar & Benchmark Kompetitor*, *Kelayakan Arsitektur Teknis*.
   - **1–3 Agen Spesialis Dinamis (Wajib pilih min. 1, maks. 3)**: Dipilih secara kontekstual sesuai karakteristik ide dari katalog spesialis (*Kepatuhan Regulasi/Privasi, Nilai Finansial/Kesediaan Membayar, Benteng Pertahanan/Moat, atau Inersia Adopsi/Kebiasaan Lama*).
-  - **Pagar Pencarian**: Setiap agen dibatasi 1–2 pencarian web terarah dan wajib menyertakan minimal 1 tautan URL resmi aktif dengan data empiris konkret (total menghasilkan minimal 4 hingga 6 bukti valid).
+  - **Pagar Pencarian & Kuncian URL Persis**: Setiap agen dibatasi 1–2 pencarian web terarah, wajib menerapkan *Verbatim URL Pinning* (URL disalin karakter demi karakter langsung dari keluaran `search_web`), serta wajib melakukan uji kesehatan tautan pra-terbit (*Pre-Flight Link Health Check* via `curl -Is -L` atau `read_url_content` memastikan respon HTTP `200 OK`). Dilarang mencantumkan URL rekaan AI atau tautan rusak 404 (total menghasilkan minimal 4 hingga 6 bukti empiris tervalidasi).
 - **Musyawarah 5 Sudut Pandang AI**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji rumusan masalah dari 5 perspektif ahli (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membasmi bias sudut pandang sempit.
 - **Wawancara Socratic & Stress-Test 2-Tahap**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dalam **2 ronde terpisah**:
   1. *Ronde 1 (Tahap 2)*: Membedah 5-Whys hingga ke akar terdalam (*root cause*) dengan opsi maksimal (2–5 alternatif konkret), diawali pilihan `(Recommended)`, dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak).
@@ -74,7 +74,11 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 #### C. Pagar Batas Pencarian & Integritas Bukti (*Guardrails*):
 - **Batas Beban**: Total agen yang berjalan paralel adalah **4 hingga 6 agen** (3 wajib + 1 hingga 3 spesialis). DILARANG menjalankan 0 spesialis atau lebih dari 3 spesialis.
 - **Batas Kuota Pencarian**: Setiap agen dibatasi maksimal **1–2 pencarian web terarah** untuk mencegah pemborosan kuota dan risiko *rate limit*.
-- **Integritas Bukti Empiris**: Setiap agen wajib menyertakan **minimal 1 tautan URL resmi dan aktif** dengan temuan konkret, sehingga total menghasilkan **minimal 4 hingga 6 bukti empiris tervalidasi** untuk dokumen akhir.
+- **Integritas Bukti Empiris & Verifikasi Tautan Hidup**:
+  - Setiap agen wajib menyertakan **minimal 1 tautan URL resmi dan aktif** dengan temuan konkret (total menghasilkan **minimal 4 hingga 6 bukti empiris tervalidasi**).
+  - **Wajib Kuncian Tautan Persis (*Verbatim Pinning*)**: URL wajib disalin persis karakter demi karakter langsung dari keluaran perkakas `search_web`. DILARANG KERAS menyintesis, mempercantik, atau mereka-reka struktur URL dari ingatan internal (*parametric memory*).
+  - **Wajib Uji Kesehatan Pra-Terbit (*Pre-Flight Link Health Check*)**: Sebelum dicantumkan ke dokumen, uji setiap tautan via `curl -Is -L --max-time 5 "<URL>" | head -n 1` atau perkakas `read_url_content` untuk memastikan respon status `200 OK`. Jika tautan berstatus `404 Not Found`, `403 Forbidden`, atau waktu tunggu habis (*timeout*), tautan DILARANG KERAS dicantumkan.
+  - **Jaring Pengaman Portal Resmi (*Domain Portal Fallback*)**: Jika tautan ke artikel spesifik tidak dapat diakses secara stabil atau gagal verifikasi, agen wajib beralih (*fallback*) ke akar portal dokumentasi resmi vendor yang permanen (misalnya: `https://docs.docker.com/` alih-alih artikel pihak ketiga yang rusak).
 
 ### 2. Diagnosa Akar Masalah (5-Whys & `grilling` - Ronde 1 Chat via `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE - RONDE 1)**:
@@ -152,15 +156,15 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
   - [Non-Goal 2]
 
 ## 5. Bukti Empiris & Referensi Industri Terverifikasi
-*(Terkumpul minimal 4 hingga 6 sumber dari 3 Agen Inti + 1–3 Agen Spesialis)*
-| No | Domain Riset (Agen) | Sumber / Publikasi | URL Referensi | Temuan Kunci / Fakta Empiris |
-|:---|:---|:---|:---|:---|
-| 1 | Persona & User Pain | [Nama Studi Kasus / Sumber] | `https://...` | [Fakta / Statistik Konkret] |
-| 2 | Market & Competitor | [Laporan Riset Pasar / Standar] | `https://...` | [Temuan Kunci] |
-| 3 | Tech Feasibility | [Analisis Benchmark / Dokumentasi] | `https://...` | [Bukti Validasi] |
-| 4 | [Spesialis Terpilih 1] | [Sumber Spesialis 1] | `https://...` | [Temuan Kunci Spesialis] |
-| 5 | [Spesialis Terpilih 2 (opsional)] | [Sumber Spesialis 2] | `https://...` | [Temuan Kunci Spesialis] |
-| 6 | [Spesialis Terpilih 3 (opsional)] | [Sumber Spesialis 3] | `https://...` | [Temuan Kunci Spesialis] |
+*(Terkumpul minimal 4 hingga 6 sumber dari 3 Agen Inti + 1–3 Agen Spesialis. Seluruh tautan wajib lolos uji HTTP 200 via Verbatim Pinning)*
+| No | Domain Riset (Agen) | Sumber / Organisasi Resmi | URL Referensi (Verbatim) | Status HTTP | Temuan Kunci / Fakta Empiris |
+|:---|:---|:---|:---|:---|:---|
+| 1 | Persona & User Pain | [Nama Studi Kasus / Sumber] | `https://...` | `200 OK` | [Fakta / Statistik Konkret] |
+| 2 | Market & Competitor | [Laporan Riset Pasar / Standar] | `https://...` | `200 OK` | [Temuan Kunci] |
+| 3 | Tech Feasibility | [Analisis Benchmark / Dokumentasi] | `https://...` | `200 OK` | [Bukti Validasi] |
+| 4 | [Spesialis Terpilih 1] | [Sumber Spesialis 1] | `https://...` | `200 OK` | [Temuan Kunci Spesialis] |
+| 5 | [Spesialis Terpilih 2 (opsional)] | [Sumber Spesialis 2] | `https://...` | `200 OK` | [Temuan Kunci Spesialis] |
+| 6 | [Spesialis Terpilih 3 (opsional)] | [Sumber Spesialis 3] | `https://...` | `200 OK` | [Temuan Kunci Spesialis] |
 
 ## 6. Ukuran Keberhasilan (Success Metrics)
 - **Metrik Utama**: [Angka / Target Terukur, misal: Reduksi waktu kerja 80%]
@@ -209,6 +213,7 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 - **Bypassing Council Grilling**: Menjalankan sidang dewan AI namun langsung menyimpulkan dan menulis dokumen sendiri tanpa membawa kritik dan titik buta dewan kepada pengguna di chat untuk diputuskan bersama.
 - **Unbounded Web Search Avalanche**: Memberondong puluhan pencarian web tanpa batas yang memicu pemborosan token dan risiko rate limit, alih-alih memanfaatkan 1–2 pencarian terarah per sub-agen.
 - **Unverified Hallucinated Problem**: Mengarang klaim masalah tanpa melampirkan bukti empiris atau riset web yang valid.
+- **Broken or Hallucinated Evidence URLs**: Mencantumkan tautan URL fiktif rekaan AI, tautan dengan slug yang ditebak-tebak, atau tautan rusak berstatus 404/403 ke dalam dokumen `docs/ProblemFraming.md` tanpa melakukan *Verbatim Pinning* dan verifikasi kesehatan respon HTTP 200 secara nyata.
 - **Narrow Tunnel Vision**: Merumuskan masalah hanya dari satu sudut pandang sempit tanpa validasi multi-agen paralel atau dewan AI.
 - **Inconsistent Scope**: Menuliskan akar masalah yang bertentangan dengan daftar Non-Goals.
 - **Langsung Melompat ke Solusi Koding**: Membicarakan stack database atau desain UI sebelum membuktikan bahwa masalah aslinya nyata.
