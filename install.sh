@@ -10,7 +10,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/okyFaishal/pero-agent-skills.git"
 
-# 29 Universal Engineering & SDLC Skills
+# 30 Universal Engineering & SDLC Skills
 SKILLS=(
   "pero-problem-framing"
   "pero-prd-writing"
@@ -21,6 +21,7 @@ SKILLS=(
   "pero-task-decomposition"
   "pero-granular-refinement"
   "pero-context-validation"
+  "pero-change-management"
   "find-skill"
   "context-7"
   "web-search"
@@ -66,7 +67,7 @@ while [[ $# -gt 0 ]]; do
       echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
       echo ""
       echo "Opsi:"
-      echo "  --check        Memeriksa integritas 29 modul skill dan AGENTS.md"
+      echo "  --check        Memeriksa integritas 30 modul skill dan AGENTS.md"
       echo "  --dry-run      Menampilkan simulasi tindakan tanpa menyalin berkas"
       echo "  --version, -v  Tampilkan versi installer resmi"
       echo "  --help, -h     Tampilkan panduan bantuan ini"

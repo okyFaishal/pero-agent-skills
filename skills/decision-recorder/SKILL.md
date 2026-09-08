@@ -40,7 +40,7 @@ Penyaringan rasional agar tidak membebani tim dengan pencatatan hal sepele yang 
 
 ---
 
-## 9 Jenis Dokumen Keputusan Universal
+## 10 Jenis Dokumen Keputusan Universal
 
 Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDDHHmm].md`
 
@@ -53,6 +53,7 @@ Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDD
 7. **TDR (Task Decision Record)**: Strategi pemecahan fase backlog 6 domain dan mitigasi dependensi koding (Stage 7 - `pero-task-decomposition`).
 8. **RDR (Refinement Decision Record)**: Keputusan tanda tangan metode bertipe ketat, invarian pre/post-conditions, kasus batas ekstrem, dan blast radius kartu tugas granular (Stage 8 - `pero-granular-refinement`).
 9. **VDR (Validation Decision Record)**: Keputusan hasil audit ketertelusuran 8-arah (*8-way traceability*), rekonsiliasi cascade drift, verifikasi Mermaid, dan vonis akhir Go/No-Go sebelum fase koding TDD (Stage 9 - `pero-context-validation`).
+10. **CRDR (Change Request Decision Record)**: Keputusan revisi cakupan proyek di tengah jalan, penambahan fitur (*ADD*), perubahan arsitektur (*MODIFY/PIVOT*), penghapusan modul (*REMOVE*), serta pembatalan atau pergantian kartu tugas aktif (*SUPERSEDED/CANCELLED*) (Companion - `pero-change-management`).
 
 ---
 
@@ -84,7 +85,7 @@ Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDD
 - **Tanggal**: YYYY-MM-DD
 - **Status**: Accepted
 - **Pengambil Keputusan**: [Nama Pengguna / Agen AI]
-- **Kategori**: [Problem / Product / System / Architecture / Governance / Task / Refinement / Validation]
+- **Kategori**: [Problem / Product / System / Architecture / Design / Governance / Task / Refinement / Validation / Change]
 - **Relasi**: [Optional: Supersedes ADR-202601011000.md]
 
 ---
@@ -147,7 +148,7 @@ Untuk mencegah penumpukan dokumen sampah (*documentation bloat*), ikuti aturan p
 ## Checklist Verifikasi Mandiri (*Self-Validation Gate*)
 
 Sebelum menyimpan rekaman keputusan baru:
-- [ ] Format nama berkas sesuai standar: `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` (dengan TYPE salah satu dari: `PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`).
+- [ ] Format nama berkas sesuai standar: `docs/decisions/[TYPE]-[YYYYMMDDHHmm].md` (dengan TYPE salah satu dari: `PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`, `CRDR`).
 - [ ] Berkas memuat status siklus hidup yang jelas (Draft/Proposed/Accepted/Superseded).
 - [ ] Konteks masalah dijelaskan dengan analogi ramah (ELI5).
 - [ ] Mencantumkan minimal 2 opsi pembanding dengan analisis untung-rugi nyata.

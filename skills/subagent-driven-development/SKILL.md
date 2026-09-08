@@ -135,6 +135,7 @@ skills/subagent-driven-development/
 *   **[`test-driven-development`](../test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib dipatuhi oleh Implementer Subagent.
 *   **[`anti-slop`](../anti-slop/SKILL.md)**: Filter kualitas agar sub-agen tidak menghasilkan kode atau komentar sampah.
 *   **[`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md)**: Dipanggil oleh SDD ketika menemukan tugas-tugas di dalam fase yang sama yang sepenuhnya independen dan dapat dijalankan serentak.
+*   **[`pero-change-management`](../pero-change-management/SKILL.md)**: Dipanggil seketika jika pengguna meminta perubahan arah, penambahan fitur baru, atau penghapusan alur di tengah eksekusi backlog, untuk menertibkan status tugas aktif (*pause/supersede*) dan mencegah eksekusi tugas zombie.
 *   **[`verification-before-completion`](../verification-before-completion/SKILL.md)**: Penegak bukti eksekusi terminal sebelum cabang dianggap tuntas.
 *   **[`code-reviewer`](../code-reviewer/SKILL.md)**: Digunakan untuk Task Reviewer dan Final Merge Reviewer.
 
@@ -146,4 +147,5 @@ skills/subagent-driven-development/
 *   ❌ **Pikiran Menumpuk (*Context Leakage*)**: Mengerjakan semua 10 tugas dalam satu sub-agen panjang tanpa memanggil sub-agen baru.
 *   ❌ **Penilai Diri Sendiri (*Self-Grading*)**: Menganggap tugas selesai tanpa melalui verifikasi sub-agen peninjau (*task reviewer*).
 *   ❌ **Menembus Larangan TDD**: Menulis kode implementasi sebelum membuat failing test.
+*   ❌ **Eksekusi Buta Saat Terjadi Pivot (*Blind Pivot Execution*)**: Tetap melanjutkan pengerjaan tugas lama yang sudah tidak relevan saat pengguna meminta perubahan arah di tengah jalan tanpa memanggil `pero-change-management`.
 

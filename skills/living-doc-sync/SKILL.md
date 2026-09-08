@@ -46,6 +46,11 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 8. **Perubahan Spesifikasi Tugas Granular**: Jika file path, signature method, kasus batas, atau failing test berubah → Wajib perbarui `docs/tasks/TASK-[ID].md` & `docs/decisions/RDR-[YYYYMMDDHHmm].md`.
 9. **Perubahan Audit Integritas & Status Rilis**: Jika ada cascade update atau perubahan status kesiapan rilis → Wajib perbarui `docs/ValidationReport.md` & `docs/decisions/VDR-[YYYYMMDDHHmm].md`.
 10. **Perubahan Dependensi / Cara Menjalankan**: Jika ada package baru atau script run/build berubah → Wajib perbarui `README.md`.
+11. **Perubahan Revisi / Pivot Cakupan Proyek**: Jika ada penambahan, modifikasi alur, atau penghapusan fitur via `pero-change-management` → Wajib perbarui `docs/decisions/CRDR-[YYYYMMDDHHmm].md` dan rekonsiliasi status tugas di `docs/TaskBacklog.md`.
+
+> **Sinergi Tata Kelola Perubahan:**  
+> - [`pero-change-management`](.agents/skills/pero-change-management/SKILL.md) bekerja di **hulu (pra-perubahan)**: Menganalisis dampak kerusakan (*blast radius*), menghentikan tugas zombie (*pause/supersede*), dan merumuskan strategi transisi.  
+> - [`living-doc-sync`](.agents/skills/living-doc-sync/SKILL.md) bekerja di **hilir (pasca-perubahan)**: Mendeteksi selisih nyata (*git diff*) setelah koding selesai untuk memastikan seluruh 9 dokumen, keputusan (`CRDR`, dll.), dan diagram Mermaid 100% selaras.
 
 ---
 

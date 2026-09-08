@@ -37,25 +37,26 @@
 7. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog 5 fase & 6 domain tugas S/M ➔ `docs/TaskBacklog.md` & `TDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Backlog Grilling Pause Gate).
 8. `pero-granular-refinement/` : Penajaman kartu tugas presisi (7 anatomi, invarian, blast radius, failing test) ➔ `docs/tasks/TASK-[ID].md` & `RDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Task Grilling Pause Gate).
 9. `pero-context-validation/` : Validasi ketertelusuran 8-arah, 3 severity tiers & audit Mermaid ➔ `docs/ValidationReport.md` & `VDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Go/No-Go Decision Gate).
+10. `pero-change-management/` : Orkestrasi revisi, penambahan (ADD), modifikasi (MODIFY/PIVOT) & penghapusan (REMOVE) fitur mid-flight/post-completion ➔ `docs/decisions/CRDR-[YYYYMMDDHHmm].md` (Change Triage, Blast Radius Scan & Anti-Zombie Task Gate).
 
 ### B. Standard Engineering & Tooling Skills
-10. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas & stack auto-detection.
-11. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
-12. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal (min 2, max 5 search).
-13. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds), modal interaktif ask_question, multi-opsi (2-5 opsi) & stress-test ide/desain fleksibel.
-14. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
-15. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug (4-phase scientific debugging).
-16. `verification-before-completion/` : Bukti verifikasi nyata terminal (exit code 0, 0 failure) sebelum menyatakan selesai.
-17. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan/concurrency.
-18. `api-contract-design/` : Perancangan kontrak data, endpoint & envelope API.
-19. `schema-validator/` : Validasi JSON schema, DTO dan model serialisasi.
-20. `decision-recorder/` : Pencatatan riwayat keputusan teknis 9 tipe (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`) di `docs/decisions/`.
-21. `living-doc-sync/` : Sinkronisasi 9 dokumen inti `docs/` & rekam keputusan saat kode berubah (*Nona-Doc Ecosystem Sync*).
-22. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
-23. `env-guard/` : Proteksi file rahasia, sensor kredensial otomatis, dan pencegahan perintah terminal berbahaya.
-24. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan ramah awam beranalogi alami tanpa label kaku (`eli5`).
-25. `anti-slop/` : Eliminasi boilerplate berlebih (YAGNI), komentar sampah, basa-basi AI, dan mock palsu (`anti-slop`).
-26. `llm-council/` : Musyawarah 5 sudut pandang AI, peer-review anonim & sintesis dewan untuk keputusan berisiko tinggi (`llm-council`).
-27. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri, squad spesialis SDLC, & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
-28. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate berlandaskan gerbang validasi Go (`subagent-driven-development`).
-29. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, 3 dials (Variance, Motion, Density), dashboard, data tables & typography (`taste-skill`).
+11. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas & stack auto-detection.
+12. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
+13. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal (min 2, max 5 search).
+14. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds), modal interaktif ask_question, multi-opsi (2-5 opsi) & stress-test ide/desain fleksibel.
+15. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
+16. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug (4-phase scientific debugging).
+17. `verification-before-completion/` : Bukti verifikasi nyata terminal (exit code 0, 0 failure) sebelum menyatakan selesai.
+18. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan/concurrency.
+19. `api-contract-design/` : Perancangan kontrak data, endpoint & envelope API.
+20. `schema-validator/` : Validasi JSON schema, DTO dan model serialisasi.
+21. `decision-recorder/` : Pencatatan riwayat keputusan teknis 10 tipe (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`, `CRDR`) di `docs/decisions/`.
+22. `living-doc-sync/` : Sinkronisasi 9 dokumen inti `docs/` & rekam keputusan saat kode berubah (*Nona-Doc Ecosystem Sync*).
+23. `git-ops/` : Operasional Git & GitHub, commit Caveman, template .github, dan gh CLI.
+24. `env-guard/` : Proteksi file rahasia, sensor kredensial otomatis, dan pencegahan perintah terminal berbahaya.
+25. `eli5/` : Simplifikasi konsep teknis & jargon ke penjelasan ramah awam beranalogi alami tanpa label kaku (`eli5`).
+26. `anti-slop/` : Eliminasi boilerplate berlebih (YAGNI), komentar sampah, basa-basi AI, dan mock palsu (`anti-slop`).
+27. `llm-council/` : Musyawarah 5 sudut pandang AI, peer-review anonim & sintesis dewan untuk keputusan berisiko tinggi (`llm-council`).
+28. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri, squad spesialis SDLC, & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
+29. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate berlandaskan gerbang validasi Go (`subagent-driven-development`).
+30. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, 3 dials (Variance, Motion, Density), dashboard, data tables & typography (`taste-skill`).
