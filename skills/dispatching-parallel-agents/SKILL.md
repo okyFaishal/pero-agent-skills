@@ -47,16 +47,16 @@ Optimasi efisiensi agen AI dengan membatasi ruang lingkup informasi yang diterim
 
 ```mermaid
 flowchart TD
-    START["Mendeteksi 2+ Butir Tugas / Kegagalan Tes"] --> Q1{Apakah tugas independen 100%?}
+    START["Mendeteksi 2+ Butir Tugas / Kegagalan Tes"] --> Q1{"Apakah tugas independen 100%?"}
     
-    Q1 -->|TIDAK - Saling bergantung| SEQ1["Eksekusi Sekuensial (Satu per Satu)"]
-    Q1 -->|YA| Q2{Apakah menyentuh file yang sama?}
+    Q1 -->|"TIDAK - Saling bergantung"| SEQ1["Eksekusi Sekuensial (Satu per Satu)"]
+    Q1 -->|"YA"| Q2{"Apakah menyentuh file yang sama?"}
     
-    Q2 -->|YA - Berisiko konflik teks| SEQ2["Eksekusi Berurutan (Cegah Race Condition)"]
-    Q2 -->|TIDAK - File terpisah| Q3{Dapat dikerjakan bersamaan?}
+    Q2 -->|"YA - Berisiko konflik teks"| SEQ2["Eksekusi Berurutan (Cegah Race Condition)"]
+    Q2 -->|"TIDAK - File terpisah"| Q3{"Dapat dikerjakan bersamaan?"}
     
-    Q3 -->|YA| PARALLEL["🚀 DISPATCH SUB-AGEN PARALEL\n(Luncurkan serentak dalam 1 turn)"]
-    Q3 -->|TIDAK| SEQ1
+    Q3 -->|"YA"| PARALLEL["🚀 DISPATCH SUB-AGEN PARALEL<br/>(Luncurkan serentak dalam 1 turn)"]
+    Q3 -->|"TIDAK"| SEQ1
 ```
 
 ### ✅ Kondisi yang WAJIB Dijalankan Secara Paralel:
@@ -139,17 +139,22 @@ Kembalikan:
 ---
 
 ## Integrasi dengan Skill Lain di Repositori
-
+ 
 *   **[`pero-problem-framing`](../pero-problem-framing/SKILL.md)** (Stage 1): Menerjunkan *Adaptive Squad* (3 agen inti + 1–3 agen spesialis) secara paralel untuk memvalidasi persona, pasar, dan kelayakan teknis.
 *   **[`pero-prd-writing`](../pero-prd-writing/SKILL.md)** (Stage 2): Menerjunkan *3-Track Research Squad* paralel untuk alur perjalanan pengguna, benchmark NFR, dan matriks prioritas MVP.
 *   **[`pero-user-stories`](../pero-user-stories/SKILL.md)** (Stage 3): Menerjunkan *Fixed 5-Specialist Squad* paralel untuk merumuskan skenario Gherkin, model data ERD, kontrak API, matriks RBAC, dan FSM.
 *   **[`pero-system-architecture`](../pero-system-architecture/SKILL.md)** (Stage 4): Menerjunkan *Fixed 5-Specialist Architecture Squad* paralel untuk mengevaluasi runtime, penyimpanan, model konkurensi, perimeter keamanan, dan toolchain.
-*   **[`pero-quality-governance`](../pero-quality-governance/SKILL.md)** (Stage 5): Menerjunkan *Fixed 5-Specialist Governance Squad* paralel untuk benchmarking standar keamanan, thread-safety, matriks linter, dan supply chain lockfile.
-*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)** (Stage 6): Menerjunkan *Fixed 5-Specialist Backlog Squad* paralel untuk menyusun backlog 5 fase dan 6 domain dengan pembagian tugas S/M.
-*   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)** (Stage 7): Menerjunkan *Fixed 5-Specialist Refinement Squad* paralel untuk menajamkan kartu tugas granular dengan 7 anatomi presisi dan failing test spec.
-*   **[`pero-context-validation`](../pero-context-validation/SKILL.md)** (Stage 8): Menerjunkan *Fixed 5-Specialist Validation Squad* paralel untuk mengaudit ketertelusuran 7-arah (*7-way traceability*) dan sintaksis diagram Mermaid.
-*   **[`subagent-driven-development`](../subagent-driven-development/SKILL.md)**: Mesin konveyor eksekusi sekuensial yang dapat memanggil `dispatching-parallel-agents` saat mendeteksi tugas-tugas independen dalam satu fase.
+*   **[`pero-uiux-design`](../pero-uiux-design/SKILL.md)** (Stage 5): Menerjunkan *Fixed 5-Specialist Design Squad* paralel untuk denah wireframe, token tema, status 5 komponen, dan audit a11y WCAG AAA.
+*   **[`pero-quality-governance`](../pero-quality-governance/SKILL.md)** (Stage 6): Menerjunkan *Fixed 5-Specialist Governance Squad* paralel untuk benchmarking standar keamanan, thread-safety, matriks linter, dan supply chain lockfile.
+*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)** (Stage 7): Menerjunkan *Fixed 5-Specialist Backlog Squad* paralel untuk menyusun backlog 5 fase dan 6 domain dengan pembagian tugas S/M.
+*   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)** (Stage 8): Menerjunkan *Fixed 5-Specialist Refinement Squad* paralel untuk menajamkan kartu tugas granular dengan 7 anatomi presisi dan failing test spec.
+*   **[`pero-context-validation`](../pero-context-validation/SKILL.md)** (Stage 9): Menerjunkan *Fixed 5-Specialist Validation Squad* paralel untuk mengaudit ketertelusuran 8-arah (*8-way traceability*) dan sintaksis diagram Mermaid.
+*   **[`pero-change-management`](../pero-change-management/SKILL.md)** (Stage 10 / Companion): Menerjunkan sub-agen investigasi dampak (*blast radius scan*) saat terjadi revisi, penambahan, atau penghapusan fitur mid-flight.
+*   **[`subagent-driven-development`](../subagent-driven-development/SKILL.md)**: Mesin konveyor eksekusi sekuensial yang memanggil `dispatching-parallel-agents` saat mendeteksi tugas-tugas independen dalam satu fase.
 *   **[`systematic-debugging`](../systematic-debugging/SKILL.md)**: Menerjunkan sub-agen terpisah untuk mengisolasi dan memperbaiki kegagalan tes di berbagai subsistem secara serentak (*Mass Debugging*).
+*   **[`test-driven-development`](../test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib diterapkan oleh setiap sub-agen pelaksana (Red-Green-Refactor).
+*   **[`anti-slop`](../anti-slop/SKILL.md)**: Menjaga agar kode yang dihasilkan sub-agen paralel bersih dari boilerplate YAGNI dan komentar sepele.
+*   **[`verification-before-completion`](../verification-before-completion/SKILL.md)**: Memverifikasi bukti log eksekusi terminal nyata dari setiap sub-agen sebelum integrasi akhir.
 
 ---
 

@@ -28,7 +28,7 @@ Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-s
 ## The 5-Stage Quality Governance Framework
 
 ```
-[0. Ingestion docs/PRD.md, docs/SystemSpec.md, & docs/Architecture.md]
+[0. Ingestion docs/PRD.md, docs/SystemSpec.md, docs/Architecture.md, & docs/DesignSystem.md]
                                    │
                                    ▼
 [1. Riset 5 Spesialis Tata Kelola + Context7 & Web Search]
@@ -164,8 +164,8 @@ Mendelegasikan tim 5 agen spesialis tata kelola tetap via `dispatching-parallel-
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](docs/PRD.md), [docs/SystemSpec.md](docs/SystemSpec.md), & [docs/Architecture.md](docs/Architecture.md)
-- **Decision Record**: [docs/decisions/GDR-[YYYYMMDDHHmm].md](docs/decisions/GDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [PRD.md](PRD.md), [SystemSpec.md](SystemSpec.md), [Architecture.md](Architecture.md), & [DesignSystem.md](DesignSystem.md)
+- **Decision Record**: [decisions/GDR-[YYYYMMDDHHmm].md](decisions/GDR-[YYYYMMDDHHmm].md)
 
 ## 1. Concurrency, State Safety & Thread Isolation Rules
 [Jelaskan aturan persimpangan jalan agar tidak ada tabrakan data dalam analogi sederhana seperti lampu lalu lintas dan loket kasir satu pintu].
@@ -313,7 +313,7 @@ docs/decisions/GDR-[YYYYMMDDHHmm].md
 ## Template: `docs/decisions/GDR-[YYYYMMDDHHmm].md`
 
 ````markdown
-# GDR-[Nomor]: [Judul Keputusan Tata Kelola, misal: Penetapan Standar Linter Biome & Ambang Batas 85% Test Coverage]
+# GDR-[YYYYMMDDHHmm]: [Judul Keputusan Tata Kelola, misal: Penetapan Standar Linter Biome & Ambang Batas 85% Test Coverage]
 
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]

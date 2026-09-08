@@ -47,13 +47,13 @@ Prinsip bahwa sistem otonom harus mengeksekusi alur secara berkesinambungan tanp
 
 ```mermaid
 flowchart TD
-    START["Menerima Daftar Tugas / Task Backlog"] --> Q1{Apakah ada rencana tugas bertahap?}
+    START["Menerima Daftar Tugas / Task Backlog"] --> Q1{"Apakah ada rencana tugas bertahap?"}
     
-    Q1 -->|TIDAK| PLAN["Susun PRD -> Architecture -> TaskBacklog dulu"]
-    Q1 -->|YA| Q2{Apakah ingin dieksekusi otonom?}
+    Q1 -->|"TIDAK"| PLAN["Susun PRD -> Architecture -> TaskBacklog dulu"]
+    Q1 -->|"YA"| Q2{"Apakah ingin dieksekusi otonom?"}
     
-    Q2 -->|YA - Eksekusi Hands-Free| SDD["🚀 AKTIFKAN SUBAGENT-DRIVEN-DEVELOPMENT\n(Jalankan loop kontinu sub-agen per task)"]
-    Q2 -->|TIDAK - Ingin inspeksi tiap 1 task| MANUAL["Eksekusi Manual Task per Task"]
+    Q2 -->|"YA - Eksekusi Hands-Free"| SDD["🚀 AKTIFKAN SUBAGENT-DRIVEN-DEVELOPMENT<br/>(Jalankan loop kontinu sub-agen per task)"]
+    Q2 -->|"TIDAK - Ingin inspeksi tiap 1 task"| MANUAL["Eksekusi Manual Task per Task"]
 ```
 
 ---
@@ -74,7 +74,7 @@ flowchart TD
 
 ### 1. Pre-Flight Backlog Scan (Pindai Awal Sebelum Mulai)
 Sebelum meluncurkan Tugas #1:
-- **Verifikasi Gerbang Validasi Konteks (Stage 8 Gate)**: Periksa `docs/ValidationReport.md`. Pastikan status keseluruhan berstatus **🟢 GO (Pass)**. Jika berstatus **🔴 NO-GO (Blocker)**, eksekusi backlog otonom DILARANG berjalan sebelum blocker diselesaikan dan diselaraskan via `pero-context-validation`.
+- **Verifikasi Gerbang Validasi Konteks (Stage 9 Gate)**: Periksa `docs/ValidationReport.md`. Pastikan status keseluruhan berstatus **🟢 GO (Pass)**. Jika berstatus **🔴 NO-GO (Blocker)**, eksekusi backlog otonom DILARANG berjalan sebelum blocker diselesaikan dan diselaraskan via `pero-context-validation`.
 - Pindai seluruh isi `docs/TaskBacklog.md` atau `implementation_plan.md`.
 - Pastikan urutan fase (Phase 1 ➡️ Phase 2 ➡️ dst.) logis dan tidak ada instruksi yang saling bertentangan.
 - Jika ada kontradiksi nyata di awal, ajukan 1 pertanyaan klarifikasi kepada pengguna sebelum mulai. Jika aman, **langsung mulai eksekusi tanpa menunggu persetujuan lanjutan**.
@@ -97,7 +97,7 @@ Sebelum meluncurkan Tugas #1:
 - Peninjau memeriksa perbedaan kode (*git diff*):
   1. **Spec Compliance**: Apakah semua kriteria kartu tugas terpenuhi? Apakah ada fitur berlebih di luar spek?
   2. **Code Quality**: Apakah ada celah error, penanganan boundary case yang bocor, atau pelanggaran anti-slop?
-- Jika ada temuan kritis (*Critical/Important*), panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](./re-review-prompt.md) sampai peninjau memberikan status *Approved*.
+- Jika ada temuan kritis (*Critical/Important*), gunakan [`systematic-debugging`](../systematic-debugging/SKILL.md) untuk mengisolasi akar masalah, panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](./re-review-prompt.md) sampai peninjau memberikan status *Approved*.
 
 ### 4. Update Progress Ledger (Catat Kemajuan)
 - Perbarui centang di `docs/TaskBacklog.md` dari `- [ ]` menjadi `- [x]`.
@@ -134,6 +134,7 @@ skills/subagent-driven-development/
 *   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)**: Menyediakan kartu tugas presisi (path file, signatures, boundary cases) yang langsung menjadi prompt bagi Implementer.
 *   **[`test-driven-development`](../test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib dipatuhi oleh Implementer Subagent.
 *   **[`anti-slop`](../anti-slop/SKILL.md)**: Filter kualitas agar sub-agen tidak menghasilkan kode atau komentar sampah.
+*   **[`systematic-debugging`](../systematic-debugging/SKILL.md)**: Digunakan untuk mengisolasi akar kegagalan jika reviewer menemukan bug atau tes gagal sebelum mencoba perbaikan.
 *   **[`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md)**: Dipanggil oleh SDD ketika menemukan tugas-tugas di dalam fase yang sama yang sepenuhnya independen dan dapat dijalankan serentak.
 *   **[`pero-change-management`](../pero-change-management/SKILL.md)**: Dipanggil seketika jika pengguna meminta perubahan arah, penambahan fitur baru, atau penghapusan alur di tengah eksekusi backlog, untuk menertibkan status tugas aktif (*pause/supersede*) dan mencegah eksekusi tugas zombie.
 *   **[`verification-before-completion`](../verification-before-completion/SKILL.md)**: Penegak bukti eksekusi terminal sebelum cabang dianggap tuntas.

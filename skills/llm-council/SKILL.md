@@ -162,6 +162,10 @@ Ketua sidang merangkum hasil musyawarah menjadi format laporan resmi.
 *   **[`pero-problem-framing`](../pero-problem-framing/SKILL.md)**: Gunakan dewan saat memilih target persona utama atau menimbang arah pivot masalah.
 *   **[`pero-prd-writing`](../pero-prd-writing/SKILL.md)**: Gunakan dewan saat memotong cakupan fitur MVP (P0 vs P1) yang kontroversial.
 *   **[`pero-system-architecture`](../pero-system-architecture/SKILL.md)**: Gunakan dewan saat memilih teknologi dan arsitektur sistem tingkat tinggi.
+*   **[`pero-uiux-design`](../pero-uiux-design/SKILL.md)**: Gunakan dewan saat menimbang arah estetika visual, wireframe, atau trade-off kompleksitas UI.
+*   **[`pero-quality-governance`](../pero-quality-governance/SKILL.md)**: Gunakan dewan saat menyepakati batasan konkurensi atau kebijakan gerbang mutu rilis.
+*   **[`pero-change-management`](../pero-change-management/SKILL.md)**: Gunakan dewan saat mengevaluasi pivot cakupan drastis atau trade-off perubahan mid-flight.
+*   **[`pero-context-validation`](../pero-context-validation/SKILL.md)**: Gunakan dewan saat menyelesaikan sengketa ketertelusuran dokumen atau mitigasi status NO-GO.
 *   **[`decision-recorder`](../decision-recorder/SKILL.md)**: Simpan langsung hasil sintesis dewan ke arsip keputusan resmi `docs/decisions/`.
 
 ---

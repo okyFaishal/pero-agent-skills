@@ -28,7 +28,7 @@ Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skil
 ## The 5-Stage Task Decomposition Framework
 
 ```
-[0. Ingestion docs/PRD.md, docs/SystemSpec.md, docs/Architecture.md, & docs/Governance.md]
+[0. Ingestion docs/PRD.md, docs/SystemSpec.md, docs/Architecture.md, docs/DesignSystem.md, & docs/Governance.md]
                                    │
                                    ▼
 [1. Riset 5 Spesialis Dekomposisi Tetap + Context7 & Web Search]
@@ -182,11 +182,12 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
 - **Dokumen Induk**:
-  - [docs/PRD.md](docs/PRD.md)
-  - [docs/SystemSpec.md](docs/SystemSpec.md)
-  - [docs/Architecture.md](docs/Architecture.md)
-  - [docs/Governance.md](docs/Governance.md)
-- **Decision Record**: [docs/decisions/TDR-[YYYYMMDDHHmm].md](docs/decisions/TDR-[YYYYMMDDHHmm].md)
+  - [PRD.md](PRD.md)
+  - [SystemSpec.md](SystemSpec.md)
+  - [Architecture.md](Architecture.md)
+  - [DesignSystem.md](DesignSystem.md)
+  - [Governance.md](Governance.md)
+- **Decision Record**: [decisions/TDR-[YYYYMMDDHHmm].md](decisions/TDR-[YYYYMMDDHHmm].md)
 
 ## 1. Executive Summary & Strategy
 [Jelaskan strategi urutan pengerjaan proyek dalam 1-2 paragraf dengan analogi sederhana seperti mandor yang mengatur tukang batu, tukang pipa, dan tukang cat secara bergiliran agar tidak saling bertabrakan].
@@ -395,7 +396,7 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 ## Template: `docs/decisions/TDR-[YYYYMMDDHHmm].md`
 
 ````markdown
-# TDR-[Nomor]: [Judul Keputusan Dekomposisi Tugas, misal: Strategi Pemotongan Vertical Feature Slices & Pembatasan Ukuran Tugas Maksimal M]
+# TDR-[YYYYMMDDHHmm]: [Judul Keputusan Dekomposisi Tugas, misal: Strategi Pemotongan Vertical Feature Slices & Pembatasan Ukuran Tugas Maksimal M]
 
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]

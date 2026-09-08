@@ -346,7 +346,7 @@ it('should prevent double-processing when two identical idempotency keys arrive 
 ## Template: `docs/decisions/RDR-[YYYYMMDDHHmm].md`
 
 ````markdown
-# RDR-[Nomor]: [Judul Keputusan Penajaman Tugas, misal: Penetapan Interface OrderServicePort & Idempotency Locking]
+# RDR-[YYYYMMDDHHmm]: [Judul Keputusan Penajaman Tugas, misal: Penetapan Interface OrderServicePort & Idempotency Locking]
 
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]

@@ -155,7 +155,8 @@ Menulis berkas cetak biru desain lengkap ke `docs/DesignSystem.md` mengikuti tem
 - **Tanggal**: [YYYY-MM-DD]
 - **Status**: Disetujui (Approved)
 - **Author / Lead**: Pero UI/UX Architect & Frontend Lead
-- **Decision Record**: [docs/decisions/DDR-[YYYYMMDDHHmm].md](decisions/DDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: [PRD.md](PRD.md), [SystemSpec.md](SystemSpec.md), & [Architecture.md](Architecture.md)
+- **Decision Record**: [decisions/DDR-[YYYYMMDDHHmm].md](decisions/DDR-[YYYYMMDDHHmm].md)
 
 ---
 

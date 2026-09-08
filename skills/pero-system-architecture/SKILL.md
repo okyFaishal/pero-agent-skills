@@ -216,18 +216,18 @@ flowchart TB
 ```mermaid
 flowchart LR
   subgraph PresentationLayer["1. Presentation Layer"]
-    Handlers["HTTP Controllers\nCLI Resolvers"]
-    Middlewares["Auth & Validation\nMiddlewares"]
+    Handlers["HTTP Controllers<br/>CLI Resolvers"]
+    Middlewares["Auth & Validation<br/>Middlewares"]
   end
 
   subgraph CoreLayer["2. Domain / Application Core"]
-    UseCases["Business Use Cases\nOrchestrators"]
-    Entities["Domain Entities\nPure Logic"]
+    UseCases["Business Use Cases<br/>Orchestrators"]
+    Entities["Domain Entities<br/>Pure Logic"]
   end
 
   subgraph InfraLayer["3. Infrastructure Layer"]
-    RepoAdapter["Database Repository\nAdapters"]
-    ExtAdapter["External Service\nAdapters"]
+    RepoAdapter["Database Repository<br/>Adapters"]
+    ExtAdapter["External Service<br/>Adapters"]
   end
 
   Handlers --> Middlewares

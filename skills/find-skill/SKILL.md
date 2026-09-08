@@ -40,7 +40,7 @@ Penanganan percabangan menggunakan pohon taksonomi terstruktur dan mekanisme pen
 
 ---
 
-## Matriks Pemetaan Pemicu 28 Skill (*Trigger-to-Skill Dispatch Matrix*)
+## Matriks Pemetaan Pemicu 30 Skill (*Trigger-to-Skill Dispatch Matrix*)
 
 Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan dipatuhi:
 
@@ -50,10 +50,12 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Penyusunan Spek** | "Tulis PRD", "MVP scope", "prioritas fitur P0/P1/P2", "NFR" | [`pero-prd-writing`](../pero-prd-writing/SKILL.md) |
 | **Skenario Uji** | "User story", "Gherkin", "Given When Then", "model entity" | [`pero-user-stories`](../pero-user-stories/SKILL.md) |
 | **Desain Sistem** | "Rancang arsitektur", "diagram Mermaid", "pilih tech stack", "monolith vs microservice" | [`pero-system-architecture`](../pero-system-architecture/SKILL.md) |
+| **Desain UI/UX** | "Desain UI/UX", "Design system", "wireframe", "design tokens", "5-state matrix", "a11y" | [`pero-uiux-design`](../pero-uiux-design/SKILL.md) |
 | **Tata Kelola** | "Standar kualitas", "aturan thread-safety", "review gate", "concurrency rules" | [`pero-quality-governance`](../pero-quality-governance/SKILL.md) |
 | **Pecah Backlog** | "Pecah tugas", "breakdown backlog", "estimasi fase", "task decomposition" | [`pero-task-decomposition`](../pero-task-decomposition/SKILL.md) |
 | **Detail Kartu Tugas** | "Detailkan task", "file paths", "method signatures", "failing test spec" | [`pero-granular-refinement`](../pero-granular-refinement/SKILL.md) |
 | **Audit Dokumen** | "Validasi dokumen", "cek konsistensi spec", "audit diagram Mermaid" | [`pero-context-validation`](../pero-context-validation/SKILL.md) |
+| **Kelola Perubahan** | "Ubah fitur", "pivot cakupan", "tambah requirement baru", "hapus alur", "change management", "CRDR", "blast radius perubahan" | [`pero-change-management`](../pero-change-management/SKILL.md) |
 | **Riset Docs Resmi** | "Dokumentasi resmi", "API library", "Context7", "package specs" | [`context-7`](../context-7/SKILL.md) |
 | **Riset Web/Error** | "Cari solusi web", "error di internet", "changelog release", "search" | [`web-search`](../web-search/SKILL.md) |
 | **Stress-Test Ide** | "Grill me", "uji ide ini", "trade-off arsitektur", "bedah keputusan" | [`grilling`](../grilling/SKILL.md) |
@@ -66,7 +68,7 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Peninjauan Kode** | "Review kode", "audit PR", "cek kualitas", "pre-merge audit" | [`code-reviewer`](../code-reviewer/SKILL.md) |
 | **Kontrak API** | "Desain API", "endpoint REST/GraphQL/gRPC", "API envelope" | [`api-contract-design`](../api-contract-design/SKILL.md) |
 | **Validasi Skema** | "Validasi JSON schema", "DTO", "model serialisasi", "payload validator" | [`schema-validator`](../schema-validator/SKILL.md) |
-| **Catat Keputusan** | "Catat ADR", "arsip keputusan", "PDR", "PFDR", "SDR", "GDR", "TDR", "RDR", "VDR", "decision log", "catat keputusan" | [`decision-recorder`](../decision-recorder/SKILL.md) |
+| **Catat Keputusan** | "Catat ADR", "arsip keputusan", "PDR", "PFDR", "SDR", "ADR", "DDR", "GDR", "TDR", "RDR", "VDR", "CRDR", "decision log", "catat keputusan" | [`decision-recorder`](../decision-recorder/SKILL.md) |
 | **Sinkronisasi Dok** | "Update diagram", "sync arsitektur", "perbarui docs saat kode berubah", "cegah documentation drift", "sync living docs" | [`living-doc-sync`](../living-doc-sync/SKILL.md) |
 | **Operasi Git** | "Buat branch", "commit Caveman", "buat PR", "git worktree", "gh CLI" | [`git-ops`](../git-ops/SKILL.md) |
 | **Keamanan & Env** | ".env file", "kunci rahasia", "perintah terminal destruktif", "credentials" | [`env-guard`](../env-guard/SKILL.md) |
@@ -117,7 +119,7 @@ Selain mencocokkan kata kunci tugas, `find-skill` bertindak sebagai **Mesin Peny
    - `package.json` ➡️ Menyiapkan toolchain **Node.js/Web** (Chrome DevTools & modern web guidelines).
 
 2. **Prinsip Nol Penghapusan (*Zero Deletion of Universal Skills*)**:
-   - Seluruh 28 skill universal Pero tetap utuh dan aktif sebagai pondasi utama repositori.
+   - Seluruh 30 skill universal Pero tetap utuh dan aktif sebagai pondasi utama repositori.
    - Skill dan konfigurasi MCP spesifik stack ditambahkan sebagai ekstensi pelengkap (*dynamic overlay*) tanpa menimpa konfigurasi universal yang sudah ada.
 
 3. **Penyelarasan Runtime MCP (.mcp_config.json)**:

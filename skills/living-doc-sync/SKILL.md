@@ -49,8 +49,8 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 11. **Perubahan Revisi / Pivot Cakupan Proyek**: Jika ada penambahan, modifikasi alur, atau penghapusan fitur via `pero-change-management` → Wajib perbarui `docs/decisions/CRDR-[YYYYMMDDHHmm].md` dan rekonsiliasi status tugas di `docs/TaskBacklog.md`.
 
 > **Sinergi Tata Kelola Perubahan:**  
-> - [`pero-change-management`](.agents/skills/pero-change-management/SKILL.md) bekerja di **hulu (pra-perubahan)**: Menganalisis dampak kerusakan (*blast radius*), menghentikan tugas zombie (*pause/supersede*), dan merumuskan strategi transisi.  
-> - [`living-doc-sync`](.agents/skills/living-doc-sync/SKILL.md) bekerja di **hilir (pasca-perubahan)**: Mendeteksi selisih nyata (*git diff*) setelah koding selesai untuk memastikan seluruh 9 dokumen, keputusan (`CRDR`, dll.), dan diagram Mermaid 100% selaras.
+> - [`pero-change-management`](../pero-change-management/SKILL.md) bekerja di **hulu (pra-perubahan)**: Menganalisis dampak kerusakan (*blast radius*), menghentikan tugas zombie (*pause/supersede*), dan merumuskan strategi transisi.  
+> - [`living-doc-sync`](../living-doc-sync/SKILL.md) bekerja di **hilir (pasca-perubahan)**: Mendeteksi selisih nyata (*git diff*) setelah koding selesai untuk memastikan seluruh 9 dokumen, keputusan (`CRDR`, dll.), dan diagram Mermaid 100% selaras.
 
 ---
 
@@ -86,7 +86,7 @@ Setiap kali memperbarui diagram Mermaid pada file Markdown:
 **Sebelum Sinkronisasi (Contoh Drift - Diagram Usang):**
 ```mermaid
 flowchart LR
-    Client --> API_Gateway --> Order_Service --> DB[(Order DB)]
+    Client --> API_Gateway --> Order_Service --> DB[("Order DB")]
 ```
 
 **Setelah Sinkronisasi (Contoh Living Sync - Sinkron dengan Kode):**
@@ -94,8 +94,8 @@ flowchart LR
 flowchart LR
     Client --> API_Gateway
     API_Gateway --> Order_Service
-    Order_Service --> DB[(Order DB)]
-    Order_Service --"Event: OrderCreated"--> MQ[(Message Broker)]
+    Order_Service --> DB[("Order DB")]
+    Order_Service --"Event: OrderCreated"--> MQ[("Message Broker")]
     MQ --> Notif_Service["Notification Service"]
 ```
 

@@ -94,12 +94,12 @@ Agent menentukan titik masuk (*entry point*) yang tepat pada 9 dokumen inti. Dil
 ```
                                PINTU MASUK SESUAI SKALA
                                           │
-    ┌─────────────────────────────────────┴─────────────────────────────────────┐
+    ┌─────────────────────────────────────┼─────────────────────────────────────┐
     ▼                                     ▼                                     ▼
 [Pivotal / Problem]              [Feature / Contract]                  [Local / UI-Only]
 docs/ProblemFraming.md           docs/SystemSpec.md                    docs/DesignSystem.md
 docs/PRD.md                      docs/Architecture.md                  docs/tasks/TASK-[ID].md
-    │                                     │                                     │
+    │                            docs/Governance.md                             │
     └─────────────────────────────────────┼─────────────────────────────────────┘
                                           ▼
                                docs/TaskBacklog.md (Update Status & New Tasks)
@@ -114,7 +114,7 @@ docs/PRD.md                      docs/Architecture.md                  docs/task
    - Tambahkan kartu tugas baru di `docs/TaskBacklog.md`.
    - Rinci kartu tugas baru di `docs/tasks/TASK-[ID].md`.
 2. **Jika Mengubah Fitur (*MODIFY / PIVOT*)**:
-   - Perbarui kontrak di `docs/SystemSpec.md` dan diagram alur di `docs/Architecture.md`.
+   - Perbarui kontrak di `docs/SystemSpec.md`, diagram alur di `docs/Architecture.md`, atau aturan di `docs/Governance.md`.
    - Tandai tugas lama sebagai `SUPERSEDED`, buat kartu tugas baru pengganti.
 3. **Jika Menghapus Fitur (*REMOVE*)**:
    - Hapus skenario fitur dari `docs/SystemSpec.md`.
@@ -134,6 +134,8 @@ docs/PRD.md                      docs/Architecture.md                  docs/task
    - Refactor tanpa mengubah perilaku.
 2. **Verifikasi Terminal (`verification-before-completion`)**:
    - Jalankan seluruh rangkaian tes (`npm test`, `pytest`, `cargo test`, dll.) untuk memastikan tidak ada fitur lama yang rusak.
+3. **Audit Ulang Validasi Konteks (`pero-context-validation`)**:
+   - Jalankan audit untuk memastikan `docs/ValidationReport.md` berstatus 🟢 GO.
 
 #### B. Protokol Penghapusan Bersih (*Clean Removal / Dead Code Elimination*)
 Menghapus kode harus dilakukan secara metodis agar tidak meninggalkan sampah atau error tersembunyi:
@@ -142,7 +144,8 @@ Menghapus kode harus dilakukan secara metodis agar tidak meninggalkan sampah ata
 3. **Langkah 3 (Hapus Kode Implementasi)**: Hapus file atau blok kode fitur yang sudah tidak terpakai.
 4. **Langkah 4 (Bersihkan Dependensi Yatim)**: Jika ada package/library pihak ketiga yang hanya digunakan oleh fitur yang dihapus, hapus dari `package.json` / `requirements.txt` / `Cargo.toml`.
 5. **Langkah 5 (Uji Kompilasi & Build)**: Jalankan build dan test di terminal untuk memastikan nol kegagalan impor (*zero broken imports*).
-6. **Langkah 6 (Pemicuan Sinkronisasi Dokumen)**: Panggil [`living-doc-sync`](file:///Users/okyfaishal/project/pero-agent-skills/skills/living-doc-sync/SKILL.md) untuk mendeteksi berkas yang terhapus dan menyinkronkan diagram dokumen.
+6. **Langkah 6 (Pemicuan Sinkronisasi Dokumen)**: Panggil [`living-doc-sync`](../living-doc-sync/SKILL.md) untuk mendeteksi berkas yang terhapus dan menyinkronkan diagram dokumen.
+7. **Langkah 7 (Audit Laporan Validasi Ulang)**: Jalankan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memverifikasi keselarasan 8-arah dokumen pasca-penghapusan.
 
 ---
 
@@ -203,6 +206,15 @@ Setiap perubahan skala Minor atau Major wajib dicatat di `docs/decisions/CRDR-[Y
 - [ ] Kode lama dibersihkan (khusus REMOVE / MODIFY).
 - [ ] Full regression test suite terminal exit code 0.
 ```
+
+## Sub-Skill Integration (Perkakas Pendukung)
+
+- **Penyelarasan Keputusan Perubahan**: **`SUPPORTING SUB-SKILL`**: Gunakan [`grilling`](../grilling/SKILL.md) untuk menyepakati strategi mitigasi risiko bersama pengguna via modal interaktif `ask_question` (2–5 opsi, fleksibel 1 atau 2–4 pertanyaan serentak, batas 3–5 pertanyaan per sesi revisi).
+- **Pencatatan Keputusan CRDR**: **`SUPPORTING SUB-SKILL`**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk membukukan keputusan perubahan ke `docs/decisions/CRDR-[YYYYMMDDHHmm].md`.
+- **Implementasi Teruji**: **`REQUIRED SUB-SKILL`**: Gunakan [`test-driven-development`](../test-driven-development/SKILL.md) (Red-Green-Refactor) untuk fitur baru atau modifikasi alur.
+- **Verifikasi Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan regresi nol (exit code 0).
+- **Sinkronisasi Pasca-Koding**: **`SUPPORTING SUB-SKILL`**: Gunakan [`living-doc-sync`](../living-doc-sync/SKILL.md) untuk memperbarui dokumen hidup dan diagram Mermaid pasca-eksekusi.
+- **Audit Keselarasan Konteks Ulang**: **`SUPPORTING SUB-SKILL`**: Gunakan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memverifikasi ulang laporan `docs/ValidationReport.md` sebelum branch di-merge.
 
 ---
 

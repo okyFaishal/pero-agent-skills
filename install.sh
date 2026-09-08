@@ -163,7 +163,7 @@ else
   mkdir -p "${TARGET_SKILLS_DIR}"
 fi
 
-# Salin 29 Skill Universal
+# Salin 30 Skill Universal
 echo "-> Menyebarkan ${#SKILLS[@]} modul skill ke ${TARGET_SKILLS_DIR}..."
 for skill in "${SKILLS[@]}"; do
   if [[ -d "${SOURCE_SKILLS}/${skill}" ]]; then

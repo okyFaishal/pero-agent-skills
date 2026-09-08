@@ -125,7 +125,7 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 
 ---
 
-## The 7 Cross-Document Integrity Rules (7-Way Traceability Matrix)
+## The 8 Cross-Document Integrity Rules (8-Way Traceability Matrix)
 
 ```
 [ProblemFraming.md] ──(1. Pain Point Match)──> [PRD.md]
@@ -134,13 +134,13 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
                                                    ▼
 [Architecture.md]   <──(3. Component Match)─── [SystemSpec.md]
         │
- (4. Rule & Concurrency Match)
+ (4. Visual & Token Match)
         ▼
-[Governance.md]     ──(5. Actionable Tasks)──> [TaskBacklog.md]
-                                                       │
-                                            (6. Granular Refinement)
-                                                       ▼
-[docs/decisions/*]  <──(7. Decision Track)──── [TASK-[ID].md Cards]
+[DesignSystem.md]   ──(5. Accessibility & Rules)──> [Governance.md]
+                                                           │
+                                                (6. Actionable Backlog)
+                                                           ▼
+[docs/decisions/*]  <──(8. Decision Track)──── [TaskBacklog.md] ──(7. Refinement)──> [TASK-[ID].md]
 ```
 
 ### 1. Problem-to-PRD Alignment (Rule 1)
@@ -220,17 +220,18 @@ Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 - **Status Keseluruhan**: [🔴 NO-GO (Blocker) / 🟡 CONDITIONAL GO / 🟢 PASS (Go)]
 - **Decision Record**: [docs/decisions/VDR-[YYYYMMDDHHmm].md](decisions/VDR-[YYYYMMDDHHmm].md)
 
-## 1. 7-Way Traceability & Alignment Matrix
+## 1. 8-Way Traceability & Alignment Matrix
 
 | Aturan Ketertelusuran | Rantai Dokumen | Status Audit | Catatan Temuan |
 |:---|:---|:---|:---|
 | **Rule 1: Problem -> PRD** | `ProblemFraming` $\rightarrow$ `PRD` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan keselarasan pain point & fitur MVP] |
 | **Rule 2: PRD -> SystemSpec** | `PRD` $\rightarrow$ `SystemSpec` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan kriteria Gherkin & kontrak payload] |
 | **Rule 3: SystemSpec -> Architecture** | `SystemSpec` $\rightarrow$ `Architecture` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan kepemilikan entitas & C4 diagram] |
-| **Rule 4: Architecture -> Governance** | `Architecture` $\rightarrow$ `Governance` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan model konkurensi & supply chain security] |
-| **Rule 5: Architecture -> TaskBacklog** | `Architecture` $\rightarrow$ `TaskBacklog` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan 100% Backlog Coverage & ukuran S/M] |
-| **Rule 6: TaskBacklog -> GranularRefinement**| `TaskBacklog` $\rightarrow$ `TASK-[ID]` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan 7 Anatomi Presisi & TDD Red Spec] |
-| **Rule 7: Cross-Cutting -> DecisionRecords** | `All Docs` $\rightarrow$ `decisions/` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan kelengkapan PFDR, PDR, SDR, ADR, GDR, TDR, RDR, VDR] |
+| **Rule 4: Architecture -> DesignSystem** | `Architecture/Spec` $\rightarrow$ `DesignSystem` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan token warna, wireframe & 5-state] |
+| **Rule 5: DesignSystem -> Governance** | `DesignSystem/Arch` $\rightarrow$ `Governance` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan a11y WCAG AAA, thread-safety & env-guard] |
+| **Rule 6: Governance -> TaskBacklog** | `Governance/Design` $\rightarrow$ `TaskBacklog` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan 100% Backlog Coverage & ukuran S/M] |
+| **Rule 7: TaskBacklog -> GranularRefinement**| `TaskBacklog` $\rightarrow$ `TASK-[ID]` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan 7 Anatomi Presisi & TDD Red Spec] |
+| **Rule 8: Cross-Cutting -> DecisionRecords** | `All Docs` $\rightarrow$ `decisions/` | [✓ PASS / ⚠️ WARN / ❌ FAIL] | [Catatan kelengkapan PFDR, PDR, SDR, ADR, DDR, GDR, TDR, RDR, VDR, CRDR] |
 
 ## 2. Mermaid Diagrams Health Check
 
@@ -262,7 +263,7 @@ Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 ## Template: `docs/decisions/VDR-[YYYYMMDDHHmm].md`
 
 ````markdown
-# VDR-[Nomor]: [Judul Keputusan Validasi Konteks, misal: Persetujuan Hasil Validasi Konteks & Pemberian Izin Go Eksekusi TDD]
+# VDR-[YYYYMMDDHHmm]: [Judul Keputusan Validasi Konteks, misal: Persetujuan Hasil Validasi Konteks & Pemberian Izin Go Eksekusi TDD]
 
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
