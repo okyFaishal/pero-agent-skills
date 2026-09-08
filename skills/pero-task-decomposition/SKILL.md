@@ -19,7 +19,7 @@ Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skil
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk memastikan setiap kartu tugas teknis secara eksplisit memisahkan berkas tes (`Target Files (Test)`) dan berkas implementasi (`Target Files (Implementation)`).
 - **Verifikasi Bukti Eksekusi Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk menetapkan perintah verifikasi CLI presisi (*exact verification commands*) dengan ambang batas `exit code 0` dan `0 failure`.
 - **Musyawarah Dewan Strategi Eksekusi**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan dilema strategi backlog (Vertical Feature Slices vs Horizontal Layers, granularitas tugas S/M/L, dan paralelisasi sub-agen) melalui 5 persona AI.
-- **Wawancara Penguncian Strategi Backlog di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk mengunci strategi pemotongan backlog, prioritas milestone MVP, dan batas eksekusi paralel. Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG menentukan backlog sepihak.
+- **Wawancara Penguncian Strategi Backlog di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan backlog sepihak.
 - **Proteksi Variabel Rahasia & Lingkungan**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk mengawal tugas-tugas konfigurasi infrastruktur dan memastikan kredensial terisolasi aman di `.env`.
 - **Mesin Eksekusi Backlog Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk mengeksekusi seluruh urutan kartu tugas secara berkesinambungan menggunakan sub-agen segar per tugas tanpa interupsi.
 - **Pencatatan Keputusan Dekomposisi Tugas**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan pemisahan fase, strategi backlog, dan mitigasi dependensi ke `docs/decisions/TDR-[YYYYMMDDHHmm].md` menggunakan template standar resmi.
@@ -39,8 +39,8 @@ Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skil
     (5 Persona AI menguji: Vertical Slice vs Horizontal, Granularitas S/M/L, Paralelisasi)
                                    │
                                    ▼
-[3. Wawancara Penguncian Strategi Backlog di Chat (Grilling Rambu Henti)]
-    (Min 5, Max 10 Tanya: kunci irisan fitur, ukuran tugas, batas paralel, gerbang fase)
+[3. Wawancara Penguncian Strategi Backlog via ask_question]
+    (Modal Interaktif 5-10 Tanya: kunci irisan fitur, ukuran tugas, batas paralel)
                                    │
                                    ▼
 [4. Penyusunan Dokumen TaskBacklog.md (5 Fase, 6 Domain, Kartu Tugas S/M)]
@@ -81,22 +81,23 @@ Mendelegasikan tim 5 agen spesialis backlog tetap via `dispatching-parallel-agen
   - *Vertical Feature Slices* (mengerjakan 1 fitur utuh dari database sampai UI) vs *Horizontal Architectural Layers* (menyelesaikan seluruh database dulu, baru backend, lalu UI).
   - *Granularity Sizing*: Batasan ukuran kartu tugas agar aman dieksekusi oleh sub-agen mandiri tanpa kehabisan context memory (*context window starvation*).
   - *Paralelisasi Eksekusi*: Menentukan tugas mana yang aman dieksekusi secara paralel tanpa tabrakan file (*shared-file conflict*).
-- Dewan menghasilkan sintesis konsensus dan opsi kompromi teknis (Opsi A vs Opsi B) untuk diserahkan ke sesi wawancara chat.
+- Dewan menghasilkan sintesis konsensus dan opsi kompromi teknis komprehensif (2 hingga 5 alternatif realistis) untuk diserahkan ke sesi wawancara via `ask_question`.
 
-### 3. Wawancara Penguncian Strategi Backlog di Chat (via `grilling`)
+### 3. Wawancara Penguncian Strategi Backlog di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung membuat berkas `docs/TaskBacklog.md` sebelum menyepakati strategi pemotongan backlog, prioritas milestone MVP, dan batas eksekusi paralel bersama pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung membuat berkas `docs/TaskBacklog.md` sebelum menyepakati strategi pemotongan backlog, prioritas milestone MVP, dan batas eksekusi paralel bersama pengguna via perkakas modal **`ask_question`**.
   - Dilarang keras menyusun backlog raksasa atau menentukan urutan rilis secara sepihak.
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh aspek strategi backlog) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 pertanyaan per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Fokus Topik Wawancara**:
-  1. Strategi Pemotongan Backlog (*Vertical Feature Slices* vs *Horizontal Architectural Layers*).
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah (untuk menguji seluruh aspek strategi backlog).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rumpun eksekusi backlog yang sama (misal paket Irisan Fitur + Ukuran Kartu S/M + Batas Paralelisasi).
+  - **Opsi Maksimal & Rekomendasi**: Menyajikan **2 hingga 5 opsi realistis**. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Fokus Topik Wawancara (via `ask_question`)**:
+  1. Strategi Pemotongan Backlog (*Vertical Feature Slices* vs *Horizontal Architectural Layers* vs *Hybrid Foundation-First*).
   2. Batasan Granularitas & Ukuran Tugas (*Ukuran S [1-2 file] vs M [3-4 file]* untuk membatasi konsumsi context sub-agen).
   3. Mode Eksekusi Sub-Agen (*Paralel via dispatching-parallel-agents* vs *Sekuensial via subagent-driven-development*).
   4. Prioritas Milestone MVP (*Fitur P0 yang harus selesai di Fase 3-4 vs Fitur P1 di fase penyempurnaan*).
-  5. Kebijakan Gerbang Persetujuan per Fase (*Phase Checkpoints: apakah tiap fase perlu review pengguna sebelum melangkah ke fase berikutnya*).
-- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+  5. Kebijakan Gerbang Persetujuan per Fase (*Phase Checkpoints: review pengguna tiap fase vs eksekusi hands-free penuh*).
+- Tunggu respon pemilihan pengguna dari modal interaktif sebelum melanjutkan penyusunan backlog.
 
 ### 4. Penyusunan Dokumen TaskBacklog.md Formal
 - Menyusun dokumen lengkap `docs/TaskBacklog.md` mematuhi 5 fase, 6 lintasan domain, format kartu tugas berukuran S/M, target files eksplisit, dan perintah verifikasi terminal 0-failure.

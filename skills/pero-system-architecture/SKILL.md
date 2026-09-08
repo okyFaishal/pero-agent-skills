@@ -16,7 +16,7 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 - **Verifikasi Dokumentasi API & Versi Library Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk mengecek dokumentasi resmi, kompatibilitas versi LTS/terkini, dan tanda tangan fungsi (*method signatures*) rilis resmi dari pustaka/framework yang dipilih sebelum dicatat ke arsitektur.
 - **Riset Benchmark & Post-Mortem Industri**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, throughput, batas memori, dan laporan kegagalan (*post-mortem failure analysis*) dari tumpukan teknologi yang diusulkan.
 - **Musyawarah Dewan Arsitektur**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arsitektural berdampak besar (Monolith Modular vs Microservices, Relasional vs Dokumen, REST vs Event-Driven, Pola Konkurensi) melalui sidang 5 persona AI.
-- **Wawancara Penguncian Arsitektur di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk mengunci preferensi teknologi, lingkungan hosting, dan toleransi kegagalan. Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG memilih stack sepihak.
+- **Wawancara Penguncian Arsitektur di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG memilih stack sepihak.
 - **Audit Konsistensi Arsitektur & Deteksi Drift**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan cetak biru arsitektur tidak menyimpang (*zero architectural drift*) dari batasan di PRD dan SystemSpec.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
 - **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` menggunakan format baku.
@@ -36,8 +36,8 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
     (5 Persona AI membedah Monolith vs Microservices, SQL vs NoSQL, dsb.)
                        │
                        ▼
-[3. Wawancara Penguncian Arsitektur di Chat (Grilling Rambu Henti)]
-    (Min 5, Max 10 Tanya: kunci hosting/infra, stack constraints, toleransi risiko)
+[3. Wawancara Penguncian Arsitektur via ask_question]
+    (Modal Interaktif 5-10 Tanya: kunci hosting, stack, DB, toleransi risiko)
                        │
                        ▼
 [4. Penyusunan Dokumen Architecture.md (C4 Model & Deployment Topology)]
@@ -74,25 +74,26 @@ Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-a
 
 ### 2. Musyawarah Dewan Arsitektur (via `llm-council`)
 - Menyidangkan trade-off arsitektural berdampak besar ke 5 persona dewan AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review*.
-- Topik sidang: Monolith Modular vs Microservices, SQLite vs PostgreSQL, REST vs WebSocket/gRPC, Framework A vs Framework B.
-- Dewan menghasilkan sintesis konsensus, analisis risiko, dan opsi kompromi teknis (Opsi A vs Opsi B) untuk diserahkan ke sesi wawancara chat.
+- Topik sidang: Monolith Modular vs Microservices, SQLite vs PostgreSQL vs Document Store, REST vs WebSocket/gRPC, Framework A vs Framework B.
+- Dewan menghasilkan sintesis konsensus, analisis risiko, dan opsi kompromi teknis komprehensif (2 hingga 5 alternatif realistis) untuk diserahkan ke sesi wawancara via `ask_question`.
 
-### 3. Wawancara Penguncian Arsitektur di Chat (via `grilling`)
+### 3. Wawancara Penguncian Arsitektur di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung membuat berkas `docs/Architecture.md` sebelum menyepakati pilihan teknologi, lingkungan penerapan (*deployment*), dan batasan operasional dengan pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung membuat berkas `docs/Architecture.md` sebelum menyepakati pilihan teknologi, lingkungan penerapan (*deployment*), dan batasan operasional dengan pengguna via perkakas modal **`ask_question`**.
   - Dilarang keras menentukan stack atau penyedia hosting secara sepihak.
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh fondasi arsitektur) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 pertanyaan per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Fokus Topik Wawancara**:
-  1. Lingkungan Penerapan Target (*Target Hosting*: Server Docker/Compose, Cloud VPS, Serverless, atau Komputer Lokal).
-  2. Batasan Ekosistem Tim (*Team Stack Constraints*: Preferensi bahasa Go/Node/Swift/Python/Rust).
-  3. Strategi Basis Data Operasional (SQLite lokal mandiri vs PostgreSQL terkelola).
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah (untuk menguji seluruh fondasi arsitektur).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rangkaian komponen arsitektur yang saling terkait (misal paket Runtime + Framework + Database).
+  - **Opsi Maksimal & Rekomendasi**: Menyajikan **2 hingga 5 opsi realistis**. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Fokus Topik Wawancara (via `ask_question`)**:
+  1. Lingkungan Penerapan Target (*Target Hosting*: Server Docker/Compose, Cloud VPS, Serverless, atau Komputer Lokal Mandiri).
+  2. Batasan Ekosistem Tim (*Team Stack Constraints*: Preferensi bahasa Go/Node/Swift/Python/Rust dan framework resminya).
+  3. Strategi Basis Data Operasional (SQLite lokal mandiri vs PostgreSQL terkelola vs Hybrid Caching).
   4. Estimasi Skala Lalu Lintas & Kapasitas Data (Perkiraan DAU, rata-rata vs puncak QPS, dan volume transaksi).
   5. Toleransi Ketersediaan & Biaya (*High Availability vs Minimal Cost*).
   6. Target Pemulihan Bencana (*Disaster Recovery*: Toleransi kehilangan data / RPO dan batas waktu server pulih / RTO).
   7. Strategi Migrasi & Cadangan Data (*Backup & Recovery Window*).
-- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+- Tunggu respon pemilihan pengguna dari modal interaktif sebelum melanjutkan perancangan arsitektur.
 
 ### 4. Penyusunan Dokumen Architecture.md Formal
 - Menyusun dokumen lengkap `docs/Architecture.md` berbasis diagram standar **C4 Model** (Level 1 Context, Level 2 Container, Level 3 Component), perhitungan matematika estimasi kapasitas, pola observabilitas hulu-hilir, dan topologi deployment nyata.

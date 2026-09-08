@@ -14,7 +14,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Alignment**: **`MANDATORY`**: Wajib membaca dan memverifikasi `docs/ProblemFraming.md` agar seluruh fitur selaras dengan akar masalah dan tidak melanggar batasan *Non-Goals*.
 - **Dekomposisi Riset Paralel & Benchmark Web**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen spesialis secara paralel yang masing-masing dibekali alat `web-search` (*Sub-agen 1: Alur Kerja Pengguna & Standar UX Industri, Sub-agen 2: Non-Functional Requirements & Tolok Ukur Kinerja, Sub-agen 3: Matriks Fitur P0/P1/P2 & Komparasi Pasar*). Setiap sub-agen dibatasi 1–2 pencarian web terarah dan wajib menyertakan URL referensi valid.
 - **Musyawarah Pemangkasan Scope & Trade-offs**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji ketahanan matriks prioritas fitur P0 (Must-Have) vs P1 (Should-Have) vs P2 (Nice-to-Have) melalui sidang 5 persona AI guna mencegah pembengkakan cakupan (*scope bloat*).
-- **Wawancara Penguncian Scope & Edge Cases**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk mengunci prioritas P0 dan skenario pemulihan error (*error recovery*). Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
+- **Wawancara Penguncian Scope & Edge Cases**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** (dengan opsi multi-select untuk fitur MVP atau single-select untuk kebijakan error) beropsi maksimal (2–5 alternatif konkret diawali `(Recommended)`) dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak). Batas volume sesi berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
 - **Audit Konsistensi Hulu-Hilir**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memverifikasi bahwa PRD 100% konsisten dan tidak melanggar batasan *Non-Goals* di `docs/ProblemFraming.md`.
 - **Pencatatan Keputusan PRD**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan cakupan fitur ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 
@@ -36,7 +36,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 [2. Scope Pruning Council (LLM Council)] ──> 5 Persona AI memangkas P0 vs P1
                   │
                   ▼
-[3. Scope & Edge-Case Grilling (User)]   ──> Rambu Henti Wajib di chat (5-10 pertanyaan)
+[3. Scope & Edge-Case Grilling (User)]   ──> Rambu Henti via ask_question (5-10 pertanyaan)
                   │
                   ▼
 [4. PRD Synthesis & PDR Record]          ──> Penulisan docs/PRD.md & PDR decision
@@ -57,20 +57,21 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - Dewan bertugas secara agresif membedah: *"Apakah fitur ini mutlak wajib ada di rilis pertama (P0), ataukah hanya fitur impian yang memicu pembengkakan scope (P1/P2)?"*.
 - Menghasilkan daftar rekomendasi pemangkasan (*scope pruning*) dan daftar dilema kompromi fitur untuk diuji ke pengguna.
 
-### 3. Wawancara Penguncian Scope & Edge Cases di Chat (via `grilling`)
+### 3. Wawancara Penguncian Scope & Edge Cases di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung membuat berkas `docs/PRD.md` sebelum menyepakati cakupan fitur P0 dan kebijakan skenario gagal dengan pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung membuat berkas `docs/PRD.md` sebelum menyepakati cakupan fitur P0 dan kebijakan skenario gagal dengan pengguna via perkakas **`ask_question`**.
   - Dilarang keras menentukan garis batas P0 vs P1/P2 secara sepihak.
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara PRD dibatasi **minimal 5 pertanyaan** (untuk memastikan seluruh fitur P0 dan skenario kegagalan teruji) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Pertanyaan wajib diajukan secara bertahap (1–2 pertanyaan per putaran chat) lengkap dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Protokol Wawancara Chat (Interaktif)**:
-  1. Sajikan intisari rekomendasi pemangkasan fitur P0 dari sidang dewan AI.
-  2. Hadapkan pertanyaan secara bertahap mengenai:
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara PRD dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah.
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rangkaian alur yang sama.
+  - **Opsi Maksimal & Multi-Select**: Menyajikan **2 hingga 5 opsi realistis**. Gunakan `is_multi_select: true` untuk pemilihan bundel fitur P0 MVP yang diizinkan aktif bersamaan, dan `is_multi_select: false` untuk kebijakan penanganan error mutlak. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Protokol Wawancara Chat (Interaktif via `ask_question`)**:
+  1. Sajikan intisari rekomendasi pemangkasan fitur P0 dari sidang dewan AI sebagai konteks singkat di chat.
+  2. Panggil perkakas `ask_question` untuk mengunci:
      - Validasi batas P0 vs P1 (fitur mana yang wajib rilis di versi pertama vs ditunda ke fase berikutnya).
      - Kebijakan penanganan skenario gagal (*unhappy path*, batas timeout, penanganan koneksi putus, pemulihan data).
-  3. **Hentikan pemanggilan tools (STOP)** dan tunggu jawaban pengguna pada setiap putaran chat.
-  4. Lanjutkan hingga rentang 5–10 pertanyaan terpenuhi dan kesepakatan cakupan MVP terkunci rapat.
+  3. Tunggu respon pemilihan pengguna dari antarmuka modal.
+  4. Lanjutkan hingga kesepakatan cakupan MVP terkunci rapat dan tervalidasi.
 
 ### 4. Penyusunan Dokumen PRD Formal & Rekam Keputusan PDR
 - Menyusun dokumen lengkap `docs/PRD.md` berdasarkan hasil kesepakatan chat, memetakan alur normal vs gagal secara terperinci, dan mendefinisikan target NFR kuantitatif.

@@ -20,7 +20,7 @@ Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-s
 - **Validasi Bukti Terminal Sebelum Selesai**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk mewajibkan bukti eksekusi terminal nyata (exit code 0 dan 0 failure threshold) sebelum pekerjaan diklaim selesai.
 - **Gerbang Pemeriksaan Kode 2 Lapis**: **`REQUIRED SUB-SKILL`**: Gunakan `code-reviewer` untuk menetapkan inspeksi gerbang ganda (*Stage 1: Spec Compliance* dan *Stage 2: Code Quality, Concurrency & Security*).
 - **Musyawarah Dewan Pagar Mutu & Keamanan**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan dilema kebijakan mutu (misal: strict linter blocking build vs warn-only, target cakupan tes 80% vs 100%, Trunk-based development vs GitFlow) melalui 5 persona AI.
-- **Wawancara Penguncian Tata Kelola di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk mengunci target cakupan tes, gaya commit, dan otomatisasi git hook. Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG menentukan kebijakan mutu sepihak.
+- **Wawancara Penguncian Tata Kelola di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan kebijakan mutu sepihak.
 - **Proteksi Variabel Rahasia & Perintah Destruktif**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk isolasi kunci rahasia (*zero hardcoded credentials*) dan penyaringan perintah terminal berbahaya.
 - **Audit Konsistensi Tata Kelola**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan aturan kualitas dan keamanan selaras dengan arsitektur dan spesifikasi hulu.
 - **Pencatatan Keputusan Tata Kelola**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan tata kelola ke `docs/decisions/GDR-[YYYYMMDDHHmm].md` menggunakan template standar.
@@ -39,8 +39,8 @@ Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-s
     (5 Persona AI menguji trade-off: Strict Linting, Branch Strategy, Coverage Target)
                                    │
                                    ▼
-[3. Wawancara Penguncian Tata Kelola di Chat (Grilling Rambu Henti)]
-    (Min 5, Max 10 Tanya: kunci ambang batas coverage, commit style, hook automation)
+[3. Wawancara Penguncian Tata Kelola via ask_question]
+    (Modal Interaktif 5-10 Tanya: kunci coverage, commit style, hook automation)
                                    │
                                    ▼
 [4. Penyusunan Dokumen Governance.md (Coding Rules, Linter Matrix, Hooks & Gates)]
@@ -78,24 +78,25 @@ Mendelegasikan tim 5 agen spesialis tata kelola tetap via `dispatching-parallel-
 ### 2. Musyawarah Dewan Mutu & Keamanan (via `llm-council`)
 - Menyidangkan perdebatan tata kelola berisiko tinggi ke 5 persona dewan AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*).
 - Topik sidang: Strict Linting (memblokir build vs warn-only), Target Cakupan Pengujian (80% vs 90% vs 100% domain core), Strategi Git (Trunk-Based vs GitFlow).
-- Dewan menghasilkan sintesis konsensus dan opsi kompromi teknis (Opsi A vs Opsi B) untuk diserahkan ke sesi wawancara chat.
+- Dewan menghasilkan sintesis konsensus dan opsi kompromi teknis komprehensif (2 hingga 5 alternatif realistis) untuk diserahkan ke sesi wawancara via `ask_question`.
 
-### 3. Wawancara Penguncian Tata Kelola di Chat (via `grilling`)
+### 3. Wawancara Penguncian Tata Kelola di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung membuat berkas `docs/Governance.md` sebelum menyepakati kebijakan mutu, gaya commit, target cakupan tes, dan otomatisasi git hook bersama pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung membuat berkas `docs/Governance.md` sebelum menyepakati kebijakan mutu, gaya commit, target cakupan tes, dan otomatisasi git hook bersama pengguna via perkakas modal **`ask_question`**.
   - Dilarang keras menentukan standar mutu atau alur kerja Git secara sepihak.
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh kebijakan mutu) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 pertanyaan per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Fokus Topik Wawancara**:
-  1. Target Cakupan Tes (*Test Coverage Target*: 80% vs 90% vs 100% pada logika domain).
-  2. Kebijakan Linter & Compiler Strictness (Gagal seketika pada warning vs peringatan saja).
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah (untuk menguji seluruh kebijakan mutu).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rumpun kebijakan yang sama (misal paket Git-Ops + Commit Style + Hook Automation).
+  - **Opsi Maksimal & Rekomendasi**: Menyajikan **2 hingga 5 opsi realistis**. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Fokus Topik Wawancara (via `ask_question`)**:
+  1. Target Cakupan Tes (*Test Coverage Target*: 80% vs 90% vs 100% pada domain core logic).
+  2. Kebijakan Linter & Compiler Strictness (Gagal seketika pada warning vs peringatan saja vs selective severity).
   3. Alur Kerja Git & Strategi Percabangan (*Trunk-Based Development* vs *GitHub Flow* vs *GitFlow*).
   4. Format Pesan Commit (*Conventional Commits* vs *Caveman Commits* ringkas via `git-ops`).
   5. Kebijakan Pagar Otomatis Git Hooks (*Pre-commit formatting & Pre-push test execution*).
   6. Disiplin Kuncian Dependensi & Audit Kerentanan (*Lockfile strictness & High/Critical vulnerability gating*).
   7. Kesiapan Saklar Fitur & Prosedur Mundur Cepat (*Feature Flags untuk rilis berisiko & 1-command rollback*).
-- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+- Tunggu respon pemilihan pengguna dari modal interaktif sebelum melanjutkan penyusunan governance.
 
 ### 4. Penyusunan Dokumen Governance.md Formal
 - Menyusun dokumen lengkap `docs/Governance.md` mematuhi 5 pilar tata kelola kualitas, standar anti-slop, matriks linter terverifikasi, keamanan rantai pasok dependensi, protokol sensor log, dan gerbang kelulusan otomatis.

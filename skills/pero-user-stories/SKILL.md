@@ -15,7 +15,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Dekomposisi Riset Paralel Berbasis 5 Spesialis Tetap (*Fixed Specialist Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim yang beranggotakan **5 Agen Spesialis Tetap (*Fixed Specialized Roles*)** secara paralel yang masing-masing dibekali alat `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian web terarah** untuk mengambil standar industri nyata (RFC/ISO/OWASP). Jika domain tidak relevan dengan PRD, agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian web.
 - **Perancangan Kontrak & Standar Envelope**: **`REQUIRED SUB-SKILL`**: Gunakan `api-contract-design` untuk menyusun struktur payload endpoint REST, GraphQL, gRPC, WebSocket, atau pesan IPC secara konsisten (*standard response envelope*, header idempotensi `X-Idempotency-Key` untuk mutasi data, dan metadata paginasi untuk query daftar).
 - **Validasi Skema & Batasan Tipe Data**: **`REQUIRED SUB-SKILL`**: Gunakan `schema-validator` untuk mendefinisikan batasan tipe data konkret (UUID, String, Int64, Float, Boolean, ISO-8601, Enum) dan batasan batas (*boundary constraints*).
-- **Wawancara Aturan Batas & Logika Bisnis di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk menguji kondisi batas (soft vs hard delete, duplikasi/idempotensi, batas paginasi, dan konkurensi). Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
+- **Wawancara Aturan Batas & Logika Bisnis di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
 - **Audit Konsistensi PRD-ke-Stories**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan tidak ada User Story fiktif (*Zero Scope Bleed*) dan seluruh fitur PRD terpetakan tuntas.
 - **Pencatatan Keputusan Sistem**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan ke `docs/decisions/SDR-[YYYYMMDDHHmm].md`.
 
@@ -46,7 +46,7 @@ Untuk mencegah kerusakan tampilan berkas (*broken markdown format*), agen WAJIB 
 [2. Validasi Skema & Integritas Kontrak]   ──> schema-validator & api-contract-design
                  │
                  ▼
-[3. Wawancara Aturan Batas di Chat]        ──> Rambu Henti Wajib (Min 5, Max 10 Tanya)
+[3. Wawancara Aturan Batas via ask_question] ──> Rambu Henti Modal (5-10 Tanya)
                  │
                  ▼
 [4. Penulisan Dokumen SystemSpec.md & SDR] ──> Kontrak Bersih, Idempotensi & Paginasi
@@ -89,22 +89,23 @@ Untuk mencegah pemaksaan masalah palsu (*over-engineering*) pada proyek sederhan
   - Memastikan seluruh endpoint mutasi (`POST`/`PUT`/`DELETE`) mendukung header idempotensi dan seluruh endpoint daftar data menyertakan metadata paginasi.
   - Memastikan pembungkus envelope standar seragam: `{ "status": "success", "data": {...} }` dan `{ "status": "error", "error": {...} }`.
 
-### 3. Wawancara Aturan Batas & Logika Bisnis di Chat (via `grilling`)
+### 3. Wawancara Aturan Batas & Logika Bisnis di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung membuat berkas `docs/SystemSpec.md` sebelum menyepakati aturan batas bisnis dan skenario ekstrem dengan pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung membuat berkas `docs/SystemSpec.md` sebelum menyepakati aturan batas bisnis dan skenario ekstrem dengan pengguna via perkakas modal **`ask_question`**.
   - Dilarang keras melakukan *self-answering* (menentukan sendiri kebijakan penghapusan data, paginasi, idempotensi, atau penanganan duplikasi).
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh kondisi batas dan titik kegagalan sistem) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 dilema batas per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Fokus Topik Wawancara**:
-  1. Kebijakan Retensi & Hapus Data (Soft-delete vs Hard-delete permanen).
-  2. Penanganan Transaksi Ganda / Idempotensi (Idempotency Key vs Client-Side Debounce).
-  3. Batas Paginasi & Volume Kuota (Default page size, max limit, cursor vs offset).
-  4. Batas Input Ekstrem (Format validasi karakter khusus, sanitasi, batas ukuran file upload).
-  5. Penanganan Konflik Konkurensi (Optimistic locking vs Last-write-wins).
-  6. Validasi Transisi Status FSM (Legalitas perubahan status data dan otorisasi eksekutornya).
-  7. Matriks Hak Akses Peran / RBAC (Batas wewenang antar-peran dan kepemilikan data tenant/user).
-- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah (untuk menguji seluruh kondisi batas dan titik kegagalan sistem).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rangkaian kontrak entitas yang sama.
+  - **Opsi Maksimal & Rekomendasi**: Menyajikan **2 hingga 5 opsi realistis**. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Fokus Topik Wawancara (via `ask_question`)**:
+  1. Kebijakan Retensi & Hapus Data (Soft-delete vs Hard-delete permanen vs Archiving table).
+  2. Penanganan Transaksi Ganda / Idempotensi (Idempotency Key via Redis vs Database unique index vs Token-based).
+  3. Batas Paginasi & Volume Kuota (Cursor-based vs Offset-based, default limit & max threshold).
+  4. Batas Input Ekstrem (Sanitasi karakter khusus, batas payload upload, format regex).
+  5. Penanganan Konflik Konkurensi (Optimistic locking versioning vs Pessimistic row locking vs Last-write-wins).
+  6. Validasi Transisi Status FSM (Legalitas perubahan status entitas dan otorisasi eksekutornya).
+  7. Matriks Hak Akses Peran / RBAC (Batas wewenang peran, multi-tenant scoping, dan data boundary).
+- Tunggu respon pemilihan pengguna dari modal interaktif sebelum melanjutkan penyusunan spesifikasi.
 
 ### 4. Penyusunan Dokumen SystemSpec.md Formal & Rekam Keputusan SDR
 - Menyusun dokumen lengkap `docs/SystemSpec.md` mematuhi *Strict Markdown Integrity Protocol* (sanitasi `\|`, blok kode terisolasi, diagram Mermaid bersih).

@@ -16,10 +16,10 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
   - **1–3 Agen Spesialis Dinamis (Wajib pilih min. 1, maks. 3)**: Dipilih secara kontekstual sesuai karakteristik ide dari katalog spesialis (*Kepatuhan Regulasi/Privasi, Nilai Finansial/Kesediaan Membayar, Benteng Pertahanan/Moat, atau Inersia Adopsi/Kebiasaan Lama*).
   - **Pagar Pencarian**: Setiap agen dibatasi 1–2 pencarian web terarah dan wajib menyertakan minimal 1 tautan URL resmi aktif dengan data empiris konkret (total menghasilkan minimal 4 hingga 6 bukti valid).
 - **Musyawarah 5 Sudut Pandang AI**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji rumusan masalah dari 5 perspektif ahli (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membasmi bias sudut pandang sempit.
-- **Wawancara Socratic & Stress-Test 2-Tahap**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dalam **2 ronde terpisah**:
-  1. *Ronde 1 (Tahap 2)*: Membedah 5-Whys hingga ke akar terdalam (*root cause*) dengan batas **minimal 5 dan maksimal 10 pertanyaan** yang diajukan secara bertahap.
-  2. *Ronde 2 (Tahap 4)*: Menguji titik buta (*blind spots*), kritik tajam, dan dilema kompromi (*trade-offs*) hasil sidang Dewan AI (`llm-council`) dengan batas **minimal 5 dan maksimal 10 pertanyaan** yang diajukan secara bertahap.
-  Agent WAJIB menghentikan eksekusi (*pause*) pada setiap ronde dan menunggu respon pengguna. DILARANG mengarang atau mensimulasikan jawaban secara mandiri.
+- **Wawancara Socratic & Stress-Test 2-Tahap**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dalam **2 ronde terpisah**:
+  1. *Ronde 1 (Tahap 2)*: Membedah 5-Whys hingga ke akar terdalam (*root cause*) dengan opsi maksimal (2–5 alternatif konkret), diawali pilihan `(Recommended)`, dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak).
+  2. *Ronde 2 (Tahap 4)*: Menguji titik buta (*blind spots*), kritik tajam, dan dilema kompromi (*trade-offs*) hasil sidang Dewan AI (`llm-council`) via `ask_question` dengan opsi rekomendasi terstruktur.
+  Batas volume per ronde berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang atau mensimulasikan jawaban secara mandiri.
 - **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PFDR-[YYYYMMDDHHmm].md`.
 
@@ -76,34 +76,35 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 - **Batas Kuota Pencarian**: Setiap agen dibatasi maksimal **1–2 pencarian web terarah** untuk mencegah pemborosan kuota dan risiko *rate limit*.
 - **Integritas Bukti Empiris**: Setiap agen wajib menyertakan **minimal 1 tautan URL resmi dan aktif** dengan temuan konkret, sehingga total menghasilkan **minimal 4 hingga 6 bukti empiris tervalidasi** untuk dokumen akhir.
 
-### 2. Diagnosa Akar Masalah (5-Whys & `grilling` - Ronde 1 Chat)
+### 2. Diagnosa Akar Masalah (5-Whys & `grilling` - Ronde 1 Chat via `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE - RONDE 1)**:
-  - Agent **DILARANG** langsung membuat atau mengisi berkas `docs/ProblemFraming.md` sebelum melakukan wawancara langsung dengan pengguna di obrolan (*chat*).
-  - Dilarang keras melakukan *self-answering* (mengarang dan mengisi sendiri jawaban 5-Whys tanpa dialog nyata dengan pengguna).
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara akar masalah dibatasi **minimal 5 pertanyaan** (untuk memastikan kedalaman 5-Whys tidak terpotong kompas) dan **maksimal 10 pertanyaan** (untuk mencegah kelelahan pengguna dan kebuntuan analisis/*analysis paralysis*).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong 5–10 pertanyaan sekaligus dalam satu kali kirim chat. Pertanyaan wajib diajukan secara bertahap (1–2 pertanyaan per putaran chat) mengalir mengikuti respon pengguna sebelumnya.
-- **Protokol Wawancara Chat Ronde 1 (Interaktif)**:
+  - Agent **DILARANG** langsung membuat atau mengisi berkas `docs/ProblemFraming.md` sebelum melakukan wawancara interaktif menggunakan perkakas **`ask_question`**.
+  - Dilarang keras melakukan *self-answering* (mengarang dan mengisi sendiri jawaban 5-Whys tanpa konfirmasi pilihan pengguna).
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara akar masalah dibatasi total akumulasi **5 hingga 10 pertanyaan** (untuk memastikan kedalaman 5-Whys tidak terpotong kompas dan mencegah kelelahan pengguna).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Pertanyaan diajukan secara fleksibel via array `questions` pada perkakas `ask_question`: bisa **1 pertanyaan mandiri** jika berdiri sendiri, atau **2 hingga 4 pertanyaan serentak** jika berada dalam satu klaster tema masalah yang sama.
+  - **Opsi Maksimal & Rekomendasi**: Setiap pertanyaan menyajikan **2 hingga 5 opsi realistis** (bukan biner kaku) dengan opsi terbaik AI diletakkan di nomor 1 berawalan `(Recommended)`.
+- **Protokol Wawancara Chat Ronde 1 (Interaktif via `ask_question`)**:
   1. Sajikan intisari temuan empiris dan bukti URL dari tim agen riset sebagai pengantar konteks awal.
-  2. Ajukan pertanyaan terarah 5-Whys secara bertahap kepada pengguna dengan menyertakan opsi konkret (A/B) dan rekomendasi teknis terbaik sesuai prinsip `grilling`.
-  3. **Hentikan pemanggilan tools (STOP)** dan tunggu balasan dari pengguna di chat pada setiap putaran pertanyaan.
-  4. Lanjutkan penggalian secara berantai hingga mencapai rentang 5–10 pertanyaan dan akar terdalam (*root cause*) disepakati bersama oleh pengguna, bukan hasil tebakan sepihak AI.
+  2. Panggil perkakas `ask_question` berisi paket pertanyaan 5-Whys dengan opsi terstruktur dan rekomendasi teknis terbaik.
+  3. Tunggu respon pemilihan pengguna dari antarmuka modal.
+  4. Lanjutkan penggalian secara terarah hingga seluruh ranting masalah pangkal disepakati bersama oleh pengguna.
 
 ### 3. Multi-Perspective Peer Review (via `llm-council`)
 - Menyidangkan rumusan akar masalah ke 5 penasihat AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membedah titik buta (*blind spots*), kontradiksi asumsi, risiko tersembunyi, dan argumen bantahan dari masing-masing persona ahli.
 
-### 4. Stress-Test Hasil Dewan AI (Council-Driven Grilling via `grilling` - Ronde 2 Chat)
+### 4. Stress-Test Hasil Dewan AI (Council-Driven Grilling via `grilling` - Ronde 2 Chat via `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE - RONDE 2)**:
-  - Agent **DILARANG** langsung mengunci batasan (*Non-Goals*) atau membuat dokumen akhir sebelum menghadapkan hasil kritik Dewan AI kepada pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung mengunci batasan (*Non-Goals*) atau membuat dokumen akhir sebelum menghadapkan hasil kritik Dewan AI kepada pengguna via perkakas **`ask_question`**.
   - Dilarang keras memutuskan kompromi (*trade-offs*) strategis secara sepihak tanpa mandat pengguna.
-- **Pagar Batas Pertanyaan Dewan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara pasca-dewan dibatasi **minimal 5 pertanyaan** (untuk memastikan titik buta dari 5 persona dewan diuji tuntas) dan **maksimal 10 pertanyaan** (untuk mencegah analisis berlarut-larut/*analysis paralysis*).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong 5–10 pertanyaan sekaligus dalam satu kali kirim chat. Pertanyaan wajib diajukan secara bertahap (1–2 dilema per putaran chat) lengkap dengan opsi pilihan konkret (A/B), analisis trade-off, dan rekomendasi teknis AI.
-- **Protokol Wawancara Chat Ronde 2 (Interaktif)**:
+- **Pagar Batas & Format Pertanyaan Dewan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara pasca-dewan dibatasi total akumulasi **5 hingga 10 pertanyaan** strategis.
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara fleksibel via `ask_question` (1 pertanyaan mandiri atau 2–4 pertanyaan serentak per putaran) lengkap dengan 2 hingga 5 alternatif konkret dan rekomendasi AI.
+- **Protokol Wawancara Chat Ronde 2 (Interaktif via `ask_question`)**:
   1. Rangkum kritik terpedas, risiko paling krusial, dan titik buta (*blind spots*) yang diangkat oleh 5 penasihat AI (terutama dari *Skeptic Auditor* dan *Tech Feasibility*).
-  2. Hadapkan dilema tersebut secara bertahap (1–2 pertanyaan per putaran chat) kepada pengguna dalam format opsi konkret (Opsi A vs Opsi B) beserta rekomendasi teknis AI terbaik.
-  3. **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
-  4. Lanjutkan penggalian secara berantai hingga mencapai rentang 5–10 pertanyaan strategis dan seluruh kompromi dewan disepakati bersama.
+  2. Hadapkan dilema tersebut kepada pengguna melalui perkakas modal `ask_question` dengan opsi-opsi mitigasi konkret (diawali `(Recommended)`).
+  3. Tunggu pilihan pengguna dari modal interaktif.
+  4. Lanjutkan penggalian hingga seluruh kompromi dewan disepakati bersama.
   5. Jadikan pilihan pengguna sebagai ketetapan mutlak dalam merumuskan ruang lingkup dan batasan (*Non-Goals*).
 
 ### 5. Pagar Batasan (Boundaries) & Metrik Keberhasilan

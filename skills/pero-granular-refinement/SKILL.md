@@ -20,7 +20,7 @@ Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi su
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk merancang spesifikasi failing test (*Red step*) secara eksplisit di awal—mencakup nama fungsi test, input mock/fixtures, dan assertion yang diharapkan gagal sebelum implementasi ada.
 - **Verifikasi Bukti Eksekusi Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk menetapkan perintah eksekusi terminal dan kriteria lulus exit code 0 tanpa toleransi kegagalan.
 - **Musyawarah Dewan Integritas Teknis**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan trade-off teknis pada kartu tugas (misal: Functional Result tuple vs Custom Exception, in-memory stub vs containerized test, distributed lock vs DB token) melalui 5 persona AI.
-- **Wawancara Penguncian Spesifikasi Tugas di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk mengunci tanda tangan method, batas kasus ekstrem, strategi mocking, dan kriteria uji. Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG menentukan detail kartu sepihak.
+- **Wawancara Penguncian Spesifikasi Tugas di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan detail kartu sepihak.
 - **Perancangan Kontrak & Tanda Tangan Metode**: **`SUPPORTING SUB-SKILL`**: Gunakan `api-contract-design` untuk menyusun struktur parameter method, return envelope, dan status kode error secara konsisten.
 - **Validasi Skema & Batasan Payload**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk memvalidasi struktur tipe data DTO, payload request/response, dan batasan batas (*boundary constraints*) pada interface.
 - **Proteksi Rahasia & Lingkungan**: **`SUPPORTING SUB-SKILL`**: Gunakan `env-guard` untuk memastikan tidak ada kunci rahasia atau kredensial yang dituliskan langsung dalam fixtures kartu tugas.
@@ -43,8 +43,8 @@ Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi su
     (5 Persona AI menguji: Result vs Exception, Invariant Pre/Post, Blast Radius)
                                    │
                                    ▼
-[3. Wawancara Penguncian Spesifikasi di Chat (Grilling Rambu Henti)]
-    (Min 5, Max 10 Tanya: kunci signatures, edge cases, error codes, test runner)
+[3. Wawancara Penguncian Spesifikasi via ask_question]
+    (Modal Interaktif 5-10 Tanya: kunci signatures, edge cases, error codes, test runner)
                                    │
                                    ▼
 [4. Penerbitan Kartu Tugas Formal docs/tasks/TASK-[ID].md (7 Anatomi Presisi)]
@@ -85,22 +85,23 @@ Mendelegasikan tim 5 agen spesialis penajaman tetap via `dispatching-parallel-ag
   - Pola penanganan error: Pelemparan `Custom Exception` vs Functional `Result<T, E>` tuple.
   - Skenario penguncian konkurensi: Optimistic Locking vs Distributed Redis Lock.
   - Strategi isolasi test: In-memory stub fixtures vs Containerized integration testing.
-- Dewan menghasilkan sintesis konsensus dan opsi kompromi teknis (Opsi A vs Opsi B) untuk diserahkan ke sesi wawancara chat.
+- Dewan menghasilkan sintesis konsensus dan opsi kompromi teknis komprehensif (2 hingga 5 alternatif realistis) untuk diserahkan ke sesi wawancara via `ask_question`.
 
-### 3. Wawancara Penguncian Spesifikasi Tugas di Chat (via `grilling`)
+### 3. Wawancara Penguncian Spesifikasi Tugas di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung menerbitkan kartu tugas `docs/tasks/TASK-[ID].md` sebelum menyepakati tanda tangan metode, skenario batas ekstrem, strategi mocking, dan perintah verifikasi bersama pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung menerbitkan kartu tugas `docs/tasks/TASK-[ID].md` sebelum menyepakati tanda tangan metode, skenario batas ekstrem, strategi mocking, dan perintah verifikasi bersama pengguna via perkakas modal **`ask_question`**.
   - Dilarang keras menentukan detail implementasi atau format error secara sepihak.
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh aspek teknis kartu tugas) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 pertanyaan per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Fokus Topik Wawancara**:
-  1. Gaya Penanganan Error (Functional `Result<T, E>` tuple vs Pelemparan `Custom Exception`).
-  2. Mekanisme Idempotency & Concurrency Locking (Database unique token vs Atomic distributed lock).
-  3. Kedalaman Mocking pada Test Suite (Mock interface terisolasi vs In-memory database stub).
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah (untuk menguji seluruh aspek teknis kartu tugas).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rumpun implementasi yang sama (misal paket Signatures + Edge Cases + Mock Fixtures).
+  - **Opsi Maksimal & Rekomendasi**: Menyajikan **2 hingga 5 opsi realistis**. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Fokus Topik Wawancara (via `ask_question`)**:
+  1. Gaya Penanganan Error (Functional `Result<T, E>` tuple vs Pelemparan `Custom Exception` vs Error Envelopes).
+  2. Mekanisme Idempotency & Concurrency Locking (Database unique token vs Atomic distributed lock vs In-memory mutex).
+  3. Kedalaman Mocking pada Test Suite (Mock interface terisolasi vs In-memory database stub vs Testcontainers).
   4. Aturan Validasi Input Ekstrem (Kebijakan trimming whitespace, batasan panjang string, regex strictness).
   5. Target Perintah Eksekusi Terminal (Timeout runner dan filter file test spesifik).
-- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+- Tunggu respon pemilihan pengguna dari modal interaktif sebelum menerbitkan kartu tugas.
 
 ### 4. Penerbitan Kartu Tugas Formal docs/tasks/TASK-[ID].md
 - Menyusun kartu spesifikasi tugas presisi mematuhi **7 Anatomi Presisi**, target files konkret, invariant kontrak, dan perintah verifikasi terminal 0-failure.

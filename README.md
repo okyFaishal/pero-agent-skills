@@ -418,7 +418,7 @@ sequenceDiagram
 | 9 | [`find-skill`](.agents/skills/find-skill/SKILL.md) | Tooling | Mencari skill yang relevan di folder `.agents/skills/` | Kata kunci tugas ➡️ Rekomendasi Skill |
 | 10 | [`context-7`](.agents/skills/context-7/SKILL.md) | Tooling | Membaca dokumentasi resmi library/API via Context7 MCP | Nama paket/library ➡️ Dokumentasi Resmi Terverifikasi |
 | 11 | [`web-search`](.agents/skills/web-search/SKILL.md) | Tooling | Riset internet terarah untuk pemecahan masalah & fakta rilis | Query pencarian ➡️ Fakta & Solusi Teruji |
-| 12 | [`grilling`](.agents/skills/grilling/SKILL.md) | Discipline | Wawancara mendalam pohon keputusan & stress-test ide/desain | Ide/Rancangan ambigu ➡️ Kesepakatan Desain Solid |
+| 12 | [`grilling`](.agents/skills/grilling/SKILL.md) | Discipline | Wawancara mendalam pohon keputusan via ask_question & multi-opsi fleksibel | Ide/Rancangan ambigu ➡️ Kesepakatan Desain Solid |
 | 13 | [`test-driven-development`](.agents/skills/test-driven-development/SKILL.md) | Discipline | Menulis kode fitur/bugfix (Siklus Red-Green-Refactor) | Kartu Tugas ➡️ Failing Test + Implementasi Lulus |
 | 14 | [`systematic-debugging`](.agents/skills/systematic-debugging/SKILL.md) | Discipline | Menemukan bug atau kegagalan tes tanpa trial-and-error | Bug/Error ➡️ Root Cause + Fix Terisolasi |
 | 15 | [`verification-before-completion`](.agents/skills/verification-before-completion/SKILL.md) | Discipline | Sebelum mengklaim tugas selesai atau membuat PR | Hasil kerja ➡️ Bukti Log Terminal Nyata |

@@ -41,7 +41,7 @@
 9. `find-skill/` : Mesin pencari skill lokal yang relevan dengan tugas & stack auto-detection.
 10. `context-7/` : Akses dokumentasi resmi API via Context7 MCP.
 11. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal (min 2, max 5 search).
-12. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds) & stress-test ide/desain (min 5, max 10 tanya bertahap).
+12. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds), modal interaktif ask_question, multi-opsi (2-5 opsi) & stress-test ide/desain fleksibel.
 13. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
 14. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug (4-phase scientific debugging).
 15. `verification-before-completion/` : Bukti verifikasi nyata terminal (exit code 0, 0 failure) sebelum menyatakan selesai.

@@ -16,7 +16,7 @@ Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen artefak repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, kartu tugas di `docs/tasks/`, dan seluruh rekam keputusan di `docs/decisions/`) untuk mendeteksi kontradiksi, celah kepatuhan, atau spesifikasi yang tertinggal.
 - **Dekomposisi Riset 5 Spesialis Validasi Konteks Tetap (*Fixed Validation Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Validasi Konteks Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika ada validasi standar eksternal (misal sintaksis Mermaid modern atau parser Markdown), agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika audit murni internal terhadap file lokal, agen wajib mendeklarasikan *Early-Exit* (`N/A: Internal Audit Only`) dan dilarang melakukan pencarian web.
 - **Musyawarah Dewan Audit Mutu & Keabsahan Sistem**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan anomali dokumen, klasifikasi keparahan drift (Critical Blocker vs Warning), dan kompromi rekonsiliasi spesifikasi melalui 5 persona AI.
-- **Wawancara Penguncian Laporan Validasi di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna di chat dengan batas **minimal 5 dan maksimal 10 pertanyaan** bertahap (1–2 pertanyaan per putaran) untuk menyidangkan temuan anomali, rencana aksi perbaikan cascade, dan mengunci keputusan akhir **Go / No-Go**. Agent WAJIB menghentikan eksekusi (*pause*) dan menunggu respon pengguna. DILARANG menentukan kelulusan audit (*PASS*) secara sepihak (*anti-rubber-stamping*).
+- **Wawancara Penguncian Laporan Validasi di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan kelulusan audit (*PASS*) secara sepihak (*anti-rubber-stamping*).
 - **Sinkronisasi Dokumentasi Hidup**: **`REQUIRED SUB-SKILL`**: Gunakan `living-doc-sync` untuk menyelaraskan diagram Mermaid, denah sistem, dan struktur direktori saat terdeteksi drift minor atau setelah pemulihan cascade.
 - **Audit Kualitas & Kepatuhan Spesifikasi**: **`REQUIRED SUB-SKILL`**: Gunakan `code-reviewer` untuk melakukan inspeksi kepatuhan spesifikasi tingkat tinggi (*spec compliance audit*) terhadap kartu tugas dan arsitektur.
 - **Validasi Skema Data & Kontrak**: **`SUPPORTING SUB-SKILL`**: Gunakan `schema-validator` untuk memastikan struktur data payload, DTO, dan JSON schema selaras antara SystemSpec, Architecture, dan TaskBacklog.
@@ -40,8 +40,8 @@ Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi
     (5 Persona AI menguji: Severity Tiers, Blocker Reconciliation, Trade-offs)
                            │
                            ▼
-[3. Wawancara Penguncian Validasi di Chat (Grilling Rambu Henti)]
-    (Min 5, Max 10 Tanya: konfirmasi anomali, cascade update, Go/No-Go decision)
+[3. Wawancara Penguncian Validasi via ask_question]
+    (Modal Interaktif 5-10 Tanya: konfirmasi anomali, cascade update, Go/No-Go)
                            │
                            ▼
 [4. Penyusunan Dokumen docs/ValidationReport.md Formal]
@@ -87,22 +87,23 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
   - Mengklasifikasikan anomali ke dalam 3 Tingkat Keparahan (*Critical Blocker*, *Warning*, atau *Info*).
   - Menyidangkan trade-off rekonsiliasi: jika PRD dan Arsitektur berselisih, dokumen mana yang harus disesuaikan?
   - Menilai kesiapan sistem untuk memulai tahap implementasi koding TDD massal.
-- Dewan menghasilkan sintesis konsensus dan rekomendasi teknis (Opsi A vs Opsi B) untuk diserahkan ke sesi wawancara chat.
+- Dewan menghasilkan sintesis konsensus dan rekomendasi teknis komprehensif (2 hingga 5 alternatif realistis) untuk diserahkan ke sesi wawancara via `ask_question`.
 
-### 3. Wawancara Penguncian Laporan Validasi di Chat (via `grilling`)
+### 3. Wawancara Penguncian Laporan Validasi di Chat (via `grilling` & `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE)**:
-  - Agent **DILARANG** langsung menetapkan status kelulusan (*PASS*) atau mengizinkan fase koding dimulai sebelum menyidangkan temuan anomali, rencana aksi perbaikan cascade, dan mengunci keputusan **Go / No-Go** bersama pengguna di obrolan (*chat*).
+  - Agent **DILARANG** langsung menetapkan status kelulusan (*PASS*) atau mengizinkan fase koding dimulai sebelum menyidangkan temuan anomali, rencana aksi perbaikan cascade, dan mengunci keputusan **Go / No-Go** bersama pengguna via perkakas modal **`ask_question`**.
   - Dilarang keras melakukan *rubber-stamping* (memberi stempel hijau tanpa konfirmasi pengguna).
-- **Pagar Batas Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara dibatasi **minimal 5 pertanyaan** (untuk menguji seluruh temuan audit dan konsistensi) dan **maksimal 10 pertanyaan** (mencegah kelelahan pengguna).
-  - **Penyampaian Bertahap (*Anti-Question Avalanche*)**: DILARANG memberondong pertanyaan sekaligus. Ajukan 1–2 pertanyaan per putaran chat dengan opsi konkret (Opsi A vs Opsi B) dan rekomendasi teknis AI.
-- **Fokus Topik Wawancara**:
+- **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
+  - **Batas Kuantitas**: Sesi wawancara dibatasi total akumulasi **5 hingga 10 pertanyaan** terarah (untuk menguji seluruh temuan audit dan konsistensi).
+  - **Pengelompokan Fleksibel (*Flexible Batching*)**: Diajukan secara adaptif via `ask_question`: bisa **1 pertanyaan mandiri** atau **2 hingga 4 pertanyaan serentak** jika membahas rumpun anomali dan mitigasi yang sama.
+  - **Opsi Maksimal & Rekomendasi**: Menyajikan **2 hingga 5 opsi realistis**. Opsi teknis terbaik AI selalu ditempatkan di nomor 1 dengan label `(Recommended)`.
+- **Fokus Topik Wawancara (via `ask_question`)**:
   1. Penanganan Fitur Siluman / Orphaned Features (Apakah dihapus dari backlog atau dimasukkan ke PRD).
   2. Tindakan terhadap Ketidakcocokan Model Data (SystemSpec vs Architecture DDL).
   3. Kebijakan terhadap Warning Tata Kelola (Apakah strict zero-warning atau toleransi bersyarat).
   4. Rencana Aksi Pemulihan Cascade Drift (*Cascade Update Plan*).
-  5. Keputusan Akhir Kesiapan Eksekusi Koding (**Go / No-Go Decision**).
-- **Hentikan pemanggilan tools (STOP)** dan tunggu keputusan pengguna di chat pada setiap putaran.
+  5. Keputusan Akhir Kesiapan Eksekusi Koding (**Go / No-Go Decision**: [Recommended] Go ke TDD vs No-Go revisi spec).
+- Tunggu respon pemilihan pengguna dari modal interaktif sebelum menetapkan status akhir.
 
 ### 4. Penyusunan Dokumen ValidationReport.md Formal
 - Menyusun laporan audit komprehensif di `docs/ValidationReport.md` mematuhi **Matriks Ketertelusuran 7-Arah**, audit diagram Mermaid, tabel matriks anomali dengan 3 tingkat keparahan, dan vonis akhir kelulusan.
