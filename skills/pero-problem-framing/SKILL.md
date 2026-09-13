@@ -186,7 +186,7 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim Problem Framing AI
-- **Dokumen Terkait**: [docs/ProblemFraming.md](../ProblemFraming.md)
+- **Dokumen Terkait**: `docs/ProblemFraming.md`
 
 ## 1. Konteks Masalah & Kebutuhan Penetapan Arah
 [Jelaskan latar belakang masalah inti dan mengapa batas non-goals perlu dikunci di awal].

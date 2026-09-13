@@ -164,8 +164,8 @@ Mendelegasikan tim 5 agen spesialis tata kelola tetap via `dispatching-parallel-
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [PRD.md](PRD.md), [SystemSpec.md](SystemSpec.md), [Architecture.md](Architecture.md), & [DesignSystem.md](DesignSystem.md)
-- **Decision Record**: [decisions/GDR-[YYYYMMDDHHmm].md](decisions/GDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, & `docs/DesignSystem.md`
+- **Decision Record**: `docs/decisions/GDR-[YYYYMMDDHHmm].md`
 
 ## 1. Concurrency, State Safety & Thread Isolation Rules
 [Jelaskan aturan persimpangan jalan agar tidak ada tabrakan data dalam analogi sederhana seperti lampu lalu lintas dan loket kasir satu pintu].
@@ -318,7 +318,7 @@ docs/decisions/GDR-[YYYYMMDDHHmm].md
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim Tata Kelola Kualitas AI
-- **Dokumen Terkait**: [docs/Governance.md](../Governance.md)
+- **Dokumen Terkait**: `docs/Governance.md`
 
 ## 1. Konteks & Masalah Tata Kelola
 [Jelaskan latar belakang mengapa aturan tata kelola, kebijakan keamanan, atau standar koding baru ini perlu diresmikan].

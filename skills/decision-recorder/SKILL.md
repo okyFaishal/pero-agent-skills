@@ -72,7 +72,7 @@ Setiap berkas disimpan pada `docs/decisions/` dengan penamaan: `[TYPE]-[YYYYMMDD
 *   **Draft**: Rancangan awal yang sedang disusun oleh AI atau tim.
 *   **Proposed**: Siap ditinjau oleh pengguna pada sesi grilling atau review.
 *   **Accepted**: Telah disetujui dan menjadi hukum teknis resmi proyek.
-*   **Superseded**: Digantikan oleh keputusan baru yang lebih mutakhir (Wajib cantumkan tautan: `Supersedes [ADR-LAMA](...)` dan `Superseded by [ADR-BARU](...)`).
+*   **Superseded**: Digantikan oleh keputusan baru yang lebih mutakhir (Wajib cantumkan rujukan: `Supersedes ADR-[ID]` dan `Superseded by ADR-[ID]`).
 *   **Deprecated**: Fitur atau arsitektur dihapus dan tidak berlaku lagi.
 
 ---

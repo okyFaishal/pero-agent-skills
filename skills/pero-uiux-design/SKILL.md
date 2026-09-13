@@ -163,8 +163,8 @@ Menulis berkas cetak biru desain lengkap ke `docs/DesignSystem.md` mengikuti tem
 - **Tanggal**: [YYYY-MM-DD]
 - **Status**: Disetujui (Approved)
 - **Author / Lead**: Pero UI/UX Architect & Frontend Lead
-- **Dokumen Induk**: [PRD.md](PRD.md), [SystemSpec.md](SystemSpec.md), & [Architecture.md](Architecture.md)
-- **Decision Record**: [decisions/DDR-[YYYYMMDDHHmm].md](decisions/DDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: `docs/PRD.md`, `docs/SystemSpec.md`, & `docs/Architecture.md`
+- **Decision Record**: `docs/decisions/DDR-[YYYYMMDDHHmm].md`
 
 ---
 
@@ -328,7 +328,7 @@ Setiap komponen yang berinteraksi dengan data atau pengguna WAJIB memiliki spesi
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna, Desainer UI/UX, & Tim Frontend Lead
-- **Dokumen Terkait**: [docs/DesignSystem.md](../DesignSystem.md), [docs/PRD.md](../PRD.md), [docs/SystemSpec.md](../SystemSpec.md), & [docs/Architecture.md](../Architecture.md)
+- **Dokumen Terkait**: `docs/DesignSystem.md`, `docs/PRD.md`, `docs/SystemSpec.md`, & `docs/Architecture.md`
 
 ## 1. Konteks Masalah & Kebutuhan Desain Visual
 [Jelaskan latar belakang mengapa sistem desain ini dirumuskan, audiens target yang dituju, dan kesan visual yang ingin dicapai].

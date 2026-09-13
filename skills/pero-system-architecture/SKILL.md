@@ -164,8 +164,8 @@ Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-a
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](PRD.md) & [docs/SystemSpec.md](SystemSpec.md)
-- **Decision Record**: [docs/decisions/ADR-[YYYYMMDDHHmm].md](decisions/ADR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: `docs/PRD.md` & `docs/SystemSpec.md`
+- **Decision Record**: `docs/decisions/ADR-[YYYYMMDDHHmm].md`
 
 ## 1. C4 Architecture Diagrams
 
@@ -341,7 +341,7 @@ flowchart LR
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Dewan Arsitektur AI
-- **Dokumen Terkait**: [docs/Architecture.md](../Architecture.md), [docs/PRD.md](../PRD.md), & [docs/SystemSpec.md](../SystemSpec.md)
+- **Dokumen Terkait**: `docs/Architecture.md`, `docs/PRD.md`, & `docs/SystemSpec.md`
 
 ## 1. Konteks Masalah
 [Jelaskan latar belakang masalah teknis, batasan bisnis, atau kebutuhan spesifik yang memicu perlunya keputusan arsitektur ini].

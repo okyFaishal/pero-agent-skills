@@ -3,7 +3,7 @@ name: pero-change-management
 description: Orchestrate mid-flight scope pivots, feature additions, modifications, or removals across the Pero SDLC lifecycle. Use when adding, changing, or deleting features or requirements during or after task execution.
 ---
 
-# Universal Change & Scope Pivot Manager (`pero-change-management`)
+# Pero Change Management (`pero:change-management`)
 
 ## Overview
 **Origin**: *Pero Custom SDLC Pipeline - Stage 10 (Universal)*.  
@@ -196,7 +196,7 @@ Setiap perubahan skala Minor atau Major wajib dicatat di `docs/decisions/CRDR-[Y
 - **Pengambil Keputusan**: Pengguna & Tim Manajemen Perubahan AI
 - **Tipe Perubahan**: [ADD | MODIFY/PIVOT | REMOVE]
 - **Skala Dampak**: [Patch/Micro | Minor/Feature | Major/Architectural Pivot]
-- **Dokumen Terkait**: [docs/SystemSpec.md](../SystemSpec.md), [docs/Architecture.md](../Architecture.md), & [docs/TaskBacklog.md](../TaskBacklog.md)
+- **Dokumen Terkait**: `docs/SystemSpec.md`, `docs/Architecture.md`, & `docs/TaskBacklog.md`
 
 ## 1. Konteks & Alasan Perubahan (Why)
 [Jelaskan mengapa perubahan ini diminta oleh pengguna, apa masalah pada rancangan sebelumnya, atau peluang baru apa yang ingin dicapai].

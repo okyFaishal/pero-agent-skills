@@ -271,7 +271,7 @@ Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim Validasi Konteks AI
-- **Dokumen Terkait**: [docs/ValidationReport.md](../ValidationReport.md)
+- **Dokumen Terkait**: `docs/ValidationReport.md`
 
 ## 1. Konteks & Ruang Lingkup Audit
 [Jelaskan latar belakang pelaksanaan audit validasi konteks dan dokumen mana saja yang diperiksa].

@@ -131,8 +131,8 @@ Untuk mencegah pemaksaan masalah palsu (*over-engineering*) pada proyek sederhan
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/PRD.md](PRD.md)
-- **Decision Record**: [docs/decisions/SDR-[YYYYMMDDHHmm].md](decisions/SDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: `docs/PRD.md`
+- **Decision Record**: `docs/decisions/SDR-[YYYYMMDDHHmm].md`
 
 ## 1. Traceability Matrix & Functional Scope
 
@@ -329,7 +329,7 @@ erDiagram
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim User Stories AI
-- **Dokumen Terkait**: [docs/SystemSpec.md](../SystemSpec.md) & [docs/PRD.md](../PRD.md)
+- **Dokumen Terkait**: `docs/SystemSpec.md` & `docs/PRD.md`
 
 ## 1. Konteks Spesifikasi & Kebutuhan Kontrak Sistem
 [Jelaskan latar belakang perumusan model domain, envelope API, dan aturan transisi state].

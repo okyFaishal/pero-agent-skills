@@ -11,6 +11,7 @@ Thumbs.db
 
 # Scratch & Temporary
 .agents/
+.pero/
 *.bak
 *.bak.*
 tmp/

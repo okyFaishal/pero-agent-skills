@@ -185,9 +185,9 @@ Setiap penajaman tugas menghasilkan kartu berformat berikut:
 - **Complexity / Size**: [S (1-2 files, ~100 lines) | M (3-4 files, ~200-300 lines)]
 - **Depends On**: [Task ID, misal: Task 1.1 atau Task 1.1.1 | None]
 - **Parallel Safe?**: [Yes | No]
-- **Sumber Backlog**: [docs/TaskBacklog.md](../TaskBacklog.md) (Task ID: X.Y atau M.S.T)
-- **Referensi Desain**: [docs/SystemSpec.md](../SystemSpec.md), [docs/Architecture.md](../Architecture.md), [docs/DesignSystem.md](../DesignSystem.md), & [docs/Governance.md](../Governance.md)
-- **Decision Record**: [docs/decisions/RDR-[YYYYMMDDHHmm].md](../decisions/RDR-[YYYYMMDDHHmm].md)
+- **Sumber Backlog**: `docs/TaskBacklog.md` (Task ID: X.Y atau M.S.T)
+- **Referensi Desain**: `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, & `docs/Governance.md`
+- **Decision Record**: `docs/decisions/RDR-[YYYYMMDDHHmm].md`
 
 ---
 
@@ -367,7 +367,7 @@ it('should prevent double-processing when two identical idempotency keys arrive 
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim Penajaman Tugas AI
-- **Dokumen Terkait**: [docs/tasks/TASK-[ID].md](../tasks/TASK-[ID].md) & [docs/TaskBacklog.md](../TaskBacklog.md)
+- **Dokumen Terkait**: `docs/tasks/TASK-[ID].md` & `docs/TaskBacklog.md`
 
 ## 1. Konteks Tugas & Kebutuhan Penajaman
 [Jelaskan latar belakang mengapa kartu tugas ini memerlukan penetapan tanda tangan method, aturan invarian, atau strategi penanganan error khusus].

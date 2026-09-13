@@ -103,8 +103,16 @@ Sebelum meluncurkan Tugas #1:
 - Koordinator meluncurkan Task Reviewer Subagent menggunakan templat [`task-reviewer-prompt.md`](./task-reviewer-prompt.md).
 - Peninjau memeriksa perbedaan kode (*git diff*):
   1. **Spec Compliance**: Apakah semua kriteria kartu tugas terpenuhi? Pada tugas UI, apakah tampilan dan status interaksi mematuhi `docs/DesignSystem.md` dan prototipe Google Stitch MCP?
-  2. **Code Quality**: Apakah ada celah error, penanganan boundary case yang bocor, atau pelanggaran anti-slop?
-- Jika ada temuan kritis (*Critical/Important*), gunakan [`systematic-debugging`](../systematic-debugging/SKILL.md) untuk mengisolasi akar masalah, panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](./re-review-prompt.md) sampai peninjau memberikan status *Approved*.
+- Jika ada temuan kritis (*Critical/Important*), gunakan [`systematic-debugging`](../systematic-debugging/SKILL.md) untuk mengisolasi akar masalah, panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](./re-review-prompt.md).
+- **Circuit Breaker Re-Review Loop (`MAX_REVIEW_CYCLES = 3`)**:
+  1. Maksimum 3 siklus peninjauan per kartu tugas (1 Initial Review + 2 Fix & Re-Review rounds).
+  2. Re-Reviewer dilarang memunculkan catatan nitpicking baru di luar daftar temuan sisa sebelumnya, kecuali jika kode perbaikan memicu regresi baru.
+  3. Jika putaran ke-3 masih berstatus `NEEDS_FIXES`, **Circuit Breaker aktif seketika**: otomasi wajib berhenti dan dilarang meluncurkan Fix Subagent putaran ke-4 untuk mencegah *infinite loop* dan ledakan biaya token.
+  4. Koordinator wajib memicu eskalasi interaktif kepada pengguna manusia via modal `ask_question` dengan 4 opsi terstruktur:
+     - **Opsi 1 (Recommended)**: *"Override & Catat Tech Debt: Terima implementasi saat ini, catat temuan tersisa sebagai Tech Debt di docs/decisions/, dan lanjutkan ke tugas berikutnya."*
+     - **Opsi 2**: *"Panduan Manual: Masukkan arahan arsitektur/kode konkret satu kali untuk 1 putaran perbaikan terpandu terakhir."*
+     - **Opsi 3**: *"Revisi Spesifikasi: Panggil pero-change-management (CRDR) untuk mendekomposisi tugas atau menyelaraskan kriteria penerimaan yang kontradiktif."*
+     - **Opsi 4**: *"Rollback Task: Batalkan perubahan tugas ini (git reset ke BASE_SHA) dan hentikan eksekusi sementara."*
 
 ### 4. Update Progress Ledger (Catat Kemajuan)
 - Perbarui centang di `docs/TaskBacklog.md` dari `- [ ]` menjadi `- [x]`.

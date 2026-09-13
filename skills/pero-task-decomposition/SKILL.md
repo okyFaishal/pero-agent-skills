@@ -201,12 +201,12 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
 - **Dokumen Induk**:
-  - [PRD.md](PRD.md)
-  - [SystemSpec.md](SystemSpec.md)
-  - [Architecture.md](Architecture.md)
-  - [DesignSystem.md](DesignSystem.md)
-  - [Governance.md](Governance.md)
-- **Decision Record**: [decisions/TDR-[YYYYMMDDHHmm].md](decisions/TDR-[YYYYMMDDHHmm].md)
+  - `docs/PRD.md`
+  - `docs/SystemSpec.md`
+  - `docs/Architecture.md`
+  - `docs/DesignSystem.md`
+  - `docs/Governance.md`
+- **Decision Record**: `docs/decisions/TDR-[YYYYMMDDHHmm].md`
 
 ## 1. Executive Summary & Strategy
 [Jelaskan strategi urutan pengerjaan proyek dalam 1-2 paragraf dengan analogi sederhana seperti mandor yang mengatur tukang batu, tukang pipa, dan tukang cat secara bergiliran agar tidak saling bertabrakan].
@@ -518,7 +518,7 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim Dekomposisi Backlog AI
-- **Dokumen Terkait**: [docs/TaskBacklog.md](../TaskBacklog.md)
+- **Dokumen Terkait**: `docs/TaskBacklog.md`
 
 ## 1. Konteks & Masalah Strategi Eksekusi
 [Jelaskan alasan mengapa arsitektur dan spesifikasi perlu dipotong menggunakan strategi tertentu, serta pertimbangan kompleksitas atau dependensi antar komponen].

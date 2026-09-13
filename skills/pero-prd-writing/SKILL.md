@@ -97,8 +97,8 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Versi**: 1.0 (MVP)
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: [docs/ProblemFraming.md](ProblemFraming.md)
-- **Decision Record**: [docs/decisions/PDR-[YYYYMMDDHHmm].md](decisions/PDR-[YYYYMMDDHHmm].md)
+- **Dokumen Induk**: `docs/ProblemFraming.md`
+- **Decision Record**: `docs/decisions/PDR-[YYYYMMDDHHmm].md`
 
 ## 1. Executive Summary & Visi Produk
 [Jelaskan visi produk dalam 1 paragraf dengan analogi sederhana (ELI5)]
@@ -161,7 +161,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Tim PRD Writing AI
-- **Dokumen Terkait**: [docs/PRD.md](../PRD.md) & [docs/ProblemFraming.md](../ProblemFraming.md)
+- **Dokumen Terkait**: `docs/PRD.md` & `docs/ProblemFraming.md`
 
 ## 1. Konteks Produk & Kebutuhan Penetapan MVP Scope
 [Jelaskan alasan mengapa ruang lingkup fitur perlu dibatasi dan dipangkas menjadi P0, P1, dan P2].

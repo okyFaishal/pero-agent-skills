@@ -20,7 +20,7 @@ jobs:
 
       - name: Gate 1: Lint Shell Script Syntax
         run: |
-          bash -n install.sh
+          find . -type f \( -name "*.sh" -o -path "*/scripts/*" \) ! -path "*/.git/*" -print0 | xargs -0 -n 1 bash -n
 
       - name: Gate 2: ShellCheck Static Analysis
         run: |
@@ -31,7 +31,7 @@ jobs:
               sudo apt-get update && sudo apt-get install -y shellcheck
             fi
           fi
-          shellcheck install.sh
+          find . -type f \( -name "*.sh" -o -path "*/scripts/*" \) ! -path "*/.git/*" -print0 | xargs -0 shellcheck
 
       - name: Gate 3: Test Installer Dry-Run Mode & Version Flag
         run: |
@@ -82,41 +82,92 @@ jobs:
           fi
           echo "✓ Seluruh $FOLDER_COUNT skill terdaftar konsisten di install.sh dan AGENTS.md"
 
-      - name: Gate 7: Verify Frontmatter Schema & Clean Markdown in All Skills
+      - name: Gate 7: Verify Frontmatter Schema & YAML Syntax in All Skills
         run: |
-          FAILED=0
-          for skill_dir in skills/*; do
-            skill_name="$(basename "$skill_dir")"
-            skill_file="${skill_dir}/SKILL.md"
-            
-            if [ ! -f "$skill_file" ]; then
-              echo "❌ Missing SKILL.md in: ${skill_dir}"
-              FAILED=$((FAILED + 1))
-              continue
-            fi
-            
-            # Verify YAML frontmatter
-            if ! head -n 1 "$skill_file" | grep -q "^---"; then
-              echo "❌ Missing opening frontmatter '---' in: ${skill_file}"
-              FAILED=$((FAILED + 1))
-            fi
-            
-            if ! head -n 5 "$skill_file" | grep -q "^name: ${skill_name}"; then
-              echo "❌ Invalid or missing 'name: ${skill_name}' in: ${skill_file}"
-              FAILED=$((FAILED + 1))
-            fi
-            
-            if ! head -n 5 "$skill_file" | grep -q "^description:"; then
-              echo "❌ Missing 'description:' in: ${skill_file}"
-              FAILED=$((FAILED + 1))
-            fi
-          done
+          python3 -m pip install -q pyyaml || true
+          python3 - << 'EOF'
+          import glob, os, sys
 
-          if [ $FAILED -gt 0 ]; then
-            echo "❌ Total failed skill validations: ${FAILED}"
-            exit 1
-          fi
-          echo "✓ All $(ls -d skills/* | wc -l | tr -d ' ') skills have valid YAML frontmatter."
+          try:
+              import yaml
+              def parse_yaml(text):
+                  return yaml.safe_load(text)
+          except ImportError:
+              def parse_yaml(text):
+                  res = {}
+                  lines = text.splitlines()
+                  current_key = None
+                  for line in lines:
+                      stripped = line.strip()
+                      if not stripped or stripped.startswith("#"):
+                          continue
+                      if ":" in line and not line.startswith(" ") and not line.startswith("\t"):
+                          k, v = line.split(":", 1)
+                          current_key = k.strip()
+                          res[current_key] = v.strip().strip("'\"")
+                      elif current_key and (line.startswith(" ") or line.startswith("\t")):
+                          res[current_key] += " " + stripped.strip("'\"")
+                  return res
+
+          failed = 0
+          skill_files = sorted(glob.glob("skills/*/SKILL.md"))
+
+          if not skill_files:
+              print("❌ Tidak ada berkas SKILL.md ditemukan di skills/*")
+              sys.exit(1)
+
+          for skill_file in skill_files:
+              skill_dir = os.path.dirname(skill_file)
+              expected_name = os.path.basename(skill_dir)
+
+              with open(skill_file, "r", encoding="utf-8") as f:
+                  content = f.read()
+
+              if not content.startswith("---"):
+                  print(f"❌ {skill_file}: Tidak diawali oleh pembuka frontmatter '---'")
+                  failed += 1
+                  continue
+
+              parts = content.split("---", 2)
+              if len(parts) < 3:
+                  print(f"❌ {skill_file}: Tidak memiliki penutup frontmatter '---'")
+                  failed += 1
+                  continue
+
+              raw_yaml = parts[1]
+
+              try:
+                  data = parse_yaml(raw_yaml)
+              except Exception as e:
+                  print(f"❌ {skill_file}: Kesalahan sintaks YAML frontmatter: {e}")
+                  failed += 1
+                  continue
+
+              if not isinstance(data, dict):
+                  print(f"❌ {skill_file}: Frontmatter bukan format mapping YAML yang valid")
+                  failed += 1
+                  continue
+
+              if "name" not in data or not str(data["name"]).strip():
+                  print(f"❌ {skill_file}: Field 'name' wajib ada dan tidak boleh kosong")
+                  failed += 1
+              elif data["name"] != expected_name:
+                  print(f"❌ {skill_file}: Nilai 'name' ({data['name']}) tidak cocok dengan nama direktori ({expected_name})")
+                  failed += 1
+
+              if "description" not in data or not str(data["description"]).strip():
+                  print(f"❌ {skill_file}: Field 'description' wajib ada dan tidak boleh kosong")
+                  failed += 1
+              elif len(str(data["description"]).strip()) < 15:
+                  print(f"❌ {skill_file}: 'description' terlalu pendek (minimal 15 karakter)")
+                  failed += 1
+
+          if failed > 0:
+              print(f"\n❌ Total kegagalan validasi YAML frontmatter: {failed}")
+              sys.exit(1)
+
+          print(f"✓ Seluruh {len(skill_files)} SKILL.md terverifikasi valid secara sintaks dan skema.")
+          EOF
 
       - name: Gate 8: Line-Ending & Trailing Newline Hygiene
         run: |
@@ -141,22 +192,50 @@ jobs:
 
       - name: Gate 9: Validate Local Relative File Paths in Markdown
         run: |
-          FAILED=0
-          for md_file in README.md AGENTS.md skills/*/SKILL.md; do
-            if [ -f "$md_file" ]; then
-              # Verify that any referenced docs/*.md or skills/*/SKILL.md exists if referenced as relative path
-              for ref in $(grep -oE '\(skills/[a-zA-Z0-9_-]+/SKILL\.md\)' "$md_file" | tr -d '()' || true); do
-                if [ ! -f "$ref" ]; then
-                  echo "❌ Broken skill reference '$ref' in $md_file"
-                  FAILED=$((FAILED + 1))
-                fi
-              done
-            fi
-          done
-          if [ $FAILED -gt 0 ]; then
-            echo "❌ Total broken markdown references: $FAILED"
-            exit 1
-          fi
-          echo "✓ All local markdown relative links are intact."
+          python3 - << 'EOF'
+          import glob, os, re, sys
+
+          link_pattern = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+          failed = 0
+          checked_links = 0
+
+          md_files = sorted(glob.glob("**/*.md", recursive=True))
+
+          for md_file in md_files:
+              if ".git" in md_file:
+                  continue
+
+              file_dir = os.path.dirname(md_file)
+              with open(md_file, "r", encoding="utf-8") as f:
+                  lines = f.readlines()
+
+              for line_idx, line in enumerate(lines, 1):
+                  for match in link_pattern.finditer(line):
+                      text, target = match.group(1), match.group(2)
+                      target = target.strip()
+
+                      if target.startswith(("http://", "https://", "mailto:", "#")):
+                          continue
+
+                      clean_target = target.split("#")[0].strip()
+                      if not clean_target:
+                          continue
+
+                      checked_links += 1
+                      resolved_path = os.path.normpath(os.path.join(file_dir, clean_target))
+
+                      if not os.path.exists(resolved_path):
+                          print(f"❌ Broken link pada {md_file}:{line_idx}")
+                          print(f"   Teks   : [{text}]")
+                          print(f"   Target : ({target})")
+                          print(f"   Dicari : {resolved_path}\n")
+                          failed += 1
+
+          if failed > 0:
+              print(f"❌ Total broken markdown links ditemukan: {failed}")
+              sys.exit(1)
+
+          print(f"✓ Seluruh {checked_links} tautan markdown relatif lokal terverifikasi utuh dan valid.")
+          EOF
 
 
