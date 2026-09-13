@@ -85,6 +85,39 @@ setup_single_adapter() {
   local dry_run="$3"
   local target_agents_md="$4"
   local rel_target="AGENTS.md"
+  local file_dir
+  file_dir="$(dirname "$target_file")"
+
+  # Hitung relative path jika adapter berada di subdirektori (misal .cursor/rules/)
+  if [[ "$file_dir" != "$target_dir" && "$file_dir" == "$target_dir"/* ]]; then
+    local rel_sub="${file_dir#"${target_dir}"}"
+    rel_sub="${rel_sub#/}"
+    rel_sub="${rel_sub%/}"
+
+    local depth=0
+    if [[ -n "$rel_sub" ]]; then
+      local old_ifs="$IFS"
+      IFS='/'
+      read -r -a segments <<< "$rel_sub"
+      IFS="$old_ifs"
+      local seg
+      for seg in "${segments[@]}"; do
+        [[ -n "$seg" ]] && ((depth++))
+      done
+    fi
+
+    local up_prefix=""
+    local i
+    for ((i = 0; i < depth; i++)); do
+      up_prefix="../${up_prefix}"
+    done
+    rel_target="${up_prefix}AGENTS.md"
+  fi
+
+  # Pastikan direktori induk target ada sebelum membuat berkas/symlink
+  if [[ ! -d "$file_dir" && "$dry_run" == false ]]; then
+    mkdir -p "$file_dir"
+  fi
 
   # Skenario 1: Berkas belum ada -> Buat relative symlink
   if [[ ! -e "$target_file" && ! -L "$target_file" ]]; then
@@ -97,12 +130,22 @@ setup_single_adapter() {
     return 0
   fi
 
-  # Skenario 2: Berkas sudah berupa symlink yang menunjuk ke AGENTS.md
+  # Skenario 2: Berkas sudah berupa symlink yang menunjuk ke AGENTS.md yang valid
   if [[ -L "$target_file" ]]; then
     local current_link
     current_link="$(readlink "$target_file" 2>/dev/null || echo "")"
     if [[ "$current_link" == "$rel_target" || "$current_link" == "$target_agents_md" ]]; then
       echo "   [✓] Adapter ${harness_name} sudah terhubung (${target_file})."
+      return 0
+    else
+      # Jika symlink rusak atau mengarah ke target usang, perbaiki
+      if [[ "$dry_run" == false ]]; then
+        rm -f "$target_file"
+        ln -s "$rel_target" "$target_file" 2>/dev/null || cp "$target_agents_md" "$target_file"
+        echo "   [✓] Adapter ${harness_name} diperbaiki (${target_file} -> ${rel_target})."
+      else
+        echo "   [🔍 DRY-RUN] Akan memperbaiki adapter ${harness_name}: ${target_file} -> ${rel_target}"
+      fi
       return 0
     fi
   fi
@@ -195,6 +238,9 @@ main() {
   done
 
   target_dir="${target_dir:-.}"
+  if [[ "$dry_run" == false ]]; then
+    mkdir -p "$target_dir"
+  fi
   target_dir="$(cd "$target_dir" 2>/dev/null && pwd || echo "$target_dir")"
   local target_skills_dir="${target_dir}/.agents/skills"
   local target_agents_md="${target_dir}/AGENTS.md"
@@ -262,7 +308,9 @@ main() {
   echo " 📂 Target Workspace: ${target_dir}"
   echo "================================================================="
 
-  mkdir -p "${target_dir}/.agents"
+  if [[ "$dry_run" == false ]]; then
+    mkdir -p "${target_dir}/.agents"
+  fi
 
   # Deteksi Apakah Target Instalasi Adalah Repo Pero Itu Sendiri (Self-Aware SSOT Mode)
   local is_self_repo=false
