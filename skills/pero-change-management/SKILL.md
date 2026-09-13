@@ -6,7 +6,7 @@ description: Orchestrate mid-flight scope pivots, feature additions, modificatio
 # Universal Change & Scope Pivot Manager (`pero-change-management`)
 
 ## Overview
-**Origin**: *Change Management Architecture (ITIL / CMII) + Agile Scope Refactoring + Blast Radius Isolation*.  
+**Origin**: *Pero Custom SDLC Pipeline - Stage 10 (Universal)*.  
 Skill ini adalah **"Pengatur Lalu Lintas Revisi & Pivot Proyek"**. Bertugas mengorkestrasi perubahan saat pengguna ingin menambah (*ADD*), mengubah (*MODIFY/PIVOT*), atau menghapus (*REMOVE*) fitur di tengah-tengah pengerjaan tugas (*in-flight*) maupun setelah tugas selesai (*post-completion*). Skill ini mencegah terjadinya kode buta (*blind coding*), kerusakan regresi tak terduga (*blast radius unchecked*), dan tugas menggantung (*zombie tasks*).
 
 > **Analogi Sederhana (ELI5):**  
@@ -14,6 +14,15 @@ Skill ini adalah **"Pengatur Lalu Lintas Revisi & Pivot Proyek"**. Bertugas meng
 > - Tukang batu sedang sibuk mengecor lantai dua. Tiba-tiba pemilik gedung berteriak: *"Stop! Saya ingin tangga darurat dibongkar dan diganti lift kapsul kaca!"*
 > - **Jika tanpa Mandor Revisi**: Tukang batu akan terus mengecor tangga yang akan dibongkar (buang-buang semen), atau tukang lain langsung menghantam pilar beton dengan godam sehingga seluruh atap retak (*regression*).
 > - **Dengan `pero-change-management` (Mandor Revisi)**: Mandor langsung meniup peluit agar pengecoran tangga berhenti seketika (*pause task*), menghitung apakah beban lift kaca aman bagi pondasi (*analisis dampak*), membatalkan jadwal kerja tangga di papan tulis (*superseded/cancelled*), memperbarui denah arsitek, baru kemudian menyuruh tukang mulai bekerja dengan aman.
+
+## Sub-Skill Integration (Perkakas Pendukung)
+Dalam menjalankan manajemen perubahan dan pivot, agent WAJIB mengorkestrasi sub-skill berikut:
+- **Penyelarasan Keputusan Perubahan**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk menyepakati strategi mitigasi risiko bersama pengguna via modal interaktif `ask_question` (2–5 opsi, fleksibel 1 atau 2–4 pertanyaan serentak, batas 3–5 pertanyaan per sesi revisi).
+- **Pencatatan Keputusan CRDR**: **`REQUIRED SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan perubahan ke `docs/decisions/CRDR-[YYYYMMDDHHmm].md` menggunakan template standar MADR.
+- **Implementasi Teruji**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` (Red-Green-Refactor) untuk fitur baru atau modifikasi alur.
+- **Verifikasi Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk membuktikan regresi nol (exit code 0).
+- **Sinkronisasi Pasca-Koding**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memperbarui dokumen hidup dan diagram Mermaid pasca-eksekusi.
+- **Audit Keselarasan Konteks Ulang**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memverifikasi ulang laporan `docs/ValidationReport.md` sebelum branch di-merge.
 
 ---
 
@@ -82,7 +91,7 @@ Jika ada tugas di `docs/TaskBacklog.md` yang sedang berstatus `IN_PROGRESS` atau
    - `PAUSED`: Tugas ditunda sementara menunggu kejelasan spesifikasi baru.
 3. **Catat Alasan di Backlog**:
    ```markdown
-   - [x] TASK-004: Implementasi Autentikasi SMS Gateway (STATUS: SUPERSEDED by TASK-012 per CRDR-202609081230 - Diganti Google OAuth)
+   - [x] Task 3.1: Implementasi Autentikasi SMS Gateway (STATUS: SUPERSEDED by Task 1.1.2 per CRDR-202609081230 - Diganti Google OAuth)
    ```
 
 ---
@@ -111,8 +120,10 @@ docs/PRD.md                      docs/Architecture.md                  docs/task
 
 1. **Jika Menambah Fitur (*ADD*)**:
    - Tambahkan skenario Gherkin di `docs/SystemSpec.md`.
-   - Tambahkan kartu tugas baru di `docs/TaskBacklog.md`.
-   - Rinci kartu tugas baru di `docs/tasks/TASK-[ID].md`.
+   - **Rekonsiliasi Backlog Berdasarkan Siklus Proyek**:
+     - *Jika Tahap Pembangunan Awal (Greenfield / MVP v1.0)*: Sisipkan kartu tugas baru ke dalam fase yang sesuai (Phase 1 s/d Phase 5) di `docs/TaskBacklog.md`.
+     - *Jika Pasca-MVP / Proyek Berjalan (Brownfield / v1.1+)*: Inisiasi blok Milestone baru (`## 🚀 Active Milestone: vX.Y - [Nama Fitur]`) di `docs/TaskBacklog.md` menggunakan **4 Langkah Irisan Fitur** (*Step 1: Delta Contracts -> Step 2: Core Domain Logic TDD -> Step 3: UI/UX Workflows via Google Stitch MCP -> Step 4: Regression Audit & Merge Polish*). Lipat riwayat milestone yang telah selesai ke dalam blok `<details><summary>` (*Archived Milestones*).
+   - Rinci kartu tugas baru di `docs/tasks/TASK-[ID].md` (misal `TASK-1.1.1.md`) dengan 7 anatomi presisi dan invarian anti-regresi.
 2. **Jika Mengubah Fitur (*MODIFY / PIVOT*)**:
    - Perbarui kontrak di `docs/SystemSpec.md`, diagram alur di `docs/Architecture.md`, atau aturan di `docs/Governance.md`.
    - Tandai tugas lama sebagai `SUPERSEDED`, buat kartu tugas baru pengganti.
@@ -180,41 +191,45 @@ Setiap perubahan skala Minor atau Major wajib dicatat di `docs/decisions/CRDR-[Y
 ```markdown
 # CRDR-[YYYYMMDDHHmm]: [Judul Singkat Perubahan / Pivot]
 
-- **Status**: [PROPOSED | ACCEPTED | SUPERSEDED]
-- **Tanggal**: YYYY-MM-DD HH:mm
+- **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
+- **Tanggal**: [YYYY-MM-DD]
+- **Pengambil Keputusan**: Pengguna & Tim Manajemen Perubahan AI
 - **Tipe Perubahan**: [ADD | MODIFY/PIVOT | REMOVE]
 - **Skala Dampak**: [Patch/Micro | Minor/Feature | Major/Architectural Pivot]
-- **Pintu Masuk Dokumen**: [docs/ProblemFraming.md | docs/PRD.md | docs/SystemSpec.md | docs/Architecture.md | docs/DesignSystem.md | docs/TaskBacklog.md]
+- **Dokumen Terkait**: [docs/SystemSpec.md](../SystemSpec.md), [docs/Architecture.md](../Architecture.md), & [docs/TaskBacklog.md](../TaskBacklog.md)
 
 ## 1. Konteks & Alasan Perubahan (Why)
-[Jelaskan mengapa perubahan ini diminta oleh pengguna, apa masalah pada rancangan sebelumnya, atau peluang baru apa yang ingin dicapai]
+[Jelaskan mengapa perubahan ini diminta oleh pengguna, apa masalah pada rancangan sebelumnya, atau peluang baru apa yang ingin dicapai].
 
 ## 2. Analisis Area Dampak (Blast Radius)
 - **Komponen/Berkas Terdampak**: [Daftar file kode dan dokumen yang terimbas]
 - **Kontrak/API Berubah**: [Endpoint, skema DTO, atau event yang terpengaruh]
 - **Dampak Data/Migrasi**: [Apakah memerlukan migrasi tabel atau format data lama]
 
-## 3. Penertiban Status Tugas (Task Reconciliation)
-- **Tugas Lama yang Dibatalkan / Digantikan**:
-  - `TASK-[ID]`: [Alasan SUPERSEDED / CANCELLED]
-- **Tugas Baru yang Ditambahkan**:
-  - `TASK-[NEW_ID]`: [Deskripsi singkat tugas baru]
+## 3. Alternatif Solusi & Transisi yang Ditolak
+| Alternatif Pendekatan | Alasan Penolakan |
+|:---|:---|
+| [Alternatif 1, misal: Hard Delete langsung tanpa fallback] | [Risiko data loss tinggi, tidak ada audit trail, melanggar data retention] |
+| [Alternatif 2, misal: Quick Patch tanpa update SystemSpec] | [Menimbulkan silent spec drift dan kebingungan tim di sprint berikutnya] |
 
-## 4. Rencana Transisi & Pengujian
+## 4. Konsekuensi Positif & Beban Operasional (Trade-offs)
+- **Konsekuensi Positif**: [Alur sistem sesuai kebutuhan mutakhir pengguna, integritas data terjaga, tugas usang dimatikan]
+- **Beban Operasional**: [Perlu update dokumen hulu-hilir, penulisan ulang sebagian test suite, pembersihan dead code]
+- **Strategi Mitigasi**: [Gunakan living-doc-sync untuk merapikan diagram dan jalankan full regression suite]
+
+## 5. Penertiban Status Tugas (Task Reconciliation)
+- **Target Milestone**: [Milestone 1.0 (MVP Greenfield) | Milestone 1.1+ (Incremental Brownfield Sprint)]
+- **Tugas Lama yang Dibatalkan / Digantikan**:
+  - `Task [ID]`: [Alasan SUPERSEDED / CANCELLED]
+- **Tugas Baru yang Ditambahkan**:
+  - `Task [NEW_ID]`: [Deskripsi singkat tugas baru, alokasi Phase/Step di TaskBacklog.md]
+
+## 6. Rencana Transisi & Pengujian
 - [ ] Dokumen spesifikasi dan diagram diselaraskan.
 - [ ] Failing test (TDD) disusun untuk skenario baru.
 - [ ] Kode lama dibersihkan (khusus REMOVE / MODIFY).
-- [ ] Full regression test suite terminal exit code 0.
+- [ ] Full regression test suite terminal exit code 0 (`npm test && npm run build`).
 ```
-
-## Sub-Skill Integration (Perkakas Pendukung)
-
-- **Penyelarasan Keputusan Perubahan**: **`SUPPORTING SUB-SKILL`**: Gunakan [`grilling`](../grilling/SKILL.md) untuk menyepakati strategi mitigasi risiko bersama pengguna via modal interaktif `ask_question` (2–5 opsi, fleksibel 1 atau 2–4 pertanyaan serentak, batas 3–5 pertanyaan per sesi revisi).
-- **Pencatatan Keputusan CRDR**: **`SUPPORTING SUB-SKILL`**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk membukukan keputusan perubahan ke `docs/decisions/CRDR-[YYYYMMDDHHmm].md`.
-- **Implementasi Teruji**: **`REQUIRED SUB-SKILL`**: Gunakan [`test-driven-development`](../test-driven-development/SKILL.md) (Red-Green-Refactor) untuk fitur baru atau modifikasi alur.
-- **Verifikasi Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan regresi nol (exit code 0).
-- **Sinkronisasi Pasca-Koding**: **`SUPPORTING SUB-SKILL`**: Gunakan [`living-doc-sync`](../living-doc-sync/SKILL.md) untuk memperbarui dokumen hidup dan diagram Mermaid pasca-eksekusi.
-- **Audit Keselarasan Konteks Ulang**: **`SUPPORTING SUB-SKILL`**: Gunakan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memverifikasi ulang laporan `docs/ValidationReport.md` sebelum branch di-merge.
 
 ---
 

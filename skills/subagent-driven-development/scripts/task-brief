@@ -23,20 +23,44 @@ else
   out="$dir/task-${n}-brief.md"
 fi
 
+# 1. Prioritaskan jika kartu tugas granular docs/tasks/TASK-[n].md sudah tersedia
+granular_card="docs/tasks/TASK-${n}.md"
+if [ -f "$granular_card" ]; then
+  cp "$granular_card" "$out"
+  echo "copied refined task card ${granular_card} -> ${out}: $(wc -l < "$out" | tr -d ' ') lines"
+  exit 0
+fi
+
+# 2. Parsing cerdas docs/TaskBacklog.md atau implementation_plan.md
+# Mendukung format list item (- [ ] **Task N:) dan format heading (#+ Task N)
 awk -v n="$n" '
+  BEGIN { intask = 0 }
   /^```/ { infence = !infence }
-  !infence && /^#+[ \t]+(Task[ \t]+)?[0-9]+/ {
-    intask = ($0 ~ ("^#+[ \t]+(Task[ \t]+)?" n "([^0-9.]|$)"))
+  
+  # Deteksi awal task: list item "- [ ] **Task N:" atau heading "#+ Task N"
+  !infence && (tolower($0) ~ ("^-[ \\t]+\\[[ xX]\\][ \\t]+\\*\\*task[ \\t]+" tolower(n) "[:\\*]") || \
+               tolower($0) ~ ("^#+[ \\t]+(task[ \\t]+)?" tolower(n) "([: \\t]|$)")) {
+    intask = 1
+    print
+    next
   }
+
+  # Deteksi akhir task: task berikutnya dimulai atau garis pemisah fase / heading baru
+  !infence && intask && (/^-[ \t]+\[[ xX]\][ \t]+\*\*Task[ \t]+[0-9]+/ || /^#+[ \t]+/ || /^---/) {
+    intask = 0
+    exit
+  }
+
   intask { print }
 ' "$plan" > "$out"
 
 if [ ! -s "$out" ]; then
-  # Fallback search for Task N header or Phase X.Y
+  # 3. Fallback pencarian fleksibel
   awk -v n="$n" '
-    tolower($0) ~ ("task[ \t]*" tolower(n)) { found=1 }
+    BEGIN { found = 0 }
+    tolower($0) ~ ("task[ \\t]*" tolower(n) "[: \\t\\*]") { found = 1; print; next }
+    found && (/^-[ \t]+\[[ xX]\][ \t]+\*\*Task/ || /^#+[ \t]+/ || /^---/) { exit }
     found { print }
-    found && /^---/ { exit }
   ' "$plan" > "$out"
 fi
 

@@ -20,7 +20,7 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 - **Audit Konsistensi Arsitektur & Deteksi Drift**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan cetak biru arsitektur tidak menyimpang (*zero architectural drift*) dari batasan di PRD dan SystemSpec.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
 - **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` menggunakan format baku.
-- **Pemetaan Fondasi Design System UI**: **`CONDITIONAL SUB-SKILL`**: Jika perancangan mencakup antarmuka pengguna (Frontend/Landing Page/Web UI), gunakan `taste-skill` untuk memetakan arah desain (*Brief Inference*) dan menetapkan fondasi *Design System* resmi (Fluent, Material, Carbon, Radix, atau Tailwind) di `docs/Architecture.md`. Jika proyek murni backend/CLI/core tanpa UI, sub-skill ini tidak digunakan.
+- **Pemetaan Runtime & Container UI**: **`CONDITIONAL SUB-SKILL`**: Jika sistem mencakup antarmuka pengguna (Frontend/Web/Mobile), tetapkan pilihan container platform dan runtime resmi (Next.js, Vite, Flutter, Tailwind CLI) pada diagram C4. Perancangan visual mendalam (*Design System*, token semantik, dan *3 Dials*) didelegasikan penuh ke Tahap 5 (`pero-uiux-design`). Jika proyek murni backend/CLI/core tanpa UI, sub-skill ini tidak digunakan.
 
 ## The 5-Stage System Architecture Framework
 
@@ -341,7 +341,7 @@ flowchart LR
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna & Dewan Arsitektur AI
-- **Dokumen Terkait**: [docs/Architecture.md](../Architecture.md)
+- **Dokumen Terkait**: [docs/Architecture.md](../Architecture.md), [docs/PRD.md](../PRD.md), & [docs/SystemSpec.md](../SystemSpec.md)
 
 ## 1. Konteks Masalah
 [Jelaskan latar belakang masalah teknis, batasan bisnis, atau kebutuhan spesifik yang memicu perlunya keputusan arsitektur ini].
@@ -366,7 +366,7 @@ flowchart LR
 - **Zero-Math Architecture (Ungrounded Capacity Sizing)**: Memilih framework, database, atau ukuran instans server tanpa menghitung estimasi matematis QPS dan proyeksi pertumbuhan storage data.
 - **Unobservable Blind Systems**: Merancang sistem tanpa correlation ID dan log terstruktur, sehingga tim pengembang meraba-raba di kegelapan saat terjadi error di produksi.
 - **Destructive Database Migrations**: Mengubah atau menghapus kolom database secara langsung tanpa pola *Expand-and-Contract*, memicu downtime atau error fatal pada aplikasi yang sedang berjalan.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, bertanya kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas 10 pertanyaan pada Tahap 3 (memicu kelelahan pengguna dan *analysis paralysis*).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik), bertanya total kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara Tahap 4 (memicu kelelahan pengguna dan *analysis paralysis*).
 - **Forced Irrelevant Specialization**: Memaksakan riset arsitektur yang tidak dibutuhkan proyek (misalnya memaksakan arsitektur event-streaming Kafka rumit pada skrip batch sekuensial sederhana), alih-alih mendeklarasikan status `N/A`.
 - **Unbounded Web Search Avalanche**: Melakukan kurang dari 2 pencarian terarah pada domain yang relevan (riset dangkal tanpa dasar standar), melampaui batas 5 pencarian per agen, atau tetap mencari pada domain `N/A`.
 - **Overengineering & Premature Complexity**: Memaksakan arsitektur Microservices atau Kafka untuk aplikasi tahap awal yang seharusnya cukup Monolith modular atau SQLite/PostgreSQL sederhana.

@@ -75,15 +75,21 @@ flowchart TD
 ### 1. Pre-Flight Backlog Scan (Pindai Awal Sebelum Mulai)
 Sebelum meluncurkan Tugas #1:
 - **Verifikasi Gerbang Validasi Konteks (Stage 9 Gate)**: Periksa `docs/ValidationReport.md`. Pastikan status keseluruhan berstatus **🟢 GO (Pass)**. Jika berstatus **🔴 NO-GO (Blocker)**, eksekusi backlog otonom DILARANG berjalan sebelum blocker diselesaikan dan diselaraskan via `pero-context-validation`.
-- Pindai seluruh isi `docs/TaskBacklog.md` atau `implementation_plan.md`.
-- Pastikan urutan fase (Phase 1 ➡️ Phase 2 ➡️ dst.) logis dan tidak ada instruksi yang saling bertentangan.
+- **Deteksi Mode Backlog & Scope Milestone**:
+  - Periksa bagian `📦 Milestone Registry & Status` di `docs/TaskBacklog.md`.
+  - **Mode A (Greenfield Initial Build)**: Jika mengerjakan MVP v1.0, pindai urutan 5 fase linier (Phase 1 ➡️ Phase 5).
+  - **Mode B (Incremental Milestone Evolution)**: Jika mengerjakan sprint fitur baru (v1.1+ atau proyek *brownfield*), cari blok **`## 🚀 Active Milestone: vX.Y`**. Sub-agen membatasi eksekusi HANYA pada tugas di dalam Active Milestone tersebut (Step 1 s/d Step 4). Seluruh tugas yang tersimpan di dalam blok lipatan `<details><summary>` (*Archived Milestones*) **DIABAIKAN** dan dilarang dieksekusi ulang.
+- Pastikan urutan fase/step logis dan tidak ada instruksi yang saling bertentangan.
 - Jika ada kontradiksi nyata di awal, ajukan 1 pertanyaan klarifikasi kepada pengguna sebelum mulai. Jika aman, **langsung mulai eksekusi tanpa menunggu persetujuan lanjutan**.
 
 ### 2. Dispatch Fresh Implementer (Kirim Pekerja Segar)
-- Koordinator mengekstrak kartu tugas ke file ringkasan via skrip:
+- Koordinator mengekstrak kartu tugas ke file ringkasan via skrip (adaptif terhadap lokasi direktori `skills/` atau `.agents/skills/`):
   ```bash
-  ./skills/subagent-driven-development/scripts/task-brief docs/TaskBacklog.md "1.1"
+  CMD_BRIEF=$( [ -f "./skills/subagent-driven-development/scripts/task-brief" ] && echo "./skills/subagent-driven-development/scripts/task-brief" || echo "./.agents/skills/subagent-driven-development/scripts/task-brief" )
+  $CMD_BRIEF docs/TaskBacklog.md "1.1"
   ```
+- **Penanganan Khusus Tugas UI (Google Stitch MCP)**:
+  - Jika tugas menargetkan antarmuka (Mode A Phase 4 atau Mode B Step 3), Implementer wajib membaca `docs/DesignSystem.md` dan memeriksa kode HTML prototipe di `assets/stitch-code/` serta screenshot visual di `assets/stitch-screens/`.
 - Koordinator meluncurkan Implementer Subagent menggunakan templat [`implementer-prompt.md`](./implementer-prompt.md).
 - Sub-agen menjalankan siklus TDD terisolasi ([`test-driven-development`](../test-driven-development/SKILL.md)), membersihkan kode ([`anti-slop`](../anti-slop/SKILL.md)), dan membuat commit Caveman ([`git-ops`](../git-ops/SKILL.md)).
 - Implementer menulis laporannya ke berkas `.pero/sdd/task-1.1-report.md`.
@@ -91,16 +97,18 @@ Sebelum meluncurkan Tugas #1:
 ### 3. Dispatch Task Reviewer & Re-Review Loop (Audit Kualitas Dua Lapis)
 - Koordinator membungkus paket diff perubahan tugas via skrip:
   ```bash
-  ./skills/subagent-driven-development/scripts/review-package [BASE_SHA] [HEAD_SHA]
+  CMD_REV=$( [ -f "./skills/subagent-driven-development/scripts/review-package" ] && echo "./skills/subagent-driven-development/scripts/review-package" || echo "./.agents/skills/subagent-driven-development/scripts/review-package" )
+  $CMD_REV [BASE_SHA] [HEAD_SHA]
   ```
 - Koordinator meluncurkan Task Reviewer Subagent menggunakan templat [`task-reviewer-prompt.md`](./task-reviewer-prompt.md).
 - Peninjau memeriksa perbedaan kode (*git diff*):
-  1. **Spec Compliance**: Apakah semua kriteria kartu tugas terpenuhi? Apakah ada fitur berlebih di luar spek?
+  1. **Spec Compliance**: Apakah semua kriteria kartu tugas terpenuhi? Pada tugas UI, apakah tampilan dan status interaksi mematuhi `docs/DesignSystem.md` dan prototipe Google Stitch MCP?
   2. **Code Quality**: Apakah ada celah error, penanganan boundary case yang bocor, atau pelanggaran anti-slop?
 - Jika ada temuan kritis (*Critical/Important*), gunakan [`systematic-debugging`](../systematic-debugging/SKILL.md) untuk mengisolasi akar masalah, panggil *Fix Subagent*, lalu luncurkan Re-Reviewer Subagent menggunakan templat [`re-review-prompt.md`](./re-review-prompt.md) sampai peninjau memberikan status *Approved*.
 
 ### 4. Update Progress Ledger (Catat Kemajuan)
 - Perbarui centang di `docs/TaskBacklog.md` dari `- [ ]` menjadi `- [x]`.
+- Jika seluruh tugas dalam blok `Active Milestone` telah selesai, tandai Milestone sebagai selesai di `📦 Milestone Registry & Status`, dan pindahkan/lipat butir tugasnya ke dalam blok `<details><summary>` (*Archived Milestones*).
 - Tanpa berhenti atau menanyakan *"Bolehkah saya lanjut?"*, koordinator otomatis mengambil kartu tugas berikutnya dan kembali ke Langkah 2.
 
 ### 5. Final Whole-Branch Polish & PR (Penyelesaian Akhir)
@@ -130,8 +138,9 @@ skills/subagent-driven-development/
 
 ## Integrasi dengan Skill Lain di Repositori
 
-*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)**: Menyediakan urutan backlog tugas 5-fase yang siap dieksekusi oleh SDD.
+*   **[`pero-task-decomposition`](../pero-task-decomposition/SKILL.md)**: Menyediakan struktur backlog dual-mode (Mode A: 5-Fase Greenfield & Mode B: 4-Langkah Incremental Milestone) yang siap dieksekusi oleh SDD.
 *   **[`pero-granular-refinement`](../pero-granular-refinement/SKILL.md)**: Menyediakan kartu tugas presisi (path file, signatures, boundary cases) yang langsung menjadi prompt bagi Implementer.
+*   **[`pero-uiux-design`](../pero-uiux-design/SKILL.md)**: Menyediakan prototipe visual Google Stitch MCP (`stitch.withgoogle.com`), token desain di `docs/DesignSystem.md`, dan aset kode HTML di `assets/stitch-code/` yang diimplementasikan sub-agen.
 *   **[`test-driven-development`](../test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib dipatuhi oleh Implementer Subagent.
 *   **[`anti-slop`](../anti-slop/SKILL.md)**: Filter kualitas agar sub-agen tidak menghasilkan kode atau komentar sampah.
 *   **[`systematic-debugging`](../systematic-debugging/SKILL.md)**: Digunakan untuk mengisolasi akar kegagalan jika reviewer menemukan bug atau tes gagal sebelum mencoba perbaikan.

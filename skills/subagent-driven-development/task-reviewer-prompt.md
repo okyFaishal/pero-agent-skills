@@ -27,6 +27,7 @@ Subagent (general-purpose):
     - **Missing**: Apakah ada kebutuhan spesifikasi yang terlewat atau diklaim selesai tetapi belum dibuat?
     - **Extra / Over-Engineering**: Apakah ada kode/fitur tambahan yang tidak diminta oleh brief (pelanggaran YAGNI)?
     - **Misunderstood**: Apakah fungsi dibangun dengan cara yang salah atau menyelesaikan masalah yang keliru?
+    - **UI & Stitch Compliance (Khusus UI)**: Apakah struktur tampilan dan interaksi selaras dengan `docs/DesignSystem.md` serta prototipe visual Google Stitch MCP di `assets/stitch-code/`?
 
     ### Lapis 2: Kualitas Kode & Keamanan (Code Quality & Security)
     - **Pemisahan Tanggung Jawab**: Apakah setiap fungsi/file memiliki tanggung jawab tunggal?

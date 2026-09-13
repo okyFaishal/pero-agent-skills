@@ -349,7 +349,7 @@ docs/decisions/GDR-[YYYYMMDDHHmm].md
 - **Unpinned Dependency Drift (Missing Lockfiles)**: Mengabaikan lockfile atau membiarkan celah dependensi tingkat High/Critical lolos ke branch utama tanpa perbaikan.
 - **Sensitive Data Log Leaks**: Mencetak objek mentah ke log tanpa penyensoran otomatis (*unredacted PII/secrets*).
 - **No-Rollback Suicidal Releases**: Merilis fitur berisiko tanpa saklar darurat (*feature flags*) atau prosedur mundur yang teruji.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, bertanya kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas 10 pertanyaan pada Tahap 3 (memicu kelelahan pengguna dan *analysis paralysis*).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik tata kelola), bertanya total kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna dan *analysis paralysis*).
 - **Forced Irrelevant Specialization**: Memaksakan riset tata kelola yang tidak dibutuhkan proyek (misalnya memaksakan aturan konkurensi rumit pada skrip batch sekuensial sederhana), alih-alih mendeklarasikan status `N/A`.
 - **Unbounded Web Search Avalanche**: Melakukan kurang dari 2 pencarian terarah pada domain yang relevan (riset dangkal tanpa dasar standar), melampaui batas 5 pencarian per agen, atau tetap mencari pada domain `N/A`.
 - **Mengabaikan Race Conditions & Data Race**: Menulis kode paralel yang memutasi variabel bersama tanpa pengunci (*lock/mutex/actor*), mengandalkan keberuntungan bahwa eksekusi tidak akan bertabrakan.

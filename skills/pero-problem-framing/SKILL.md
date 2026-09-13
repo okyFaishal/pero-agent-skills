@@ -207,7 +207,7 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 ````
 
 ## Anti-Patterns & Common Mistakes
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, mengajukan kurang dari 5 pertanyaan (terlalu dangkal dan malas), atau melampaui batas 10 pertanyaan pada sesi wawancara Tahap 2 maupun Tahap 4 (memicu kelelahan pengguna dan *analysis paralysis*).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik), mengajukan total kurang dari 5 pertanyaan (terlalu dangkal dan malas), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna dan *analysis paralysis*).
 - **Violating Specialist Squad Bounds**: Menjalankan 0 agen spesialis (hanya 3 agen inti tanpa spesialisasi) atau menjalankan lebih dari 3 agen spesialis (>6 total agen) yang mengakibatkan kebanjiran konteks (*context bloat*) dan pelanggaran batas kuota (*rate limit*).
 - **Simulated Self-Interrogation (Wawancara Palsu / Halusinasi Mandiri)**: Mengisi sendiri tanya-jawab 5-Whys di dalam berkas dokumen tanpa pernah bertanya dan menunggu balasan pengguna di obrolan (*chat*).
 - **Bypassing Council Grilling**: Menjalankan sidang dewan AI namun langsung menyimpulkan dan menulis dokumen sendiri tanpa membawa kritik dan titik buta dewan kepada pengguna di chat untuk diputuskan bersama.

@@ -356,7 +356,7 @@ erDiagram
 - **Missing RBAC Authorization Matrix**: Menulis cerita pengguna tanpa matriks hak akses peran yang jelas, memicu kerentanan eskalasi hak akses (IDOR/BOLA) saat implementasi kode.
 - **Missing Uniqueness & Indexing in Data Dictionary**: Mengabaikan penanda kolom unik dan indeks pencarian di kamus data, yang memicu degradasi performa database saat data bertambah banyak.
 - **Simulated Boundary Deciding**: Menentukan sendiri aturan batas teknis (seperti hard vs soft delete, idempotency key, atau limit paginasi) tanpa melakukan wawancara grilling di chat.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, bertanya kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas 10 pertanyaan pada Tahap 3 (memicu kelelahan pengguna dan *analysis paralysis*).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik), bertanya total kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna dan *analysis paralysis*).
 - **Vague Gherkin Slop**: Menulis langkah pengujian Gherkin yang abstrak dan mengambang tanpa data input konkret (misalnya tanpa menyebut atribut field dan nilai batas uji).
 - **Missing Idempotency & Pagination**: Merancang endpoint mutasi (`POST`/`PUT`/`DELETE`) tanpa header idempotensi atau merancang query daftar tanpa skema paginasi.
 - **Broken Markdown Formatting**: Menulis tabel dengan pipa tidak ter-escape (`|` tanpa `\|`) atau blok kode tidak tertutup, yang merusak render dokumen.

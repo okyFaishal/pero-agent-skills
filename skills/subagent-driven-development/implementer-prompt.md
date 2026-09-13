@@ -32,6 +32,10 @@ Subagent (general-purpose):
        - Dilarang mengubah konfigurasi global atau modul lain di luar ruang lingkup.
     4. **Git Commit Mandiri (Caveman Style)**:
        - Lakukan commit dengan pesan terkompresi (contoh: `feat(core): add token verifier #red-green`).
+    5. **Integrasi UI & Google Stitch MCP (Khusus Tugas Antarmuka / Frontend)**:
+       - Jika tugas mencakup antarmuka pengguna, periksa spesifikasi desain di `docs/DesignSystem.md`.
+       - Manfaatkan kode HTML prototipe visual di `assets/stitch-code/` dan screenshot di `assets/stitch-screens/` yang digenerasi oleh Google Stitch MCP.
+       - Terapkan 5 matriks status visual (default, loading, error, empty, active) dan patuhi kontras WCAG AA.
 
     ## 4. Format Laporan Implementer
     Tulis laporan lengkap hasil kerja Anda ke berkas: [REPORT_FILE]

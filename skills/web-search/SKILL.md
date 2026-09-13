@@ -59,6 +59,18 @@ Hindari pencarian umum yang ambigu. Gunakan formula query 3 tingkat:
 
 ---
 
+## Batasan Kuota Query Riset (*Search Query Budget*)
+
+Untuk menjamin efisiensi eksekusi dan mencegah pemborosan token atau *endless rabbit hole*, terapkan batasan kuota query resmi:
+
+| Aturan Kuota | Batas Jumlah | Keterangan & Tujuan |
+|---|---|---|
+| **Batas Minimal (Verifikasi Silang)** | **Min 2 Pencarian** | Wajib melakukan minimal 2 pencarian terarah untuk triangulasi fakta dari dua sumber independen sebelum menyimpulkan solusi teknis. |
+| **Batas Maksimal (Anti-Spam / Loop)** | **Max 5 Pencarian** | Maksimal 5 pencarian per kasus riset teknis. Jika dalam 5 query solusi tidak ditemukan, hentikan pencarian, evaluasi ulang asumsi, atau konsultasikan via `grilling` / `llm-council`. |
+| **Kondisi Khusus (Domain Internal)** | **0 Pencarian** | Diizinkan 0 pencarian jika tugas murni modifikasi logika bisnis internal lokal tanpa ketergantungan paket baru, rilis SDK, atau error eksternal. |
+
+---
+
 ## Hierarki Otoritas Sumber Data (*E-E-A-T Source Hierarchy*)
 
 Saat mengevaluasi hasil pencarian, prioritaskan sumber berdasarkan tingkat kepercayaannya:
@@ -100,6 +112,7 @@ Saat mengevaluasi hasil pencarian, prioritaskan sumber berdasarkan tingkat keper
 ## Checklist Verifikasi Mandiri (*Self-Validation Gate*)
 
 Sebelum menyajikan hasil riset web kepada pengguna atau menerapkannya ke kode:
+- [ ] Mematuhi kuota query pencarian terarah (minimal 2 untuk triangulasi fakta, maksimal 5 per topik riset teknis).
 - [ ] Menggunakan formula pencarian presisi (pesan error lengkap + nama paket + versi).
 - [ ] Informasi berasal dari sumber Tier 1 atau Tier 2 yang terverifikasi.
 - [ ] Memastikan kompatibilitas versi semantik (SemVer) sesuai dengan proyek lokal.

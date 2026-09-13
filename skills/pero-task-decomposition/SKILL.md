@@ -122,7 +122,12 @@ Pekerjaan didekomposisikan ke dalam lintasan domain teknis yang universal:
 5. **`Security`**: Otentikasi & otorisasi (JWT, OAuth, Session), middleware RBAC/ABAC, perimeter input sanitizers, proteksi CSRF/CORS/CSP, secret isolation via `env-guard`, hashing password & enkripsi payload.
 6. **`Core / Cross-Cutting`**: Shared types/interfaces, domain entities, konfigurasi terpusat, logging & telemetry, custom error classes, utility helpers, IPC/protocol message schemas.
 
-## The 5-Phase Pipeline Framework
+## Dual-Mode Task Decomposition Framework
+
+Backlog tugas Pero beroperasi dalam dua mode arsitektur sesuai kondisi siklus hidup proyek:
+
+### 🌟 Mode A: Greenfield Initial Build Pipeline (5 Fase)
+Digunakan saat membangun sistem/aplikasi baru dari awal (tanah kosong) menuju rilis MVP v1.0:
 
 ```
 [Phase 1: Foundation, Infra & Shared Types] ──> [Phase 2: Core Domain Entities & Data Layer]
@@ -132,20 +137,34 @@ Pekerjaan didekomposisikan ke dalam lintasan domain teknis yang universal:
 [Phase 5: E2E Verification & Release Polish]
 ```
 
-### Phase 1: Foundation, Infrastructure & Shared Types
-- Menyiapkan pondasi proyek: instalasi dependensi dasar, setup linter/formatter, konfigurasi environment `.env` (`env-guard`), scaffolding struktur direktori, dan definisi tipe data bersama (*shared types / interfaces*).
+- **Phase 1: Foundation, Infrastructure & Shared Types**: Scaffolding direktori, tooling linter/formatter, `.env` guard, shared types/interfaces.
+- **Phase 2: Core Domain Entities, Schemas & Data Layer**: Entitas domain murni, DDL migration database, ORM/model, repository layer, fixtures.
+- **Phase 3: Core Business Logic, IPC/API & Service Engines**: Use cases, business services, controllers, auth middleware, TDD Red-Green-Refactor.
+- **Phase 4: Feature Modules, UI/Client Workflows & Integration**: Komponen antarmuka (Web/Mobile), integrasi API/IPC, prototipe Google Stitch MCP, state store klien.
+- **Phase 5: E2E Verification, Security Audit & Release Polish**: End-to-end integration test, audit keamanan, NFR benchmark, rilis 100% Definition of Done.
 
-### Phase 2: Core Domain Entities, Schemas & Data Layer
-- Membangun entitas domain murni, migrasi skema database (DDL), model data / ORM, repository layer, skema validasi, serta database seed untuk pengujian.
+---
 
-### Phase 3: Core Business Logic, IPC/API & Service Engines
-- Mengembangkan use cases, service engines, route controllers, middleware, implementasi kontrak API/IPC, dan translasi matriks error menggunakan pendekatan TDD (*Red-Green-Refactor*).
+### 🚀 Mode B: Incremental Milestone Evolution Pipeline (4 Langkah Irisan Fitur)
+Digunakan saat proyek sudah berjalan (*brownfield*, penambahan fitur baru pasca-MVP, v1.1+, atau iterasi sprint baru). Alur tidak mengulang fase pondasi, melainkan menerapkan **4-Step Feature Slice**:
 
-### Phase 4: Feature Modules, UI/Client Workflows & Integration
-- Membangun komponen UI (Web/Mobile), integrasi API/IPC ke antarmuka pengguna, manajemen state klien, navigasi alur perjalanan pengguna (User Journeys), dan validasi interaksi form.
+```
+[Step 1: Delta Contracts, Schemas & Migrations]
+                      │
+                      ▼
+[Step 2: Core Domain Logic & Service Engines (TDD)]
+                      │
+                      ▼
+[Step 3: UI/UX Workflows & State Integration (Google Stitch MCP)]
+                      │
+                      ▼
+[Step 4: Regression Audit, Integration & Merge Polish]
+```
 
-### Phase 5: E2E Verification, Security Audit & Release Polish
-- Melakukan pengujian integrasi menyeluruh (*End-to-End Test*), audit keamanan & isolasi rahasia, verifikasi beban/kinerja (*NFR validation*), pembersihan kode (*code polish*), dan pemenuhan kriteria rilis 100% (*Definition of Done*).
+- **Step 1: Delta Contracts, Schemas & Migrations**: Migrasi tabel/kolom baru, perluasan skema DTO/Zod/Pydantic, dan interface kontrak baru tanpa merusak skema lama.
+- **Step 2: Core Domain Logic & Service Engines (TDD)**: Implementasi use-case fitur baru, logic adapter, handler endpoint baru, dikawal siklus failing test (Red -> Green -> Refactor).
+- **Step 3: UI/UX Workflows & State Integration (Google Stitch MCP)**: Pembuatan prototipe visual layar fitur baru di `stitch.withgoogle.com` via MCP, ekstraksi kode HTML via `get_screen_code`, dan penyambungan state klien.
+- **Step 4: Regression Audit, Integration & Merge Polish**: Uji integrasi fitur baru, verifikasi bahwa seluruh tes fitur lama tetap lulus 100% (*zero regression*), dan pembersihan kode sebelum merge.
 
 ## Checklist Format Standard
 Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
@@ -202,6 +221,15 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 
 ---
 
+## 📦 Milestone Registry & Status
+- [ ] **Milestone 1.0 (MVP Foundation & Core Platform)** - *ACTIVE (In Progress)*
+- [ ] **Milestone 1.1 ([Feature Name / Expansion])** - *PLANNED*
+
+*(Catatan Penggunaan: Jika proyek baru dari nol, gunakan Mode A [Phase 1-5]. Jika proyek berjalan / penambahan fitur lanjutan pasca-MVP, aktifkan Mode B [Step 1-4 Feature Slice] pada Milestone terkait, dan arsipkan milestone yang telah selesai ke bagian bawah dokumen).*
+
+---
+
+<!-- JALUR MODE A: GREENFIELD INITIAL BUILD (Gunakan untuk Milestone 1.0 / Pembangunan Awal) -->
 ## Phase 1: Foundation, Infrastructure & Shared Types
 *Tujuan: Menyiapkan pondasi kokoh, konfigurasi lingkungan aman, linter, dan definisi kontrak tipe data bersama sebelum komponen lain dibangun.*
 
@@ -379,16 +407,105 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 
 ---
 
+<!-- JALUR MODE B: INCREMENTAL MILESTONE EVOLUTION (Gunakan untuk v1.1+, Sprint Fitur Baru, atau Proyek Berjalan) -->
+## 🚀 Active Milestone: v1.1 - [Nama Fitur Baru / Sprint]
+*Target Deliverable: Mengimplementasikan modul fitur baru ke dalam sistem yang sudah berjalan tanpa regresi.*
+
+### Step 1: Delta Contracts, Schemas & Migrations
+- [ ] **Task 1.1.1: Database Migration & DTO Schema Extension** (Domain: Database)
+  - **Complexity / Size**: `S (2 files, ~80 lines)`
+  - **Depends On**: `None (mengacu pada skema yang sudah ada)`
+  - **Parallel Safe?**: `Yes`
+  - **Target Files**:
+    - `src/db/migrations/20260913_add_feature_table.ts` (Migration)
+    - `src/core/dto/feature_request.ts` (DTO Schema)
+  - **Technical Requirements**: Buat migrasi penambahan kolom/tabel baru dan skema validasi Zod/Pydantic baru tanpa merusak tabel lama.
+  - **Acceptance Criteria & Verification**:
+    - [ ] Migrasi berhasil dieksekusi maju (*up*) dan mundur (*down*) tanpa error.
+    - [ ] Skema DTO memvalidasi payload masukan dan menolak data anomali.
+    - **Verification Command**: `npm run db:migrate:test` (Exit Code 0)
+
+### Step 2: Core Domain Logic & Service Engines (TDD)
+- [ ] **Task 1.1.2: Feature Business Logic Service (Red-Green-Refactor)** (Domain: Backend)
+  - **Complexity / Size**: `M (3 files, ~180 lines)`
+  - **Depends On**: `Task 1.1.1`
+  - **Parallel Safe?**: `Yes`
+  - **Target Files**:
+    - `tests/services/feature_service.test.ts` (Test)
+    - `src/services/feature_service.ts` (Implementation)
+  - **Technical Requirements**: Tulis failing test terlebih dahulu untuk alur bisnis fitur baru, lalu implementasikan logic hingga test lulus.
+  - **Acceptance Criteria & Verification**:
+    - [ ] Skenario sukses fitur baru menghasilkan output yang sesuai kontrak data.
+    - [ ] Penanganan edge cases (input invalid, entity not found) melempar error tertata.
+    - **Verification Command**: `npm test tests/services/feature_service.test.ts` (Exit Code 0)
+
+### Step 3: UI/UX Workflows & State Integration (Google Stitch MCP)
+- [ ] **Task 1.1.3: Visual Prototype & Screen Component Integration** (Domain: Web)
+  - **Complexity / Size**: `M (3 files, ~200 lines)`
+  - **Depends On**: `Task 1.1.2`
+  - **Parallel Safe?**: `Yes`
+  - **Target Files**:
+    - `src/components/feature/FeatureView.tsx` (Component)
+    - `src/state/featureStore.ts` (Store)
+  - **Technical Requirements**: Buat prototipe layar di `stitch.withgoogle.com` via Stitch MCP, ekstrak kode via `get_screen_code`, dan sambungkan ke state store klien.
+  - **Acceptance Criteria & Verification**:
+    - [ ] Komponen antarmuka menampilkan data dari store dan menangani interaksi pengguna.
+    - [ ] Mendukung 5 status visual (default, loading, error, empty, active).
+    - **Verification Command**: `npm run test:ui` (Exit Code 0)
+
+### Step 4: Regression Audit, Integration & Merge Polish
+- [ ] **Task 1.1.4: Full Regression Test & E2E Verification** (Domain: Core)
+  - **Complexity / Size**: `S (2 files, ~100 lines)`
+  - **Depends On**: `Task 1.1.3`
+  - **Parallel Safe?**: `No (gerbang verifikasi merge)`
+  - **Target Files**:
+    - `tests/e2e/feature_flow.spec.ts` (E2E Test)
+  - **Technical Requirements**: Jalankan seluruh paket tes proyek untuk membuktikan 100% fitur lama tidak mengalami regresi dan fitur baru bekerja harmonis.
+  - **Acceptance Criteria & Verification**:
+    - [ ] 100% test passing (`0 failures`, `0 errors`) pada suite lama dan baru.
+    - [ ] Build kompilasi release sukses bersih (Exit code 0).
+    - **Verification Command**: `npm test && npm run build` (Exit Code 0)
+
+---
+
+## 🏛️ Archived Milestones (Completed)
+<!-- Lipat riwayat milestone yang sudah selesai agar context tetap bersih namun sejarah tidak pernah hilang -->
+<details>
+<summary><b>Klik untuk melihat Milestone 1.0 (MVP Foundation) - COMPLETED [x]</b></summary>
+
+### Phase 1: Foundation (Selesai)
+- [x] Task 1.1: Project Scaffolding, Tooling & Environment Guard
+- [x] Task 1.2: Shared Domain Types & Interface Contracts
+
+### Phase 2: Core Domain Entities & Data Layer (Selesai)
+- [x] Task 2.1: Database Schemas & Migrations
+- [x] Task 2.2: Repository Layer & Test Fixtures
+
+### Phase 3: Business Logic & API/IPC (Selesai)
+- [x] Task 3.1: Authentication & Security Guard
+- [x] Task 3.2: Domain Services & Controllers
+
+### Phase 4: UI & Client Workflows (Selesai)
+- [x] Task 4.1: Client Navigation & Theme Tokens
+- [x] Task 4.2: Feature Screens & Form Interactions
+
+### Phase 5: E2E Verification & Release (Selesai)
+- [x] Task 5.1: E2E Integration Suite
+- [x] Task 5.2: Security & Secret Audit
+- [x] Task 5.3: Final Quality Gate & Build Verification
+</details>
+
+---
+
 ## Progress Tracker & Domain Matrix
 
-| Domain | Phase 1 (Infra) | Phase 2 (Data) | Phase 3 (Logic/API) | Phase 4 (UI/Client) | Phase 5 (E2E/Audit) | Total Tasks |
-|---|---|---|---|---|---|---|
-| **Core** | Task 1.1, 1.2 | - | - | - | Task 5.1, 5.3 | 4 |
-| **Database** | - | Task 2.1, 2.2 | - | - | - | 2 |
-| **Security** | - | - | Task 3.1 | - | Task 5.2 | 2 |
-| **Backend** | - | - | Task 3.2, 3.3 | - | - | 2 |
-| **Web / Mobile**| - | - | - | Task 4.1, 4.2 | - | 2 |
-| **Total** | 2 | 2 | 3 | 2 | 3 | **12** |
+| Domain | Step 1 (Contracts) | Step 2 (Logic TDD) | Step 3 (UI/Client) | Step 4 (Regression/Polish) | Total Tasks |
+|---|---|---|---|---|---|
+| **Core** | - | - | - | Task 1.1.4 | 1 |
+| **Database** | Task 1.1.1 | - | - | - | 1 |
+| **Backend** | - | Task 1.1.2 | - | - | 1 |
+| **Web / Mobile**| - | - | Task 1.1.3 | - | 1 |
+| **Total** | 1 | 1 | 1 | 1 | **4** |
 ````
 
 ---
@@ -429,7 +546,7 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 - **Giant Context-Overflowing Tasks (Unsized Tasks)**: Membuat tugas raksasa berukuran L (lebih dari 4 berkas atau >300 baris) tanpa dipecah menjadi unit S/M, yang menyebabkan sub-agen AI mandiri kehabisan memori konteks (*context window starvation*) atau berhalusinasi.
 - **Phantom Dependencies (Implicit Blockers)**: Membiarkan ketergantungan tugas tersembunyi tanpa mencatatnya di field `Depends On`, sehingga sub-agen paralel mencoba mengeksekusi use-case sebelum tabel database atau skema tipe datanya dibuat.
 - **Shared-File Collision in Parallel Tasks**: Menugaskan 2 sub-agen paralel untuk mengedit berkas yang sama pada fase yang sama tanpa isolasi modular (*file lock conflict*), yang merusak riwayat Git.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, bertanya kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas 10 pertanyaan pada Tahap 3 (memicu kelelahan pengguna).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik backlog), bertanya total kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna).
 - **Forced Irrelevant Specialization**: Memaksakan riset tugas UI pada sistem backend headless alih-alih mendeklarasikan status `N/A`.
 - **Unbounded Web Search Avalanche**: Melakukan kurang dari 2 pencarian terarah pada domain yang relevan, melampaui batas 5 pencarian per agen, atau tetap mencari pada domain `N/A`.
 - **Tugas Raksasa Monolitik (Giant Monolithic Tasks)**: Membuat satu butir tugas mencakup seluruh sistem ("Buat fitur Checkout lengkap") tanpa membedah ke tabel database, logic service, API handler, dan komponen UI secara terpisah.

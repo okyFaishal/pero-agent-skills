@@ -67,9 +67,9 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 4. **Spesialis 4: Audit Kelengkapan Backlog & Cakupan Tugas (*Task Backlog & Coverage Specialist*)**:
    - *Fokus*: Memeriksa alur `PRD.md` (P0/P1) + `SystemSpec.md` (Gherkin stories) + `DesignSystem.md` $\rightarrow$ `TaskBacklog.md` $\rightarrow$ `docs/tasks/`.
    - *Misi*: Menegakkan *100% Backlog Coverage* (tidak boleh ada user story atau komponen UI yang tidak memiliki kartu tugas), memeriksa batasan ukuran tugas (S/M), `Depends On`, dan `Parallel Safe`.
-5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & 9-Stage Integrity Specialist*)**:
-   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`).
-   - *Misi*: Memastikan setiap keputusan arsitektur, desain, dan tata kelola terdokumentasi rapi, tidak ada kontradiksi antar keputusan, dan status keputusan (*Accepted vs Superseded*) konsisten.
+5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & 10-Type Integrity Specialist*)**:
+   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`, `CRDR`).
+   - *Misi*: Memastikan setiap keputusan masalah, produk, arsitektur, desain, tata kelola, dan perubahan mid-flight terdokumentasi rapi, tidak ada kontradiksi antar keputusan, dan status keputusan (*Accepted vs Superseded*) konsisten.
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
 - Setiap spesialis membaca dokumen target sebelum menjalankan audit.
@@ -106,7 +106,7 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 - Tunggu respon pemilihan pengguna dari modal interaktif sebelum menetapkan status akhir.
 
 ### 4. Penyusunan Dokumen ValidationReport.md Formal
-- Menyusun laporan audit komprehensif di `docs/ValidationReport.md` mematuhi **Matriks Ketertelusuran 7-Arah**, audit diagram Mermaid, tabel matriks anomali dengan 3 tingkat keparahan, dan vonis akhir kelulusan.
+- Menyusun laporan audit komprehensif di `docs/ValidationReport.md` mematuhi **Matriks Ketertelusuran 8-Arah**, audit diagram Mermaid, tabel matriks anomali dengan 3 tingkat keparahan, dan vonis akhir kelulusan.
 
 ### 5. Pembukuan Rekam Keputusan VDR Formal & Penyelarasan Dokumen Hidup
 - Membukukan keputusan audit dan status kesiapan ke `docs/decisions/VDR-[YYYYMMDDHHmm].md` (*Validation Decision Record*) menggunakan template standar resmi.
@@ -166,12 +166,15 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 ### 6. Architecture/DesignSystem/Governance-to-TaskBacklog Alignment (Rule 6)
 - Seluruh modul di `docs/Architecture.md` dan komponen UI di `docs/DesignSystem.md` wajib memiliki kartu tugas konkret yang dapat dieksekusi di `docs/TaskBacklog.md` (*100% Backlog Coverage*).
 - Setiap kartu tugas wajib memiliki ukuran kompleksitas (S/M), batasan dependensi (`Depends On`), status keamanan paralel (`Parallel Safe`), dan perintah verifikasi terminal 0-failure.
+- **Audit Dual-Mode Backlog**:
+  - Pada Mode A (Greenfield MVP v1.0), seluruh tugas terdistribusi di 5 Fase terurut.
+  - Pada Mode B (Incremental Brownfield v1.1+), tugas terdistribusi di 4 Langkah (*Step 1: Contracts $\rightarrow$ Step 2: Logic TDD $\rightarrow$ Step 3: UI/Stitch $\rightarrow$ Step 4: Regression Audit*), memuat perintah anti-regresi (`npm test && npm run build`), dan seluruh milestone selesai sebelumnya terlipat rapi di dalam `<details><summary>` (*Archived Milestones*).
 
 ### 7. TaskBacklog-to-GranularRefinement Alignment (Rule 7)
 - Setiap kartu tugas makro yang siap dieksekusi wajib dipertajam menjadi kartu tugas granular di `docs/tasks/TASK-[ID].md` yang mematuhi **7 Anatomi Presisi** (termasuk pre/post-conditions, token desain untuk tugas UI, dan blast radius).
 
 ### 8. Cross-Cutting-to-DecisionRecords Alignment (Rule 8)
-- Setiap keputusan penting di seluruh 9 tahap (PFDR di Framing, PDR di PRD, SDR di Spec, ADR di Architecture, DDR di Design System, GDR di Governance, TDR di Backlog, RDR di Refinement, dan VDR di Validation) wajib terdokumentasi rapi di `docs/decisions/` tanpa ada kontradiksi status (*Accepted vs Superseded*).
+- Setiap keputusan penting di seluruh 10 tipe (PFDR di Framing, PDR di PRD, SDR di Spec, ADR di Architecture, DDR di Design System, GDR di Governance, TDR di Backlog, RDR di Refinement, VDR di Validation, dan CRDR di Change Management) wajib terdokumentasi rapi di `docs/decisions/` tanpa ada kontradiksi status (*Accepted vs Superseded*).
 
 ---
 
@@ -182,7 +185,7 @@ Setiap temuan anomali atau drift diklasifikasikan ke dalam 3 tier keparahan:
 | Tingkat Keparahan | Kriteria Dampak | Status Gerbang Rilis | Contoh Temuan |
 |:---|:---|:---|:---|
 | 🔴 **CRITICAL (Blocker)** | Merusak integritas sistem, celah keamanan fatal, atau menghentikan alur kerja | **NO-GO (Koding Dilarang Dimulai)** | Endpoint di spec tanpa modul arsitektur; Kunci rahasia bocor di commit; Fitur P0 PRD tidak ada di TaskBacklog; Diagram Mermaid error fatal. |
-| 🟡 **WARNING (High Attention)** | Inkonsistensi non-fatal yang berisiko memicu utang teknis jika diabaikan | **CONDITIONAL GO (Butuh Batas Waktu)** | Atribut tipe data berbeda nama; Tugas backlog belum diberi ukuran S/M; Keputusan arsitektur belum dibukukan ke ADR. |
+| 🟡 **WARNING (High Attention)** | Inkonsistensi non-fatal yang berisiko memicu utang teknis jika diabaikan | **CONDITIONAL GO (Butuh Batas Waktu)** | Atribut tipe data berbeda nama; Tugas backlog belum diberi ukuran S/M; Keputusan arsitektur belum dibukukan ke ADR/CRDR. |
 | 🟢 **INFO (Polishing)** | Saran peningkatan keterbacaan atau perapian kosmetik | **GO (Diizinkan Lanjut)** | Tipografi label diagram Mermaid; Perapian format tabel markdown; Penambahan komentar penjelas. |
 
 ---
@@ -194,7 +197,7 @@ Ketika terjadi perubahan di salah satu dokumen hulu (misal: penambahan fitur di 
 2. **Telusuri Rantai Ketergantungan Hilir (*Trace Downward*)**:
    - Jika `PRD` berubah $\rightarrow$ Perbarui `SystemSpec` $\rightarrow$ Perbarui `Architecture` $\rightarrow$ Perbarui `TaskBacklog` $\rightarrow$ Perbarui `TASK-[ID].md`.
    - Jika `Architecture` berubah $\rightarrow$ Perbarui `Governance` $\rightarrow$ Perbarui `TaskBacklog` $\rightarrow$ Perbarui `TASK-[ID].md`.
-3. **Catat Keputusan Baru**: Gunakan `decision-recorder` untuk membuat ADR/GDR/TDR baru yang mencatat alasan teknis perubahan.
+3. **Catat Keputusan Baru**: Gunakan `decision-recorder` untuk membuat ADR/GDR/TDR/CRDR baru yang mencatat alasan teknis perubahan.
 4. **Verifikasi Ulang**: Jalankan audit validasi konteks ulang untuk memastikan seluruh dokumen hilir kembali 100% sinkron (*zero drift*).
 
 ---
@@ -203,7 +206,7 @@ Ketika terjadi perubahan di salah satu dokumen hulu (misal: penambahan fitur di 
 
 Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 - **Tanda Kutip Label Khusus**: Node label yang mengandung spasi, tanda kurung `()`, kurung siku `[]`, atau karakter khusus WAJIB diapit tanda kutip ganda (contoh: `nodeA["Payment Gateway (Stripe)"]`).
-- **Bebas HTML Mentah**: Dilarang menggunakan tag HTML mentah seperti `<br>`, `<b>`, atau `<div>` di dalam label node diagram.
+- **Bebas HTML Mentah Tidak Sah**: Dilarang menggunakan tag HTML mentah yang tidak diapit tanda kutip atau tag kompleks seperti `<div>`, `<span>`, `<b>`. Tag pemutus baris `<br/>` DIPERBOLEHKAN hanya jika berada di dalam string label bertanda kutip ganda (contoh: `nodeB["Komponen UI<br/>(Tailwind v4)"]`).
 - **Arah Diagram Valid**: Menetapkan arah yang valid (`graph TD`, `graph LR`, `sequenceDiagram`, `erDiagram`).
 - **Referensi Node Konsisten**: Pastikan relasi panah (`-->`, `-.->`, `==>`) menghubungkan ID node yang benar-benar terdefinisi.
 
@@ -298,6 +301,6 @@ Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 - **Broken Mermaid Blindness**: Meloloskan diagram Mermaid yang memiliki kesalahan sintaksis atau karakter khusus yang tidak dikutip, sehingga diagram gagal di-render di Markdown viewer.
 - **Untracked Drift (Missing Cascade Updates)**: Memperbaiki salah satu dokumen (misal mengganti nama tabel di Architecture) tanpa menyinkronkan dokumen hilirnya (SystemSpec, TaskBacklog, dan kartu tugas).
 - **Ignoring Critical Blockers**: Memaksakan tim mulai koding padahal masih ada anomali berstatus 🔴 CRITICAL.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan per putaran chat atau bertanya kurang dari 5 / lebih dari 10 pertanyaan pada Tahap 3.
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik audit), bertanya total kurang dari 5 pertanyaan, atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna).
 - **Forced Irrelevant Specialization**: Memaksakan pencarian eksternal untuk audit internal murni, alih-alih mendeklarasikan status `N/A: Internal Audit Only`.
 - **Unbounded Web Search Avalanche**: Melakukan pencarian web berlebih untuk tugas audit yang datanya sudah 100% tersedia di direktori lokal `docs/`.

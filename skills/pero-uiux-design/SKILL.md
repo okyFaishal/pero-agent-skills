@@ -22,6 +22,7 @@ Dalam menjalankan perancangan desain antarmuka, agent WAJIB mengorkestrasi sub-s
 - **Verifikasi Komponen & Pustaka Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk memeriksa dokumentasi resmi pustaka komponen (misal: Tailwind v4, shadcn/ui, Radix Themes, Material 3, Carbon) guna memastikan komponen yang dirancang benar-benar didukung oleh paket resmi.
 - **Musyawarah Dewan Desain Sistem**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arah visual (Minimalis Dingin vs Hangat Humanis, Kepadatan Data vs Ruang Bernapas, Kustomisasi Token vs Pustaka Siap Pakai) melalui sidang 5 persona AI.
 - **Wawancara Penguncian Desain di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan estetika sepihak.
+- **Prototipe Visual & Ekstraksi Kode Google Stitch (`stitch-mcp`)**: **`REQUIRED SUB-SKILL`**: Wajib mengorkestrasi server MCP Google Stitch (`@_davideast/stitch-mcp` / `@google/stitch-sdk` yang beroperasi pada `stitch.withgoogle.com`). Agen wajib merumuskan instruksi layar terstruktur (*Stitch Master Prompt*), menghasilkan prototipe visual nyata di Stitch, mengekstrak kode komponen HTML murni via `get_screen_code`, mengunduh tangkapan layar antarmuka via `get_screen_image`, dan memetakan rute halaman via `build_site`. Dilarang hanya mengandalkan sketsa teks statis jika proyek memiliki antarmuka grafis.
 - **Sinkronisasi Dokumen Hidup**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan tata letak dan hierarki komponen selalu selaras dengan kode nyata.
 - **Pencatatan Keputusan Desain**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan desain ke `docs/decisions/DDR-[YYYYMMDDHHmm].md` (*Design Decision Record*).
 
@@ -69,8 +70,15 @@ Mendelegasikan tim 5 agen spesialis desain tetap via `dispatching-parallel-agent
 #### A. 5 Peran Spesialis Desain Tetap (*Fixed UI/UX Roles*):
 1. **Spesialis 1: Fondasi Token Desain & Skema Warna (*Design Tokens & Color Specialist*)**:
    - *Fokus*: Merumuskan palet warna semantik (Background, Surface, Text Primary/Secondary, Accent tunggal, Destructive, Muted, Border), skala tipografi (Geist/Outfit/Satoshi dsb. dengan clamp responsive), skala spasi modular (4px/8px), skala kelengkungan sudut (*border radius*), dan aturan konsistensi tema (Dark/Light Lock).
-2. **Spesialis 2: Tata Letak Arsitektur Informasi & Wireframe (*Information Architecture & Wireframes Specialist*)**:
-   - *Fokus*: Merancang denah tata letak visual layar-layar utama dari PRD (Header/Navbar, Sidebar vs Bottom Nav mobile, Bento Grid, Kontainer responsif `max-w-7xl`, pembagian kolom grid). Menggambar sketsa tata letak visual berbasis ASCII art atau diagram Mermaid.
+2. **Spesialis 2: Tata Letak Arsitektur Informasi, Wireframe & Prototipe Google Stitch (*Information Architecture, Wireframes & Stitch Specialist*)**:
+   - *Fokus*: Merancang denah tata letak visual layar-layar utama dari PRD (Header/Navbar, Sidebar vs Bottom Nav mobile, Bento Grid, Kontainer responsif `max-w-7xl`, pembagian kolom grid).
+   - *Kewajiban Google Stitch Prototyping*:
+     - Menyusun *Stitch Master Prompt* (mengintegrasikan token warna dari Spesialis 1, 3 Dials dari `taste-skill`, dan alur Gherkin dari `SystemSpec.md`).
+     - Memanggil server `stitch` via MCP untuk menghasilkan prototipe visual interaktif di `stitch.withgoogle.com`.
+     - Mengekstrak kode komponen HTML murni melalui perkakas `get_screen_code`.
+     - Mengunduh tangkapan layar antarmuka melalui perkakas `get_screen_image` untuk disematkan sebagai referensi visual nyata.
+     - Menghubungkan alur navigasi antar-layar menggunakan perkakas `build_site`.
+   - *Fallback Protocol*: Jika server Stitch MCP offline atau `STITCH_API_KEY` belum dikonfigurasi, agen menyajikan paket *Stitch Master Prompt* siap pakai via `ask_question` dan panduan inisialisasi `npx @_davideast/stitch-mcp init`, serta sketsa fallback diagram Mermaid / ASCII.
 3. **Spesialis 3: Matriks Siklus Status Interaksi (*Interaction States & Feedback Specialist*)**:
    - *Fokus*: Merancang siklus utuh 5 status antarmuka pada setiap komponen kunci:
      - *Default / Idle*: Bentuk standar komponen.
@@ -230,8 +238,31 @@ Menulis berkas cetak biru desain lengkap ke `docs/DesignSystem.md` mengikuti tem
 └─────────────────┴──────────────────────────────────────────────────────┘
 ```
 
-### B. Wireframe Layar Kunci (Berdasarkan PRD & Stories)
-[Gambarkan sketsa tata letak untuk minimal 2-3 layar utama proyek menggunakan ASCII art atau diagram Mermaid].
+### B. Prototipe Visual Google Stitch (`stitch.withgoogle.com`)
+*(Wajib untuk seluruh proyek yang memiliki antarmuka grafis Web/Mobile/Dashboard)*
+- **Stitch Project ID**: `[stitch-project-id]`
+- **Tautan Langsung Proyek Stitch**: `https://stitch.withgoogle.com/project/[stitch-project-id]`
+- **Daftar Layar & Artefak Hasil Ekstraksi MCP**:
+  | Screen ID | Nama Layar & Peruntukan | Rute Halaman | Tangkapan Layar (`get_screen_image`) | Ekstraksi Kode HTML (`get_screen_code`) |
+  |:---|:---|:---|:---|:---|
+  | `scr-01` | Dashboard Utama / Ringkasan Metrik | `/` | `assets/stitch-screens/dashboard.png` | `assets/stitch-code/dashboard.html` |
+  | `scr-02` | Halaman Manajemen Data / Tabel | `/items` | `assets/stitch-screens/items.png` | `assets/stitch-code/items.html` |
+  | `scr-03` | Dialog / Modal Aksi Utama | N/A (Modal) | `assets/stitch-screens/modal-action.png` | `assets/stitch-code/modal-action.html` |
+
+- **Cuplikan Komponen Kunci dari Hasil Stitch**:
+```html
+<!-- Cuplikan komponen HTML/CSS nyata yang diekstrak via get_screen_code -->
+<div class="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur">
+  <div class="flex items-center justify-between pb-4">
+    <h3 class="text-sm font-medium text-zinc-400">Total Transaksi</h3>
+    <span class="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs text-emerald-400">+12.5%</span>
+  </div>
+  <div class="text-3xl font-bold tracking-tight text-white">1,248</div>
+</div>
+```
+
+### C. Wireframe Sketsa Cadangan (*ASCII / Mermaid Fallback*)
+[Gambarkan sketsa tata letak untuk minimal 2-3 layar utama proyek menggunakan ASCII art atau diagram Mermaid sebagai rujukan struktural].
 
 ---
 
@@ -297,7 +328,7 @@ Setiap komponen yang berinteraksi dengan data atau pengguna WAJIB memiliki spesi
 - **Status**: Diterima (Accepted) / Ditinjau (Proposed) / Digantikan (Superseded)
 - **Tanggal**: [YYYY-MM-DD]
 - **Pengambil Keputusan**: Pengguna, Desainer UI/UX, & Tim Frontend Lead
-- **Dokumen Terkait**: [docs/DesignSystem.md](../DesignSystem.md)
+- **Dokumen Terkait**: [docs/DesignSystem.md](../DesignSystem.md), [docs/PRD.md](../PRD.md), [docs/SystemSpec.md](../SystemSpec.md), & [docs/Architecture.md](../Architecture.md)
 
 ## 1. Konteks Masalah & Kebutuhan Desain Visual
 [Jelaskan latar belakang mengapa sistem desain ini dirumuskan, audiens target yang dituju, dan kesan visual yang ingin dicapai].
@@ -307,6 +338,7 @@ Setiap komponen yang berinteraksi dengan data atau pengguna WAJIB memiliki spesi
 - **Konfigurasi 3 Dial**: `VARIANCE: [X]`, `MOTION: [Y]`, `DENSITY: [Z]`
 - **Basis Token Warna**: [Netral Zinc/Slate + 1 Aksen Tunggal Terkunci]
 - **Pustaka Komponen Acuan**: [Tailwind v4 / shadcn/ui / Radix Themes / dsb.]
+- **Google Stitch MCP Prototyping**: [Stitch Project ID, Daftar Screen ID yang digenerasi, status ekstraksi HTML via get_screen_code dan screenshot via get_screen_image]
 
 ## 3. Alternatif Arah Desain yang Ditolak
 | Alternatif Desain | Alasan Penolakan |
@@ -315,14 +347,16 @@ Setiap komponen yang berinteraksi dengan data atau pengguna WAJIB memiliki spesi
 | [Alternatif 2, misal: Data Cockpit Ultra-Dense] | [Memicu kelelahan mata bagi pengguna awam, bertentangan dengan kebutuhan PRD] |
 
 ## 4. Konsekuensi Positif & Beban Pemeliharaan (Trade-offs)
-- **Konsekuensi Positif**: [Tampilan antarmuka konsisten, kartu tugas frontend memiliki rujukan baku yang pasti, mencegah desain acak-acakan].
-- **Beban Pemeliharaan**: [Setiap komponen baru wajib menyertakan 5 status interaksi lengkap dan mematuhi rasio kontras WCAG AA].
-- **Strategi Mitigasi**: [Mengotomatisasi pengecekan linter dan tes aksesibilitas di tahap Quality Governance].
+- **Konsekuensi Positif**: [Tampilan antarmuka konsisten, kartu tugas frontend memiliki rujukan baku yang pasti, mencegah desain acak-acakan, prototipe nyata tervalidasi via Google Stitch].
+- **Beban Pemeliharaan**: [Setiap komponen baru wajib menyertakan 5 status interaksi lengkap, mematuhi rasio kontras WCAG AA, dan tersinkronisasi dengan artefak Stitch].
+- **Strategi Mitigasi**: [Mengotomatisasi pengecekan linter dan tes aksesibilitas di tahap Quality Governance, menyertakan cadangan HTML lokal dari Stitch].
 ````
 
 ---
 
 ## Anti-Patterns & Common Mistakes
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik desain), bertanya total kurang dari 5 pertanyaan (terlalu malas/dangkal), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara desain (memicu kelelahan pengguna).
+- **Bypassing Stitch Prototyping**: Mengabaikan pembuatan prototipe visual di Google Stitch pada proyek berantarmuka grafis, atau hanya mengandalkan teks abstrak tanpa visual nyata.
 - **AI Gradient Slop**: Menggunakan gradasi warna ungu/pink mencolok tanpa tujuan fungsional pada tombol atau latar belakang halaman.
 - **Static-Only Syndrome**: Hanya merancang tampilan sukses statis, tanpa merancang bentuk kerangka pemuatan (*loading skeleton*), kondisi data kosong (*empty state*), atau kondisi gagal (*error state*).
 - **Single Centered Card Cliché**: Merancang seluruh halaman dengan satu kotak kartu putih di tengah layar hitam polos tanpa variasi tata letak yang bernapas.

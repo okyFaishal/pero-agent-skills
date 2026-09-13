@@ -171,7 +171,7 @@ for skill in "${SKILLS[@]}"; do
       echo "   [🔍 DRY-RUN] Akan memasang: ${skill}"
     else
       mkdir -p "${TARGET_SKILLS_DIR}/${skill}"
-      cp -r "${SOURCE_SKILLS}/${skill}/"* "${TARGET_SKILLS_DIR}/${skill}/"
+      cp -R "${SOURCE_SKILLS}/${skill}/." "${TARGET_SKILLS_DIR}/${skill}/"
       if [[ -d "${TARGET_SKILLS_DIR}/${skill}/scripts" ]]; then
         chmod +x "${TARGET_SKILLS_DIR}/${skill}/scripts/"* 2>/dev/null || true
       fi
@@ -273,7 +273,7 @@ if [[ -f "${TARGET_DIR}/go.mod" ]]; then
 fi
 
 if [[ -f "${TARGET_DIR}/package.json" ]]; then
-  DETECTED_STACKS+=("Node.js/Web (Chrome DevTools & Web APIs)")
+  DETECTED_STACKS+=("Node.js/Web (Chrome DevTools, Web APIs & Google Stitch MCP)")
 fi
 
 if [[ ${#DETECTED_STACKS[@]} -gt 0 ]]; then

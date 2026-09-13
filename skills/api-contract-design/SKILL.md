@@ -24,9 +24,9 @@ Prinsip ini berlaku universal untuk endpoint REST, GraphQL, skema gRPC/Protobuf,
 - Merumuskan skema transfer data (*DTO / Data Transfer Objects*) sebelum menulis kode implementasi.
 - Mengubah atau memperluas antarmuka publik yang sudah berjalan di produksi.
 - Dipanggil oleh tahapan upstream Pero SDLC:
-  - `pero:user-stories` (saat menyusun kontrak data pada `docs/SystemSpec.md`).
-  - `pero:system-architecture` (saat menentukan arsitektur API dan integrasi pihak ketiga).
-  - `pero:granular-refinement` (saat menetapkan signature fungsi dan payload request/response).
+  - `pero-user-stories` (saat menyusun kontrak data pada `docs/SystemSpec.md`).
+  - `pero-system-architecture` (saat menentukan arsitektur API dan integrasi pihak ketiga).
+  - `pero-granular-refinement` (saat menetapkan signature fungsi dan payload request/response).
 
 ---
 

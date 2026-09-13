@@ -183,7 +183,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 
 ## Anti-Patterns & Common Mistakes
 - **Simulated Scope Deciding**: Menentukan sendiri fitur mana yang masuk P0 vs P1/P2 di dalam berkas dokumen tanpa pernah melakukan wawancara grilling dengan pengguna di chat.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, mengajukan kurang dari 5 pertanyaan (terlalu malas dan dangkal), atau melampaui batas 10 pertanyaan pada sesi wawancara Tahap 3 (memicu kelelahan pengguna dan *analysis paralysis*).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik), mengajukan total kurang dari 5 pertanyaan (terlalu malas dan dangkal), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara PRD (memicu kelelahan pengguna dan *analysis paralysis*).
 - **Scope Overload / P0 Bloat**: Memasukkan terlalu banyak fitur ke dalam P0 tanpa sidang pemangkasan dewan, sehingga MVP gagal rilis tepat waktu.
 - **Mengabaikan Batasan Non-Goals**: Menyelipkan fitur yang sudah secara eksplisit dilarang di `ProblemFraming.md`.
 - **Happy Path Bias (Dead-End Workflows)**: Hanya merancang alur sukses tanpa memetakan skenario gagal, timeout, koneksi terputus, atau pemulihan error.

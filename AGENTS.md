@@ -32,9 +32,9 @@
 2. `pero-prd-writing/` : Penyusunan PRD formal, prioritas fitur MVP (P0/P1/P2) & NFR ➔ `docs/PRD.md` & `PDR-[YYYYMMDDHHmm].md` (3-Track Squad + Scope Grilling Pause Gate).
 3. `pero-user-stories/` : Translasi PRD ke Gherkin stories, domain ERD, RBAC & API contracts ➔ `docs/SystemSpec.md` & `SDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Contract Grilling Pause Gate).
 4. `pero-system-architecture/` : Perancangan arsitektur C4, tech stack, MCP & konkurensi ➔ `docs/Architecture.md` & `ADR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Architecture Grilling Pause Gate).
-5. `pero-uiux-design/` : Desain sistem visual, token semantik, wireframe layar, matriks 5-state & a11y ➔ `docs/DesignSystem.md` & `DDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Design Grilling Pause Gate).
+5. `pero-uiux-design/` : Desain sistem visual, token semantik, visual prototype via Google Stitch MCP (stitch.withgoogle.com), wireframe layar, matriks 5-state & a11y ➔ `docs/DesignSystem.md` & `DDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Design Grilling Pause Gate).
 6. `pero-quality-governance/` : Standar thread-safety, linter matrix, supply chain & review gates ➔ `docs/Governance.md` & `GDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Governance Grilling Pause Gate).
-7. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog 5 fase & 6 domain tugas S/M ➔ `docs/TaskBacklog.md` & `TDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Backlog Grilling Pause Gate).
+7. `pero-task-decomposition/` : Pemecahan spesifikasi ke backlog Dual-Mode (Mode A 5-Fase Greenfield & Mode B 4-Langkah Brownfield Milestone) ➔ `docs/TaskBacklog.md` & `TDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Backlog Grilling Pause Gate).
 8. `pero-granular-refinement/` : Penajaman kartu tugas presisi (7 anatomi, invarian, blast radius, failing test) ➔ `docs/tasks/TASK-[ID].md` & `RDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Task Grilling Pause Gate).
 9. `pero-context-validation/` : Validasi ketertelusuran 8-arah, 3 severity tiers & audit Mermaid ➔ `docs/ValidationReport.md` & `VDR-[YYYYMMDDHHmm].md` (Fixed 5-Specialist Squad + Go/No-Go Decision Gate).
 10. `pero-change-management/` : Orkestrasi revisi, penambahan (ADD), modifikasi (MODIFY/PIVOT) & penghapusan (REMOVE) fitur mid-flight/post-completion ➔ `docs/decisions/CRDR-[YYYYMMDDHHmm].md` (Change Triage, Blast Radius Scan & Anti-Zombie Task Gate).
@@ -45,7 +45,7 @@
 13. `web-search/` : Riset web terarah dan verifikasi rilis paket eksternal (min 2, max 5 search).
 14. `grilling/` : Wawancara mendalam pohon keputusan (frontier rounds), modal interaktif ask_question, multi-opsi (2-5 opsi) & stress-test ide/desain fleksibel.
 15. `test-driven-development/` : Penegak siklus Red-Green-Refactor sebelum koding implementasi.
-16. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug (4-phase scientific debugging).
+16. `systematic-debugging/` : Investigasi ilmiah dan isolasi akar masalah bug (5-phase scientific debugging).
 17. `verification-before-completion/` : Bukti verifikasi nyata terminal (exit code 0, 0 failure) sebelum menyatakan selesai.
 18. `code-reviewer/` : Review 2-lapis: Kesesuaian spesifikasi & kualitas kode/keamanan/concurrency.
 19. `api-contract-design/` : Perancangan kontrak data, endpoint & envelope API.

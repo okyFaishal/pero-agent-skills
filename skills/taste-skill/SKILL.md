@@ -10,6 +10,13 @@ description: Anti-slop frontend skill for landing pages, portfolios, SaaS applic
 
 ---
 
+## Pero SDLC Integration (`taste-skill` in Pero Architecture)
+Skill ini bertindak sebagai **Mesin Estetika & Standar Visual Anti-Slop** yang diorkestrasi langsung oleh:
+- [`pero-uiux-design`](../pero-uiux-design/SKILL.md) (Tahap 5): Menentukan konfigurasi 3 Dials (`VARIANCE`, `MOTION`, `DENSITY`), token semantik warna/tipografi, dan prototipe visual Google Stitch MCP di `docs/DesignSystem.md` serta rekam keputusan `docs/decisions/DDR-[YYYYMMDDHHmm].md`.
+- [`anti-slop`](../anti-slop/SKILL.md): Memisahkan batas tanggung jawab: `anti-slop` membersihkan kode dari boilerplate/YAGNI dan mock palsu di level kode sumber, sementara `taste-skill` membersihkan antarmuka dari klise visual AI, gradasi ungu norak, dan layout generik di level desain UI.
+
+---
+
 ## 0. BRIEF INFERENCE (Read the Room Before Anything Else)
 
 Before touching code or tweaking dials, **infer what the user actually wants**. Most LLM design output is bad because the model jumps to a default aesthetic instead of reading the room.
@@ -928,15 +935,15 @@ stack: ["react", "next", "tailwind", "motion"]
 
 ## 13. OUT OF SCOPE
 
-This skill is NOT for:
-* Dashboards / dense product UI / admin panels (use Fluent, Carbon, Atlassian, or Polaris from Section 2.A).
-* Data tables (use TanStack Table or AG Grid).
-* Multi-step forms / wizards (use Form-specific patterns; this skill won't make them better).
-* Code editors (use Monaco / CodeMirror with their official skinning).
-* Native mobile (use Apple HIG / Material directly).
-* Realtime collab UIs (presence, cursors, OT-aware - different problem class).
+This skill is focused strictly on Frontend UI/UX, Design Systems, Landing Pages, Portfolios, SaaS Applications, Dashboards, and Data Tables (as specified in Section 4.6).
 
-If the brief is one of the above, **say so explicitly**, point to the right tool, and only apply this skill's marketing-page / about-page / landing-page parts to the surfaces where they apply.
+This skill is NOT for:
+* Backend business logic, SQL optimization, database indexing, and API controllers (use `pero-system-architecture` & backend tooling).
+* Native mobile low-level code (Swift / Kotlin native internals; use Apple HIG / Jetpack Compose guidelines directly).
+* 3D Game Engines, WebGL Shaders, Canvas Physics engines (use specialized Three.js / Pixi.js libraries).
+* Realtime OT/CRDT distributed synchronization algorithms (different problem class).
+
+For general frontend surfaces, always adhere to the 3 Dials and the anti-slop rules defined across Sections 0 through 12.
 
 ---
 

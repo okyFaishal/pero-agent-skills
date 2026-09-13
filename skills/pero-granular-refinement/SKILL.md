@@ -119,15 +119,16 @@ Mendelegasikan tim 5 agen spesialis penajaman tetap via `dispatching-parallel-ag
 - Menyiapkan perintah CLI terminal verifikasi instan untuk siklus Red dan Green.
 
 ## The 7 Anatomies of a Refined Task Card
-Setiap tugas yang dipertajam **WAJIB** memiliki 7 anatomi presisi berikut:
+Setiap tugas yang dipertajam **WAJIB** memiliki 7 anatomi presisi berikut (berlaku universal untuk Mode A Greenfield `TASK-X.Y.md` maupun Mode B Incremental Milestone `TASK-M.S.T.md` seperti `TASK-1.1.1.md`):
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │               THE 7 ANATOMIES OF A REFINED TASK CARD                   │
+│         (Universal: Greenfield Phase & Brownfield Milestone)           │
 ├────────────────────────────────────────────────────────────────────────┤
 │ 1. Exact Target File Paths       : [Test Path] + [Implementation Path] │
 │ 2. Precise Public Interface      : Typed Parameters, Return, Errors    │
-│ 3. Contract Invariance           : Pre-conditions & Post-conditions    │
+│ 3. Contract & Regression Invariance: Pre-conditions & Post-conditions │
 │ 4. Concrete Boundary & Edge Cases: Null, Empty, Timeout, Collisions    │
 │ 5. Step-by-Step TDD Test Cases   : Test Names, Fixtures, Assertions    │
 │ 6. Blast Radius & Revert Strategy: Side Effects, Dependent Modules     │
@@ -143,9 +144,10 @@ Setiap tugas yang dipertajam **WAJIB** memiliki 7 anatomi presisi berikut:
 ### 2. Precise Public Interface & Method Signatures
 - Menuliskan tanda tangan metode dalam format bahasa target dengan tipe data eksplisit (tanpa `any`, `Object`, atau pointer ambigu).
 
-### 3. Contract Invariance (Pre-conditions & Post-conditions)
-- **Pre-conditions**: Syarat mutlak yang wajib bernilai benar sebelum method dieksekusi (misal: user terotentikasi, amount > 0).
+### 3. Contract & Regression Invariance (Pre-conditions & Post-conditions)
+- **Pre-conditions**: Syarat mutlak yang wajib bernilai benar sebelum method dieksekusi (misal: user terotentikasi, amount > 0). Khusus pada proyek berjalan (*brownfield* / Milestone v1.1+), pre-condition wajib mencatat bahwa *baseline suite test sistem lama saat ini berstatus 100% lulus*.
 - **Post-conditions**: Jaminan mutlak yang pasti terpenuhi setelah method selesai (misal: record order tersimpan di database, event terkirim, saldo berkurang tepat $N$).
+- **Regression Invariance**: Jaminan bahwa implementasi fitur baru tidak merusak perilaku atau tes yang sudah ada sebelumnya (*zero regression* pada existing test suite).
 
 ### 4. Concrete Boundary & Edge Cases Matrix
 - Mendokumentasikan secara rinci skenario anomali: nilai kosong/null, batas maksimum numerik, kegagalan jaringan/timeout, dan tabrakan konkurensi.
@@ -154,12 +156,13 @@ Setiap tugas yang dipertajam **WAJIB** memiliki 7 anatomi presisi berikut:
 - Menyusun rancangan test runner konkret untuk tahap **Red (Failing Test)** lengkap dengan nama test deskriptif, input fixtures, dan assertions.
 
 ### 6. Blast Radius, Side-Effects & Revert Strategy
-- Memetakan modul mana saja yang berpotensi terdampak oleh perubahan ini, serta prosedur pembatalan (*rollback/revert*) jika tugas gagal diselesaikan.
+- Memetakan modul mana saja yang berpotensi terdampak oleh perubahan ini, menganalisis ketergantungan pada kode yang sudah berjalan (pada proyek *brownfield*), serta prosedur pembatalan (*rollback/revert*) jika tugas gagal diselesaikan.
 
 ### 7. Terminal Command Line & Expected Exit Code
 - Menyediakan perintah terminal konkret untuk mengeksekusi pengujian:
   - **Failing Command (Red)**: Perintah untuk memverifikasi test gagal karena implementasi belum ada (`exit code != 0`).
-  - **Passing Command (Green)**: Perintah untuk memverifikasi seluruh test lulus pasca implementasi (`exit code 0`, `0 failures`).
+  - **Passing Command (Green)**: Perintah untuk memverifikasi unit/feature test lulus pasca implementasi (`exit code 0`, `0 failures`).
+  - **Anti-Regression Command (Mode B Milestone)**: Perintah verifikasi suite tes keseluruhan proyek untuk membuktikan tidak ada regresi pada modul lama (`exit code 0`, `0 failures`).
 
 ## Deliverables & Output Artifacts
 
@@ -176,12 +179,14 @@ Setiap penajaman tugas menghasilkan kartu berformat berikut:
 # Task Refinement Card: [Task ID] - [Judul Tugas]
 
 - **Status**: Ready for Implementation (TDD Phase)
+- **Milestone Mode**: [Mode A (Greenfield Initial Build) | Mode B (Incremental Milestone Evolution)]
+- **Active Milestone**: [Milestone 1.0 (MVP) | Milestone 1.1+ (Feature Sprint)]
 - **Domain**: [Web | Mobile | Backend | Database | Security | Core]
 - **Complexity / Size**: [S (1-2 files, ~100 lines) | M (3-4 files, ~200-300 lines)]
-- **Depends On**: [Task ID | None]
+- **Depends On**: [Task ID, misal: Task 1.1 atau Task 1.1.1 | None]
 - **Parallel Safe?**: [Yes | No]
-- **Sumber Backlog**: [docs/TaskBacklog.md](../TaskBacklog.md) (Task X.Y)
-- **Referensi Desain**: [docs/SystemSpec.md](../SystemSpec.md) & [docs/Architecture.md](../Architecture.md)
+- **Sumber Backlog**: [docs/TaskBacklog.md](../TaskBacklog.md) (Task ID: X.Y atau M.S.T)
+- **Referensi Desain**: [docs/SystemSpec.md](../SystemSpec.md), [docs/Architecture.md](../Architecture.md), [docs/DesignSystem.md](../DesignSystem.md), & [docs/Governance.md](../Governance.md)
 - **Decision Record**: [docs/decisions/RDR-[YYYYMMDDHHmm].md](../decisions/RDR-[YYYYMMDDHHmm].md)
 
 ---
@@ -228,18 +233,23 @@ export interface OrderServicePort {
 
 ---
 
-### 3. Contract Invariance (Pre-conditions & Post-conditions)
+### 3. Contract & Regression Invariance (Pre-conditions & Post-conditions)
 
 #### A. Pre-conditions (Syarat Mutlak Sebelum Eksekusi):
 1. `params.userId` wajib berupa non-empty string dan mewakili user yang valid.
 2. `params.items` wajib memiliki minimal 1 elemen dengan `quantity > 0` dan `unitPrice >= 0`.
 3. `params.idempotencyKey` wajib berupa UUID v4 string yang valid.
+4. *(Khusus Mode B)* Baseline existing test suite sistem lama berstatus 100% passing sebelum perubahan dimulai.
 
 #### B. Post-conditions (Garansi Pasti Setelah Eksekusi Selesai):
 1. Record order tersimpan di database dengan status `PENDING` atau `COMPLETED`.
 2. Stok setiap barang dalam `items` berkurang tepat sebesar `quantity`.
 3. Kunci idempotency tersimpan dengan TTL 24 jam untuk mencegah eksekusi ganda.
 4. Jika terjadi kegagalan di tengah jalan (misal stok tidak cukup), transaksi database dibatalkan penuh (*atomic rollback*) dan tidak ada data yang termutasi.
+
+#### C. Regression Invariance (Garansi Bebas Regresi pada Mode B / Proyek Berjalan):
+1. Seluruh pengujian fitur lama pada modul yang berhubungan tetap lulus 100% tanpa perubahan perilaku tak terduga (*zero regression*).
+2. Perintah `npm test && npm run build` menghasilkan exit code 0 dengan 0 failure.
 
 ---
 
@@ -334,10 +344,16 @@ it('should prevent double-processing when two identical idempotency keys arrive 
   # Verifikasi: Test harus dieksekusi dan GAGAL karena method belum diimplementasikan.
   ```
 
-- **Passing Check (Green Phase)**:
+- **Passing Check (Green Phase - Feature Verification)**:
   ```bash
   npm test tests/core/services/order_service.test.ts
   # Target: Exit Code 0, 0 Failures, 0 Errors.
+  ```
+
+- **Anti-Regression Check (Wajib untuk Mode B / Brownfield Milestone)**:
+  ```bash
+  npm test && npm run build
+  # Target: Seluruh test suite proyek lama tetap lulus 100% (Exit Code 0, 0 Failures, Zero Regression).
   ```
 ````
 
@@ -382,7 +398,7 @@ it('should prevent double-processing when two identical idempotency keys arrive 
 - **Happy Path Only (Skipping Boundary & Edge Cases)**: Hanya merancang skenario input ideal dan melupakan kasus `null`, array kosong, batas kuota, timeout, serta tabrakan konkurensi.
 - **File Path Guessing & Ambiguous Directories**: Tidak mencantumkan nama dan path direktori file target secara pasti, membuat sub-agen pelaksana menaruh file di direktori yang salah.
 - **Skipping TDD Red Spec**: Langsung meminta penulisan kode implementasi tanpa menyediakan unit test fixture dan assertion terstruktur yang diverifikasi gagal terlebih dahulu.
-- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 2 pertanyaan sekaligus dalam satu balon chat, bertanya kurang dari 5 pertanyaan, atau melampaui batas 10 pertanyaan pada Tahap 3 (memicu kelelahan pengguna).
+- **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik penajaman), bertanya total kurang dari 5 pertanyaan, atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna).
 - **Forced Irrelevant Specialization**: Memaksakan riset SDK pihak ketiga atau parameter UI pada tugas algoritma internal murni, alih-alih mendeklarasikan status `N/A`.
 - **Unbounded Web Search Avalanche**: Melakukan kurang dari 2 pencarian terarah pada domain yang relevan, melampaui batas 5 pencarian per agen, atau tetap mencari pada domain `N/A`.
 - **Absennya Perintah Verifikasi Terminal**: Tidak menyertakan perintah terminal pasti untuk menguji status kelulusan task (exit code 0 dan 0 failure).

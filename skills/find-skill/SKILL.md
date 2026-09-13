@@ -12,7 +12,7 @@ Skill ini adalah **"Mesin Pencari Cerdas & Pemandu Navigasi Keterampilan Agen"**
 > **Analogi Sederhana (ELI5):**  
 > Bayangkan **Resepsionis Navigasi Cerdas di Rumah Sakit Raksasa**:
 > - **AI Tanpa Find-Skill (Tersesat & Salah Kamar)**: Pasien datang dengan keluhan patah tulang, tetapi diarahkan ke dokter gigi hanya karena dokter gigi sedang menganggur.
-> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 28 dokter spesialis yang bertugas (*katalog skill*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
+> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 30 dokter spesialis yang bertugas (*katalog 30 skill universal*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
 
 ---
 

@@ -59,7 +59,7 @@ flowchart TB
         DPA["dispatching-parallel-agents<br/>(Parallel Subagents)"]:::tool
         SDD["subagent-driven-development<br/>(Autonomous Backlog Loop)"]:::tool
         TS["taste-skill<br/>(Anti-Slop UI & 3-Dial Engine)"]:::tool
-        ELI5["eli5<br/>(Plain English Explanation)"]:::tool
+        ELI5["eli5<br/>(Penjelasan Ramah Awam / ELI5)"]:::tool
     end
 
     subgraph SDLC ["2. Pero SDLC Planning Pipeline (Universal)"]
@@ -67,7 +67,7 @@ flowchart TB
         S2["2. pero-prd-writing"]:::sdlc
         S3["3. pero-user-stories"]:::sdlc
         S4["4. pero-system-architecture<br/>(Toolchain & MCP Server)"]:::sdlc
-        S5["5. pero-uiux-design<br/>(Design System & Wireframes)"]:::sdlc
+        S5["5. pero-uiux-design<br/>(Google Stitch MCP & Design System)"]:::sdlc
         S6["6. pero-quality-governance"]:::sdlc
         S7["7. pero-task-decomposition"]:::sdlc
         S8["8. pero-granular-refinement"]:::sdlc
@@ -212,25 +212,26 @@ flowchart TD
     Q_DISCOVER -->|"Sudah Tahu Kategori Tugas"| Q_CAT
 
     %% Cabang 1: Tahap S1 - Problem Framing
-    Q_CAT -->|"1. Mulai ide baru / Eksplorasi masalah"| SK_PF["pero-problem-framing<br/>(Akar Masalah & Non-Goals)"]
+    Q_CAT -->|"[S1] Mulai ide baru / Eksplorasi masalah"| SK_PF["pero-problem-framing<br/>(Akar Masalah & Non-Goals)"]
     SK_PF -->|"Ide masih ambigu & butuh stress-test?"| SK_GRL1["grilling<br/>(Wawancara Mendalam & Uji Asumsi)"]
     SK_PF -->|"Riset masalah & pasar masif paralel?"| SK_DPA_S1["dispatching-parallel-agents<br/>(Sub-Agen Riset Masalah Paralel)"]
     SK_PF -->|"Validasi data pasar & fakta eksternal?"| SK_WS_S1["web-search<br/>(Riset Web Terarah & Sitasi)"]
     SK_PF -->|"Pivot berisiko / Dilema arah strategis?"| SK_COU1["llm-council<br/>(Musyawarah 5 Penasihat AI)"]
 
     %% Cabang 2: Tahap S2 - PRD Writing
-    Q_CAT -->|"2. Susun spek MVP & Prioritas Fitur"| SK_PRD["pero-prd-writing<br/>(Dokumen PRD & Matriks P0/P1/P2)"]
+    Q_CAT -->|"[S2] Susun spek MVP & Prioritas Fitur"| SK_PRD["pero-prd-writing<br/>(Dokumen PRD & Matriks P0/P1/P2)"]
     SK_PRD -->|"Eksplorasi persona & analisis kompetitor paralel?"| SK_DPA_S2["dispatching-parallel-agents<br/>(Sub-Agen Analisis Persona)"]
     SK_PRD -->|"Trade-off prioritas P0 vs P1 berisiko?"| SK_COU2["llm-council<br/>(Musyawarah Dewan Penasihat)"]
     SK_PRD --> SK_US["pero-user-stories<br/>(Gherkin & Model Entitas)"]
 
     %% Cabang 3: Tahap S3 - User Stories & Contracts
-    Q_CAT -->|"3. Rancang user stories & skenario uji"| SK_US
+    Q_CAT -->|"[S3] Rancang user stories & skenario uji"| SK_US
     SK_US -->|"Drafting story lintas modul paralel?"| SK_DPA_S3["dispatching-parallel-agents<br/>(Sub-Agen Story Lintas Domain)"]
     SK_US --> SK_API["api-contract-design & schema-validator<br/>(Kontrak Endpoint & Schema DTO)"]
+    SK_API --> SK_ARCH
 
     %% Cabang 4: Tahap S4 - Arsitektur & Teknologi
-    Q_CAT -->|"4. Rancang arsitektur & teknologi sistem"| SK_ARCH["pero-system-architecture<br/>(Tech Stack & Server MCP)"]
+    Q_CAT -->|"[S4] Rancang arsitektur & teknologi sistem"| SK_ARCH["pero-system-architecture<br/>(Tech Stack & Server MCP)"]
     SK_ARCH -->|"Eksplorasi prototipe / spike paralel?"| SK_DPA_S4["dispatching-parallel-agents<br/>(Sub-Agen Prototipe & Spike)"]
     SK_ARCH -->|"Butuh dokumentasi resmi library via MCP?"| SK_C7["context-7<br/>(Dokumentasi Resmi API / MCP)"]
     SK_ARCH -->|"Riset arsitektur eksternal & benchmark?"| SK_WS_S4["web-search<br/>(Riset Web Terarah)"]
@@ -239,49 +240,53 @@ flowchart TD
     SK_ARCH --> SK_UIUX
 
     %% Cabang 5: Tahap S5 - Desain Frontend UI/UX
-    Q_CAT -->|"5. Desain UI / Design System / Dashboard"| SK_UIUX["pero-uiux-design<br/>(Design System, Wireframes & 5 States)"]
+    Q_CAT -->|"[S5] Desain UI / Design System / Dashboard"| SK_UIUX["pero-uiux-design<br/>(Design System, Wireframes & 5 States)"]
     SK_UIUX -->|"Engine Anti-Slop & 3 Dials"| SK_TS["taste-skill<br/>(Brief Inference & 3 Dials)"]
     SK_UIUX -->|"Catat Keputusan Desain Visual"| SK_DDR["decision-recorder<br/>(DDR Record)"]
     SK_UIUX --> SK_GOV["pero-quality-governance<br/>(A11y, Concurrency & Review Gates)"]
 
     %% Cabang 6: Tahap S6 - Tata Kelola Kualitas
-    Q_CAT -->|"6. Tetapkan standar kualitas & konkurensi"| SK_GOV
+    Q_CAT -->|"[S6] Tetapkan standar kualitas & konkurensi"| SK_GOV
     SK_GOV -->|"Benchmarking standar keamanan paralel?"| SK_DPA_S5["dispatching-parallel-agents<br/>(Sub-Agen Audit Keamanan Paralel)"]
     SK_GOV --> SK_DECOMP
 
-    %% Cabang 7: Revisi / Tambah / Ubah / Hapus Fitur (Change Request)
-    Q_CAT -->|"7. Ingin tambah/ubah/hapus fitur mid-flight?"| SK_CM["pero-change-management<br/>(Change Triage, Blast Radius & Anti-Zombie ➡️ CRDR)"]
+    %% Cabang 7: Tahap S7 & S8 & S9 - Dekomposisi, Refinement & Validasi
+    Q_CAT -->|"[S7] Pecah arsitektur jadi backlog berfase"| SK_DECOMP["pero-task-decomposition<br/>(Backlog 6 Domain)"]
+    SK_DECOMP -->|"Pecah backlog independen ke sub-agen?"| SK_DPA_S6["dispatching-parallel-agents<br/>(Domain Task Batching)"]
+    SK_DECOMP --> SK_GRAN["pero-granular-refinement<br/>(Kartu Tugas Siap Koding)"]
+    Q_CAT -->|"[S8] Penajaman kartu tugas spesifik"| SK_GRAN
+    SK_GRAN -->|"Penajaman kartu tugas massal paralel?"| SK_DPA_S7["dispatching-parallel-agents<br/>(Sub-Agen Penajaman Kartu)"]
+    SK_GRAN -->|"Ambil signature SDK resmi via Context7?"| SK_C7_S7["context-7<br/>(SDK Method Signatures)"]
+    SK_GRAN --> SK_VALID["pero-context-validation<br/>(Audit Ketertelusuran 8-Arah ➡️ ValidationReport & VDR)"]
+    Q_CAT -->|"[S9] Validasi ketertelusuran dokumen"| SK_VALID
+    SK_VALID -->|"Gate Lolos (GO)"| SK_SDD
+
+    %% Cabang 8: Tahap S10 - Revisi / Tambah / Ubah / Hapus Fitur (Change Management)
+    Q_CAT -->|"[S10] Ingin tambah/ubah/hapus fitur mid-flight?"| SK_CM["pero-change-management<br/>(Change Triage, Blast Radius & Anti-Zombie ➡️ CRDR)"]
     SK_CM -->|"Pivot Masalah Pokok"| SK_PF
     SK_CM -->|"Fitur Baru / Scope MVP"| SK_PRD
     SK_CM -->|"Kontrak / Skenario Baru"| SK_US
     SK_CM -->|"Penyesuaian Backlog Tugas"| SK_DECOMP
 
-    %% Cabang 8: Tahap S7 & S8 - Dekomposisi & Refinement
-    Q_CAT -->|"8. Pecah arsitektur jadi backlog berfase"| SK_DECOMP["pero-task-decomposition<br/>(Backlog 6 Domain)"]
-    SK_DECOMP -->|"Pecah backlog independen ke sub-agen?"| SK_DPA_S6["dispatching-parallel-agents<br/>(Domain Task Batching)"]
-    SK_DECOMP --> SK_GRAN["pero-granular-refinement<br/>(Kartu Tugas Siap Koding)"]
-    SK_GRAN -->|"Penajaman kartu tugas massal paralel?"| SK_DPA_S7["dispatching-parallel-agents<br/>(Sub-Agen Penajaman Kartu)"]
-    SK_GRAN -->|"Ambil signature SDK resmi via Context7?"| SK_C7_S7["context-7<br/>(SDK Method Signatures)"]
-    SK_GRAN --> SK_VALID["pero-context-validation<br/>(Audit Ketertelusuran 8-Arah ➡️ ValidationReport & VDR)"]
-
     %% Cabang 9: Tahap Eksekusi Koding & TDD
-    Q_CAT -->|"9. Eksekusi backlog otonom berkelanjutan"| SK_SDD["subagent-driven-development<br/>(Loop Otonom Sub-Agen)"]
+    Q_CAT -->|"[Dev] Eksekusi backlog otonom berkelanjutan"| SK_SDD["subagent-driven-development<br/>(Loop Otonom Sub-Agen)"]
     SK_SDD --> SK_GIT1["git-ops<br/>(Buat Feature Branch)"]
-    Q_CAT -->|"10. Mulai koding tugas spesifik manual"| SK_GIT1
+    Q_CAT -->|"[Dev] Mulai koding tugas spesifik manual"| SK_GIT1
     SK_GIT1 --> SK_TDD["test-driven-development<br/>(Red -> Green -> Refactor)"]
     SK_TDD --> SK_AS["anti-slop<br/>(Filter YAGNI & Komentar Sampah)"]
+    SK_AS -->|"Kode Bersih & Bebas Slop"| SK_VBC
 
     %% Cabang 10: Troubleshooting & Mass Debugging
-    Q_CAT -->|"11. Menemukan bug / Test error"| SK_DBG["systematic-debugging<br/>(4-Fase Isolasi Akar Masalah)"]
+    Q_CAT -->|"[Debug] Menemukan bug / Test error"| SK_DBG["systematic-debugging<br/>(5-Fase Investigasi Ilmiah Zeller)"]
     SK_DBG -->|"Banyak berkas tes gagal mandiri?"| SK_DPA_DBG["dispatching-parallel-agents<br/>(Mass Debugging Sub-Agen)"]
     SK_DBG -->|"Riset pola error eksternal?"| SK_WS_DBG["web-search<br/>(Investigasi Error Online)"]
     SK_DBG --> SK_TDD
 
     %% Cabang 11: Keamanan & Sanitasi Lingkungan
-    Q_CAT -->|"12. Proteksi rahasia / .env / shell safety"| SK_ENV["env-guard<br/>(Secret Redaction & Command Guard)"]
+    Q_CAT -->|"[Sec] Proteksi rahasia / .env / shell safety"| SK_ENV["env-guard<br/>(Secret Redaction & Command Guard)"]
 
     %% Cabang 12: Selesai, Review, Sinkronisasi & ELI5
-    Q_CAT -->|"13. Mau klaim selesai / Buka PR"| SK_VBC["verification-before-completion<br/>(Bukti Terminal Exit 0)"]
+    Q_CAT -->|"[Ship] Mau klaim selesai / Buka PR"| SK_VBC["verification-before-completion<br/>(Bukti Terminal Exit 0)"]
     SK_VBC --> SK_REV["code-reviewer<br/>(Audit 2-Lapis Spek & Kualitas)"]
     SK_REV --> SK_SYNC["living-doc-sync<br/>(Update Diagram docs)"]
     SK_SYNC --> SK_GIT2["git-ops<br/>(Commit Caveman & PR)"]
@@ -327,7 +332,7 @@ flowchart LR
         P2["2. pero-prd-writing<br/>(Fitur MVP & Matriks Prioritas)<br/>Protokol: 3-Track Squad & Scope Gate"]:::stage
         P3["3. pero-user-stories<br/>(Gherkin & Model Entitas Domain)<br/>Protokol: Fixed 5-Specialist Squad & Contract Gate"]:::stage
         P4["4. pero-system-architecture<br/>(Tech Stack & Server MCP)<br/>Protokol: Fixed 5-Specialist Architecture Squad"]:::stage
-        P5["5. pero-uiux-design<br/>(Design System & Wireframe)<br/>Protokol: Fixed 5-Specialist Design Squad"]:::highlight
+        P5["5. pero-uiux-design<br/>(Google Stitch MCP & Design System)<br/>Protokol: Fixed 5-Specialist Design Squad"]:::highlight
 
         P1 --> P2
         P2 --> P3
@@ -337,7 +342,7 @@ flowchart LR
 
     subgraph PHASE2 ["Tahap 6 - 10: Tata Kelola, Dekomposisi, Validasi & Manajemen Perubahan"]
         P6["6. pero-quality-governance<br/>(Batas Kualitas & Concurrency)<br/>Protokol: Fixed 5-Specialist Governance Squad"]:::stage
-        P7["7. pero-task-decomposition<br/>(Backlog Berfase 6-Domain)<br/>Protokol: Fixed 5-Specialist Backlog Squad"]:::stage
+        P7["7. pero-task-decomposition<br/>(Dual-Mode Backlog 6-Domain)<br/>Protokol: Fixed 5-Specialist Backlog Squad"]:::stage
         P8["8. pero-granular-refinement<br/>(7 Anatomi Presisi & Red Spec)<br/>Protokol: Fixed 5-Specialist Refinement Squad"]:::highlight
         P9["9. pero-context-validation<br/>(Audit Lintas Dokumen & Diagram)<br/>Protokol: Fixed 5-Specialist Validation Squad"]:::stage
         P10["10. pero-change-management<br/>(Scope Pivot & Anti-Zombie)<br/>Protokol: Change Triage & CRDR Record"]:::highlight
@@ -354,11 +359,14 @@ flowchart LR
     %% Feedback loops & Change Management Cascade
     P5 -.->|"Revisi Alur Interaksi"| P3
     P5 -.->|"Revisi Komponen Arsitektur"| P4
-    P9 -.->|"Inkonsistensi Desain UI/UX"| P5
-    P9 -.->|"Ditemukan Inkonsistensi Arsitektur"| P4
-    P9 -.->|"Inkonsistensi Spek / Scope MVP"| P2
     P9 -.->|"Inkonsistensi Masalah Pokok"| P1
+    P9 -.->|"Inkonsistensi Spek / Scope MVP"| P2
     P9 -.->|"Inkonsistensi Skenario User Story"| P3
+    P9 -.->|"Ditemukan Inkonsistensi Arsitektur"| P4
+    P9 -.->|"Inkonsistensi Desain UI/UX"| P5
+    P9 -.->|"Inkonsistensi Batas Tata Kelola"| P6
+    P9 -.->|"Inkonsistensi Backlog Tugas"| P7
+    P9 -.->|"Inkonsistensi Kartu Tugas / Blast Radius"| P8
     P10 -.->|"Pivot Masalah Pokok"| P1
     P10 -.->|"Revisi Scope MVP"| P2
     P10 -.->|"Revisi Kontrak Data"| P3
@@ -416,16 +424,18 @@ sequenceDiagram
     Dev->>TDD: Refactor Kode Tanpa Mengubah Perilaku (REFACTOR Phase)
 
     opt Jika Muncul Bug / Regresi Tak Terduga
-        Dev->>DBG: Investigasi Akar Masalah (4-Fase Isolasi Ilmiah)
+        Dev->>DBG: Investigasi Akar Masalah (5-Fase Investigasi Ilmiah Zeller)
         DBG-->>TDD: Tulis regression test baru (Kembali ke RED)
     end
 
     Dev->>VBC: Jalankan Full Suite Test di Terminal (Bukti Nyata)
     Note over VBC: Verifikasi bukti eksekusi nyata (Exit code 0)
     Dev->>Rev: Audit 2-Lapis (Spec Match & Clean Code)
-    Rev-->>Git: Kode disetujui -> Commit Caveman & Buat PR
+    Rev-->>Dev: Review Lolos (Spec & Code Quality Approved)
     Dev->>Doc: Sinkronisasi Diagram Arsitektur & Dokumentasi docs/
     Doc-->>Dev: Dokumentasi docs/ Terbarui & Konsisten
+    Dev->>Git: Commit Caveman Terpadu & Buat PR
+    Git-->>Dev: PR Terbit & Siap Ditinjau
     Dev->>ELI5: Susun Ringkasan Hasil Kerja Bahasa Ramah Awam
     ELI5-->>Dev: Laporan Siap Disampaikan ke Pengguna Tanpa Jargon
 ```
@@ -440,9 +450,9 @@ sequenceDiagram
 | 2 | [`pero-prd-writing`](skills/pero-prd-writing/SKILL.md) | Pero SDLC | Menyusun PRD formal, prioritas fitur MVP (P0/P1/P2) & NFR | Problem Framing ➡️ `docs/PRD.md` & `PDR` |
 | 3 | [`pero-user-stories`](skills/pero-user-stories/SKILL.md) | Pero SDLC | Menulis skenario uji Gherkin (`Given/When/Then`) & model data | PRD ➡️ `docs/SystemSpec.md` & `SDR` |
 | 4 | [`pero-system-architecture`](skills/pero-system-architecture/SKILL.md) | Pero SDLC | Merancang denah arsitektur sistem, komponen, & diagram Mermaid | System Spec ➡️ `docs/Architecture.md` & `ADR` |
-| 5 | [`pero-uiux-design`](skills/pero-uiux-design/SKILL.md) | Pero SDLC | Merancang wireframe, token tema, hierarki visual & sistem desain | System Spec & Arsitektur ➡️ `docs/DesignSystem.md` & `DDR` |
+| 5 | [`pero-uiux-design`](skills/pero-uiux-design/SKILL.md) | Pero SDLC | Merancang sistem desain, token, & prototipe visual via Google Stitch MCP | System Spec & Arsitektur ➡️ `docs/DesignSystem.md` & `DDR` |
 | 6 | [`pero-quality-governance`](skills/pero-quality-governance/SKILL.md) | Pero SDLC | Menetapkan aturan thread-safety, batas kualitas & review gate | Architecture & Design ➡️ `docs/Governance.md` & `GDR` |
-| 7 | [`pero-task-decomposition`](skills/pero-task-decomposition/SKILL.md) | Pero SDLC | Memecah spesifikasi sistem menjadi backlog 6 domain | Arsitektur, Spek & Desain ➡️ `docs/TaskBacklog.md` & `TDR` |
+| 7 | [`pero-task-decomposition`](skills/pero-task-decomposition/SKILL.md) | Pero SDLC | Memecah spesifikasi sistem ke backlog Dual-Mode (Mode A Greenfield & Mode B Brownfield) | Arsitektur, Spek & Desain ➡️ `docs/TaskBacklog.md` & `TDR` |
 | 8 | [`pero-granular-refinement`](skills/pero-granular-refinement/SKILL.md) | Pero SDLC | Menajamkan kartu tugas dengan file path, signature, & failing test | Task Backlog ➡️ `docs/tasks/TASK-[ID].md` & `RDR` |
 | 9 | [`pero-context-validation`](skills/pero-context-validation/SKILL.md) | Pero SDLC | Mengaudit konsistensi antar seluruh 9 dokumen & diagram Mermaid | Seluruh `docs/*.md` ➡️ `docs/ValidationReport.md` & `VDR` |
 | 10 | [`pero-change-management`](skills/pero-change-management/SKILL.md) | Pero SDLC | Mengorkestrasi revisi, penambahan (ADD), modifikasi (MODIFY), atau penghapusan (REMOVE) fitur mid-flight | Instruksi Revisi Pengguna ➡️ `docs/decisions/CRDR-[YYYYMMDDHHmm].md` & Rekonsiliasi Task |
