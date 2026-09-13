@@ -7,11 +7,11 @@ description: Use when breaking down system specifications and architecture into 
 
 ## Overview
 **Origin**: *Pero Custom SDLC Pipeline - Stage 7 (Universal)*.
-Skill ini bertindak sebagai **"Buku Agenda Kerja & Daftar Ceklis Mandor Bangunan"** (Memecah proyek raksasa menjadi potongan-potongan tugas kecil harian yang berurutan, jelas siapa yang mengerjakan, bagian mana yang dipotong dulu, dan kapan tangga boleh dipasang setelah pondasi kering). Tugasnya adalah menerjemahkan kebutuhan produk dari `docs/PRD.md`, spesifikasi fungsional & user stories dari `docs/SystemSpec.md`, cetak biru arsitektur dari `docs/Architecture.md`, standar desain dari `docs/DesignSystem.md`, dan standar tata kelola kualitas dari `docs/Governance.md` menjadi rencana kerja bertahap (*Phased Execution Plan*) dan daftar tugas terperinci per domain di dalam dokumen **`docs/TaskBacklog.md`** yang berlaku universal untuk semua bahasa dan framework (Universal / Polyglot).
+Skill ini bertindak sebagai **"Buku Agenda Kerja & Daftar Ceklis Mandor Bangunan"** (Memecah proyek raksasa menjadi potongan-potongan tugas kecil harian yang berurutan, jelas siapa yang mengerjakan, bagian mana yang dipotong dulu, dan kapan tangga boleh dipasang setelah pondasi kering). Tugasnya adalah menerjemahkan kebutuhan produk dari `docs/PRD.md`, spesifikasi fungsional & user stories dari `docs/SystemSpec.md` (atau `docs/system-spec/index.md`), cetak biru arsitektur dari `docs/Architecture.md`, standar desain dari `docs/DesignSystem.md`, dan standar tata kelola kualitas dari `docs/Governance.md` menjadi rencana kerja bertahap (*Phased Execution Plan*) dan daftar tugas terperinci per domain di dalam dokumen **`docs/TaskBacklog.md`** (atau `docs/task-backlog/index.md`) yang berlaku universal untuk semua bahasa dan framework (Universal / Polyglot).
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen hulu (`docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, dan `docs/Governance.md`) sebelum memecah tugas, untuk memastikan tidak ada fitur MVP, entitas data, kontrak API, spesifikasi komponen desain UI, aturan konkurensi, atau pagar keamanan yang terlewat tanpa alokasi tugas.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen hulu (`docs/PRD.md`, `docs/SystemSpec.md` [atau `docs/system-spec/index.md` beserta sub-pod-nya], `docs/Architecture.md`, `docs/DesignSystem.md`, dan `docs/Governance.md`) sebelum memecah tugas, untuk memastikan tidak ada fitur MVP, entitas data, kontrak API, spesifikasi komponen desain UI, aturan konkurensi, atau pagar keamanan yang terlewat tanpa alokasi tugas.
 - **Dekomposisi Riset 5 Spesialis Backlog Tetap (*Fixed Task Decomposition Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Dekomposisi Backlog Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan (misal domain UI pada proyek backend headless), agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Tooling & Struktur File Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` dan `web-search` untuk memastikan konvensi penamaan berkas, pola modularisasi paket, dan skrip runner pengujian sesuai dengan standar resmi framework yang dipilih di `Architecture.md`.
 - **Penegakan Kode Bersih & Efisiensi Backlog**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` untuk mencegah kartu tugas menghasilkan boilerplate berlebih, melarang tugas pembuatan komentar sepele, dan melarang pembuatan mock palsu tanpa assertions.
@@ -28,7 +28,7 @@ Dalam menjalankan tahapan dekomposisi tugas, agent WAJIB mengorkestrasi sub-skil
 ## The 5-Stage Task Decomposition Framework
 
 ```
-[0. Ingestion docs/PRD.md, docs/SystemSpec.md, docs/Architecture.md, docs/DesignSystem.md, & docs/Governance.md]
+[0. Ingestion docs/PRD.md, docs/SystemSpec.md (atau docs/system-spec/index.md), docs/Architecture.md, docs/DesignSystem.md, & docs/Governance.md]
                                    │
                                    ▼
 [1. Riset 5 Spesialis Dekomposisi Tetap + Context7 & Web Search]
@@ -99,8 +99,21 @@ Mendelegasikan tim 5 agen spesialis backlog tetap via `dispatching-parallel-agen
   5. Kebijakan Gerbang Persetujuan per Fase (*Phase Checkpoints: review pengguna tiap fase vs eksekusi hands-free penuh*).
 - Tunggu respon pemilihan pengguna dari modal interaktif sebelum melanjutkan penyusunan backlog.
 
-### 4. Penyusunan Dokumen TaskBacklog.md Formal
-- Menyusun dokumen lengkap `docs/TaskBacklog.md` mematuhi 5 fase, 6 lintasan domain, format kartu tugas berukuran S/M, target files eksplisit, dan perintah verifikasi terminal 0-failure.
+### 4. Penyusunan Dokumen TaskBacklog.md Formal (Dual-Mode Backlog Storage)
+- Menyusun dokumen lengkap mematuhi format kartu tugas berukuran S/M, target files eksplisit, dan perintah verifikasi terminal 0-failure:
+
+#### Dual-Mode Task Backlog Storage (Monolith vs Modular Pods)
+
+Untuk menjaga keterbacaan backlog dan memudahkan eksekusi sub-agen paralel tanpa context bloat:
+
+1. **Storage Mode A: Single Board Backlog (Default, < 30 Tugas)**:
+   - Menghasilkan berkas tunggal: `docs/TaskBacklog.md`.
+2. **Storage Mode B: Modular Backlog Pods (Skala Besar / Enterprise, ≥ 30 Tugas)**:
+   - Menghasilkan direktori modular `docs/task-backlog/`:
+     - `docs/task-backlog/index.md`: Papan Dasbor Utama, Tabel Ringkasan Progres Fase/Milestone, Diagram Ketergantungan Alur, dan Task-to-Pod Routing Index.
+     - *Greenfield Pods*: `phase-1-foundation.md`, `phase-2-data-layer.md`, `phase-3-business-logic.md`, `phase-4-ui-workflows.md`, `phase-5-verification.md`.
+     - *Brownfield Pods*: `active-milestone.md` (tugas sprint aktif) dan `archived-milestones.md` (riwayat tugas selesai).
+   - *Catatan Penting*: Kartu tugas presisi 7-anatomi tetap disimpan di `docs/tasks/TASK-[ID].md` secara Just-In-Time.
 
 ### 5. Pembukuan Rekam Keputusan TDR Formal & Audit Konsistensi
 - Membukukan seluruh keputusan strategi backlog ke `docs/decisions/TDR-[YYYYMMDDHHmm].md` menggunakan template standar resmi.
@@ -187,7 +200,7 @@ Setiap butir tugas dalam backlog **WAJIB** mengikuti format standar berikut:
 
 ## Deliverables & Output Artifacts
 
-1. **Living Document**: `docs/TaskBacklog.md`
+1. **Living Document**: `docs/TaskBacklog.md` (Mode A) atau `docs/task-backlog/index.md` beserta sub-pod (Mode B)
 2. **Decision Record**: `docs/decisions/TDR-[YYYYMMDDHHmm].md`
 
 ---
