@@ -7,11 +7,11 @@ description: Use when establishing project governance, coding standards, securit
 
 ## Overview
 **Origin**: *Pero Custom SDLC Pipeline - Stage 6 (Universal)*.
-Skill ini bertindak sebagai **"Papan Tata Tertib Satpam & Polisi Mutu di Pabrik Mainan"** (Memastikan semua pekerja memakai helm keselamatan, kabel listrik tidak korslet, bahan mainan aman tidak beracun, dan setiap barang lolos uji mutu sebelum keluar pabrik). Tugasnya adalah menerjemahkan kebutuhan produk dari `docs/PRD.md`, spesifikasi sistem dari `docs/SystemSpec.md`, arsitektur dari `docs/Architecture.md`, dan cetak biru desain dari `docs/DesignSystem.md` menjadi pedoman tata kelola kualitas, standar koding, pagar pembatas keamanan (*security guardrails*), aturan konkurensi (*thread-safety*), pengujian aksesibilitas UI/UX, dan gerbang rilis (*quality gates*) terstandarisasi di dalam dokumen **`docs/Governance.md`** yang berlaku untuk semua bahasa dan framework (Universal / Polyglot).
+Skill ini bertindak sebagai **"Papan Tata Tertib Satpam & Polisi Mutu di Pabrik Mainan"** (Memastikan semua pekerja memakai helm keselamatan, kabel listrik tidak korslet, bahan mainan aman tidak beracun, dan setiap barang lolos uji mutu sebelum keluar pabrik). Tugasnya adalah menerjemahkan kebutuhan produk dari `docs/PRD.md`, spesifikasi sistem dari `docs/SystemSpec.md` (atau `docs/system-spec/index.md`), arsitektur dari `docs/Architecture.md`, dan cetak biru desain dari `docs/DesignSystem.md` menjadi pedoman tata kelola kualitas, standar koding, pagar pembatas keamanan (*security guardrails*), aturan konkurensi (*thread-safety*), pengujian aksesibilitas UI/UX, dan gerbang rilis (*quality gates*) terstandarisasi di dalam dokumen **`docs/Governance.md`** yang berlaku untuk semua bahasa dan framework (Universal / Polyglot).
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, dan `docs/DesignSystem.md` untuk memastikan seluruh aturan tata kelola, kebijakan keamanan, standar aksesibilitas tampilan, dan gerbang mutu selaras dengan rancangan teknis dan sistem desain yang telah disepakati.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md`, `docs/SystemSpec.md` (atau `docs/system-spec/index.md` beserta sub-pod-nya), `docs/Architecture.md`, dan `docs/DesignSystem.md` untuk memastikan seluruh aturan tata kelola, kebijakan keamanan, standar aksesibilitas tampilan, dan gerbang mutu selaras dengan rancangan teknis dan sistem desain yang telah disepakati.
 - **Dekomposisi Riset 5 Spesialis Tata Kelola Tetap (*Fixed Governance Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Tata Kelola Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan, agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Tooling & Standar Linter Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` dan `web-search` untuk memeriksa standar linter modern (Biome/ESLint, Ruff, golangci-lint, Clippy), aturan compiler strict, dan konfigurasi test runner terkini sesuai tumpukan teknologi yang dipilih di `Architecture.md`.
 - **Penegakan Kode Bersih Tanpa Basa-Basi**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` untuk melarang over-engineering (YAGNI), mengeliminasi komentar sepele yang menjelaskan apa yang sudah jelas dilakukan kode, dan melarang mock tiruan palsu.
@@ -28,7 +28,7 @@ Dalam menjalankan tahapan tata kelola kualitas, agent WAJIB mengorkestrasi sub-s
 ## The 5-Stage Quality Governance Framework
 
 ```
-[0. Ingestion docs/PRD.md, docs/SystemSpec.md, docs/Architecture.md, & docs/DesignSystem.md]
+[0. Ingestion docs/PRD.md, docs/SystemSpec.md (atau docs/system-spec/index.md), docs/Architecture.md, & docs/DesignSystem.md]
                                    │
                                    ▼
 [1. Riset 5 Spesialis Tata Kelola + Context7 & Web Search]
@@ -164,7 +164,7 @@ Mendelegasikan tim 5 agen spesialis tata kelola tetap via `dispatching-parallel-
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, & `docs/DesignSystem.md`
+- **Dokumen Induk**: `docs/PRD.md`, `docs/SystemSpec.md` (atau `docs/system-spec/index.md`), `docs/Architecture.md`, & `docs/DesignSystem.md`
 - **Decision Record**: `docs/decisions/GDR-[YYYYMMDDHHmm].md`
 
 ## 1. Concurrency, State Safety & Thread Isolation Rules

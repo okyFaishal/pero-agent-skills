@@ -14,7 +14,6 @@ fi
 
 plan=$1
 n=$2
-[ -f "$plan" ] || { echo "no such plan or backlog file: $plan" >&2; exit 2; }
 
 if [ $# -eq 3 ]; then
   out=$3
@@ -25,43 +24,83 @@ fi
 
 # 1. Prioritaskan jika kartu tugas granular docs/tasks/TASK-[n].md sudah tersedia
 granular_card="docs/tasks/TASK-${n}.md"
+if [ ! -f "$granular_card" ]; then
+  granular_card="docs/tasks/task-${n}.md"
+fi
 if [ -f "$granular_card" ]; then
+  mkdir -p "$(dirname "$out")"
   cp "$granular_card" "$out"
   echo "copied refined task card ${granular_card} -> ${out}: $(wc -l < "$out" | tr -d ' ') lines"
   exit 0
 fi
 
-# 2. Parsing cerdas docs/TaskBacklog.md atau implementation_plan.md
-# Mendukung format list item (- [ ] **Task N:) dan format heading (#+ Task N)
-awk -v n="$n" '
-  BEGIN { intask = 0 }
-  /^```/ { infence = !infence }
-  
-  # Deteksi awal task: list item "- [ ] **Task N:" atau heading "#+ Task N"
-  !infence && (tolower($0) ~ ("^-[ \\t]+\\[[ xX]\\][ \\t]+\\*\\*task[ \\t]+" tolower(n) "[:\\*]") || \
-               tolower($0) ~ ("^#+[ \\t]+(task[ \\t]+)?" tolower(n) "([: \\t]|$)")) {
-    intask = 1
-    print
-    next
-  }
+# 2. Resolusi fallback untuk direktori atau jalur modular living docs
+if [ ! -f "$plan" ]; then
+  if [ -d "$plan" ] && [ -f "${plan%/}/index.md" ]; then
+    plan="${plan%/}/index.md"
+  elif [ "$plan" = "docs/TaskBacklog.md" ] && [ -f "docs/task-backlog/index.md" ]; then
+    plan="docs/task-backlog/index.md"
+  elif [ "$plan" = "docs/SystemSpec.md" ] && [ -f "docs/system-spec/index.md" ]; then
+    plan="docs/system-spec/index.md"
+  fi
+fi
 
-  # Deteksi akhir task: task berikutnya dimulai atau garis pemisah fase / heading baru
-  !infence && intask && (/^-[ \t]+\[[ xX]\][ \t]+\*\*Task[ \t]+[0-9]+/ || /^#+[ \t]+/ || /^---/) {
-    intask = 0
-    exit
-  }
+[ -f "$plan" ] || { echo "no such plan or backlog file: $plan" >&2; exit 2; }
 
-  intask { print }
-' "$plan" > "$out"
+mkdir -p "$(dirname "$out")"
 
-if [ ! -s "$out" ]; then
-  # 3. Fallback pencarian fleksibel
+# 3. Parsing cerdas docs/TaskBacklog.md atau implementation_plan.md
+extract_task_from_file() {
+  local target_file="$1"
+  local target_out="$2"
+
+  # Mendukung format list item (- [ ] **Task N:) dan format heading (#+ Task N)
   awk -v n="$n" '
-    BEGIN { found = 0 }
-    tolower($0) ~ ("task[ \\t]*" tolower(n) "[: \\t\\*]") { found = 1; print; next }
-    found && (/^-[ \t]+\[[ xX]\][ \t]+\*\*Task/ || /^#+[ \t]+/ || /^---/) { exit }
-    found { print }
-  ' "$plan" > "$out"
+    BEGIN { intask = 0 }
+    /^```/ { infence = !infence }
+    
+    # Deteksi awal task: list item "- [ ] **Task N:" atau heading "#+ Task N"
+    !infence && (tolower($0) ~ ("^-[ \\t]+\\[[ xX]\\][ \\t]+\\*\\*task[ \\t]+" tolower(n) "[:\\*]") || \
+                 tolower($0) ~ ("^#+[ \\t]+(task[ \\t]+)?" tolower(n) "([: \\t]|$)")) {
+      intask = 1
+      print
+      next
+    }
+
+    # Deteksi akhir task: task berikutnya dimulai atau garis pemisah fase / heading baru
+    !infence && intask && (/^-[ \t]+\[[ xX]\][ \t]+\*\*Task[ \t]+[0-9]+/ || /^#+[ \t]+/ || /^---/) {
+      intask = 0
+      exit
+    }
+
+    intask { print }
+  ' "$target_file" > "$target_out"
+
+  if [ ! -s "$target_out" ]; then
+    # Fallback pencarian fleksibel
+    awk -v n="$n" '
+      BEGIN { found = 0 }
+      tolower($0) ~ ("task[ \\t]*" tolower(n) "[: \\t\\*]") { found = 1; print; next }
+      found && (/^-[ \t]+\[[ xX]\][ \t]+\*\*Task/ || /^#+[ \t]+/ || /^---/) { exit }
+      found { print }
+    ' "$target_file" > "$target_out"
+  fi
+}
+
+extract_task_from_file "$plan" "$out"
+
+# 4. Jika belum ditemukan di index.md, pindai sub-pod files pada direktori modular backlog
+if [ ! -s "$out" ]; then
+  plan_dir="$(dirname "$plan")"
+  for pod_file in "${plan_dir}"/phase-*.md "${plan_dir}"/active-milestone.md; do
+    if [ -f "$pod_file" ]; then
+      extract_task_from_file "$pod_file" "$out"
+      if [ -s "$out" ]; then
+        plan="$pod_file"
+        break
+      fi
+    fi
+  done
 fi
 
 if [ ! -s "$out" ]; then
@@ -70,4 +109,3 @@ if [ ! -s "$out" ]; then
 fi
 
 echo "wrote ${out}: $(wc -l < "$out" | tr -d ' ') lines"
-

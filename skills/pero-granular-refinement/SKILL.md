@@ -9,11 +9,11 @@ description: Use when sharpening technical task cards with exact file paths, met
 **Origin**: *Pero Custom SDLC Pipeline - Stage 8 (Universal)*.
 Skill ini bertindak sebagai **"Kaca Pembesar Tukang Jam / Sketsa Bedah Presisi"** (Sebelum dokter bedah membuat sayatan pertama atau tukang jam membongkar roda gigi halus, mereka melihat lewat kaca pembesar berdaya tinggi untuk menandai urat persis mana yang dipegang, baut nomor berapa yang diputar, dan apa tanda jika roda gigi sudah terpasang kencang). 
 
-Tugasnya adalah mempertajam butir tugas makro dari `docs/TaskBacklog.md` menjadi **Kartu Spesifikasi Tugas Granular (*Granular Task Specification Card*)** yang sangat presisi, konkret, dan bebas tebak-tebakan. Dokumen ini membekali subagent atau engineer dengan path file target yang pasti, tanda tangan metode bertipe ketat (*typed signatures*), rujukan token dan wireframe dari `docs/DesignSystem.md` (untuk tugas UI), skenario uji batas ekstrem (*edge cases*), dan spesifikasi failing test TDD awal (*Red step*) sebelum satu baris pun kode implementasi ditulis.
+Tugasnya adalah mempertajam butir tugas makro dari `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md`) menjadi **Kartu Spesifikasi Tugas Granular (*Granular Task Specification Card*)** yang sangat presisi, konkret, dan bebas tebak-tebakan. Dokumen ini membekali subagent atau engineer dengan path file target yang pasti, tanda tangan metode bertipe ketat (*typed signatures*), rujukan token dan wireframe dari `docs/DesignSystem.md` (untuk tugas UI), skenario uji batas ekstrem (*edge cases*), dan spesifikasi failing test TDD awal (*Red step*) sebelum satu baris pun kode implementasi ditulis.
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca butir tugas spesifik dari `docs/TaskBacklog.md` serta memeriksa kontrak terkait di `docs/SystemSpec.md`, cetak biru modul di `docs/Architecture.md`, standar antarmuka di `docs/DesignSystem.md`, dan batas kualitas di `docs/Governance.md`.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca butir tugas spesifik dari `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md`) serta memeriksa kontrak terkait di `docs/SystemSpec.md` (atau `docs/system-spec/index.md`), cetak biru modul di `docs/Architecture.md`, standar antarmuka di `docs/DesignSystem.md`, dan batas kualitas di `docs/Governance.md`.
 - **Dekomposisi Riset 5 Spesialis Penajaman Tetap (*Fixed Refinement Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Penajaman Granular Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan (misal SDK eksternal pada tugas logika murni tanpa dependensi), agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Dokumentasi Library & SDK Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` dan `web-search` untuk memeriksa dokumentasi resmi paket/library pihak ketiga, memastikan tanda tangan fungsi (*method signatures*), tipe data argumen, dan lifecycle method sesuai rilis API mutakhir, bukan hasil halusinasi.
 - **Penegakan Kode Bersih & Anti-Slop**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` untuk melarang over-engineering (YAGNI), mengeliminasi komentar sepele yang redundan, dan melarang mock data palsu yang tidak menguji kegagalan nyata.
@@ -32,7 +32,7 @@ Dalam menjalankan proses penajaman tugas granular, agent WAJIB mengorkestrasi su
 ## The 5-Stage Granular Refinement Framework
 
 ```
-[0. Ingestion docs/TaskBacklog.md & Upstream Context]
+[0. Ingestion docs/TaskBacklog.md (atau docs/task-backlog/) & Upstream Context]
                                    │
                                    ▼
 [1. Riset 5 Spesialis Penajaman Tetap + Context7 & Web Search]
@@ -111,7 +111,7 @@ Mendelegasikan tim 5 agen spesialis penajaman tetap via `dispatching-parallel-ag
 - Menjalankan audit konsistensi hulu-hilir via `pero-context-validation` untuk memastikan kartu tugas selaras dengan PRD, SystemSpec, Architecture, Governance, dan TaskBacklog.
 
 ## When to Use
-- Sebelum subagent, pengembang, atau pelaksana koding mengeksekusi tugas apa pun dari `docs/TaskBacklog.md`.
+- Sebelum subagent, pengembang, atau pelaksana koding mengeksekusi tugas apa pun dari `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md`).
 - Mengubah butir checklist tugas tingkat tinggi menjadi kartu instruksi teknis yang siap dieksekusi secara otonom (*agent-ready*).
 - Menentukan lokasi file test dan implementasi yang presisi tanpa ambiguitas struktur folder.
 - Merumuskan tanda tangan fungsi/metode publik lengkap dengan tipe data parameter, tipe kembalian (*return type*), dan tipe error/exception.
@@ -185,8 +185,8 @@ Setiap penajaman tugas menghasilkan kartu berformat berikut:
 - **Complexity / Size**: [S (1-2 files, ~100 lines) | M (3-4 files, ~200-300 lines)]
 - **Depends On**: [Task ID, misal: Task 1.1 atau Task 1.1.1 | None]
 - **Parallel Safe?**: [Yes | No]
-- **Sumber Backlog**: `docs/TaskBacklog.md` (Task ID: X.Y atau M.S.T)
-- **Referensi Desain**: `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, & `docs/Governance.md`
+- **Sumber Backlog**: `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md`, Task ID: X.Y atau M.S.T)
+- **Referensi Desain**: `docs/SystemSpec.md` (atau `docs/system-spec/index.md`), `docs/Architecture.md`, `docs/DesignSystem.md`, & `docs/Governance.md`
 - **Decision Record**: `docs/decisions/RDR-[YYYYMMDDHHmm].md`
 
 ---

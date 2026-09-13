@@ -448,11 +448,11 @@ sequenceDiagram
 |---|---|---|---|---|
 | 1 | [`pero-problem-framing`](skills/pero-problem-framing/SKILL.md) | Pero SDLC | Memulai proyek baru, eksplorasi ide mentah pengguna | Ide mentah ➡️ `docs/ProblemFraming.md` & `PFDR` |
 | 2 | [`pero-prd-writing`](skills/pero-prd-writing/SKILL.md) | Pero SDLC | Menyusun PRD formal, prioritas fitur MVP (P0/P1/P2) & NFR | Problem Framing ➡️ `docs/PRD.md` & `PDR` |
-| 3 | [`pero-user-stories`](skills/pero-user-stories/SKILL.md) | Pero SDLC | Menulis skenario uji Gherkin (`Given/When/Then`) & model data | PRD ➡️ `docs/SystemSpec.md` & `SDR` |
+| 3 | [`pero-user-stories`](skills/pero-user-stories/SKILL.md) | Pero SDLC | Menulis skenario uji Gherkin (`Given/When/Then`) & model data | PRD ➡️ `docs/SystemSpec.md (atau docs/system-spec/index.md)` & `SDR` |
 | 4 | [`pero-system-architecture`](skills/pero-system-architecture/SKILL.md) | Pero SDLC | Merancang denah arsitektur sistem, komponen, & diagram Mermaid | System Spec ➡️ `docs/Architecture.md` & `ADR` |
 | 5 | [`pero-uiux-design`](skills/pero-uiux-design/SKILL.md) | Pero SDLC | Merancang sistem desain, token, & prototipe visual via Google Stitch MCP | System Spec & Arsitektur ➡️ `docs/DesignSystem.md` & `DDR` |
 | 6 | [`pero-quality-governance`](skills/pero-quality-governance/SKILL.md) | Pero SDLC | Menetapkan aturan thread-safety, batas kualitas & review gate | Architecture & Design ➡️ `docs/Governance.md` & `GDR` |
-| 7 | [`pero-task-decomposition`](skills/pero-task-decomposition/SKILL.md) | Pero SDLC | Memecah spesifikasi sistem ke backlog Dual-Mode (Mode A Greenfield & Mode B Brownfield) | Arsitektur, Spek & Desain ➡️ `docs/TaskBacklog.md` & `TDR` |
+| 7 | [`pero-task-decomposition`](skills/pero-task-decomposition/SKILL.md) | Pero SDLC | Memecah spesifikasi sistem ke backlog Dual-Mode (Mode A Greenfield & Mode B Brownfield) | Arsitektur, Spek & Desain ➡️ `docs/TaskBacklog.md (atau docs/task-backlog/index.md)` & `TDR` |
 | 8 | [`pero-granular-refinement`](skills/pero-granular-refinement/SKILL.md) | Pero SDLC | Menajamkan kartu tugas dengan file path, signature, & failing test | Task Backlog ➡️ `docs/tasks/TASK-[ID].md` & `RDR` |
 | 9 | [`pero-context-validation`](skills/pero-context-validation/SKILL.md) | Pero SDLC | Mengaudit konsistensi antar seluruh 9 dokumen & diagram Mermaid | Seluruh `docs/*.md` ➡️ `docs/ValidationReport.md` & `VDR` |
 | 10 | [`pero-change-management`](skills/pero-change-management/SKILL.md) | Pero SDLC | Mengorkestrasi revisi, penambahan (ADD), modifikasi (MODIFY), atau penghapusan (REMOVE) fitur mid-flight | Instruksi Revisi Pengguna ➡️ `docs/decisions/CRDR-[YYYYMMDDHHmm].md` & Rekonsiliasi Task |

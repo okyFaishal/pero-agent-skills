@@ -64,7 +64,7 @@ Agent mengidentifikasi tipe permintaan perubahan dan mengelompokkan skala dampak
    - Penanganan: Tidak perlu merombak PRD/Arsitektur. Langsung sesuaikan kartu tugas terkait di `docs/tasks/TASK-[ID].md` dan jalankan TDD.
 2. **Minor / Feature**:
    - Cakupan: Menambah alur fitur baru, menambah endpoint API baru, atau tabel baru yang tidak merusak modul utama.
-   - Penanganan: Masuk dari `docs/SystemSpec.md` dan `docs/DesignSystem.md`, perbarui `docs/TaskBacklog.md`, lalu eksekusi.
+   - Penanganan: Masuk dari `docs/SystemSpec.md` (atau `docs/system-spec/`) dan `docs/DesignSystem.md`, perbarui `docs/TaskBacklog.md` (atau `docs/task-backlog/`), lalu eksekusi.
 3. **Major / Architectural Pivot**:
    - Cakupan: Mengganti framework, mengubah alur autentikasi inti, mengubah database relasional ke document store, atau menghapus modul bisnis utama.
    - Penanganan: Wajib masuk dari tingkat teratas (`docs/PRD.md` atau `docs/ProblemFraming.md`), jalankan gerbang Grilling, audit arsitektur (`docs/Architecture.md`), dan rekam keputusan `CRDR`.
@@ -73,16 +73,16 @@ Agent mengidentifikasi tipe permintaan perubahan dan mengelompokkan skala dampak
 
 ### Fase 2: Blast Radius Scan & Active Task State Control
 
-Sebelum satu baris kode pun diubah, Agent wajib memetakan area dampak dan menertibkan status tugas aktif di `docs/TaskBacklog.md`:
+Sebelum satu baris kode pun diubah, Agent wajib memetakan area dampak dan menertibkan status tugas aktif di `docs/TaskBacklog.md` (atau `docs/task-backlog/`):
 
 #### A. Pemindaian Area Terdampak (*Blast Radius Scan*)
 Periksa berkas apa saja yang akan terpengaruh:
 1. **Modul Kode**: File controller, service, domain entity, UI component, atau helper utilitas.
 2. **Pengujian**: Unit test, integration test, atau e2e test yang akan gagal akibat perubahan logika.
-3. **Dokumen & Diagram**: Diagram C4 di `docs/Architecture.md`, kontrak API di `docs/SystemSpec.md`, atau wireframe di `docs/DesignSystem.md`.
+3. **Dokumen & Diagram**: Diagram C4 di `docs/Architecture.md`, kontrak API di `docs/SystemSpec.md` (atau `docs/system-spec/`), atau wireframe di `docs/DesignSystem.md`.
 
 #### B. Penertiban Status Tugas Aktif (Anti-Zombie Tasks)
-Jika ada tugas di `docs/TaskBacklog.md` yang sedang berstatus `IN_PROGRESS` atau `TODO` yang bertentangan dengan perubahan:
+Jika ada tugas di `docs/TaskBacklog.md` (atau `docs/task-backlog/`) yang sedang berstatus `IN_PROGRESS` atau `TODO` yang bertentangan dengan perubahan:
 1. **Hentikan Segera (*Immediate Pause*)**:
    - Hentikan pekerjaan pada tugas lama. Jangan menulis kode yang akan langsung dibuang.
 2. **Transisi Status Baku**:
@@ -119,18 +119,18 @@ docs/PRD.md                      docs/Architecture.md                  docs/task
 ```
 
 1. **Jika Menambah Fitur (*ADD*)**:
-   - Tambahkan skenario Gherkin di `docs/SystemSpec.md`.
+   - Tambahkan skenario Gherkin di `docs/SystemSpec.md` (atau `docs/system-spec/stories.md`).
    - **Rekonsiliasi Backlog Berdasarkan Siklus Proyek**:
-     - *Jika Tahap Pembangunan Awal (Greenfield / MVP v1.0)*: Sisipkan kartu tugas baru ke dalam fase yang sesuai (Phase 1 s/d Phase 5) di `docs/TaskBacklog.md`.
-     - *Jika Pasca-MVP / Proyek Berjalan (Brownfield / v1.1+)*: Inisiasi blok Milestone baru (`## 🚀 Active Milestone: vX.Y - [Nama Fitur]`) di `docs/TaskBacklog.md` menggunakan **4 Langkah Irisan Fitur** (*Step 1: Delta Contracts -> Step 2: Core Domain Logic TDD -> Step 3: UI/UX Workflows via Google Stitch MCP -> Step 4: Regression Audit & Merge Polish*). Lipat riwayat milestone yang telah selesai ke dalam blok `<details><summary>` (*Archived Milestones*).
+     - *Jika Tahap Pembangunan Awal (Greenfield / MVP v1.0)*: Sisipkan kartu tugas baru ke dalam fase yang sesuai (Phase 1 s/d Phase 5) di `docs/TaskBacklog.md` (atau `docs/task-backlog/phase-*.md`).
+     - *Jika Pasca-MVP / Proyek Berjalan (Brownfield / v1.1+)*: Inisiasi blok Milestone baru (`## 🚀 Active Milestone: vX.Y - [Nama Fitur]`) di `docs/TaskBacklog.md` (atau `docs/task-backlog/active-milestone.md`) menggunakan **4 Langkah Irisan Fitur** (*Step 1: Delta Contracts -> Step 2: Core Domain Logic TDD -> Step 3: UI/UX Workflows via Google Stitch MCP -> Step 4: Regression Audit & Merge Polish*). Lipat riwayat milestone yang telah selesai ke dalam blok `<details><summary>` (*Archived Milestones*).
    - Rinci kartu tugas baru di `docs/tasks/TASK-[ID].md` (misal `TASK-1.1.1.md`) dengan 7 anatomi presisi dan invarian anti-regresi.
 2. **Jika Mengubah Fitur (*MODIFY / PIVOT*)**:
-   - Perbarui kontrak di `docs/SystemSpec.md`, diagram alur di `docs/Architecture.md`, atau aturan di `docs/Governance.md`.
+   - Perbarui kontrak di `docs/SystemSpec.md` (atau `docs/system-spec/`), diagram alur di `docs/Architecture.md`, atau aturan di `docs/Governance.md`.
    - Tandai tugas lama sebagai `SUPERSEDED`, buat kartu tugas baru pengganti.
 3. **Jika Menghapus Fitur (*REMOVE*)**:
-   - Hapus skenario fitur dari `docs/SystemSpec.md`.
+   - Hapus skenario fitur dari `docs/SystemSpec.md` (atau `docs/system-spec/`).
    - Hapus komponen terkait dari diagram di `docs/Architecture.md` dan `docs/DesignSystem.md`.
-   - Tandai seluruh tugas terkait di `docs/TaskBacklog.md` sebagai `CANCELLED`.
+   - Tandai seluruh tugas terkait di `docs/TaskBacklog.md` (atau `docs/task-backlog/`) sebagai `CANCELLED`.
 4. **Pencatatan Keputusan**:
    - Rekam perubahan ke dalam `docs/decisions/CRDR-[YYYYMMDDHHmm].md` (*Change Request Decision Record*).
 
@@ -196,7 +196,7 @@ Setiap perubahan skala Minor atau Major wajib dicatat di `docs/decisions/CRDR-[Y
 - **Pengambil Keputusan**: Pengguna & Tim Manajemen Perubahan AI
 - **Tipe Perubahan**: [ADD | MODIFY/PIVOT | REMOVE]
 - **Skala Dampak**: [Patch/Micro | Minor/Feature | Major/Architectural Pivot]
-- **Dokumen Terkait**: `docs/SystemSpec.md`, `docs/Architecture.md`, & `docs/TaskBacklog.md`
+- **Dokumen Terkait**: `docs/SystemSpec.md` (atau `docs/system-spec/`), `docs/Architecture.md`, & `docs/TaskBacklog.md` (atau `docs/task-backlog/`)
 
 ## 1. Konteks & Alasan Perubahan (Why)
 [Jelaskan mengapa perubahan ini diminta oleh pengguna, apa masalah pada rancangan sebelumnya, atau peluang baru apa yang ingin dicapai].

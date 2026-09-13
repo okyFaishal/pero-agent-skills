@@ -9,11 +9,11 @@ description: Use when validating cross-document consistency, detecting documenta
 **Origin**: *Pero Custom SDLC Pipeline - Stage 9 (Universal - Capstone)*.
 Skill ini bertindak sebagai **"Petugas Sensor Alarm & Menara Pengawas Garis Start (*Pre-Flight Safety Officer*)"** (Mencocokkan seluruh baut dan kabel di buku manual pesawat terhadap mesin fisik di landasan sebelum izin terbang diberikan). 
 
-Tugasnya adalah mengaudit dan memverifikasi konsistensi silang 100% di antara seluruh dokumen artefak proyek (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, `docs/tasks/`, dan `docs/decisions/`), mendeteksi dokumen usang (*documentation drift*), memvalidasi sintaksis diagram Mermaid, mengklasifikasikan tingkat keparahan anomali (*severity tiers*), dan memberikan gerbang keputusan akhir apakah proyek diizinkan melangkah ke tahap koding TDD massal (**Go / No-Go Decision**).
+Tugasnya adalah mengaudit dan memverifikasi konsistensi silang 100% di antara seluruh dokumen artefak proyek (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md` [atau `docs/system-spec/`], `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md` [atau `docs/task-backlog/`], `docs/tasks/`, dan `docs/decisions/`), mendeteksi dokumen usang (*documentation drift*), memvalidasi sintaksis diagram Mermaid, mengklasifikasikan tingkat keparahan anomali (*severity tiers*), dan memberikan gerbang keputusan akhir apakah proyek diizinkan melangkah ke tahap koding TDD massal (**Go / No-Go Decision**).
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen artefak repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md`, `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md`, kartu tugas di `docs/tasks/`, dan seluruh rekam keputusan di `docs/decisions/`) untuk mendeteksi kontradiksi, celah kepatuhan, atau spesifikasi yang tertinggal.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen artefak repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md` [atau `docs/system-spec/`], `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md` [atau `docs/task-backlog/`], kartu tugas di `docs/tasks/`, dan seluruh rekam keputusan di `docs/decisions/`) untuk mendeteksi kontradiksi, celah kepatuhan, atau spesifikasi yang tertinggal.
 - **Dekomposisi Riset 5 Spesialis Validasi Konteks Tetap (*Fixed Validation Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Validasi Konteks Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika ada validasi standar eksternal (misal sintaksis Mermaid modern atau parser Markdown), agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika audit murni internal terhadap file lokal, agen wajib mendeklarasikan *Early-Exit* (`N/A: Internal Audit Only`) dan dilarang melakukan pencarian web.
 - **Musyawarah Dewan Audit Mutu & Keabsahan Sistem**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan anomali dokumen, klasifikasi keparahan drift (Critical Blocker vs Warning), dan kompromi rekonsiliasi spesifikasi melalui 5 persona AI.
 - **Wawancara Penguncian Laporan Validasi di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan kelulusan audit (*PASS*) secara sepihak (*anti-rubber-stamping*).
@@ -148,15 +148,15 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 - Fitur yang tidak menjawab pain point apa pun dianggap sebagai pelanggaran YAGNI (*Phantom Feature*) dan wajib dieliminasi atau direklasifikasi.
 
 ### 2. PRD-to-SystemSpec Alignment (Rule 2)
-- Setiap fitur di `docs/PRD.md` wajib dijabarkan menjadi minimal satu *User Story* dengan kriteria penerimaan format Gherkin (`Given`, `When`, `Then`) di `docs/SystemSpec.md`.
-- Endpoint API, parameter input, dan pesan webhook di `SystemSpec.md` wajib mencerminkan kebutuhan interaksi pengguna di PRD.
+- Setiap fitur di `docs/PRD.md` wajib dijabarkan menjadi minimal satu *User Story* dengan kriteria penerimaan format Gherkin (`Given`, `When`, `Then`) di `docs/SystemSpec.md` (atau `docs/system-spec/stories.md`).
+- Endpoint API, parameter input, dan pesan webhook di `SystemSpec.md` (atau `docs/system-spec/contracts.md`) wajib mencerminkan kebutuhan interaksi pengguna di PRD.
 
 ### 3. SystemSpec-to-Architecture Alignment (Rule 3)
-- Semua entitas domain, atribut data unik/terindeks, dan kontrak API di `docs/SystemSpec.md` wajib memiliki modul pemilik, skema tabel/DDL, dan alur konkurensi yang jelas di `docs/Architecture.md`.
+- Semua entitas domain, atribut data unik/terindeks, dan kontrak API di `docs/SystemSpec.md` (atau `docs/system-spec/contracts.md` dan `docs/system-spec/data-model.md`) wajib memiliki modul pemilik, skema tabel/DDL, dan alur konkurensi yang jelas di `docs/Architecture.md`.
 - Alur data (*data flow*) pada diagram arsitektur wajib mencakup seluruh skenario interaksi sistem.
 
 ### 4. SystemSpec/Architecture-to-DesignSystem Alignment (Rule 4)
-- Skenario alur antarmuka pengguna di `docs/SystemSpec.md` dan teknologi client di `docs/Architecture.md` wajib dipetakan ke token desain, denah wireframe layar, dan matriks 5 status interaksi di `docs/DesignSystem.md`.
+- Skenario alur antarmuka pengguna di `docs/SystemSpec.md` (atau `docs/system-spec/stories.md`) dan teknologi client di `docs/Architecture.md` wajib dipetakan ke token desain, denah wireframe layar, dan matriks 5 status interaksi di `docs/DesignSystem.md`.
 - Jika proyek bersifat headless, deklarasi *Headless / CLI Architecture* wajib tercatat rapi di `docs/DesignSystem.md`.
 
 ### 5. Architecture/DesignSystem-to-Governance Alignment (Rule 5)
@@ -164,7 +164,7 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 - Setiap komponen yang menangani data sensitif wajib mematuhi standar enkripsi PII, penyensoran log otomatis (*log redaction*), dan disiplin lockfile `env-guard`.
 
 ### 6. Architecture/DesignSystem/Governance-to-TaskBacklog Alignment (Rule 6)
-- Seluruh modul di `docs/Architecture.md` dan komponen UI di `docs/DesignSystem.md` wajib memiliki kartu tugas konkret yang dapat dieksekusi di `docs/TaskBacklog.md` (*100% Backlog Coverage*).
+- Seluruh modul di `docs/Architecture.md` dan komponen UI di `docs/DesignSystem.md` wajib memiliki kartu tugas konkret yang dapat dieksekusi di `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md` beserta pod-nya) (*100% Backlog Coverage*).
 - Setiap kartu tugas wajib memiliki ukuran kompleksitas (S/M), batasan dependensi (`Depends On`), status keamanan paralel (`Parallel Safe`), dan perintah verifikasi terminal 0-failure.
 - **Audit Dual-Mode Backlog**:
   - Pada Mode A (Greenfield MVP v1.0), seluruh tugas terdistribusi di 5 Fase terurut.

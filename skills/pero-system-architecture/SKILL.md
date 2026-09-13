@@ -7,11 +7,11 @@ description: Use when designing high-level system architecture, tech stack selec
 
 ## Overview
 **Origin**: *Pero Custom SDLC Pipeline - Stage 4 (Universal)*.
-Skill ini bertindak sebagai **"Gambar Denah & Pondasi Bangunan Rumah"** (Menentukan bahan tiang kokoh yang dipakai, letak kamar, pipa air, kabel listrik, dan jalur darurat agar bangunan tahan gempa dan tidak roboh saat dihuni banyak orang). Tugasnya adalah menerjemahkan kebutuhan produk dari `docs/PRD.md` dan spesifikasi fungsional dari `docs/SystemSpec.md` menjadi cetak biru arsitektur teknis **`docs/Architecture.md`** yang kokoh, modular, aman, serta siap dieksekusi oleh tim pengembang di ekosistem pemrograman mana pun (Universal / Polyglot).
+Skill ini bertindak sebagai **"Gambar Denah & Pondasi Bangunan Rumah"** (Menentukan bahan tiang kokoh yang dipakai, letak kamar, pipa air, kabel listrik, dan jalur darurat agar bangunan tahan gempa dan tidak roboh saat dihuni banyak orang). Tugasnya adalah menerjemahkan kebutuhan produk dari `docs/PRD.md` dan spesifikasi fungsional dari `docs/SystemSpec.md` (atau `docs/system-spec/index.md`) menjadi cetak biru arsitektur teknis **`docs/Architecture.md`** yang kokoh, modular, aman, serta siap dieksekusi oleh tim pengembang di ekosistem pemrograman mana pun (Universal / Polyglot).
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md` dan `docs/SystemSpec.md` untuk memastikan arsitektur secara langsung menopang seluruh kebutuhan fitur MVP, kontrak API, dan entitas domain tanpa ada yang terlewat.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md` dan `docs/SystemSpec.md` (atau `docs/system-spec/index.md` beserta sub-pod-nya) untuk memastikan arsitektur secara langsung menopang seluruh kebutuhan fitur MVP, kontrak API, dan entitas domain tanpa ada yang terlewat.
 - **Dekomposisi Riset Arsitektur 5 Spesialis Tetap (*Fixed Architecture Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Arsitektur Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan dengan PRD, agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Dokumentasi API & Versi Library Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk mengecek dokumentasi resmi, kompatibilitas versi LTS/terkini, dan tanda tangan fungsi (*method signatures*) rilis resmi dari pustaka/framework yang dipilih sebelum dicatat ke arsitektur.
 - **Riset Benchmark & Post-Mortem Industri**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, throughput, batas memori, dan laporan kegagalan (*post-mortem failure analysis*) dari tumpukan teknologi yang diusulkan.
@@ -25,7 +25,7 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 ## The 5-Stage System Architecture Framework
 
 ```
-[0. Ingestion docs/PRD.md & docs/SystemSpec.md]
+[0. Ingestion docs/PRD.md & docs/SystemSpec.md (atau docs/system-spec/index.md)]
                        │
                        ▼
 [1. Riset 5 Spesialis Arsitektur + Context7 & Web Search]
@@ -62,7 +62,7 @@ Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-a
    - *Fokus*: Meneliti containerization (Docker / Compose), kebutuhan runtime compiler, server MCP spesifik ekosistem proyek (`gopls`, `xcodebuild-mcp`, `postgres-mcp`), serta target pemulihan bencana (*RPO & RTO*).
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
-- Setiap spesialis membaca `docs/PRD.md` dan `docs/SystemSpec.md` sebelum menjalankan riset.
+- Setiap spesialis membaca `docs/PRD.md` dan `docs/SystemSpec.md` (atau `docs/system-spec/index.md`) sebelum menjalankan riset.
 - Jika domain spesialis tersebut **sama sekali tidak relevan** (misalnya: Spesialis 3 pada aplikasi CLI sekuensial tanpa proses latar belakang, atau Spesialis 4 pada modul lokal internal tanpa koneksi luar):
   - Spesialis **WAJIB** mendeklarasikan: `Status: Not Applicable (N/A). Alasan: [Penjelasan mengapa domain ini tidak dibutuhkan]`.
   - Agen berstatus `N/A` **DILARANG melakukan pencarian (0 search)** dan **DILARANG mengarang arsitektur palsu**.
@@ -164,7 +164,7 @@ Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-a
 - **Versi**: 1.0
 - **Status**: Disetujui (Approved)
 - **Tanggal**: [YYYY-MM-DD]
-- **Dokumen Induk**: `docs/PRD.md` & `docs/SystemSpec.md`
+- **Dokumen Induk**: `docs/PRD.md` & `docs/SystemSpec.md` (atau `docs/system-spec/index.md`)
 - **Decision Record**: `docs/decisions/ADR-[YYYYMMDDHHmm].md`
 
 ## 1. C4 Architecture Diagrams

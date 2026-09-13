@@ -10,13 +10,13 @@ description: Use when designing UI/UX design systems, component architecture, la
 Skill ini bertindak sebagai **"Arsitek Tata Rancang Pengalaman Pengguna & Penjaga Estetika Visual"**.
 (Menganalogikan arsitek interior yang menggambar denah ruangan, memilih paduan warna cat, mengatur pencahayaan alami, dan menata letak perabot rumah tangga agar indah dipandang, nyaman dihuni, dan tidak menyesakkan sebelum tukang kayu dan tukang cat mulai memaku dan mengecat dinding).
 
-Tugas utamanya adalah menerjemahkan kebutuhan fungsional dari `docs/PRD.md`, skenario alur pengguna dari `docs/SystemSpec.md`, dan fondasi teknologi dari `docs/Architecture.md` menjadi cetak biru desain sistem visual **`docs/DesignSystem.md`** yang komprehensif, modular, bebas dari kebiasaan buruk AI (*anti-slop*), dan siap dijadikan rujukan mutlak oleh kartu tugas koding antarmuka di `docs/TaskBacklog.md`.
+Tugas utamanya adalah menerjemahkan kebutuhan fungsional dari `docs/PRD.md`, skenario alur pengguna dari `docs/SystemSpec.md` (atau `docs/system-spec/index.md`, khususnya `docs/system-spec/stories.md`), dan fondasi teknologi dari `docs/Architecture.md` menjadi cetak biru desain sistem visual **`docs/DesignSystem.md`** yang komprehensif, modular, bebas dari kebiasaan buruk AI (*anti-slop*), dan siap dijadikan rujukan mutlak oleh kartu tugas koding antarmuka di `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md`).
 
 ---
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan perancangan desain antarmuka, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md`, `docs/SystemSpec.md`, dan `docs/Architecture.md` untuk memastikan sistem desain secara langsung menopang seluruh alur pengguna (Gherkin user stories), kebutuhan visual MVP, dan tumpukan teknologi frontend yang telah disepakati.
+- **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md`, `docs/SystemSpec.md` (atau `docs/system-spec/index.md` dan secara khusus `docs/system-spec/stories.md` untuk skenario alur pengguna Gherkin), dan `docs/Architecture.md` untuk memastikan sistem desain secara langsung menopang seluruh alur pengguna, kebutuhan visual MVP, dan tumpukan teknologi frontend yang telah disepakati.
 - **Dekomposisi Riset Desain 5 Spesialis Tetap (*Fixed UI/UX Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Desain Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika proyek murni backend headless tanpa UI grafis, agen wajib mendeklarasikan *Early-Exit* (`N/A: Headless Architecture`).
 - **Mesin Estetika & Disiplin Anti-Slop**: **`REQUIRED SUB-SKILL`**: Gunakan `taste-skill` sebagai acuan baku pemilihan palet warna, rasio kontras, konfigurasi 3 Dial (*Variance, Motion, Density*), aturan tipografi, dan larangan pola klise AI (seperti gradasi ungu norak, hero teks rata tengah yang membosankan, dan mockup palsu).
 - **Verifikasi Komponen & Pustaka Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk memeriksa dokumentasi resmi pustaka komponen (misal: Tailwind v4, shadcn/ui, Radix Themes, Material 3, Carbon) guna memastikan komponen yang dirancang benar-benar didukung oleh paket resmi.
@@ -40,7 +40,7 @@ Dalam menjalankan perancangan desain antarmuka, agent WAJIB mengorkestrasi sub-s
 ## The 5-Stage UI/UX Design Framework
 
 ```
-[0. Ingestion docs/PRD.md, docs/SystemSpec.md, docs/Architecture.md]
+[0. Ingestion docs/PRD.md, docs/SystemSpec.md (atau docs/system-spec/index.md), docs/Architecture.md]
                                   │
                                   ▼
 [1. Riset 5 Spesialis Desain Tetap via dispatching-parallel-agents]
@@ -163,7 +163,7 @@ Menulis berkas cetak biru desain lengkap ke `docs/DesignSystem.md` mengikuti tem
 - **Tanggal**: [YYYY-MM-DD]
 - **Status**: Disetujui (Approved)
 - **Author / Lead**: Pero UI/UX Architect & Frontend Lead
-- **Dokumen Induk**: `docs/PRD.md`, `docs/SystemSpec.md`, & `docs/Architecture.md`
+- **Dokumen Induk**: `docs/PRD.md`, `docs/SystemSpec.md` (atau `docs/system-spec/index.md`), & `docs/Architecture.md`
 - **Decision Record**: `docs/decisions/DDR-[YYYYMMDDHHmm].md`
 
 ---

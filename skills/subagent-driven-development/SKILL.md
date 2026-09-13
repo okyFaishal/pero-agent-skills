@@ -7,7 +7,7 @@ description: Use when executing implementation plans or task backlogs autonomous
 
 ## Overview
 **Origin**: *obra/superpowers Subagent-Driven Development (SDD) Pattern + Autonomous Multi-Agent Orchestration*.  
-Skill ini adalah **"Mesin Konveyor Eksekusi Otonom & Orkestrator Sub-Agen Terisolasi"**. Bertanggung jawab mengeksekusi seluruh daftar rencana tugas dari `docs/TaskBacklog.md` atau dokumen rencana implementasi secara berkesinambungan (*continuous autonomous execution*) tanpa interupsi, dengan meluncurkan sub-agen baru per tugas (*fresh context subagent*), mengawal siklus TDD, dan melakukan audit mutu sebelum tugas berikutnya dimulai.
+Skill ini adalah **"Mesin Konveyor Eksekusi Otonom & Orkestrator Sub-Agen Terisolasi"**. Bertanggung jawab mengeksekusi seluruh daftar rencana tugas dari `docs/TaskBacklog.md` (atau `docs/task-backlog/index.md`) atau dokumen rencana implementasi secara berkesinambungan (*continuous autonomous execution*) tanpa interupsi, dengan meluncurkan sub-agen baru per tugas (*fresh context subagent*), mengawal siklus TDD, dan melakukan audit mutu sebelum tugas berikutnya dimulai.
 
 > **Analogi Sederhana (ELI5):**  
 > Bayangkan sebuah **Pabrik Mobil Otomatis Modern**:
@@ -67,7 +67,7 @@ flowchart TD
 │ 1. Pre-Flight Backlog Scan  : Cek konflik & dependensi      │
 │ 2. Dispatch Fresh Implementer: Sub-agen TDD & Anti-Slop     │
 │ 3. Dispatch Task Reviewer   : Audit Spec & Kualitas Kode    │
-│ 4. Update Progress Ledger   : Centang [x] di TaskBacklog.md │
+│ 4. Update Progress Ledger   : Centang [x] di TaskBacklog    │
 │ 5. Final Whole-Branch Polish: Full Suite Test & Buat PR     │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -76,9 +76,10 @@ flowchart TD
 Sebelum meluncurkan Tugas #1:
 - **Verifikasi Gerbang Validasi Konteks (Stage 9 Gate)**: Periksa `docs/ValidationReport.md`. Pastikan status keseluruhan berstatus **🟢 GO (Pass)**. Jika berstatus **🔴 NO-GO (Blocker)**, eksekusi backlog otonom DILARANG berjalan sebelum blocker diselesaikan dan diselaraskan via `pero-context-validation`.
 - **Deteksi Mode Backlog & Scope Milestone**:
-  - Periksa bagian `📦 Milestone Registry & Status` di `docs/TaskBacklog.md`.
-  - **Mode A (Greenfield Initial Build)**: Jika mengerjakan MVP v1.0, pindai urutan 5 fase linier (Phase 1 ➡️ Phase 5).
-  - **Mode B (Incremental Milestone Evolution)**: Jika mengerjakan sprint fitur baru (v1.1+ atau proyek *brownfield*), cari blok **`## 🚀 Active Milestone: vX.Y`**. Sub-agen membatasi eksekusi HANYA pada tugas di dalam Active Milestone tersebut (Step 1 s/d Step 4). Seluruh tugas yang tersimpan di dalam blok lipatan `<details><summary>` (*Archived Milestones*) **DIABAIKAN** dan dilarang dieksekusi ulang.
+  - Deteksi lokasi backlog `$BACKLOG_PATH`: gunakan `docs/task-backlog/index.md` jika direktori modular tersedia, atau fallback ke `docs/TaskBacklog.md`.
+  - Periksa bagian `📦 Milestone Registry & Status` di `$BACKLOG_PATH`.
+  - **Mode A (Greenfield Initial Build)**: Jika mengerjakan MVP v1.0, pindai urutan 5 fase linier (Phase 1 ➡️ Phase 5). Pada mode modular, tugas tersimpan di `docs/task-backlog/phase-*.md`.
+  - **Mode B (Incremental Milestone Evolution)**: Jika mengerjakan sprint fitur baru (v1.1+ atau proyek *brownfield*), cari blok **`## 🚀 Active Milestone: vX.Y`** (pada file monolitik atau di `docs/task-backlog/active-milestone.md`). Sub-agen membatasi eksekusi HANYA pada tugas di dalam Active Milestone tersebut (Step 1 s/d Step 4). Seluruh tugas yang tersimpan di dalam arsip (*Archived Milestones*) **DIABAIKAN** dan dilarang dieksekusi ulang.
 - Pastikan urutan fase/step logis dan tidak ada instruksi yang saling bertentangan.
 - Jika ada kontradiksi nyata di awal, ajukan 1 pertanyaan klarifikasi kepada pengguna sebelum mulai. Jika aman, **langsung mulai eksekusi tanpa menunggu persetujuan lanjutan**.
 
@@ -86,7 +87,8 @@ Sebelum meluncurkan Tugas #1:
 - Koordinator mengekstrak kartu tugas ke file ringkasan via skrip (adaptif terhadap lokasi direktori `skills/` atau `.agents/skills/`):
   ```bash
   CMD_BRIEF=$( [ -f "./skills/subagent-driven-development/scripts/task-brief" ] && echo "./skills/subagent-driven-development/scripts/task-brief" || echo "./.agents/skills/subagent-driven-development/scripts/task-brief" )
-  $CMD_BRIEF docs/TaskBacklog.md "1.1"
+  BACKLOG_FILE=$( [ -f "docs/task-backlog/index.md" ] && echo "docs/task-backlog/index.md" || echo "docs/TaskBacklog.md" )
+  $CMD_BRIEF "$BACKLOG_FILE" "1.1"
   ```
 - **Penanganan Khusus Tugas UI (Google Stitch MCP)**:
   - Jika tugas menargetkan antarmuka (Mode A Phase 4 atau Mode B Step 3), Implementer wajib membaca `docs/DesignSystem.md` dan memeriksa kode HTML prototipe di `assets/stitch-code/` serta screenshot visual di `assets/stitch-screens/`.
@@ -115,8 +117,8 @@ Sebelum meluncurkan Tugas #1:
      - **Opsi 4**: *"Rollback Task: Batalkan perubahan tugas ini (git reset ke BASE_SHA) dan hentikan eksekusi sementara."*
 
 ### 4. Update Progress Ledger (Catat Kemajuan)
-- Perbarui centang di `docs/TaskBacklog.md` dari `- [ ]` menjadi `- [x]`.
-- Jika seluruh tugas dalam blok `Active Milestone` telah selesai, tandai Milestone sebagai selesai di `📦 Milestone Registry & Status`, dan pindahkan/lipat butir tugasnya ke dalam blok `<details><summary>` (*Archived Milestones*).
+- Perbarui centang di `docs/TaskBacklog.md` (atau pada pod fase terkait `docs/task-backlog/phase-*.md` / `active-milestone.md` dan tabel ringkasan di `index.md`) dari `- [ ]` menjadi `- [x]`.
+- Jika seluruh tugas dalam blok `Active Milestone` telah selesai, tandai Milestone sebagai selesai di `📦 Milestone Registry & Status`, dan perbarui arsip milestone terkait.
 - Tanpa berhenti atau menanyakan *"Bolehkah saya lanjut?"*, koordinator otomatis mengambil kartu tugas berikutnya dan kembali ke Langkah 2.
 
 ### 5. Final Whole-Branch Polish & PR (Penyelesaian Akhir)
