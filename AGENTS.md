@@ -60,3 +60,15 @@
 28. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri, squad spesialis SDLC, & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
 29. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate berlandaskan gerbang validasi Go (`subagent-driven-development`).
 30. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, 3 dials (Variance, Motion, Density), dashboard, data tables & typography (`taste-skill`).
+
+## 6. Graphify Codebase Knowledge Graph Protocol (Selective JIT Integration)
+- **Prinsip Dasar**: Graphify adalah instrumen X-Ray berdaya sinyal tinggi untuk membedah relasi kode rumit dan dependensi modul.
+- **Kapan WAJIB Digunakan**:
+  1. *Brownfield Onboarding & Architecture Discovery*: Saat pertama kali membedah proyek yang sudah memiliki kode besar (`pero-system-architecture` & Mode B pada `pero-task-decomposition`).
+  2. *Blast Radius Impact Audit*: Saat memindai dampak perubahan atau refactor modul besar sebelum eksekusi (`pero-change-management`).
+  3. *Multi-Module Dependency Tracing*: Saat mengisolasi alur pemanggilan fungsi lintas modul pada `systematic-debugging`.
+- **Kapan DILARANG Digunakan (Anti-Patterns / YAGNI)**:
+  1. *Micro Inner-Loop*: Dilarang memicu graphify pada setiap siklus cepat TDD (`test-driven-development`), penulisan fungsi sepele, atau formatting code (`anti-slop`).
+  2. *Greenfield Ideation*: Dilarang menjalankan graphify pada proyek baru yang kodenya belum dibuat (`pero-problem-framing`, `pero-prd-writing`).
+  3. *Universal Middleware*: Dilarang memasang hook otomatis buta yang memblokir setiap prompt pengguna dengan pemindaian graf penuh.
+- **Mekanisme Akses**: Manfaatkan server MCP `graphify` (`query_graph`, `get_node`, `get_neighbors`, `shortest_path`) atau perintah `/graphify`.

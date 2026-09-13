@@ -75,6 +75,7 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Bahasa Awam** | "Jelaskan dengan sederhana", "analogi awam", "ELI5", "bahasa manusia" | [`eli5`](../eli5/SKILL.md) |
 | **Pembersih Slop** | "Hapus kode sampah", "anti-slop", "YAGNI", "bersihkan komentar sepele" | [`anti-slop`](../anti-slop/SKILL.md) |
 | **Estetika UI Visual** | "Desain landing page", "taste-skill", "frontend estetis", "portofolio styling", "anti-slop UI", "motion UI" | [`taste-skill`](../taste-skill/SKILL.md) |
+| **Peta Relasi Kode (Graphify MCP)** | "Peta dependensi", "graphify", "knowledge graph codebase", "blast radius AST", "shortest path modul" | Dynamic MCP Overlay: `graphify` & [`pero-system-architecture`](../pero-system-architecture/SKILL.md) / [`pero-change-management`](../pero-change-management/SKILL.md) |
 | **Pencarian Skill** | "Skill apa yang cocok?", "cari instruksi", "panduan kerja" | [`find-skill`](../find-skill/SKILL.md) |
 
 ---
@@ -124,6 +125,9 @@ Selain mencocokkan kata kunci tugas, `find-skill` bertindak sebagai **Mesin Peny
 
 3. **Penyelarasan Runtime MCP (.mcp_config.json)**:
    - Jika proyek membutuhkan interaksi langsung dengan compiler/simulator native (seperti Xcode atau Chrome), `find-skill` menyelaraskan konfigurasi MCP ke `.mcp_config.json` lokal atau file konfigurasi agen terkait agar tools langsung tersedia di sesi kerja.
+
+4. **Codebase Graph & AST Navigation (Graphify MCP)**:
+   - Terdeteksi `graphify-out/` atau kueri eksplisit mengenai arsitektur kode/relasi modul ➡️ Menyiapkan perkakas MCP `graphify` (`query_graph`, `get_neighbors`, `shortest_path`).
 
 ---
 
