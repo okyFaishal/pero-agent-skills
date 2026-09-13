@@ -293,11 +293,31 @@ main() {
   else
     echo "-> Mengunduh paket resmi dari GitHub (${REPO_URL})..."
     TEMP_DIR="$(mktemp -d)"
-    if git clone --depth 1 "$REPO_URL" "${TEMP_DIR}/repo" 2>/dev/null; then
-      source_skills="${TEMP_DIR}/repo/skills"
-      source_agents_md="${TEMP_DIR}/repo/AGENTS.md"
-    else
-      echo "❌ Gagal mengunduh repositori. Pastikan koneksi internet atau hak akses GitHub tersedia." >&2
+    local downloaded=false
+    if command -v git >/dev/null 2>&1; then
+      if git clone --depth 1 "$REPO_URL" "${TEMP_DIR}/repo" 2>/dev/null; then
+        source_skills="${TEMP_DIR}/repo/skills"
+        source_agents_md="${TEMP_DIR}/repo/AGENTS.md"
+        downloaded=true
+      fi
+    fi
+
+    if [[ "$downloaded" == false ]]; then
+      echo "   [ℹ️ ] git clone tidak tersedia atau gagal, mencoba unduhan tarball via curl..."
+      local tarball_url="https://github.com/okyFaishal/pero-agent-skills/archive/refs/heads/main.tar.gz"
+      if command -v curl >/dev/null 2>&1 && command -v tar >/dev/null 2>&1; then
+        rm -rf "${TEMP_DIR}/repo"
+        mkdir -p "${TEMP_DIR}/repo"
+        if curl -fsSL "$tarball_url" 2>/dev/null | tar -xzf - -C "${TEMP_DIR}/repo" --strip-components=1 2>/dev/null; then
+          source_skills="${TEMP_DIR}/repo/skills"
+          source_agents_md="${TEMP_DIR}/repo/AGENTS.md"
+          downloaded=true
+        fi
+      fi
+    fi
+
+    if [[ "$downloaded" == false ]]; then
+      echo "❌ Gagal mengunduh repositori. Pastikan koneksi internet, git, atau curl+tar tersedia." >&2
       exit 1
     fi
   fi

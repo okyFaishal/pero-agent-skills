@@ -43,3 +43,8 @@ if [[ -d "$DRY_RUN_DIR" ]]; then
 fi
 
 echo "✓ PASS: Cursor adapter symlink and dry-run verified successfully"
+
+echo "-> Testing remote fallback download logic..."
+grep -q "tarball_url" "${REPO_ROOT}/install.sh"
+grep -q "tar -xzf -" "${REPO_ROOT}/install.sh"
+echo "✓ PASS: Tarball fallback logic is in place"
