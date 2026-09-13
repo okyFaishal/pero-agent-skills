@@ -107,8 +107,23 @@ Untuk mencegah pemaksaan masalah palsu (*over-engineering*) pada proyek sederhan
   7. Matriks Hak Akses Peran / RBAC (Batas wewenang peran, multi-tenant scoping, dan data boundary).
 - Tunggu respon pemilihan pengguna dari modal interaktif sebelum melanjutkan penyusunan spesifikasi.
 
-### 4. Penyusunan Dokumen SystemSpec.md Formal & Rekam Keputusan SDR
-- Menyusun dokumen lengkap `docs/SystemSpec.md` mematuhi *Strict Markdown Integrity Protocol* (sanitasi `\|`, blok kode terisolasi, diagram Mermaid bersih).
+### 4. Penyusunan Dokumen Spesifikasi Sistem (Dual-Mode Architecture: Monolith vs Modular Pods)
+
+Untuk menjaga context window AI tetap efisien dan mencegah penurunan fokus kognitif (*Lost-in-the-Middle*), agent menerapkan pola penyimpanan adaptif:
+
+1. **Mode A: Single File Monolith (Default, < 600 Baris)**:
+   - Menghasilkan berkas tunggal: `docs/SystemSpec.md`.
+   - Cocok untuk aplikasi sederhana, MVP dengan 1–2 domain, atau perkakas CLI.
+
+2. **Mode B: Modular Pods with Master Facade (Skala Besar / Enterprise / 3+ Domain)**:
+   - Diterapkan bila spesifikasi diperkirakan melampaui ambang batas 600 baris atau atas permintaan eksplisit pengguna.
+   - Menghasilkan direktori modular `docs/system-spec/`:
+     - `docs/system-spec/index.md`: Master Facade, Ringkasan Eksekutif, Domain & API Routing Table, Invarian Global, dan Contoh Amplop Respons Baku.
+     - `docs/system-spec/stories.md`: Skenario User Stories lengkap berformat Gherkin (*Given-When-Then*), mencakup Happy Path, Negative Path, dan Edge Cases.
+     - `docs/system-spec/contracts.md`: Kontrak Endpoint API/IPC, Format Amplop Respons Baku (selaras RFC 9457), Protokol Kunci Idempotensi, dan Matriks Penanganan Galat.
+     - `docs/system-spec/data-model.md`: Kamus Data Entitas Domain Inti, Diagram Hubungan Entitas (ERD Mermaid), dan Mesin Status FSM.
+
+- Mematuhi *Strict Markdown Integrity Protocol* (sanitasi `\|`, blok kode terisolasi, diagram Mermaid bersih).
 - Membukukan alasan di balik penetapan kontrak antarmuka dan pemodelan data ke `docs/decisions/SDR-[YYYYMMDDHHmm].md` via `decision-recorder`.
 
 ### 5. Audit Keterlacakan Hulu-Hilir (via `pero-context-validation`)
@@ -118,7 +133,7 @@ Untuk mencegah pemaksaan masalah palsu (*over-engineering*) pada proyek sederhan
 
 ## Deliverables & Output Artifacts
 
-1. **Living Document**: `docs/SystemSpec.md`
+1. **Living Document**: `docs/SystemSpec.md` (Mode A) atau `docs/system-spec/index.md` beserta sub-pod (Mode B)
 2. **Decision Record**: `docs/decisions/SDR-[YYYYMMDDHHmm].md`
 
 ---
