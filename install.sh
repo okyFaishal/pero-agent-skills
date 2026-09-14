@@ -407,12 +407,18 @@ if brave_key:
     "env": {"BRAVE_API_KEY": brave_key}
   }
 
-# Google Stitch MCP (Ditambahkan jika kunci tersedia)
+# Google Stitch MCP
 if stitch_key:
   servers["google-stitch"] = {
     "command": "npx",
     "args": ["-y", "@_davideast/stitch-mcp"],
     "env": {"STITCH_API_KEY": stitch_key}
+  }
+else:
+  servers["google-stitch"] = {
+    "command": "npx",
+    "args": ["-y", "@_davideast/stitch-mcp"],
+    "env": {"STITCH_API_KEY": "${STITCH_API_KEY}"}
   }
 
 # Graphify MCP

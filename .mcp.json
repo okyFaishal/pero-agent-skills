@@ -27,6 +27,16 @@
         "chrome-devtools-mcp"
       ]
     },
+    "google-stitch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@_davideast/stitch-mcp"
+      ],
+      "env": {
+        "STITCH_API_KEY": "${STITCH_API_KEY}"
+      }
+    },
     "graphify": {
       "command": "graphify",
       "args": [
