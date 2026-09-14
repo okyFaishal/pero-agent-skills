@@ -16,11 +16,11 @@ if [ -z "${BASH_VERSION:-}" ]; then
 fi
 
 # ==============================================================================
-# 🚀 Pero Agent Skills Universal Installer (Standalone v3.1)
+# 🚀 Pero Agent Skills Universal Installer (Standalone v3.2)
 # Creator: Pero (https://github.com/okyFaishal/pero-agent-skills)
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
-#   Or: bash install.sh [TARGET_DIR] [--check] [--dry-run] [--harness=<list>]
+#   Or: bash install.sh [TARGET_DIR] [-i|--interactive] [-y|--yes] [--with-graphify] [--check] [--dry-run]
 # ==============================================================================
 set -euo pipefail
 
@@ -350,6 +350,10 @@ setup_mcp_servers() {
   local has_graphify=false
   if command -v graphify >/dev/null 2>&1 || [[ -d "${target_dir}/graphify-out" ]]; then
     has_graphify=true
+    echo "   [✓] Server MCP Graphify aktif (Peta relasi kode terdeteksi)."
+  else
+    echo "   [ℹ️ ] Server MCP Graphify dilewati (Belum terpasang di PATH)."
+    echo "       💡 Tips: Pasang terisolasi dengan: uv tool install graphifyy"
   fi
 
   # Bangun payload JSON menggunakan python3 atau node
@@ -464,6 +468,165 @@ print(json.dumps(servers))
 }
 
 # ------------------------------------------------------------------------------
+# 2.5. Isolated Package Provisioning & Interactive Setup Wizard
+# ------------------------------------------------------------------------------
+install_graphify_safe() {
+  local dry_run="$1"
+
+  if command -v graphify >/dev/null 2>&1; then
+    echo "   [✓] Graphify CLI sudah terpasang di sistem ($(command -v graphify))."
+    return 0
+  fi
+
+  echo "-> Memasang Graphify CLI secara terisolasi (Anti-PEP 668)..."
+  if [[ "$dry_run" == true ]]; then
+    echo "   [🔍 DRY-RUN] Akan memasang Graphify via 'uv tool install graphifyy' atau 'pipx install graphifyy'"
+    return 0
+  fi
+
+  if command -v uv >/dev/null 2>&1; then
+    echo "   [⚡] Menjalankan: uv tool install graphifyy"
+    if ( uv tool install graphifyy 2>&1 ); then
+      echo "   [✓] Graphify berhasil dipasang via uv tool."
+    else
+      echo "   [⚠️ ] Warning: Gagal memasang graphify via uv tool. Pemasangan skill Pero tetap dilanjutkan."
+    fi
+  elif command -v pipx >/dev/null 2>&1; then
+    echo "   [⚡] Menjalankan: pipx install graphifyy"
+    if ( pipx install graphifyy 2>&1 ); then
+      echo "   [✓] Graphify berhasil dipasang via pipx."
+    else
+      echo "   [⚠️ ] Warning: Gagal memasang graphify via pipx. Pemasangan skill Pero tetap dilanjutkan."
+    fi
+  else
+    echo "   [⚠️ ] Warning: 'uv' atau 'pipx' tidak ditemukan di PATH."
+    echo "       Untuk melindungi Python sistem (PEP 668), Graphify tidak dipasang via pip global."
+    echo "       Rekomendasi: Pasang uv (https://astral.sh/uv) lalu jalankan: uv tool install graphifyy"
+  fi
+}
+
+prompt_read() {
+  local prompt_text="$1"
+  local default_val="$2"
+  local input_val=""
+
+  printf "%s" "$prompt_text" > /dev/tty
+  read -r input_val < /dev/tty || input_val=""
+  if [[ -z "$input_val" ]]; then
+    echo "$default_val"
+  else
+    echo "$input_val"
+  fi
+}
+
+run_interactive_wizard() {
+  echo "" > /dev/tty
+  echo "=================================================================" > /dev/tty
+  echo " 🧙 Selamat Datang di Pero Agent Skills Setup Wizard!" > /dev/tty
+  echo " Pemandu langkah-demi-langkah pemasangan 30 Universal SDLC Skills." > /dev/tty
+  echo "=================================================================" > /dev/tty
+  echo "" > /dev/tty
+
+  # 1. Target Workspace Directory
+  local default_dir="${target_dir:-.}"
+  local dir_choice
+  dir_choice="$(prompt_read "📂 1. Tentukan direktori target proyek [Default: ${default_dir}]: " "${default_dir}")"
+  target_dir="${dir_choice:-$default_dir}"
+
+  # 2. Coding Assistant / Harness Adapters
+  echo "" > /dev/tty
+  echo "🤖 2. Pilih integrasi asisten koding (Harness Adapters):" > /dev/tty
+  echo "   [1] Auto-Detect: Deteksi otomatis sesuai konfigurasi IDE di proyek (Rekomendasi)" > /dev/tty
+  echo "   [2] Universal All: Pasang untuk semua IDE (Cursor, Claude Code, Windsurf, Cline)" > /dev/tty
+  echo "   [3] Kustom: Pilih IDE tertentu secara manual" > /dev/tty
+  local harness_choice
+  harness_choice="$(prompt_read "   Pilihan [1]: " "1")"
+
+  case "$harness_choice" in
+    2)
+      harness_arg="all"
+      harness_explicit=true
+      ;;
+    3)
+      local chosen=()
+      local c_cursor
+      c_cursor="$(prompt_read "   - Pasang adapter Cursor? [Y/n]: " "y")"
+      [[ "$c_cursor" =~ ^[Yy]$ || -z "$c_cursor" ]] && chosen+=("cursor")
+
+      local c_claude
+      c_claude="$(prompt_read "   - Pasang adapter Claude Code? [Y/n]: " "y")"
+      [[ "$c_claude" =~ ^[Yy]$ || -z "$c_claude" ]] && chosen+=("claude")
+
+      local c_windsurf
+      c_windsurf="$(prompt_read "   - Pasang adapter Windsurf? [Y/n]: " "y")"
+      [[ "$c_windsurf" =~ ^[Yy]$ || -z "$c_windsurf" ]] && chosen+=("windsurf")
+
+      local c_cline
+      c_cline="$(prompt_read "   - Pasang adapter Cline / Roo Code? [Y/n]: " "y")"
+      [[ "$c_cline" =~ ^[Yy]$ || -z "$c_cline" ]] && chosen+=("cline")
+
+      if [[ ${#chosen[@]} -eq 0 ]]; then
+        harness_arg="antigravity"
+      else
+        local old_ifs="$IFS"
+        IFS=','
+        harness_arg="${chosen[*]}"
+        IFS="$old_ifs"
+      fi
+      harness_explicit=true
+      ;;
+    *)
+      # Default: Auto-Detect
+      harness_explicit=false
+      ;;
+  esac
+
+  # 3. Optional Knowledge Graph (Graphify)
+  echo "" > /dev/tty
+  if command -v graphify >/dev/null 2>&1; then
+    echo "🌐 3. Peta Graf Kode (Graphify CLI):" > /dev/tty
+    echo "   [✓] Terdeteksi sudah terpasang di sistem ($(command -v graphify))." > /dev/tty
+    with_graphify=false
+  else
+    echo "🌐 3. Peta Graf Kode (Graphify CLI untuk X-ray arsitektur):" > /dev/tty
+    echo "   [1] Lewati: Tetap gunakan deteksi standar tanpa Graphify (Rekomendasi)" > /dev/tty
+    echo "   [2] Pasang: Pasang Graphify secara terisolasi via 'uv tool' atau 'pipx'" > /dev/tty
+    local g_choice
+    g_choice="$(prompt_read "   Pilihan [1]: " "1")"
+    if [[ "$g_choice" == "2" ]]; then
+      with_graphify=true
+    else
+      with_graphify=false
+    fi
+  fi
+
+  # 4. Ringkasan & Konfirmasi
+  echo "" > /dev/tty
+  echo "-----------------------------------------------------------------" > /dev/tty
+  echo "📋 Ringkasan Rencana Pemasangan:" > /dev/tty
+  echo "   - Target Direktori : ${target_dir}" > /dev/tty
+  if [[ "$harness_explicit" == true ]]; then
+    echo "   - Harness Adapter  : ${harness_arg}" > /dev/tty
+  else
+    echo "   - Harness Adapter  : Auto-Detect (Cerdas)" > /dev/tty
+  fi
+  if [[ "$with_graphify" == true ]]; then
+    echo "   - Pasang Graphify  : Ya (Terisolasi via uv/pipx)" > /dev/tty
+  else
+    echo "   - Pasang Graphify  : Tidak (Bawaan)" > /dev/tty
+  fi
+  echo "-----------------------------------------------------------------" > /dev/tty
+  local confirm
+  confirm="$(prompt_read "Mulai proses instalasi sekarang? [Y/n]: " "y")"
+  if [[ ! "$confirm" =~ ^[Yy]$ && -n "$confirm" ]]; then
+    echo "" > /dev/tty
+    echo "❌ Pemasangan dibatalkan oleh pengguna." > /dev/tty
+    exit 0
+  fi
+  echo "" > /dev/tty
+}
+
+# ------------------------------------------------------------------------------
 # 3. Main Operational Logic
 # ------------------------------------------------------------------------------
 main() {
@@ -472,9 +635,25 @@ main() {
   local dry_run=false
   local harness_arg="antigravity"
   local harness_explicit=false
+  local force_interactive=false
+  local force_non_interactive=false
+  local with_graphify=false
+  local original_argc=$#
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -i|--interactive)
+        force_interactive=true
+        shift
+        ;;
+      -y|--yes|--non-interactive)
+        force_non_interactive=true
+        shift
+        ;;
+      --with-graphify)
+        with_graphify=true
+        shift
+        ;;
       --check)
         check_only=true
         shift
@@ -494,13 +673,16 @@ main() {
         shift 2
         ;;
       --version|-v)
-        echo "pero-agent-skills installer v3.1.0 (standalone)"
+        echo "pero-agent-skills installer v3.2.0 (standalone)"
         exit 0
         ;;
       --help|-h)
         echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
         echo ""
         echo "Opsi:"
+        echo "  --interactive, -i     Menjalankan wizard interaktif step-by-step"
+        echo "  --yes, -y             Mode otomatis tanpa prompt (gunakan deteksi cerdas)"
+        echo "  --with-graphify       Pasang Graphify CLI secara terisolasi (via uv/pipx)"
         echo "  --check               Memeriksa integritas 30 modul skill dan AGENTS.md"
         echo "  --dry-run             Menampilkan simulasi tindakan tanpa menyalin berkas"
         echo "  --harness=<list>      Pasang adapter harness (antigravity, claude, cursor, windsurf, cline, all)"
@@ -521,6 +703,29 @@ main() {
     esac
   done
 
+  # Tentukan apakah wizard interaktif harus dijalankan:
+  # 1. Jika --check aktif -> Jangan jalankan wizard.
+  # 2. Jika --yes / -y / --non-interactive -> Jangan jalankan wizard.
+  # 3. Jika --interactive / -i -> Wajib jalankan wizard (jika /dev/tty ada).
+  # 4. Jika dijalankan tanpa argumen (original_argc == 0) dan terminal interaktif fisik tersedia:
+  #    ([ -t 0 ] && [ -t 1 ] && [ -r /dev/tty ]) -> Jalankan wizard interaktif ramah.
+  local should_run_wizard=false
+  if [[ "$check_only" == false && "$force_non_interactive" == false ]]; then
+    if [[ "$force_interactive" == true ]]; then
+      if [[ ! -r /dev/tty ]]; then
+        echo "❌ Error: Opsi --interactive memerlukan terminal interaktif fisik (/dev/tty tidak tersedia)." >&2
+        exit 1
+      fi
+      should_run_wizard=true
+    elif [[ "$original_argc" -eq 0 && -t 0 && -t 1 && -r /dev/tty ]]; then
+      should_run_wizard=true
+    fi
+  fi
+
+  if [[ "$should_run_wizard" == true ]]; then
+    run_interactive_wizard
+  fi
+
   target_dir="${target_dir:-.}"
   if [[ "$dry_run" == false ]]; then
     mkdir -p "$target_dir"
@@ -533,7 +738,7 @@ main() {
   # Mode Pemeriksaan Status Integritas (--check)
   if [[ "$check_only" == true ]]; then
     echo "================================================================="
-    echo " 🚀 Pero Agent Skills Universal Installer (v3.1 Standalone)"
+    echo " 🚀 Pero Agent Skills Universal Installer (v3.2 Standalone)"
     echo " 📂 Target Workspace: ${target_dir}"
     echo "================================================================="
     echo "-> Memeriksa status kesehatan ${#SKILLS[@]} modul skill di target workspace..."
@@ -655,7 +860,7 @@ main() {
 
   # Banner Pemasangan
   echo "================================================================="
-  echo " 🚀 Pero Agent Skills Universal Installer (v3.1 Standalone)"
+  echo " 🚀 Pero Agent Skills Universal Installer (v3.2 Standalone)"
   echo " 📂 Target Workspace: ${target_dir}"
   echo "================================================================="
 
@@ -852,6 +1057,10 @@ main() {
   # ------------------------------------------------------------------------------
   # Penyiapan Server MCP Universal & Otomatis (MCP Auto-Provisioning)
   # ------------------------------------------------------------------------------
+  if [[ "$with_graphify" == true ]]; then
+    install_graphify_safe "$dry_run"
+  fi
+
   setup_mcp_servers "$target_dir" "$dry_run" "$enable_claude" "$enable_cursor" "$enable_windsurf" "$enable_cline" "$source_root"
 
   # ------------------------------------------------------------------------------
