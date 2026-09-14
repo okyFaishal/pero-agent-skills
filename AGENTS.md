@@ -21,8 +21,8 @@
 - **Test-Driven Development**: Terapkan TDD (`test-driven-development`). Selalu tulis failing test sebelum menulis kode implementasi.
 - **Systematic Debugging**: Dilarang melakukan trial-and-error saat debugging. Gunakan `systematic-debugging` untuk menemukan root cause terlebih dahulu.
 - **Evidence Before Assertions**: Dilarang mengklaim pekerjaan selesai tanpa bukti eksekusi nyata dari terminal (`verification-before-completion`).
-- **Environment & Safety**: Patuhi `env-guard`. Dilarang mengekspos credential/secrets dan dilarang menjalankan perintah destruktif tanpa konfirmasi.
-- **Grounding & Validation**: Validasi dokumentasi teknis via `context-7` atau `web-search`. Gunakan `grilling` saat menghadapi trade-off atau kebutuhan yang ambigu.
+- **Environment & Safety**: Patuhi `env-guard`. Dilarang mengekspos credential/secrets, dilarang menjalankan perintah destruktif tanpa konfirmasi, dan dilarang melakukan terminal web scraping via `curl`/`wget` (penegakan proteksi Zero SSRF & anti-WAF 403).
+- **Grounding, Citation Integrity & Web Retrieval**: Validasi dokumentasi teknis via `context-7` atau protokol penelusuran bertingkat `web-search` (Search MCP ➔ Semantic Fetch Reader ➔ Headless Chromium). Dilarang menyedot HTML mentah ke konteks. Bukti empiris wajib membuktikan secara langsung klaim kausal pertanyaan (anti-tangensial; dilarang mengutip akibat/korban semata saat ditanya mekanisme). Sitasi wajib bersih dari kebocoran status transport (dilarang menuliskan `(Status: 200 OK)` atau status HTTP), menggunakan format formal `[Penulis, Tahun]` untuk jurnal atau `[Lembaga/Organisasi]` untuk website resmi. Gunakan `grilling` saat menghadapi trade-off atau kebutuhan yang ambigu.
 - **Anti-Slop Protocol**: Patuhi `anti-slop`. Dilarang menghasilkan kode over-engineered (YAGNI), komentar sepele yang menjelaskan apa yang dilakukan kode, atau kode tiruan/mock palsu.
 
 ## 5. Local Workspace Skills Directory (Complete Pero SDLC & Engineering Suite)
