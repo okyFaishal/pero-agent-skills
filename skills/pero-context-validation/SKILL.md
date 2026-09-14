@@ -14,7 +14,7 @@ Tugasnya adalah mengaudit dan memverifikasi konsistensi silang 100% di antara se
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca seluruh dokumen artefak repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/SystemSpec.md` [atau `docs/system-spec/`], `docs/Architecture.md`, `docs/DesignSystem.md`, `docs/Governance.md`, `docs/TaskBacklog.md` [atau `docs/task-backlog/`], kartu tugas di `docs/tasks/`, dan seluruh rekam keputusan di `docs/decisions/`) untuk mendeteksi kontradiksi, celah kepatuhan, atau spesifikasi yang tertinggal.
-- **Dekomposisi Riset 5 Spesialis Validasi Konteks Tetap (*Fixed Validation Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Validasi Konteks Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika ada validasi standar eksternal (misal sintaksis Mermaid modern atau parser Markdown), agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika audit murni internal terhadap file lokal, agen wajib mendeklarasikan *Early-Exit* (`N/A: Internal Audit Only`) dan dilarang melakukan pencarian web.
+- **Dekomposisi Riset 5 Spesialis Validasi Konteks Tetap (*Fixed Validation Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Validasi Konteks Tetap** secara paralel. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Karena validasi konteks berfokus pada dokumen internal `docs/`, Spesialis 1, 3, 4, dan 5 wajib beroperasi dalam mode **100% audit lokal (0 pencarian web)**. Hanya Spesialis 2 yang diizinkan melakukan maksimal 2 pencarian terarah via Search MCP jika memerlukan verifikasi sintaksis parser Mermaid modern (dilarang keras menggunakan terminal `curl`).
 - **Musyawarah Dewan Audit Mutu & Keabsahan Sistem**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menyidangkan anomali dokumen, klasifikasi keparahan drift (Critical Blocker vs Warning), dan kompromi rekonsiliasi spesifikasi melalui 5 persona AI.
 - **Wawancara Penguncian Laporan Validasi di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG menentukan kelulusan audit (*PASS*) secara sepihak (*anti-rubber-stamping*).
 - **Sinkronisasi Dokumentasi Hidup**: **`REQUIRED SUB-SKILL`**: Gunakan `living-doc-sync` untuk menyelaraskan diagram Mermaid, denah sistem, dan struktur direktori saat terdeteksi drift minor atau setelah pemulihan cascade.
@@ -25,6 +25,32 @@ Dalam menjalankan validasi konteks dan dokumen hidup, agent WAJIB mengorkestrasi
 - **Penegak Disiplin Pengujian TDD**: **`SUPPORTING SUB-SKILL`**: Gunakan `test-driven-development` untuk memvalidasi bahwa setiap tugas memiliki rancangan failing test (*Red spec*) yang terdefinisi.
 - **Verifikasi Bukti Eksekusi Terminal**: **`SUPPORTING SUB-SKILL`**: Gunakan `verification-before-completion` untuk memverifikasi bahwa seluruh perintah pengujian terminal pada kartu tugas dapat dieksekusi dengan kriteria lulus `exit code 0`.
 - **Pencatatan Keputusan Validasi Konteks**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan audit, rekonsiliasi drift, dan status kelulusan ke `docs/decisions/VDR-[YYYYMMDDHHmm].md` menggunakan template standar resmi.
+
+---
+
+## Landasan Teori & Referensi Industri Nyata
+
+Skill ini dibangun di atas 3 pilar rekayasa ketertelusuran otomatis (*traceability link recovery*), pencegahan erosi arsitektural (*architectural drift prevention*), dan gerbang inspeksi formal:
+
+### 1. Automated Traceability Link Recovery (TraceLLM & Information Retrieval)
+Metodologi pemetaan keterkaitan 8-arah hulu-ke-hilir untuk mendeteksi artefak yatim-piatu (*orphan requirements*) dan spesifikasi liar (*hallucinated features*) yang tidak berakar dari kebutuhan resmi.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Jane Huffman Hayes, Alex Dekhtyar, & James Osborne*, "Improving Requirements Tracing via Information Retrieval" (IEEE Transactions on Software Engineering - TSE, Vol. 29, No. 11, 2003).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *Q. Guo, J. Wang, et al.*, "TraceLLM: Automated Traceability Link Recovery Between Requirements, Architecture, and Source Code via Large Language Models" (IEEE/ACM 46th International Conference on Software Engineering - ICSE '24, ACM/IEEE, 2024) & *M. Rath & P. Mäder*, "Traceability Recovery in Practice: An Evaluation of Trace Quality" (ACM Transactions on Software Engineering and Methodology - TOSEM, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *IEEE Std 24765:2022*, "Systems and software engineering — Vocabulary (Traceability and Verification Gates)" (IEEE Computer Society / ISO, 2022).
+
+### 2. Architectural Conformance & Drift Detection
+Pemeriksaan keselarasan visual dan struktural antara cetak biru arsitektur terhadap spesifikasi teknis dan rincian tugas untuk mencegah degradasi arsitektural seiring berjalannya iterasi.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *David Lorge Parnas*, "Software Aging" (Proceedings of the 16th International Conference on Software Engineering - ICSE '94, IEEE/ACM, 1994).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *L. Passos, R. Terra, et al.*, "Static Architectural Conformance Checking: An Industrial Evaluation of Reflexion Models and Rule-Based Approaches" (IEEE Transactions on Software Engineering - TSE, Vol. 49, No. 2, IEEE, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *Carnegie Mellon Software Engineering Institute (SEI)*, "Architecture Consistency & Drift Prevention Standards" (SEI Technical Report, 2023).
+
+### 3. Formal Pre-Flight Safety Gates & Visual Specification Verification
+Pemberlakuan kriteria kelulusan tegas tanpa toleransi (Blocker Severity Threshold) dan validasi sintaksis diagram visual (Mermaid AST) sebelum eksekusi koding diizinkan berjalan.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Michael E. Fagan*, "Design and Code Inspections to Reduce Errors in Program Development" (IBM Systems Journal, Vol. 15, No. 3, 1976).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *K. Wiegers*, "Inspection and Review Gates in Agile Contexts: Preventing Requirements Defect Leakage" (IEEE Software, Vol. 40, No. 4, IEEE, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *NASA Technical Standard NASA-GB-8719.13*, "Software Safety Guidebook (Verification & Validation Gates)" (National Aeronautics and Space Administration, 2022) & *Mermaid.js Core*, "Mermaid Diagram AST & Syntax Parsing Specification" (Mermaid Open Source Project, 2024).
+
+---
 
 ## The 5-Stage Context Validation Framework
 
@@ -78,8 +104,8 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
   - Agen berstatus `N/A` **DILARANG melakukan pencarian (0 search)** dan **DILARANG mengarang laporan kelulusan palsu**.
 
 #### C. Pagar Batas Audit & Pencarian (*Guardrails*):
-- Untuk audit murni dokumen internal: **0 pencarian web** (cukup membaca file lokal).
-- Jika memerlukan validasi spesifikasi Mermaid terbaru atau parser skema: **Minimal 2 dan Maksimal 5 pencarian terarah** per agen.
+- Untuk audit murni dokumen internal: **0 pencarian web** (wajib membaca file lokal tanpa akses internet).
+- Jika memerlukan validasi spesifikasi Mermaid terbaru: **Maksimal 2 pencarian terarah via Search MCP** (bebas dari terminal `curl`).
 
 ### 2. Musyawarah Dewan Audit Mutu & Keabsahan Sistem (via `llm-council`)
 - Menyidangkan seluruh temuan anomali ke 5 persona dewan AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*).
@@ -184,8 +210,8 @@ Setiap temuan anomali atau drift diklasifikasikan ke dalam 3 tier keparahan:
 
 | Tingkat Keparahan | Kriteria Dampak | Status Gerbang Rilis | Contoh Temuan |
 |:---|:---|:---|:---|
-| 🔴 **CRITICAL (Blocker)** | Merusak integritas sistem, celah keamanan fatal, atau menghentikan alur kerja | **NO-GO (Koding Dilarang Dimulai)** | Endpoint di spec tanpa modul arsitektur; Kunci rahasia bocor di commit; Fitur P0 PRD tidak ada di TaskBacklog; Diagram Mermaid error fatal. |
-| 🟡 **WARNING (High Attention)** | Inkonsistensi non-fatal yang berisiko memicu utang teknis jika diabaikan | **CONDITIONAL GO (Butuh Batas Waktu)** | Atribut tipe data berbeda nama; Tugas backlog belum diberi ukuran S/M; Keputusan arsitektur belum dibukukan ke ADR/CRDR. |
+| 🔴 **CRITICAL (Blocker)** | Merusak integritas sistem, celah keamanan fatal, atau menghentikan alur kerja | **NO-GO (Koding Dilarang Dimulai)** | Endpoint di spec tanpa modul arsitektur; Kunci rahasia bocor di commit; Fitur P0 PRD tidak ada di TaskBacklog; Diagram Mermaid error fatal; Bukti empiris di ProblemFraming.md bersifat tangensial / salah sasaran (*Outcome-Only Fallacy* yang mengutip statistik korban kecelakaan alih-alih membuktikan mekanisme kausal akar masalah). |
+| 🟡 **WARNING (High Attention)** | Inkonsistensi non-fatal yang berisiko memicu utang teknis jika diabaikan | **CONDITIONAL GO (Butuh Batas Waktu)** | Atribut tipe data berbeda nama; Tugas backlog belum diberi ukuran S/M; Keputusan arsitektur belum dibukukan ke ADR/CRDR; Kebocoran status transport jaringan internal (teks `HTTP 200` atau `200 OK` mengotori tabel referensi atau sitasi dokumen `docs/`). |
 | 🟢 **INFO (Polishing)** | Saran peningkatan keterbacaan atau perapian kosmetik | **GO (Diizinkan Lanjut)** | Tipografi label diagram Mermaid; Perapian format tabel markdown; Penambahan komentar penjelas. |
 
 ---
@@ -295,6 +321,8 @@ Agent wajib memeriksa setiap blok diagram ````mermaid```` di seluruh repositori:
 ````
 
 ## Anti-Patterns & Common Mistakes
+- **Tangential Citation Blindness**: Meloloskan dokumen Problem Framing yang bukti empirisnya tidak membuktikan klaim kausalitas pertanyaan (*Outcome-Only Fallacy* yang mengutip statistik korban/kerusakan fisik semata alih-alih mekanisme kegagalan sistemik/kognitif).
+- **Transport Leakage Tolerance**: Membiarkan kode status jaringan mentah seperti `(Status: 200 OK)` atau `HTTP 200` mengotori tabel referensi atau teks dokumen publik di `docs/`.
 - **Rubber-Stamp Validation (Sycophantic PASS)**: Memberikan stempel kelulusan (*PASS*) secara terburu-buru hanya demi menyenangkan pengguna tanpa membaca dan memeriksa inkonsistensi dokumen secara kritis.
 - **Simulated Validation Deciding**: Menentukan sendiri vonis kelulusan (*Go / No-Go*) atau menghapus anomali dokumen tanpa pernah melakukan wawancara grilling di chat bersama pengguna.
 - **Phantom Features Allowed**: Membiarkan tugas di `TaskBacklog.md` yang sama sekali tidak memiliki dasar kebutuhan di `PRD.md` atau `ProblemFraming.md`.

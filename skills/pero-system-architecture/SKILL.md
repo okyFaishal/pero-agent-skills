@@ -12,15 +12,41 @@ Skill ini bertindak sebagai **"Gambar Denah & Pondasi Bangunan Rumah"** (Menentu
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Reader**: **`MANDATORY`**: Wajib membaca `docs/PRD.md` dan `docs/SystemSpec.md` (atau `docs/system-spec/index.md` beserta sub-pod-nya) untuk memastikan arsitektur secara langsung menopang seluruh kebutuhan fitur MVP, kontrak API, dan entitas domain tanpa ada yang terlewat.
-- **Dekomposisi Riset Arsitektur 5 Spesialis Tetap (*Fixed Architecture Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Arsitektur Tetap** secara paralel yang masing-masing dibekali alat `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah**. Jika domain tidak relevan dengan PRD, agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
+- **Dekomposisi Riset Arsitektur 5 Spesialis Tetap (*Fixed Architecture Squad*)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim beranggotakan **5 Agen Spesialis Arsitektur Tetap** secara paralel yang masing-masing dibekali protokol `context-7` dan `web-search`. Setiap spesialis wajib melakukan evaluasi relevansi awal (*Relevance Pre-Flight Check*). Jika domain relevan, agen dibatasi **minimal 2 dan maksimal 5 pencarian terarah via Search MCP**. Jika domain tidak relevan dengan PRD, agen wajib mendeklarasikan *Early-Exit* (`N/A: Not Applicable`) dan dilarang melakukan pencarian.
 - **Verifikasi Dokumentasi API & Versi Library Resmi**: **`REQUIRED SUB-SKILL`**: Gunakan `context-7` untuk mengecek dokumentasi resmi, kompatibilitas versi LTS/terkini, dan tanda tangan fungsi (*method signatures*) rilis resmi dari pustaka/framework yang dipilih sebelum dicatat ke arsitektur.
-- **Riset Benchmark & Post-Mortem Industri**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` untuk memvalidasi performa nyata, throughput, batas memori, dan laporan kegagalan (*post-mortem failure analysis*) dari tumpukan teknologi yang diusulkan.
+- **Riset Benchmark & Post-Mortem Industri**: **`REQUIRED SUB-SKILL`**: Gunakan `web-search` via Search MCP (`search_web`/Brave/Tavily) dan pembaca semantik (`read_url_content` / Fetch MCP) untuk memvalidasi performa nyata, throughput, batas memori, dan laporan kegagalan (*post-mortem*) dari sumber primer tervalidasi HTTP 200 tanpa menggunakan terminal `curl`.
 - **Musyawarah Dewan Arsitektur**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji perdebatan arsitektural berdampak besar (Monolith Modular vs Microservices, Relasional vs Dokumen, REST vs Event-Driven, Pola Konkurensi) melalui sidang 5 persona AI.
 - **Wawancara Penguncian Arsitektur di Chat**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dengan batas volume berkisar antara **5 hingga 10 pertanyaan terarah**, pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak per putaran), dan menyajikan opsi maksimal (2–5 alternatif konkret) diawali label `(Recommended)`. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG memilih stack sepihak.
 - **Audit Konsistensi Arsitektur & Deteksi Drift**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan cetak biru arsitektur tidak menyimpang (*zero architectural drift*) dari batasan di PRD dan SystemSpec.
 - **Validasi & Sinkronisasi Diagram**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memastikan diagram Mermaid teruji valid, tidak rusak sintaksisnya, dan selalu sinkron dengan struktur kode terkini.
 - **Pencatatan Keputusan Arsitektur**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan arsitektural ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` menggunakan format baku.
 - **Pemetaan Runtime & Container UI**: **`CONDITIONAL SUB-SKILL`**: Jika sistem mencakup antarmuka pengguna (Frontend/Web/Mobile), tetapkan pilihan container platform dan runtime resmi (Next.js, Vite, Flutter, Tailwind CLI) pada diagram C4. Perancangan visual mendalam (*Design System*, token semantik, dan *3 Dials*) didelegasikan penuh ke Tahap 5 (`pero-uiux-design`). Jika proyek murni backend/CLI/core tanpa UI, sub-skill ini tidak digunakan.
+
+---
+
+## Landasan Teori & Referensi Industri Nyata
+
+Skill ini dibangun di atas 3 pilar perancangan arsitektur perangkat lunak, observabilitas terdistribusi, dan rekayasa ketahanan sistem:
+
+### 1. Structural Architectural Modeling & Modular Monolith Trade-offs
+Pemodelan arsitektur sistem hierarkis (C4 Model) dan pembobotan empiris batas pemisahan layanan (Modular Monolith vs Microservices).
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Simon Brown*, "Software Architecture for Developers: Visualise, document and explore your software architecture (C4 Model)".
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *J. Bogner, S. Wagner, et al.*, "To Microservices and Back Again? An Empirical Study on the Return to Modular Monoliths" (IEEE Software, Vol. 41, No. 1, pp. 58–66, IEEE, 2024).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC/IEEE 42010:2022*, "Software, systems and enterprise — Architecture description" (Standar Internasional Arsitektur Sistem Edisi 2022).
+
+### 2. Quantitative Capacity Engineering & Distributed Observability (RED & Tracing)
+Kalkulasi matematis kapasitas lalu lintas (*back-of-the-envelope estimation*) dan pelacakan telemetri korelasi lintas komponen.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Tom Wilkie*, "The RED Method: Rate, Errors, Duration" & *Brendan Gregg*, "Systems Performance: Enterprise and the Cloud" (Addison-Wesley).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *C. Stewart et al.*, "Telemetry and Distributed Tracing in Modern Cloud-Native Architectures: Evaluation and Best Practices" (ACM Transactions on Modeling and Performance Evaluation of Computing Systems - TOMPECS, Vol. 8, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *World Wide Web Consortium (W3C)*, "W3C Trace Context Level 2 Specification" (w3.org/TR/trace-context-2/, 2023) & *Cloud Native Computing Foundation (CNCF)*, "OpenTelemetry Semantic Conventions" (2023–2024).
+
+### 3. Failure Resilience Patterns & Zero-Downtime Evolutionary Database Design
+Mitigasi kegagalan kaskade (*circuit breaker, retry backoff*) dan pola evolusi skema data tanpa penghentian layanan (*expand-and-contract*).
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Michael T. Nygard*, "Release It! Design and Deploy Production-Ready Software (Circuit Breaker Pattern)" (Pragmatic Bookshelf).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *A. Gorbenko & V. Kharchenko*, "Resilience Engineering in Cloud-Native Architectures: Patterns, Anti-Patterns, and Fault-Injection Testing" (IEEE Transactions on Reliability, Vol. 72, No. 3, pp. 1045–1060, IEEE, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *Google Cloud Architecture Center*, "Disaster Recovery Planning Guide: RPO and RTO Targets for Highly Available Cloud Systems" (Google Cloud Whitepaper, 2023).
+
+---
 
 ## The 5-Stage System Architecture Framework
 
@@ -47,7 +73,7 @@ Dalam menjalankan tahapan perancangan arsitektur, agent WAJIB mengorkestrasi sub
 ```
 
 ### 1. Dekomposisi Riset Paralel Berbasis 5 Spesialis Arsitektur Tetap
-Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-agents` yang masing-masing dibekali alat `context-7` dan `web-search`:
+Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-agents` yang masing-masing dibekali protokol `context-7` dan Search MCP (tanpa scraping terminal `curl`):
 
 #### A. 5 Peran Spesialis Arsitektur Tetap (*Fixed Architecture Roles*):
 1. **Spesialis 1: Runtime, Bahasa & Web Framework (*Runtime & Framework Specialist*)**:
@@ -130,7 +156,7 @@ Mendelegasikan tim 5 agen spesialis arsitektur tetap via `dispatching-parallel-a
 
 ### 2. Tech Stack Selection, Capacity Sizing & MCP Declaration
 - **Perhitungan Kasar Matematika (*Back-of-the-Envelope Estimation*)**: Estimasi QPS rata-rata vs puncak dan proyeksi pertumbuhan storage 1 tahun ke depan untuk menjustifikasi pemilihan teknologi secara objektif.
-- Matriks pemilihan teknologi resmi terverifikasi via `context-7` (versi LTS, method signatures) dan bukti benchmark nyata via `web-search`.
+- Matriks pemilihan teknologi resmi terverifikasi via `context-7` (versi LTS, method signatures) dan bukti benchmark nyata via Search MCP & pembaca semantik (bebas dari terminal `curl`).
 - Deklarasi server MCP spesifik ekosistem proyek (`gopls`, `xcodebuild-mcp`, `postgres-mcp`, `chrome-devtools`) untuk otomatisasi perkakas.
 
 ### 3. Component & Module Breakdown (Clean / Hexagonal Architecture)

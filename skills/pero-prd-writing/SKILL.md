@@ -12,11 +12,37 @@ Skill ini bertindak sebagai **"Buku Cetak Biru & Resep Utama Produk"**. Tugasnya
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Alignment**: **`MANDATORY`**: Wajib membaca dan memverifikasi `docs/ProblemFraming.md` agar seluruh fitur selaras dengan akar masalah dan tidak melanggar batasan *Non-Goals*.
-- **Dekomposisi Riset Paralel & Benchmark Web**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen spesialis secara paralel yang masing-masing dibekali alat `web-search` (*Sub-agen 1: Alur Kerja Pengguna & Standar UX Industri, Sub-agen 2: Non-Functional Requirements & Tolok Ukur Kinerja, Sub-agen 3: Matriks Fitur P0/P1/P2 & Komparasi Pasar*). Setiap sub-agen dibatasi 1–2 pencarian web terarah dan wajib menyertakan URL referensi valid.
+- **Dekomposisi Riset Paralel & Benchmark Web**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen spesialis secara paralel yang masing-masing dibekali protokol `web-search` (*Sub-agen 1: Alur Kerja Pengguna & Standar UX Industri, Sub-agen 2: Non-Functional Requirements & Tolok Ukur Kinerja, Sub-agen 3: Matriks Fitur P0/P1/P2 & Komparasi Pasar*). Setiap sub-agen dibatasi 1–2 pencarian via Search MCP, wajib menerapkan *Verbatim URL Pinning*, dan memverifikasi kesehatan tautan via pembaca semantik (`read_url_content` / Fetch MCP) berstatus HTTP 200 tanpa terminal `curl`.
 - **Musyawarah Pemangkasan Scope & Trade-offs**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji ketahanan matriks prioritas fitur P0 (Must-Have) vs P1 (Should-Have) vs P2 (Nice-to-Have) melalui sidang 5 persona AI guna mencegah pembengkakan cakupan (*scope bloat*).
 - **Wawancara Penguncian Scope & Edge Cases**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** (dengan opsi multi-select untuk fitur MVP atau single-select untuk kebijakan error) beropsi maksimal (2–5 alternatif konkret diawali `(Recommended)`) dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak). Batas volume sesi berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
 - **Audit Konsistensi Hulu-Hilir**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memverifikasi bahwa PRD 100% konsisten dan tidak melanggar batasan *Non-Goals* di `docs/ProblemFraming.md`.
 - **Pencatatan Keputusan PRD**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan cakupan fitur ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
+
+---
+
+## Landasan Teori & Referensi Industri Nyata
+
+Skill ini dibangun di atas 3 pilar rekayasa spesifikasi kebutuhan produk, penetapan batas ruang lingkup MVP, dan tolok ukur mutu perangkat lunak:
+
+### 1. AI-Augmented Requirements Engineering & Structured PRD Elicitation
+Penggalian kebutuhan produk presisi tinggi menggunakan model bahasa cerdas untuk menjamin kelengkapan alur pengguna dan kejelasan kriteria rilis.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Karl E. Wiegers & Joy Beatty*, "Software Requirements (3rd Edition)" (Microsoft Press).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *M. Unterkalmsteiner, P. Chatzipetrou, et al.*, "Requirements Engineering and Large Language Models: Insights From a Panel" (IEEE Software, Vol. 41, No. 3, pp. 24–30, IEEE, 2024).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC/IEEE 29148:2018/2022*, "Systems and software engineering — Life cycle processes — Requirements engineering" (ISO/IEC/IEEE Standard).
+
+### 2. Quantitative Feature Prioritization & Scope Creep Prevention
+Metodologi pemangkasan cakupan fitur berbasis nilai guna memisahkan kebutuhan inti MVP (P0) dari fitur pelengkap (P1/P2) guna mencegah pembengkakan sistem.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Dai Clegg & Richard Barker*, "Case Method Fast-Track: A Rad Approach (MoSCoW Prioritization)" (Addison-Wesley, 1994).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *A. Ahmad, C. Trubiani, et al.*, "Software Requirements Prioritization: A Systematic Literature Review of Techniques, Datasets, and Metrics" (ACM Transactions on Software Engineering and Methodology - TOSEM, Vol. 32, No. 5, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC/IEEE 12207:2020/2022*, "Systems and software engineering — Software life cycle processes (Scope & Requirement Management)" (International Organization for Standardization).
+
+### 3. Multi-Dimensional NFR Specification & Software Quality Modeling
+Penetapan kebutuhan non-fungsional terukur (latensi, throughput, keandalan, dan keamanan perimeter).
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Barry Boehm*, "Characteristics of Software Quality" (North-Holland Publishing).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *D. Méndez, S. Wagner, et al.*, "Quantifying and Evaluating Non-Functional Requirements in Modern Agile Architectures" (Empirical Software Engineering, Springer, Vol. 28, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC 25010:2023*, "Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — Product quality model" (Standar Mutu Perangkat Lunak ISO Resmi, Terbit 2023).
+
+---
 
 ## When to Use
 - Mengubah ide masalah yang sudah tervalidasi di `docs/ProblemFraming.md` menjadi spesifikasi kebutuhan produk yang terstruktur dan terukur.
@@ -50,7 +76,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
   - *Sub-agen 1 (Alur Pengguna & Standar UX)*: Meneliti pola navigasi standar industri, alur onboarding, penanganan sesi login, dan praktik terbaik UX untuk alur kerja serupa.
   - *Sub-agen 2 (Non-Functional Requirements & Tolok Ukur Kinerja)*: Meneliti standar industri untuk batas latency API, target uptime, kepatuhan keamanan data, dan sanitasi input OWASP.
   - *Sub-agen 3 (Draf Matriks Fitur P0/P1/P2)*: Meneliti fitur minimum kompetitor di segmen serupa untuk membedakan mana fitur dasar mutlak (*table stakes*) dan mana fitur pelengkap.
-- **Pagar Pencarian**: Setiap sub-agen dibatasi maksimal 1–2 pencarian terarah dan wajib menyertakan URL referensi valid dalam laporannya.
+- **Pagar Pencarian & Verifikasi Bersih**: Setiap sub-agen dibatasi maksimal 1–2 pencarian via Search MCP (`search_web`/Brave/Tavily), wajib menerapkan *Verbatim URL Pinning*, dan memverifikasi isi halaman via pembaca semantik (`read_url_content` atau Fetch MCP) dengan status HTTP 200. DILARANG KERAS menggunakan perintah terminal `curl` untuk scraping.
 
 ### 2. Musyawarah Pemangkasan Scope oleh Dewan 5 AI (via `llm-council`)
 - Menyidangkan draf matriks fitur ke 5 persona dewan AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review*.

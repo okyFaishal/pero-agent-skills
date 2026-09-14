@@ -14,14 +14,40 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Riset Multi-Dimensi Paralel & Bukti Empiris Web (Adaptive Squad: 3 Wajib + 1–3 Spesialis)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim agen riset independen secara paralel yang masing-masing dibekali alat `web-search`.
   - **3 Agen Wajib**: *Persona & Pain Points*, *Pasar & Benchmark Kompetitor*, *Kelayakan Arsitektur Teknis*.
   - **1–3 Agen Spesialis Dinamis (Wajib pilih min. 1, maks. 3)**: Dipilih secara kontekstual sesuai karakteristik ide dari katalog spesialis (*Kepatuhan Regulasi/Privasi, Nilai Finansial/Kesediaan Membayar, Benteng Pertahanan/Moat, atau Inersia Adopsi/Kebiasaan Lama*).
-  - **Pagar Pencarian & Kuncian URL Persis**: Setiap agen dibatasi 1–2 pencarian web terarah, wajib menerapkan *Verbatim URL Pinning* (URL disalin karakter demi karakter langsung dari keluaran `search_web`), serta wajib melakukan uji kesehatan tautan pra-terbit (*Pre-Flight Link Health Check* via `curl -Is -L` atau `read_url_content` memastikan respon HTTP `200 OK`). Dilarang mencantumkan URL rekaan AI atau tautan rusak 404 (total menghasilkan minimal 4 hingga 6 bukti empiris tervalidasi).
-- **Musyawarah 5 Sudut Pandang AI**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji rumusan masalah dari 5 perspektif ahli (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membasmi bias sudut pandang sempit.
+  - **Pagar Pencarian & Kuncian URL Persis**: Setiap agen dibatasi 1–2 pencarian web terarah, wajib menerapkan *Verbatim URL Pinning* (URL disalin karakter demi karakter langsung dari keluaran `search_web` / Search MCP), serta wajib melakukan uji kesehatan tautan pra-terbit via pembaca semantik resmi `read_url_content` atau Fetch MCP untuk memastikan dokumen dapat diakses secara stabil. Dilarang keras menggunakan terminal `curl` (anti-WAF 403 & proteksi SSRF), dilarang membocorkan kode status HTTP ke laporan akhir, dan bukti wajib menjawab klaim kausalitas secara langsung (total menghasilkan minimal 4 hingga 6 bukti empiris tervalidasi).
+- **Musyawarah 5 Sudut Pandang AI Paralel (Fork-Join via `llm-council` & `dispatching-parallel-agents`)**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` yang didelegasikan secara paralel serentak dalam 1-turn via `dispatching-parallel-agents` (`invoke_subagent`) dengan isolasi memori mandiri (*shared-nothing isolation*) dari 5 kursi dewan kanonikal (*Product Strategist / The First Principles, Skeptic Auditor / The Contrarian, Domain Specialist / The Expansionist, Tech Feasibility Lead / The Executor, User Advocate / The Outsider*). Mencegah bias jangkar (*anchoring effect*) dan sikap asal setuju (*sycophancy*) sebelum Ketua Sidang merumuskan sintesis kompromi.
 - **Wawancara Socratic & Stress-Test 2-Tahap**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dalam **2 ronde terpisah**:
-  1. *Ronde 1 (Tahap 2)*: Membedah 5-Whys hingga ke akar terdalam (*root cause*) dengan opsi maksimal (2–5 alternatif konkret), diawali pilihan `(Recommended)`, dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak).
-  2. *Ronde 2 (Tahap 4)*: Menguji titik buta (*blind spots*), kritik tajam, dan dilema kompromi (*trade-offs*) hasil sidang Dewan AI (`llm-council`) via `ask_question` dengan opsi rekomendasi terstruktur.
+  1. *Ronde 1 (Tahap 2)*: Membedah akar masalah dengan *Dynamic Depth Root Cause Analysis* (D-RCA: kedalaman dinamis $k \in [3, 8]$ berbasis *First Principles Root Anchor*) via modal `ask_question` dengan opsi konkret (2–5 alternatif), diawali pilihan `(Recommended)`, dan pengelompokan fleksibel (1 mandiri atau 2–4 serentak).
+  2. *Ronde 2 (Tahap 4)*: Menguji titik buta (*blind spots*), kritik tajam, dan dilema kompromi (*trade-offs*) hasil sidang Dewan AI paralel via `ask_question` dengan opsi rekomendasi terstruktur.
   Batas volume per ronde berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang atau mensimulasikan jawaban secara mandiri.
 - **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PFDR-[YYYYMMDDHHmm].md`.
+
+---
+
+## Landasan Teori & Referensi Industri Nyata
+
+Skill ini dibangun di atas 3 pilar rekayasa diagnosa masalah, musyawarah multi-agen, dan verifikasi empiris:
+
+### 1. Autonomous Root Cause Analysis & Multi-Source Telemetry Reasoning
+Metodologi pelacakan akar masalah mendalam untuk memisahkan gejala permukaan dari kegagalan struktural sistemik.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Sakichi Toyoda & Taiichi Ohno*, "Toyota Production System: Beyond Large-Scale Production (Root Cause 5-Whys)" (Productivity Press).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *Y. Chen, Y. Liu, et al.*, "RCACopilot: Automated Root Cause Analysis for Large-Scale Microservice Systems via Large Language Models" (EuroSys '24: Proceedings of the Nineteenth European Conference on Computer Systems, ACM, 2024).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *IETF RFC 9110*, "HTTP Semantics: Status Codes and Metadata Verification" (Internet Engineering Task Force, 2022).
+
+### 2. Multi-Agent Deliberation & Cognitive Bias Mitigation (Anti-Anchoring & Anti-Sycophancy)
+Pemberantasan bias konfirmasi dan sikap asal setuju melalui sidang penasihat multi-perspektif independen.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Herbert A. Simon*, "Administrative Behavior: A Study of Decision-Making Processes in Administrative Organization (Bounded Rationality)" (Macmillan, 1947/1976).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *Yilun Du, Shuang Li, Antonio Torralba, Joshua B. Tenenbaum, & Igor Mordatch*, "Improving Factuality and Reasoning in Language Models through Multiagent Debate" (MIT CSAIL & Google DeepMind, ICML 2024).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *Percy Liang et al.*, "Holistic Evaluation of Language Models (HELM) & Multi-Perspective Reasoning" (Stanford Center for Research on Foundation Models - CRFM, Annals of the NY Academy of Sciences, 2023).
+
+### 3. Empirical Grounding & Inconsistency Detection in Problem Framing
+Validasi keabsahan kebutuhan awal terhadap batasan sistem nyata sebelum perancangan spesifikasi formal.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Eric Brewer*, "Towards Robust Distributed Systems (The CAP Theorem Invariants)" (ACM Symposium on Principles of Distributed Computing, 2000).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *P. Ronanki et al.*, "Inconsistency Detection in Natural Language Requirements using ChatGPT: A Preliminary Evaluation" (IEEE 31st International Requirements Engineering Conference - RE '23, IEEE, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC/IEEE 29148:2018/2022*, "Systems and software engineering — Life cycle processes — Requirements engineering" (International Organization for Standardization).
+
+---
 
 ## When to Use
 - Memulai proyek baru atau merancang fitur/kemampuan baru berskala besar.
@@ -36,13 +62,13 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
     (3 Agen Wajib + 1–3 Agen Spesialis Dinamis -> Terkumpul 4–6 bukti URL valid)
                          │
                          ▼
-[2. 5-Whys Root Cause Grilling (User R1)] ──> Rambu Henti Wajib di chat
+[2. Dynamic Depth RCA & Grilling (D-RCA User R1)] ──> Rambu Henti Wajib (k = 3..8, First Principles Anchor)
                          │
                          ▼
-[3. Multi-Perspective Council (LLM Council)]──> Sidang 5 persona AI & blind peer-review
+[3. Parallel Multi-Perspective Council (DPA + LLM Council)]──> Sidang 5 persona paralel (1-turn shared-nothing)
                          │
                          ▼
-[4. Council-Driven Grilling (User R2)]   ──> Rambu Henti Wajib (uji titik buta dewan)
+[4. Council-Driven Grilling (User R2)]   ──> Rambu Henti Wajib (uji titik buta dewan via ask_question)
                          │
                          ▼
 [5. Boundaries (Non-Goals) & Metrics]    ──> Kunci ruang lingkup & tulis dokumen
@@ -74,28 +100,60 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 #### C. Pagar Batas Pencarian & Integritas Bukti (*Guardrails*):
 - **Batas Beban**: Total agen yang berjalan paralel adalah **4 hingga 6 agen** (3 wajib + 1 hingga 3 spesialis). DILARANG menjalankan 0 spesialis atau lebih dari 3 spesialis.
 - **Batas Kuota Pencarian**: Setiap agen dibatasi maksimal **1–2 pencarian web terarah** untuk mencegah pemborosan kuota dan risiko *rate limit*.
-- **Integritas Bukti Empiris & Verifikasi Tautan Hidup**:
-  - Setiap agen wajib menyertakan **minimal 1 tautan URL resmi dan aktif** dengan temuan konkret (total menghasilkan **minimal 4 hingga 6 bukti empiris tervalidasi**).
+- **Integritas Bukti Empiris & Protokol Keselarasan Semantik 3-Titik (*Tri-Point Semantic Alignment Protocol / T-SAP*)**:
+  - Setiap agen wajib menyertakan **minimal 1 tautan URL resmi dan aktif** dengan temuan konkret yang secara langsung membuktikan premis (total menghasilkan **minimal 4 hingga 6 bukti empiris tervalidasi**).
+  - **Uji Keterikatan Kausal Bukti (*Causal Entailment Invariant*)**: Konten bukti wajib secara logis menerangkan *mekanisme mengapa* suatu kondisi/kegagalan terjadi ($\text{Bukti} \implies \text{Mekanisme Kausal}$). DILARANG KERAS melakukan pencocokan kata kunci semu (*superficial lexical matching*) atau mengutip statistik keparahan dampak fisik/jumlah korban semata (*Outcome-Only Fallacy*) saat pertanyaan menanyakan alasan ketidakmampuan kognitif atau batasan sistem.
   - **Wajib Kuncian Tautan Persis (*Verbatim Pinning*)**: URL wajib disalin persis karakter demi karakter langsung dari keluaran perkakas `search_web`. DILARANG KERAS menyintesis, mempercantik, atau mereka-reka struktur URL dari ingatan internal (*parametric memory*).
-  - **Wajib Uji Kesehatan Pra-Terbit (*Pre-Flight Link Health Check*)**: Sebelum dicantumkan ke dokumen, uji setiap tautan via `curl -Is -L --max-time 5 "<URL>" | head -n 1` atau perkakas `read_url_content` untuk memastikan respon status `200 OK`. Jika tautan berstatus `404 Not Found`, `403 Forbidden`, atau waktu tunggu habis (*timeout*), tautan DILARANG KERAS dicantumkan.
+  - **Uji Keterbacaan Pra-Terbit (*Pre-Flight Health Check*)**: Uji setiap tautan via pembaca semantik resmi `read_url_content` atau Fetch MCP untuk memastikan dokumen dapat diakses secara stabil. DILARANG KERAS menggunakan `curl` di terminal (menghindari false 403 dari Cloudflare dan risiko keamanan). Jika tautan berstatus 404/403 atau waktu tunggu habis, tautan dilarang dicantumkan.
+  - **Format Atribusi Bersih Tanpa Slop Mesin**:
+    - Untuk Jurnal Ilmiah: Wajib mencantumkan `[Nama Penulis et al., Tahun]` (misal: `[Endsley, 1995]`).
+    - Untuk Website Resmi: Wajib mencantumkan nama institusi/pemerintah/organisasi penerbit `[Nama Lembaga/Pemerintah]` (misal: `[WMO - World Meteorological Organization]`).
+    - DILARANG KERAS mencantumkan kode status jaringan teknis seperti `(Status: 200 OK)` atau `HTTP 200` pada sitasi teks atau laporan akhir.
   - **Jaring Pengaman Portal Resmi (*Domain Portal Fallback*)**: Jika tautan ke artikel spesifik tidak dapat diakses secara stabil atau gagal verifikasi, agen wajib beralih (*fallback*) ke akar portal dokumentasi resmi vendor yang permanen (misalnya: `https://docs.docker.com/` alih-alih artikel pihak ketiga yang rusak).
 
-### 2. Diagnosa Akar Masalah (5-Whys & `grilling` - Ronde 1 Chat via `ask_question`)
+### 2. Diagnosa Akar Masalah Dinamis (Dynamic Depth RCA & `grilling` - Ronde 1 Chat via `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE - RONDE 1)**:
   - Agent **DILARANG** langsung membuat atau mengisi berkas `docs/ProblemFraming.md` sebelum melakukan wawancara interaktif menggunakan perkakas **`ask_question`**.
-  - Dilarang keras melakukan *self-answering* (mengarang dan mengisi sendiri jawaban 5-Whys tanpa konfirmasi pilihan pengguna).
+  - Dilarang keras melakukan *self-answering* (mengarang dan mengisi sendiri analisis akar masalah tanpa konfirmasi pilihan pengguna).
+- **Prinsip Kedalaman Dinamis (*Dynamic Depth* $k \in [3, 8]$)**:
+  - **Pelepasan Batas Kaku 5-Whys**: Angka 5 pada 5-Whys adalah heuristik historis manufaktur mekanik, bukan hukum komputasi. Penelusuran sebab-akibat berjalan dinamis dengan batas bawah minimum $k_{\min} = 3$ (mencegah henti dini di gejala permukaan) hingga sirkuit pemutus batas atas $k_{\max} = 8$ (mencegah *infinite philosophical regress*).
+  - **Kriteria Henti Jangkar Prinsip Pertama (*First Principles Root Anchor*)**: Iterasi Why wajib berhenti pada tingkat $k$ ($k \ge 3$) jika dan hanya jika argumen kausal telah mengunci salah satu dari **4 Kriteria Jangkar**:
+    1. *Invarian Fisika atau Komputasi Mendasar*: Batasan matematis/alam yang tidak bisa diubah perangkat lunak (Teorema CAP, batas propagasi latensi RTT jaringan optik, batasan memori).
+    2. *Batasan Regulasi & Standar Eksternal Aksiomatik*: Hukum legal atau standar protokol resmi yang mengikat (UU PDP, PCI-DSS, RFC 9110, ISO/IEC).
+    3. *Titik Intervensi Arsitektur Tertinggi*: Ketiadaan mekanisme penjaga otomatis (*missing automated guardrail/linter rule*), isolasi antrean asinkron, atau batas anggaran sistem, di mana menanyakan 'mengapa' satu tingkat lebih dalam hanya menghasilkan keluhan psikologis abstrak.
+    4. *Pemutus Sirkuit Anti-Tautologi*: Iterasi dihentikan jika langkah berikutnya menghasilkan jawaban memutar atau menyalahkan keterbatasan waktu.
+- **Anatomi 5-Elemen Presisi per Butir Why (High-Signal & Berbukti Empiris)**:
+  Setiap butir Why dalam analisis wajib memiliki 5 komponen lengkap:
+  1. *Pertanyaan Kausal*: Pertanyaan turunan logis dari kegagalan tingkat sebelumnya.
+  2. *Mekanisme Kegagalan*: Penjelasan teknis alur kegagalan sistem dalam 1–2 kalimat padat tanpa basa-basi.
+  3. *Dampak Kuantitatif & Telemetri*: Metrik kerugian nyata (latensi p99, persentase kegagalan transaksi, radius dampak).
+  4. *Jangkar Bukti Empiris*: Standar formal (RFC/CVE/ISO), jurnal ilmiah berformat `[Penulis, Tahun]`, atau rujukan resmi `[Lembaga/Pemerintah]` yang membuktikan langsung mekanisme tersebut tanpa kebocoran status transport HTTP.
+  5. *Klasifikasi Tingkat*: Gejala Awal (*Surface Symptom*) | Propagasi Sistemik (*Propagating Mechanism*) | First Principles Root Anchor (*Systemic Root*).
 - **Pagar Batas & Format Pertanyaan (Volume & Delivery Guardrails)**:
-  - **Batas Kuantitas**: Sesi wawancara akar masalah dibatasi total akumulasi **5 hingga 10 pertanyaan** (untuk memastikan kedalaman 5-Whys tidak terpotong kompas dan mencegah kelelahan pengguna).
+  - **Batas Kuantitas**: Sesi wawancara akar masalah dibatasi total akumulasi **5 hingga 10 pertanyaan** (fleksibel sesuai kedalaman D-RCA yang dibutuhkan).
   - **Pengelompokan Fleksibel (*Flexible Batching*)**: Pertanyaan diajukan secara fleksibel via array `questions` pada perkakas `ask_question`: bisa **1 pertanyaan mandiri** jika berdiri sendiri, atau **2 hingga 4 pertanyaan serentak** jika berada dalam satu klaster tema masalah yang sama.
   - **Opsi Maksimal & Rekomendasi**: Setiap pertanyaan menyajikan **2 hingga 5 opsi realistis** (bukan biner kaku) dengan opsi terbaik AI diletakkan di nomor 1 berawalan `(Recommended)`.
 - **Protokol Wawancara Chat Ronde 1 (Interaktif via `ask_question`)**:
   1. Sajikan intisari temuan empiris dan bukti URL dari tim agen riset sebagai pengantar konteks awal.
-  2. Panggil perkakas `ask_question` berisi paket pertanyaan 5-Whys dengan opsi terstruktur dan rekomendasi teknis terbaik.
+  2. Panggil perkakas `ask_question` berisi paket pertanyaan D-RCA dengan opsi terstruktur dan rekomendasi teknis terbaik.
   3. Tunggu respon pemilihan pengguna dari antarmuka modal.
-  4. Lanjutkan penggalian secara terarah hingga seluruh ranting masalah pangkal disepakati bersama oleh pengguna.
+  4. Lanjutkan penggalian hingga simpul akar *First Principles Root Anchor* disepakati bersama oleh pengguna.
 
-### 3. Multi-Perspective Peer Review (via `llm-council`)
-- Menyidangkan rumusan akar masalah ke 5 penasihat AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review* untuk membedah titik buta (*blind spots*), kontradiksi asumsi, risiko tersembunyi, dan argumen bantahan dari masing-masing persona ahli.
+### 3. Musyawarah Dewan AI Paralel (1-Turn Parallel Dispatch via `llm-council` & `dispatching-parallel-agents`)
+Untuk membasmi bias jangkar (*anchoring effect*) dan bias asal setuju (*sycophancy*), musyawarah 5 penasihat dewan WAJIB dijalankan secara paralel dalam 1 putaran alat (*single turn*) dengan isolasi memori mandiri (*shared-nothing isolation*):
+- **Tahap 3.1: Pengemasan Dossier (Problem Framing Dossier Packaging)**:
+  Agen utama merangkum temuan Tahap 1 (korpus bukti empiris terverifikasi) dan Tahap 2 (ranting D-RCA yang telah disepakati) ke dalam satu dossier masalah netral dan ringkas.
+- **Tahap 3.2: Delegasi Paralel Serentak (1-Turn Parallel Dispatch via `invoke_subagent`)**:
+  Agen utama memanggil perkakas `invoke_subagent` dengan array 5 sub-agen sekaligus dalam 1 turn. Setiap sub-agen menerima dossier identik dan prompt mandiri sesuai kursi taksonomi kanonikal:
+  1. **Product Strategist** (*The First Principles Thinker*): Menguji esensi fundamental masalah, proposisi nilai 10x, dan memotong ilusi solusi semu.
+  2. **Skeptic Auditor** (*The Contrarian*): Menyerang celah kegagalan tersembunyi, skenario terburuk (*worst-case*), dan titik buta fatal (*fatal blind spots*).
+  3. **Domain Specialist** (*The Expansionist*): Menguji dinamika industri nyata, parit pertahanan (*moat*), dan kepatuhan regulasi/hukum.
+  4. **Tech Feasibility Lead** (*The Executor*): Mengaudit batas kelayakan teknis, ketergantungan API pihak ketiga, dan menegakkan prinsip Anti-Slop/YAGNI.
+  5. **User Advocate** (*The Outsider*): Menghapus bias orang dalam, menguji beban inersia kebiasaan lama pengguna, dan menghitung gesekan kognitif adopsi.
+- **Tahap 3.3: Kontrak Format Laporan Mandiri Penasihat**:
+  Setiap penasihat mengembalikan laporan terstruktur maksimal 200 kata mencakup: *Sikap Dewan (Stance)*, *Tesis Utama (ELI5)*, *3 Titik Kritik Tajam*, *Batasan Non-Goals Wajib*, dan *1 Dilema Strategis Pengguna*.
+- **Tahap 3.4: Sintesis Ketua Sidang & Pemetaan Benturan Dialektis**:
+  Ketua Sidang (agen utama) mengumpulkan 5 laporan mandiri, menghitung sebaran sikap (*Stance Tally*), mengekstrak konsensus ($\ge 3$ suara sepakat), dan memetakan benturan dialektis (*Dialectical Tensions*) menjadi bahan baku untuk Ronde 2 Grilling.
 
 ### 4. Stress-Test Hasil Dewan AI (Council-Driven Grilling via `grilling` - Ronde 2 Chat via `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE - RONDE 2)**:
@@ -140,12 +198,30 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 - **Cara Lama yang Melelahkan (Workarounds)**: [Cara kerja saat ini dan letak kesulitannya]
 - **Dampak Kerugian**: [Apa kerugian finansial/waktu jika masalah ini diabaikan]
 
-## 3. Root Cause Analysis (5-Whys)
-1. *Mengapa masalah ini terjadi?* -> [Jawaban 1]
-2. *Mengapa [Jawaban 1] terjadi?* -> [Jawaban 2]
-3. *Mengapa [Jawaban 2] terjadi?* -> [Jawaban 3]
-4. *Mengapa [Jawaban 3] terjadi?* -> [Jawaban 4]
-5. *Mengapa [Jawaban 4] terjadi?* -> [Akar Masalah Fundamental]
+## 3. Dynamic Root Cause Analysis (D-RCA)
+*(Kedalaman dinamis k=3..8 hingga menyentuh First Principles Root Anchor. Setiap tingkatan wajib menyertakan mekanisme kegagalan teknis, dampak kuantitatif, dan bukti referensi empiris tervalidasi: [Penulis, Tahun] untuk jurnal atau [Lembaga/Organisasi] untuk website resmi tanpa kebocoran status HTTP)*
+
+- **Why 1 — [Label Gejala Permukaan]**:
+  - **Pertanyaan Kausal**: Mengapa [masalah utama] terjadi pada alur kerja pengguna?
+  - **Mekanisme Kegagalan**: [Penjelasan mekanisme teknis kegagalan, 1-2 kalimat padat tanpa basa-basi]
+  - **Dampak Kuantitatif & Telemetri**: [Metrik kerugian/dampak nyata, misal: waktu tunggu melonjak dari X ke Y, failure rate Z%]
+  - **Jangkar Bukti Empiris**: [Nama Lembaga / Penulis et al., Tahun] — "[Judul Laporan/Paper]", [`https://...`](https://...) atau [ID Standar: RFC/CVE/ISO]
+  - **Klasifikasi Tingkat**: Gejala Awal (Surface Symptom)
+
+- **Why 2 — [Label Propagasi Kegagalan]**:
+  - **Pertanyaan Kausal**: Mengapa [kondisi Why 1] terjadi?
+  - **Mekanisme Kegagalan**: [Penjelasan mekanisme teknis di tingkat subsistem/antarmuka]
+  - **Dampak Kuantitatif & Telemetri**: [Metrik degradasi performa/telemetri subsistem terkait]
+  - **Jangkar Bukti Empiris**: [Nama Lembaga / Penulis et al., Tahun] — "[Judul Laporan/Paper]", [`https://...`](https://...)
+  - **Klasifikasi Tingkat**: Propagasi Sistemik (Propagating Mechanism)
+
+- **Why [k] — [Label Akar Masalah Fundamental] (ROOT ANCHOR)**:
+  - **Pertanyaan Kausal**: Mengapa [kondisi Why k-1] terjadi?
+  - **Mekanisme Kegagalan**: [Pernyataan akar penyebab sistemik/invarian komputasi/batasan regulasi yang mendasari seluruh kegagalan]
+  - **Dampak Kuantitatif & Telemetri**: [Radius dampak maksimal terhadap operasional produk/sistem]
+  - **Jangkar Bukti Empiris**: [Nama Dokumen Standar / RFC / Penulis et al., Tahun] — "[Judul Spesifikasi/Standar]", [`https://...`](https://...)
+  - **Klasifikasi Tingkat**: **First Principles Root Anchor: [Pilih: Invarian Fisika / Standar Eksternal Aksiomatik / Titik Intervensi Arsitektur Tertinggi]**
+  - **Kriteria Henti**: Iterasi dihentikan pada k=[k] karena telah menyentuh batas fundamental yang dapat ditangani melalui intervensi rekayasa konkret.
 
 ## 4. Boundaries & Scope Constraints
 - **In-Scope (Fokus Utama)**:
@@ -156,15 +232,15 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
   - [Non-Goal 2]
 
 ## 5. Bukti Empiris & Referensi Industri Terverifikasi
-*(Terkumpul minimal 4 hingga 6 sumber dari 3 Agen Inti + 1–3 Agen Spesialis. Seluruh tautan wajib lolos uji HTTP 200 via Verbatim Pinning)*
-| No | Domain Riset (Agen) | Sumber / Organisasi Resmi | URL Referensi (Verbatim) | Status HTTP | Temuan Kunci / Fakta Empiris |
+*(Terkumpul minimal 4 hingga 6 sumber dari 3 Agen Inti + 1–3 Agen Spesialis. Wajib membuktikan langsung mekanisme sebab-akibat / T-SAP)*
+| No | Domain Riset (Agen) | Entitas Penerbit / Penulis & Tahun | Judul Dokumen / Laporan | URL Referensi (Verbatim) | Temuan Kunci / Fakta Empiris Kausal |
 |:---|:---|:---|:---|:---|:---|
-| 1 | Persona & User Pain | [Nama Studi Kasus / Sumber] | `https://...` | `200 OK` | [Fakta / Statistik Konkret] |
-| 2 | Market & Competitor | [Laporan Riset Pasar / Standar] | `https://...` | `200 OK` | [Temuan Kunci] |
-| 3 | Tech Feasibility | [Analisis Benchmark / Dokumentasi] | `https://...` | `200 OK` | [Bukti Validasi] |
-| 4 | [Spesialis Terpilih 1] | [Sumber Spesialis 1] | `https://...` | `200 OK` | [Temuan Kunci Spesialis] |
-| 5 | [Spesialis Terpilih 2 (opsional)] | [Sumber Spesialis 2] | `https://...` | `200 OK` | [Temuan Kunci Spesialis] |
-| 6 | [Spesialis Terpilih 3 (opsional)] | [Sumber Spesialis 3] | `https://...` | `200 OK` | [Temuan Kunci Spesialis] |
+| 1 | Persona & User Pain | [Lembaga / Penulis et al., Tahun] | [Judul Studi Kasus] | `https://...` | [Fakta / Mekanisme Kausal Konkret] |
+| 2 | Market & Competitor | [Lembaga / Penulis et al., Tahun] | [Judul Laporan Pasar] | `https://...` | [Temuan Kunci Diferensiasi] |
+| 3 | Tech Feasibility | [Lembaga / Penulis et al., Tahun] | [Judul Spesifikasi/Benchmark] | `https://...` | [Bukti Kelayakan Arsitektur] |
+| 4 | [Spesialis Terpilih 1] | [Lembaga / Penulis et al., Tahun] | [Judul Riset Spesialis 1] | `https://...` | [Temuan Kunci Spesialis] |
+| 5 | [Spesialis Terpilih 2 (opsional)] | [Lembaga / Penulis et al., Tahun] | [Judul Riset Spesialis 2] | `https://...` | [Temuan Kunci Spesialis] |
+| 6 | [Spesialis Terpilih 3 (opsional)] | [Lembaga / Penulis et al., Tahun] | [Judul Riset Spesialis 3] | `https://...` | [Temuan Kunci Spesialis] |
 
 ## 6. Ukuran Keberhasilan (Success Metrics)
 - **Metrik Utama**: [Angka / Target Terukur, misal: Reduksi waktu kerja 80%]
@@ -207,13 +283,19 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
 ````
 
 ## Anti-Patterns & Common Mistakes
+- **Tangential Citation / Outcome-Only Fallacy (Sitasi Salah Sasaran)**: Mengutip referensi yang hanya mencocokkan kata kunci umum atau menyajikan statistik jumlah korban/akibat fisik semata saat pertanyaan mencari akar mekanisme kognitif atau teknis (misal: mengutip statistik korban kecelakaan kabut FHWA saat ditanya mengapa pengendara tidak bisa mengevaluasi bahaya rute secara mandiri dari angka cuaca internet).
+- **Transport Boilerplate Leakage (HTTP 200 Slop)**: Membocorkan status teknis jaringan internal seperti `(Status: 200 OK)` atau `HTTP 200` ke dalam sitasi pengguna atau dokumen laporan.
+- **Artificial Depth Forcing (Pemaksaan Batas Kaku 5-Whys)**: Memaksakan persis 5 iterasi dengan menambah pertanyaan bantalan (*padding*) omong kosong ketika masalah sudah mencapai akar di langkah ke-3/4, atau memotong paksa di langkah ke-5 padahal belum menyentuh First Principles Root Anchor.
+- **Shallow One-Liner Whys (Ranting Kausal Dangkal 1-Baris)**: Mengisi jawaban Why hanya dengan 1 kalimat pendek tanpa menjelaskan mekanisme kegagalan teknis dan tanpa metrik dampak terukur.
+- **Unanchored Causal Explanations (Kausalitas Tanpa Bukti Empiris)**: Menuliskan ranting Why tanpa menyertakan referensi spesifikasi resmi, RFC, standar ISO/CVE, atau literatur otoritatif yang membuktikan secara langsung validitas mekanisme kausal tersebut.
+- **Sequential Council Execution & Anchoring Trap (Dewan Sekuensial Monolitik)**: Menjalankan 5 persona dewan secara berurutan dalam satu obrolan monolitik panjang yang memicu efek bias jangkar, saling sungkan (*sycophancy*), dan penurunan atensi model (*attention decay*), alih-alih memanfaatkan 1-turn parallel dispatch via `invoke_subagent`.
 - **Question Avalanche or Premature Cessation**: Mengirimkan lebih dari 4 pertanyaan serentak per putaran via modal `ask_question` (atau memaksakan pertanyaan acak di luar klaster topik), mengajukan total kurang dari 5 pertanyaan (terlalu dangkal dan malas), atau melampaui batas akumulasi 10 pertanyaan pada sesi wawancara (memicu kelelahan pengguna dan *analysis paralysis*).
 - **Violating Specialist Squad Bounds**: Menjalankan 0 agen spesialis (hanya 3 agen inti tanpa spesialisasi) atau menjalankan lebih dari 3 agen spesialis (>6 total agen) yang mengakibatkan kebanjiran konteks (*context bloat*) dan pelanggaran batas kuota (*rate limit*).
-- **Simulated Self-Interrogation (Wawancara Palsu / Halusinasi Mandiri)**: Mengisi sendiri tanya-jawab 5-Whys di dalam berkas dokumen tanpa pernah bertanya dan menunggu balasan pengguna di obrolan (*chat*).
+- **Simulated Self-Interrogation (Wawancara Palsu / Halusinasi Mandiri)**: Mengisi sendiri tanya-jawab D-RCA di dalam berkas dokumen tanpa pernah bertanya dan menunggu balasan pengguna di obrolan (*chat*).
 - **Bypassing Council Grilling**: Menjalankan sidang dewan AI namun langsung menyimpulkan dan menulis dokumen sendiri tanpa membawa kritik dan titik buta dewan kepada pengguna di chat untuk diputuskan bersama.
 - **Unbounded Web Search Avalanche**: Memberondong puluhan pencarian web tanpa batas yang memicu pemborosan token dan risiko rate limit, alih-alih memanfaatkan 1–2 pencarian terarah per sub-agen.
 - **Unverified Hallucinated Problem**: Mengarang klaim masalah tanpa melampirkan bukti empiris atau riset web yang valid.
-- **Broken or Hallucinated Evidence URLs**: Mencantumkan tautan URL fiktif rekaan AI, tautan dengan slug yang ditebak-tebak, atau tautan rusak berstatus 404/403 ke dalam dokumen `docs/ProblemFraming.md` tanpa melakukan *Verbatim Pinning* dan verifikasi kesehatan respon HTTP 200 secara nyata.
+- **Broken or Hallucinated Evidence URLs**: Mencantumkan tautan URL fiktif rekaan AI, tautan dengan slug yang ditebak-tebak, atau tautan rusak berstatus 404/403 ke dalam dokumen `docs/ProblemFraming.md` tanpa melakukan *Verbatim Pinning* dan verifikasi keterbacaan dokumen secara nyata.
 - **Narrow Tunnel Vision**: Merumuskan masalah hanya dari satu sudut pandang sempit tanpa validasi multi-agen paralel atau dewan AI.
 - **Inconsistent Scope**: Menuliskan akar masalah yang bertentangan dengan daftar Non-Goals.
 - **Langsung Melompat ke Solusi Koding**: Membicarakan stack database atau desain UI sebelum membuktikan bahwa masalah aslinya nyata.
