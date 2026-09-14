@@ -322,6 +322,9 @@ setup_mcp_servers() {
     fi
     if [[ -z "$tavily_key" ]]; then
       tavily_key=$(grep -E '^[[:space:]]*TAVILY_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+      if [[ -z "$tavily_key" ]]; then
+        tavily_key=$(grep -E '^[[:space:]]*API_TAVILY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+      fi
     fi
     if [[ -z "$stitch_key" ]]; then
       stitch_key=$(grep -E '^[[:space:]]*STITCH_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
@@ -362,14 +365,6 @@ is_swift = (sys.argv[5] == "true")
 has_graphify = (sys.argv[6] == "true")
 
 servers = {
-  "fetch": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-fetch"]
-  },
-  "puppeteer": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
-  },
   "chrome-devtools": {
     "command": "npx",
     "args": ["-y", "chrome-devtools-mcp"]
@@ -390,20 +385,6 @@ else:
     "env": {"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"}
   }
 
-# Brave Search MCP
-if brave_key:
-  servers["brave-search"] = {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-    "env": {"BRAVE_API_KEY": brave_key}
-  }
-else:
-  servers["brave-search"] = {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-    "env": {"BRAVE_API_KEY": "${BRAVE_API_KEY}"}
-  }
-
 # Tavily Search MCP
 if tavily_key:
   servers["tavily"] = {
@@ -418,18 +399,20 @@ else:
     "env": {"TAVILY_API_KEY": "${TAVILY_API_KEY}"}
   }
 
-# Google Stitch MCP
+# Brave Search MCP (Ditambahkan jika kunci tersedia)
+if brave_key:
+  servers["brave-search"] = {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+    "env": {"BRAVE_API_KEY": brave_key}
+  }
+
+# Google Stitch MCP (Ditambahkan jika kunci tersedia)
 if stitch_key:
   servers["google-stitch"] = {
     "command": "npx",
     "args": ["-y", "@_davideast/stitch-mcp"],
     "env": {"STITCH_API_KEY": stitch_key}
-  }
-else:
-  servers["google-stitch"] = {
-    "command": "npx",
-    "args": ["-y", "@_davideast/stitch-mcp"],
-    "env": {"STITCH_API_KEY": "${STITCH_API_KEY}"}
   }
 
 # Graphify MCP
@@ -447,7 +430,7 @@ if is_swift:
   }
 
 print(json.dumps(servers))
-' "$context7_key" "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" 2>/dev/null || echo '{"context7":{"command":"npx","args":["-y","@upstash/context7-mcp"],"env":{"CONTEXT7_API_KEY":"${CONTEXT7_API_KEY}"}},"fetch":{"command":"npx","args":["-y","@modelcontextprotocol/server-fetch"]},"puppeteer":{"command":"npx","args":["-y","@modelcontextprotocol/server-puppeteer"]},"chrome-devtools":{"command":"npx","args":["-y","chrome-devtools-mcp"]}}')
+' "$context7_key" "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" 2>/dev/null || echo '{"context7":{"command":"npx","args":["-y","@upstash/context7-mcp"],"env":{"CONTEXT7_API_KEY":"${CONTEXT7_API_KEY}"}},"tavily":{"command":"npx","args":["-y","@tavily/mcp-server"],"env":{"TAVILY_API_KEY":"${TAVILY_API_KEY}"}},"chrome-devtools":{"command":"npx","args":["-y","chrome-devtools-mcp"]}}')
 
   # 1. Selalu terapkan Universal MCP (.mcp.json di root proyek)
   merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
