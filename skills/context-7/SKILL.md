@@ -64,8 +64,9 @@ Panggil tool MCP `resolve-library-id` untuk memetakan nama umum library ke ident
 
 ### Langkah 2: Pengambilan Dokumen Terarah (`query-docs`)
 Panggil tool MCP `query-docs` dengan parameter library ID dan kata kunci query yang presisi:
-- **Batasan Efisiensi Context**: Maksimal **3 pemanggilan per sesi masalah** untuk mencegah pemborosan context window.
-- **Hindari Query Terlalu Umum**: Gunakan kata kunci fungsional (misal: `"authentication middleware"`, `"zod v3 transform"`, bukan sekadar `"help"`).
+- **Pagu Adaptif & Penghentian Dini (*Adaptive Ceiling & Early Exit*)**: Maksimal **5 pemanggilan terarah per sesi masalah** untuk tugas kompleks (1 query arsitektur/tinjauan umum + hingga 4 query signature/fitur spesifik). Begitu signature metode atau blok kode yang dicari ditemukan, agen **WAJIB langsung berhenti** memanggil `query-docs` tanpa menghabiskan sisa jatah kuota.
+- **Dilarang Panggilan Liar Tanpa Batas (*Zero Unbounded Queries*)**: Kendati menggunakan `CONTEXT7_API_KEY`, dilarang keras mematikan batas pemanggilan. Panggilan tanpa kendali memicu banjir token (*context window flooding*), kepikunan instruksi (*lost-in-the-middle*), dan risiko menguras kuota bulanan seketika.
+- **Hindari Query Terlalu Umum**: Gunakan kata kunci fungsional presisi (misal: `"authentication middleware"`, `"zod v3 transform"`, bukan sekadar `"help"`).
 
 ---
 
@@ -97,7 +98,7 @@ Panggil tool MCP `query-docs` dengan parameter library ID dan kata kunci query y
 | Pola Terlarang | Mengapa Berbahaya? | Solusi Wajib |
 |---|---|---|
 | **Blind Guessing** | Menebak nama method berdasarkan asumsi versi lama (misal: `dict()` pada Pydantic v2). | Query Context7 untuk memastikan method resmi (`model_dump()`). |
-| **Context Window Flooding** | Memanggil `query-docs` puluhan kali hingga context token habis. | Targetkan pencarian spesifik (maksimal 3 kali query terarah). |
+| **Context Window Flooding & Unbounded Loops** | Memanggil `query-docs` tanpa batas hingga context token habis dan kuota bulanan hangus. | Terapkan pagu adaptif (maksimal 5 query terarah dengan penghentian dini segera setelah informasi ditemukan). |
 | **Fabricated Packages** | Mengasumsikan nama package import tanpa mengecek package registry. | Validasi nama import dari dokumentasi resmi atau manifest proyek. |
 | **Ignoring Fallback** | Berhenti bekerja saat server MCP tidak responsif. | Segera beralih ke `web-search` untuk mencari dokumentasi resmi. |
 

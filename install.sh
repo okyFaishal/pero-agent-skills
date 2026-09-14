@@ -308,11 +308,15 @@ setup_mcp_servers() {
   fi
 
   # Baca API Key dari environment atau .env lokal jika ada
+  local context7_key="${CONTEXT7_API_KEY:-}"
   local brave_key="${BRAVE_API_KEY:-}"
   local tavily_key="${TAVILY_API_KEY:-}"
   local stitch_key="${STITCH_API_KEY:-}"
 
   if [[ -f "${target_dir}/.env" ]]; then
+    if [[ -z "$context7_key" ]]; then
+      context7_key=$(grep -E '^[[:space:]]*CONTEXT7_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    fi
     if [[ -z "$brave_key" ]]; then
       brave_key=$(grep -E '^[[:space:]]*BRAVE_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
     fi
@@ -350,17 +354,14 @@ setup_mcp_servers() {
   servers_payload=$(python3 -c '
 import json, sys
 
-brave_key = sys.argv[1]
-tavily_key = sys.argv[2]
-stitch_key = sys.argv[3]
-is_swift = (sys.argv[4] == "true")
-has_graphify = (sys.argv[5] == "true")
+context7_key = sys.argv[1]
+brave_key = sys.argv[2]
+tavily_key = sys.argv[3]
+stitch_key = sys.argv[4]
+is_swift = (sys.argv[5] == "true")
+has_graphify = (sys.argv[6] == "true")
 
 servers = {
-  "context7": {
-    "command": "npx",
-    "args": ["-y", "@upstash/context7-mcp"]
-  },
   "fetch": {
     "command": "npx",
     "args": ["-y", "@modelcontextprotocol/server-fetch"]
@@ -374,6 +375,20 @@ servers = {
     "args": ["-y", "chrome-devtools-mcp"]
   }
 }
+
+# Context7 MCP
+if context7_key:
+  servers["context7"] = {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"],
+    "env": {"CONTEXT7_API_KEY": context7_key}
+  }
+else:
+  servers["context7"] = {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"],
+    "env": {"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"}
+  }
 
 # Brave Search MCP
 if brave_key:
@@ -432,7 +447,7 @@ if is_swift:
   }
 
 print(json.dumps(servers))
-' "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" 2>/dev/null || echo '{"context7":{"command":"npx","args":["-y","@upstash/context7-mcp"]},"fetch":{"command":"npx","args":["-y","@modelcontextprotocol/server-fetch"]},"puppeteer":{"command":"npx","args":["-y","@modelcontextprotocol/server-puppeteer"]},"chrome-devtools":{"command":"npx","args":["-y","chrome-devtools-mcp"]}}')
+' "$context7_key" "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" 2>/dev/null || echo '{"context7":{"command":"npx","args":["-y","@upstash/context7-mcp"],"env":{"CONTEXT7_API_KEY":"${CONTEXT7_API_KEY}"}},"fetch":{"command":"npx","args":["-y","@modelcontextprotocol/server-fetch"]},"puppeteer":{"command":"npx","args":["-y","@modelcontextprotocol/server-puppeteer"]},"chrome-devtools":{"command":"npx","args":["-y","chrome-devtools-mcp"]}}')
 
   # 1. Selalu terapkan Universal MCP (.mcp.json di root proyek)
   merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
