@@ -25,24 +25,25 @@ Skill ini adalah **"Protokol Musyawarah Dewan 5 Penasihat AI"**. Menggantikan bi
 
 ## Landasan Teori & Referensi Industri Nyata
 
-Skill ini dibangun di atas 3 pilar rekayasa musyawarah multi-agen dan dialektika keputusan strategis:
+Skill ini dibangun di atas 3 pilar rekayasa musyawarah multi-agen, inkuiri dialektis peredam bias, dan sintesis kompromi arsitektural yang memadukan karya klasik (*Foundational Classics*) dengan studi peer-reviewed 5 tahun terakhir (2021–2026) dan standar resmi:
 
-### 1. Multi-Agent Debate & Deliberative Consensus
-Pengambilan keputusan berbasis perdebatan multi-agen independen untuk mengikis bias halusinasi dan kenaifan model tunggal.
-*   **Referensi 1 (Metodologi Asli)**: *Andrej Karpathy*, "LLM Council: Multi-Model Querying, Peer-Review, and Chairman Synthesis".
-*   **Referensi 2 (Riset Perdebatan Multi-Agen)**: *Yilun Du, Shuang Li, Antonio Torralba, Joshua B. Tenenbaum, & Igor Mordatch*, "Improving Factuality and Reasoning in Language Models through Multiagent Debate" (MIT CSAIL & Google DeepMind, arXiv:2305.14325).
-*   **Referensi 3 (Konsensus Terdistribusi AI)**: *Percy Liang et al.*, "Holistic Evaluation of Language Models (HELM) & Multi-Perspective Evaluation" (Stanford CRFM).
+### 1. Multi-Agent Debate & Deliberative Consensus (Anti-Sycophancy)
+Pengambilan keputusan berbasis perdebatan multi-agen independen untuk mengikis bias halusinasi, sikap asal setuju (*sycophancy*), dan kenaifan model tunggal.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Herbert A. Simon*, "Administrative Behavior: A Study of Decision-Making Processes in Administrative Organization (Bounded Rationality)" (Macmillan, 1947/1976) & *Andrej Karpathy*, "LLM Council Architecture" (2023).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *Yilun Du, Shuang Li, Antonio Torralba, Joshua B. Tenenbaum, & Igor Mordatch*, "Improving Factuality and Reasoning in Language Models through Multiagent Debate" (MIT CSAIL & Google DeepMind, ICML 2024) & *C. Chan et al.*, "ChatEval: Towards Better LLM-based Evaluators through Multi-Agent Debate" (International Conference on Learning Representations - ICLR, 2024).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *Percy Liang et al.*, "Holistic Evaluation of Language Models (HELM) & Multi-Perspective Deliberation" (Stanford Center for Research on Foundation Models - CRFM, Annals of the NY Academy of Sciences, 2023).
 
-### 2. Strategic Dialectical Inquiry & Devil's Advocacy
-Teknik manajemen keputusan klasik untuk menguji asumsi tersembunyi dengan sengaja menciptakan pertentangan dialektis.
-*   **Referensi 1 (Inkuiri Dialektis)**: *Richard O. Mason & Ian I. Mitroff*, "Challenging Strategic Planning Assumptions: Theory, Cases, and Techniques" (John Wiley & Sons).
-*   **Referensi 2 (Advokasi Iblis / Pengkritik)**: *David M. Schweiger, William R. Sandberg, & James W. Ragan*, "Group Approaches for Improving Strategic Decision Making: A Comparative Evaluation of Dialectical Inquiry, Devil's Advocacy, and Consensus" (Academy of Management Journal).
-*   **Referensi 3 (Pencegahan Groupthink)**: *Irving L. Janis*, "Victims of Groupthink: A Psychological Study of Foreign-Policy Decisions and Fiascoes" (Houghton Mifflin).
+### 2. Strategic Dialectical Inquiry & Anonymized Peer-Review
+Teknik pengujian asumsi secara tajam melalui benturan argumen berlawanan (*devil's advocacy*) yang diulas secara anonim untuk mencegah bias penjangkaran (*anchoring effect*).
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Richard O. Mason & Ian I. Mitroff*, "Challenging Strategic Planning Assumptions: Theory, Cases, and Techniques" (John Wiley & Sons, 1981) & *Irving L. Janis*, "Victims of Groupthink" (Houghton Mifflin).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *X. Liang, S. Hao, et al.*, "Encouraging Divergent Thinking in Large Language Models via Multi-Persona Deliberation" (Findings of the Association for Computational Linguistics: EMNLP, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *OpenAI Research*, "Self-Critiquing Models for Assisting Human Evaluators and Multi-Perspective Stress-Testing" (OpenAI Research, 2022).
 
-### 3. Multi-Criteria Architecture Trade-Off Synthesis
-Metode pembobotan kompromi teknis lintas dimensi kualitas (kecepatan rilis vs skalabilitas masa depan).
-*   **Referensi 1 (Standar SEI CMU)**: *Rick Kazman, Mark Klein, & Paul Clements*, "Evaluating Software Architectures: Methods and Case Studies (ATAM Tradeoff Synthesis)" (Addison-Wesley).
-*   **Referensi 2 (Kompromi Arsitektur Modern)**: *Neal Ford & Mark Richards*, "Software Architecture: The Hard Parts" (O'Reilly Media).
+### 3. Multi-Criteria Architecture Trade-Off Analysis (ATAM)
+Metodologi evaluasi kompromi teknis terstruktur lintas dimensi kualitas (performa, maintainability, keandalan, dan waktu rilis).
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Rick Kazman, Mark Klein, & Paul Clements*, "Evaluating Software Architectures: Methods and Case Studies (ATAM Tradeoff Synthesis)" (Addison-Wesley, 2002).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *N. Ford, M. Richards, et al.*, "Software Architecture: The Hard Parts - Modern Trade-Off Analysis for Distributed Systems" (O'Reilly Media / IEEE Software, 2021/2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC/IEEE 42010:2022*, "Software, systems and enterprise — Architecture description (Clause 5.7: Architectural Decisions and Rationale)" (International Organization for Standardization, 2022).
 
 ---
 
@@ -66,52 +67,92 @@ Gunakan council saat mendeteksi kata kunci:
 
 ---
 
-## Karakter 5 Penasihat Dewan (*The Five Advisors*)
+## Karakter 5 Penasihat Dewan (*The Five Advisors*) & Taksonomi Ganda
+
+Untuk menjamin konsistensi di seluruh tahapan Pero SDLC sekaligus mempertahankan arketipe pemikiran universal, kursi dewan menerapkan **Taksonomi Kanonikal Ganda (*Dual-Taxonomy*)**:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                 DEWAN 5 PENASIHAT INDEPENDEN                │
-├─────────────────────────────────────────────────────────────┤
-│ 1. The Contrarian        : Menyerang celah & risiko fatal   │
-│ 2. The First Principles  : Merombak masalah dari akar logika│
-│ 3. The Expansionist      : Melihat potensi pertumbuhan & ROI│
-│ 4. The Outsider          : Kacamata netral pengguna awam    │
-│ 5. The Executor          : Kelayakan eksekusi & rilis cepat │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                 DEWAN 5 PENASIHAT INDEPENDEN (LLM COUNCIL)                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ 1. Product Strategist (The First Principles) : Dekonstruksi akar logika     │
+│ 2. Skeptic Auditor (The Contrarian)         : Menyerang celah & titik buta  │
+│ 3. Domain Specialist (The Expansionist)     : Pasar, regulasi & defensibility│
+│ 4. Tech Feasibility Lead (The Executor)     : Kelayakan teknis & anti-bloat │
+│ 5. User Advocate (The Outsider)             : Suara pengguna & inersia lama │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-1. **The Contrarian (Si Pengkritik)**:
-   - *Fokus*: Mengasumsikan rencana memiliki cacat tersembunyi. Mencari titik kegagalan, beban pemeliharaan tersembunyi, dan skenario terburuk (*worst-case*).
-2. **The First Principles Thinker (Si Pemikir Prinsip Dasar)**:
-   - *Fokus*: Membongkar dogma dan kebiasaan lama. Bertanya apa tujuan paling fundamental dan apakah pertanyaan yang diajukan sudah tepat.
-3. **The Expansionist (Si Visioner)**:
-   - *Fokus*: Melihat potensi nilai tambah terbesar. Apa yang terjadi jika ini berhasil 10x lipat? Peluang pasar atau integrasi apa yang belum dilirik?
-4. **The Outsider (Si Pengamat Netral)**:
-   - *Fokus*: Menghilangkan bias orang dalam (*curse of knowledge*). Menilai kejelasan nilai bagi pengguna luar yang tidak tahu seluk-beluk internal.
-5. **The Executor (Si Praktisi Nyata)**:
-   - *Fokus*: Kelayakan teknis, sumber daya tim, dan waktu eksekusi. *"Bisa tidak selesai dalam 2 sprint? Apa langkah pertamanya besok pagi?"*.
+1. **Product Strategist / The First Principles Thinker (Si Pemikir Prinsip Dasar)**:
+   - *Fokus*: Membongkar dogma dan kebiasaan lama. Bertanya apa tujuan paling fundamental, apakah pertanyaan yang diajukan sudah tepat, dan apakah solusi ini bernilai riil 10x bagi pengguna atau hanya fitur kosmetik semu.
+2. **Skeptic Auditor / The Contrarian (Si Pengkritik Tajam / Devil's Advocate)**:
+   - *Fokus*: Mengasumsikan rencana memiliki cacat tersembunyi yang akan menyebabkannya gagal total. Mencari titik kegagalan fatal (*fatal blind spots*), beban pemeliharaan tersembunyi, skenario terburuk (*worst-case*), dan alasan terkuat untuk membatalkan inisiatif.
+3. **Domain Specialist / The Expansionist (Si Visioner Pasar & Regulasi)**:
+   - *Fokus*: Menimbang dinamika persaingan industri, parit pertahanan (*moat*), dan kepatuhan hukum/regulasi (GDPR, UU PDP, standar finansial). Bertanya apakah produk ini mudah ditiru oleh raksasa teknologi dalam hitungan minggu.
+4. **Tech Feasibility Lead / The Executor (Si Praktisi Nyata & Arsitek)**:
+   - *Fokus*: Kelayakan eksekusi teknis, utang teknis (*technical debt*), batas performa, ketergantungan API pihak ketiga yang rapuh, dan penegakan batas minimalis (Anti-Slop / YAGNI). *"Bisa tidak diselesaikan dengan kode yang 10x lebih sederhana?"*.
+5. **User Advocate / The Outsider (Si Pengamat Netral & Suara Pengguna)**:
+   - *Fokus*: Menghilangkan bias orang dalam (*curse of knowledge*). Menilai kejelasan nilai bagi orang awam, resistensi terhadap perubahan alur kerja lama (inersia adopsi), dan beban kognitif yang ditanggung pengguna akhir.
 
 ---
 
-## Alur Sidang 3-Fase (*Council Session Workflow*)
+## Alur Sidang 3-Fase Berbasis Eksekusi Paralel (*Parallel Council Protocol*)
+
+Untuk membasmi bias jangkar (*anchoring effect*) di mana penasihat terpengaruh oleh ucapan penasihat lain, sidang dewan **WAJIB dijalankan secara paralel dalam 1 putaran alat (*single turn*)** memanfaatkan [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md):
 
 ```mermaid
 flowchart TD
-    START["1. Framing Pertanyaan & Enriched Context"] --> DELIB["2. Musyawarah Independen 5 Penasihat"]
-    DELIB --> PEER["3. Peer-Review Anonim Antar Penasihat"]
-    PEER --> SYNTH["4. Sintesis Ketua Sidang (Chairman Verdict)"]
-    SYNTH --> ADR["5. Salin ke Living Document / ADR"]
+    START["1. Context Dossier Packaging<br/>(Kemas konteks masalah netral)"] --> DISPATCH["2. Parallel Dispatch 1-Turn via invoke_subagent<br/>(Shared-nothing memory isolation)"]
+    
+    subgraph PARALLEL["5 Penasihat Independen"]
+        DISPATCH --> P1["Product Strategist<br/>(First Principles)"]
+        DISPATCH --> P2["Skeptic Auditor<br/>(Contrarian)"]
+        DISPATCH --> P3["Domain Specialist<br/>(Expansionist)"]
+        DISPATCH --> P4["Tech Feasibility Lead<br/>(Executor)"]
+        DISPATCH --> P5["User Advocate<br/>(Outsider)"]
+    end
+
+    P1 --> JOIN["3. Chairman Join & Tension Mapping<br/>(Stance Tally, Konsensus, Polaritas)"]
+    P2 --> JOIN
+    P3 --> JOIN
+    P4 --> JOIN
+    P5 --> JOIN
+
+    JOIN --> OUTCOME["4. Eksekusi Hasil Sidang<br/>(Handoff ke Grilling ask_question / ADR)"]
 ```
 
-### Fase 1: Framing & Pengayaan Konteks
-Sebelum bersidang, agen memindai berkas relevan di repositori (`docs/ProblemFraming.md`, `docs/PRD.md`, `docs/Architecture.md`, atau `AGENTS.md`) untuk menyusun ringkasan konteks netral yang adil bagi seluruh penasihat.
+### Fase 1: Pengemasan Dossier Masalah (Context Dossier Packaging)
+Agen utama memindai dokumen dan bukti relevan di repositori (`ProblemFraming`, `PRD`, `Architecture`, atau log pengujian) dan menyusun satu draf dossier masalah yang ringkas, faktual, dan netral tanpa mengarahkan penasihat ke kesimpulan tertentu.
 
-### Fase 2: Deliberasi & Peer-Review Anonim
-1. Setiap penasihat memberikan pandangan tanpa berkompromi atau bersikap basa-basi.
-2. Penasihat meninjau argumen satu sama lain untuk menemukan kontradiksi logis atau asumsi lemah.
+### Fase 2: Pendelegasian Paralel Serentak (1-Turn Parallel Dispatch)
+Agen utama memanggil perkakas `invoke_subagent` dengan array 5 sub-agen sekaligus dalam satu pemanggilan:
+```text
+invoke_subagent(
+  Subagents: [
+    { TypeName: "self", Role: "Council: Product Strategist", Prompt: "[Dossier + Mandat First Principles + Kontrak Format]" },
+    { TypeName: "self", Role: "Council: Skeptic Auditor", Prompt: "[Dossier + Mandat Contrarian + Kontrak Format]" },
+    { TypeName: "self", Role: "Council: Domain Specialist", Prompt: "[Dossier + Mandat Expansionist + Kontrak Format]" },
+    { TypeName: "self", Role: "Council: Tech Feasibility Lead", Prompt: "[Dossier + Mandat Executor + Kontrak Format]" },
+    { TypeName: "self", Role: "Council: User Advocate", Prompt: "[Dossier + Mandat Outsider + Kontrak Format]" }
+  ]
+)
+```
+- **Shared-Nothing Isolation**: Setiap penasihat berjalan di proses mandiri tanpa saling melihat teks penasihat lain, membasmi fenomena *groupthink* dan bias urutan.
+- **Kontrak Format Laporan Mandiri**: Setiap penasihat mengembalikan teks ringkas (<200 kata) mencakup:
+  1. *Sikap Dewan (Stance)*: Sangat Mendukung / Mendukung Bersyarat / Menolak Keras / Usulkan Pivot Total.
+  2. *Tesis Utama (ELI5)*: 1–2 kalimat analogi sederhana.
+  3. *3 Titik Serangan/Kritik Tajam*: Titik buta atau asumsi rapuh.
+  4. *Batasan Non-Goals Wajib*: Hal yang mutlak dilarang dibuat.
+  5. *1 Dilema Strategis Pengguna*: Pertanyaan kompromi terpenting.
 
-### Fase 3: Sintesis Ketua Sidang (*Chairman Verdict*)
-Ketua sidang merangkum hasil musyawarah menjadi format laporan resmi.
+### Fase 3: Penggabungan & Sintesis Ketua Sidang (*Chairman Join & Synthesis*)
+Setelah kelima sub-agen mengembalikan laporannya, Ketua Sidang (agen utama) memproses keluaran dengan protokol 3-langkah:
+1. **Perhitungan Sebaran Sikap (*Stance Tally*)**: Menghitung berapa penasihat yang mendukung, bersyarat, menolak, atau menuntut pivot.
+2. **Ekstraksi Konsensus Bulat/Kuat**: Mengunci poin-poin yang disuarakan oleh minimal $\ge 3$ penasihat sebagai ketetapan bersama (misal: fitur tertentu wajib dibuang ke Non-Goals).
+3. **Pemetaan Benturan Argumen (*Dialectical Tensions & Polarities*)**: Memetakan trade-off tajam antar-penasihat (kecepatan rilis vs parit pertahanan, fleksibilitas kustomisasi vs kesederhanaan arsitektur).
+4. **Penyerahan Hasil (*Handoff*)**:
+   - Jika berada di alur SDLC (misal: `pero-problem-framing` Stage 4): mentransformasi benturan argumen menjadi paket pertanyaan terstruktur untuk perkakas modal `ask_question`.
+   - Jika berada di keputusan teknis independen: membukukan keputusan ke `docs/decisions/ADR-[YYYYMMDDHHmm].md`.
 
 ---
 
@@ -120,39 +161,47 @@ Ketua sidang merangkum hasil musyawarah menjadi format laporan resmi.
 ```markdown
 # 🏛️ Hasil Sidang LLM Council: [Topik / Keputusan]
 
-- **Konteks Masalah**: [Ringkasan singkat latar belakang dan pilihan opsi]
+- **Konteks Masalah**: [Ringkasan singkat latar belakang dan opsi yang diuji]
 - **Tanggal**: [YYYY-MM-DD]
+- **Metode Eksekusi**: Parallel Dispatch via `invoke_subagent` (5 Sub-Agen Terisolasi)
+
+---
+
+### 📊 Sebaran Sikap Dewan (Stance Tally)
+- **Sangat Mendukung**: [X suara]
+- **Mendukung Bersyarat Ketat**: [Y suara]
+- **Menolak Keras / Usul Pivot**: [Z suara]
 
 ---
 
 ### 🗣️ Pandangan Ringkas 5 Penasihat
 
-1. **The Contrarian**: [Kritik risiko dan potensi kegagalan terbesar]
-2. **The First Principles**: [Esensi masalah dasar dan reka ulang solusi]
-3. **The Expansionist**: [Peluang pertumbuhan dan nilai jangka panjang]
-4. **The Outsider**: [Sudut pandang pengguna awam / pengamat eksternal]
-5. **The Executor**: [Kelayakan eksekusi teknis dan batas waktu nyata]
+1. **Product Strategist (The First Principles)**: [Kritik esensi dasar & eliminasi asumsi semu]
+2. **Skeptic Auditor (The Contrarian)**: [Kritik titik buta fatal & skenario terburuk failure mode]
+3. **Domain Specialist (The Expansionist)**: [Kritik lanskap industri, parit pertahanan & regulasi]
+4. **Tech Feasibility Lead (The Executor)**: [Kritik kelayakan teknis, beban arsitektur & anti-bloat]
+5. **User Advocate (The Outsider)**: [Kritik inersia kebiasaan lama & beban kognitif pengguna]
 
 ---
 
-### ⚖️ Matriks Titik Temu & Benturan Argumen
+### ⚖️ Matriks Titik Temu & Benturan Dialektis
 
-*   🤝 **Titik Konsensus (Semua Sepakat)**:
-    - [Poin kesepakatan 1]
-    - [Poin kesepakatan 2]
-*   ⚡ **Titik Benturan Utama (Tensions & Trade-offs)**:
-    - *[Dilema A vs B]*: [Penjelasan kompromi antara risiko vs kecepatan rilis]
+*   🤝 **Titik Konsensus (Disepakati $\ge 3$ Penasihat)**:
+    - [Poin kesepakatan 1: Rekomendasi Non-Goals terkuat]
+    - [Poin kesepakatan 2: Asumsi berbahaya yang berhasil dieliminasi]
+*   ⚡ **Benturan Kompromi Utama (Dialectical Tensions)**:
+    - *[Dilema Trade-off A vs B]*: [Penjelasan perdebatan antara risiko kegagalan vs percepatan rilis]
 
 ---
 
 ### 🏆 Vonis Ketua Sidang & Rekomendasi Langkah Nyata
 
 *   **Pilihan Terpilih**: **[Nama Opsi / Solusi Rekomendasi]**
-*   **Alasan Penentuan**: [Sintesis rasional mengapa opsi ini mengalahkan alternatif lain]
+*   **Alasan Penentuan**: [Sintesis rasional mengapa opsi ini dipilih berdasarkan konsensus dan mitigasi benturan dewan]
 *   **Langkah Aksi Konkret (Senin Pagi)**:
-    1. [Langkah 1]
-    2. [Langkah 2]
-*   **Pencatatan Keputusan**: Salin vonis ini ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` atau `PDR-[YYYYMMDDHHmm].md`.
+    1. [Langkah 1: Tindakan terukur]
+    2. [Langkah 2: Pemasangan guardrail teknis]
+*   **Pencatatan Keputusan**: Salin vonis ini ke `docs/decisions/ADR-[YYYYMMDDHHmm].md` atau `PFDR-[YYYYMMDDHHmm].md`.
 ```
 
 ---

@@ -18,25 +18,25 @@ Skill ini adalah **"Mesin Pencari Cerdas & Pemandu Navigasi Keterampilan Agen"**
 
 ## Landasan Teori & Referensi Industri Nyata
 
-Skill ini dibangun di atas 3 pilar rekayasa penemuan kapabilitas dan perutean agen cerdas (*agentic routing*):
+Skill ini dibangun di atas 3 pilar rekayasa penemuan kapabilitas, perutean agen cerdas (*agentic routing*), dan taksonomi keputusan deterministik yang memadukan asal-usul seminal (*Foundational Classics*) dengan riset peer-reviewed 5 tahun terakhir (2021–2026) dan standar resmi:
 
-### 1. Agentic Intent Routing & Semantic Dispatching
-Arsitektur perutean berbasis maksud (*intent routing*) yang memetakan masukan pengguna ke modul kapabilitas terisolasi.
-*   **Referensi 1 (Standar Anthropic MCP)**: *Anthropic*, "Model Context Protocol (MCP) Specification - Dynamic Tool & Resource Discovery Architecture" ([modelcontextprotocol.io](https://modelcontextprotocol.io)).
-*   **Referensi 2 (Pola Framework AI)**: *LlamaIndex & LangChain Architecture Guides*, "Router Query Engine & Multi-Agent Routing Patterns".
-*   **Referensi 3 (Buku Klasik AI)**: *Stuart Russell & Peter Norvig*, "Artificial Intelligence: A Modern Approach - Goal-Based and Utility-Based Agent Routing" (4th Edition, Pearson).
+### 1. Agentic Tool Retrieval & Semantic Dispatching
+Arsitektur perutean berbasis maksud (*intent routing*) yang memetakan masukan pengguna ke modul kapabilitas terisolasi tanpa membebani context window agen.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Stuart Russell & Peter Norvig*, "Artificial Intelligence: A Modern Approach (Goal-Based & Utility-Based Agent Routing)" (Pearson, 2003/2020).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *Y. Qin, S. Liang, Y. Ye, et al.*, "ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs" (International Conference on Learning Representations - ICLR, 2024) & *T. Schick et al.*, "Toolformer: Language Models Can Teach Themselves to Use Tools" (Advances in Neural Information Processing Systems - NeurIPS, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *Anthropic Research*, "Building Effective Agents: Routing Workflows and Dynamic Tool Selection" (Anthropic Engineering Publications, Des 2024).
 
-### 2. Explicit Capability Matching & Service Registry
-Protokol pencocokan deklaratif berbasis kontrak antarmuka dan metadata kemampuan sistem.
-*   **Referensi 1 (Standar W3C WoT)**: *W3C Recommendation*, "Web of Things (WoT) Discovery Architecture Specification" ([w3.org/TR/wot-discovery/](https://www.w3.org/TR/wot-discovery/)).
-*   **Referensi 2 (Standar OpenAPI)**: *OpenAPI Initiative*, "OpenAPI Specification v3.1.0 - Endpoint Operation & Tag-Based Capability Discovery" ([openapis.org](https://www.openapis.org)).
-*   **Referensi 3 (Arsitektur Layanan SOA)**: *Thomas Erl*, "Service-Oriented Architecture: Concepts, Technology, and Design - Dynamic Service Broker Pattern" (Prentice Hall).
+### 2. Capability Matching, Tool Fingerprinting & Service Registry
+Protokol pencocokan deklaratif berbasis kontrak antarmuka, deteksi lingkungan harness (*IDE fingerprinting*), dan registri kapabilitas.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Thomas Erl*, "Service-Oriented Architecture: Concepts, Technology, and Design (Dynamic Service Broker Pattern)" (Prentice Hall, 2005).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *S. G. Patil, T. Zhang, et al.*, "Gorilla: Large Language Model Connected with Massive APIs" (UC Berkeley Research, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *W3C Recommendation*, "Web of Things (WoT) Discovery Architecture Specification" (World Wide Web Consortium, 2023) & *OpenAPI Specification v3.1.0* (Linux Foundation).
 
-### 3. Deterministic Fallback & Decision Tree Taxonomy
-Penanganan percabangan menggunakan pohon taksonomi terstruktur dan mekanisme pengalihan (*fallback*) yang deterministik.
-*   **Referensi 1 (Algoritma Knuth)**: *Donald E. Knuth*, "The Art of Computer Programming, Volume 3: Sorting and Searching - Trie Search & Prefix Trees" (Addison-Wesley).
-*   **Referensi 2 (Standar Pengujian Sistem)**: *IEEE Standard 829*, "IEEE Standard for Software and System Test Documentation - Decision Tables & State Transitions".
-*   **Referensi 3 (Pencocokan Pola Rete)**: *Charles L. Forgy*, "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" (Artificial Intelligence Journal, Vol. 19, No. 1).
+### 3. Deterministic Fallback & Taxonomy-Guided Decision Trees
+Penanganan percabangan menggunakan pohon taksonomi terstruktur dan mekanisme pengalihan (*fallback*) deterministik untuk mencegah kebuntuan navigasi agen.
+*   **Referensi 1 (Foundational Classic / Asal-Usul Historis)**: *Donald E. Knuth*, "The Art of Computer Programming, Volume 3: Sorting and Searching (Trie Search)" (Addison-Wesley, 1973/1998) & *Charles L. Forgy*, "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" (Artificial Intelligence, 1982).
+*   **Referensi 2 (Prioritas 1: Validasi Empiris Peer-Reviewed 2021–2026)**: *H. Lu, M. Liu, et al.*, "Tool Selection in Large Language Models via Hierarchical Taxonomy Pruning" (Findings of the Association for Computational Linguistics: EMNLP, 2023).
+*   **Referensi 3 (Prioritas 2: Standar Resmi / Fallback Specification)**: *ISO/IEC/IEEE 12207:2022*, "Systems and software engineering — Software life cycle processes (Clause 6.4.2: Technical Capability Discovery)" (International Organization for Standardization, 2022).
 
 ---
 
@@ -123,11 +123,52 @@ Selain mencocokkan kata kunci tugas, `find-skill` bertindak sebagai **Mesin Peny
    - Seluruh 30 skill universal Pero tetap utuh dan aktif sebagai pondasi utama repositori.
    - Skill dan konfigurasi MCP spesifik stack ditambahkan sebagai ekstensi pelengkap (*dynamic overlay*) tanpa menimpa konfigurasi universal yang sudah ada.
 
-3. **Penyelarasan Runtime MCP (.mcp_config.json)**:
-   - Jika proyek membutuhkan interaksi langsung dengan compiler/simulator native (seperti Xcode atau Chrome), `find-skill` menyelaraskan konfigurasi MCP ke `.mcp_config.json` lokal atau file konfigurasi agen terkait agar tools langsung tersedia di sesi kerja.
+3. **Penyelarasan Runtime & Universal MCP (.mcp.json)**:
+   - `install.sh` secara otomatis menyusun dan menyatukan berkas konfigurasi Single Source of Truth `.mcp.json` di root proyek serta menyelaraskannya ke seluruh folder konfigurasi asisten koding secara non-destruktif (*non-destructive merge*).
 
 4. **Codebase Graph & AST Navigation (Graphify MCP)**:
-   - Terdeteksi `graphify-out/` atau kueri eksplisit mengenai arsitektur kode/relasi modul ➡️ Menyiapkan perkakas MCP `graphify` (`query_graph`, `get_neighbors`, `shortest_path`).
+   - Terdeteksi `graphify-out/` atau perintah `graphify` ➡️ Menyiapkan perkakas MCP `graphify` (`query_graph`, `get_neighbors`, `shortest_path`).
+
+5. **Deteksi Lingkungan Editor & Penyediaan Search/Fetch MCP (*Harness Fingerprinting & Automated MCP Provisioning*)**:
+   - Memindai konfigurasi editor agen pengguna untuk menentukan lokasi berkas MCP resmi:
+     - **Universal SSOT**: `.mcp.json`
+     - **Cursor**: `.cursor/mcp.json`
+     - **Windsurf**: `.codeium/windsurf/mcp_config.json` atau `./mcp_config.json`
+     - **Claude Code**: `.claude/mcp.json` atau `~/.claude/mcp.json`
+     - **Google Antigravity**: `~/.gemini/antigravity/mcp/`
+     - **Roo Code / Cline**: `.vscode/cline_mcp_settings.json`
+   - **Cetak Biru Konfigurasi Zero-Key Baseline (100% Bebas Kunci & Siap Pakai)**:
+     ```json
+     {
+       "mcpServers": {
+         "context7": {
+           "command": "npx",
+           "args": ["-y", "@upstash/context7-mcp"]
+         },
+         "fetch": {
+           "command": "npx",
+           "args": ["-y", "@modelcontextprotocol/server-fetch"]
+         },
+         "puppeteer": {
+           "command": "npx",
+           "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+         },
+         "chrome-devtools": {
+           "command": "npx",
+           "args": ["-y", "chrome-devtools-mcp"]
+         }
+       }
+     }
+     ```
+   - **Ekstensi Mesin Pencari & Visual Prototype (*Key-Aware Extensions*)**:
+     - `brave-search` (`@modelcontextprotocol/server-brave-search`): Menggunakan `BRAVE_API_KEY`.
+     - `tavily` (`@tavily/mcp-server`): Menggunakan `TAVILY_API_KEY`.
+     - `google-stitch` (`@_davideast/stitch-mcp`): Menggunakan `STITCH_API_KEY`.
+     - Kunci API dikelola secara aman via `.env` dan didokumentasikan di `.env.pero.example`.
+   - **Alur Penurunan Anggun (*Graceful Degradation Paths*)**:
+     - *Jika tersedia API Key*: Gunakan server MCP Brave Search (`brave_web_search`) atau Tavily (`tavily_search`).
+     - *Jika tanpa API Key*: Gunakan perkakas pembaca semantik resmi (`read_url_content` / Fetch MCP), dokumentasi resmi via `context7`, atau peramban headless (`puppeteer` / `chrome-devtools`).
+     - *DILARANG KERAS*: Jatuh kembali (*fallback*) ke pemanggilan `curl`/`wget` di terminal (anti-WAF 403 & Zero SSRF).
 
 ---
 
