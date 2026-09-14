@@ -183,6 +183,283 @@ EOF
 }
 
 # ------------------------------------------------------------------------------
+# 2.1. Universal MCP Provisioning & Non-Destructive JSON Merger
+# ------------------------------------------------------------------------------
+merge_mcp_json_file() {
+  local target_json="$1"
+  local servers_payload="$2"
+  local dry_run="$3"
+
+  if [[ "$dry_run" == true ]]; then
+    echo "   [🔍 DRY-RUN] Akan menulis/menggabungkan konfigurasi MCP: ${target_json}"
+    return 0
+  fi
+
+  local target_dir
+  target_dir="$(dirname "$target_json")"
+  mkdir -p "$target_dir"
+
+  # Cadangkan jika berkas sudah ada sebelumnya
+  if [[ -f "$target_json" ]]; then
+    local timestamp
+    timestamp="$(date +%Y%m%d_%H%M%S)"
+    cp "$target_json" "${target_json}.bak_${timestamp}"
+  fi
+
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c '
+import json, sys, os
+
+target_file = sys.argv[1]
+new_servers_str = sys.argv[2]
+
+data = {}
+if os.path.exists(target_file):
+    try:
+        with open(target_file, "r", encoding="utf-8") as f:
+            content = f.read().strip()
+            if content:
+                data = json.loads(content)
+    except Exception:
+        data = {}
+
+if not isinstance(data, dict):
+    data = {}
+
+if "mcpServers" not in data or not isinstance(data["mcpServers"], dict):
+    data["mcpServers"] = {}
+
+try:
+    new_servers = json.loads(new_servers_str)
+except Exception:
+    new_servers = {}
+
+for s_name, s_cfg in new_servers.items():
+    if s_name not in data["mcpServers"]:
+        data["mcpServers"][s_name] = s_cfg
+    else:
+        # Jika server sudah ada, gabungkan env tanpa menimpa konfigurasi custom pengguna
+        if isinstance(s_cfg, dict) and "env" in s_cfg:
+            existing_s = data["mcpServers"][s_name]
+            if isinstance(existing_s, dict) and "env" in existing_s:
+                for env_k, env_v in s_cfg["env"].items():
+                    if env_k not in existing_s["env"] or not existing_s["env"][env_k]:
+                        existing_s["env"][env_k] = env_v
+
+with open(target_file, "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2)
+' "$target_json" "$servers_payload"
+  elif command -v node >/dev/null 2>&1; then
+    node -e '
+const fs = require("fs");
+const targetFile = process.argv[1];
+const newServersStr = process.argv[2];
+
+let data = {};
+if (fs.existsSync(targetFile)) {
+  try {
+    const raw = fs.readFileSync(targetFile, "utf8").trim();
+    if (raw) data = JSON.parse(raw);
+  } catch (e) {}
+}
+
+if (typeof data !== "object" || data === null || Array.isArray(data)) data = {};
+if (!data.mcpServers || typeof data.mcpServers !== "object") data.mcpServers = {};
+
+let newServers = {};
+try {
+  newServers = JSON.parse(newServersStr);
+} catch (e) {}
+
+for (const [sName, sCfg] of Object.entries(newServers)) {
+  if (!data.mcpServers[sName]) {
+    data.mcpServers[sName] = sCfg;
+  }
+}
+
+fs.writeFileSync(targetFile, JSON.stringify(data, null, 2));
+' "$target_json" "$servers_payload"
+  else
+    if [[ ! -f "$target_json" ]]; then
+      printf '{\n  "mcpServers": %s\n}\n' "$servers_payload" > "$target_json"
+    fi
+  fi
+  echo "   [✓] Konfigurasi MCP aktif: ${target_json}"
+}
+
+setup_mcp_servers() {
+  local target_dir="$1"
+  local dry_run="$2"
+  local enable_claude="$3"
+  local enable_cursor="$4"
+  local enable_windsurf="$5"
+  local enable_cline="$6"
+  local source_dir="$7"
+
+  echo "-> Menyiapkan konfigurasi Model Context Protocol (MCP) terintegrasi..."
+
+  # Periksa runtime npx / node
+  local has_npx=false
+  if command -v npx >/dev/null 2>&1; then
+    has_npx=true
+    echo "   [✓] Runtime Node.js / npx terdeteksi (Siap menjalankan server MCP)."
+  else
+    echo "   [⚠️ ] Warning: npx tidak ditemukan di PATH. Pastikan Node.js terpasang untuk menjalankan MCP."
+  fi
+
+  # Baca API Key dari environment atau .env lokal jika ada
+  local brave_key="${BRAVE_API_KEY:-}"
+  local tavily_key="${TAVILY_API_KEY:-}"
+  local stitch_key="${STITCH_API_KEY:-}"
+
+  if [[ -f "${target_dir}/.env" ]]; then
+    if [[ -z "$brave_key" ]]; then
+      brave_key=$(grep -E '^[[:space:]]*BRAVE_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    fi
+    if [[ -z "$tavily_key" ]]; then
+      tavily_key=$(grep -E '^[[:space:]]*TAVILY_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    fi
+    if [[ -z "$stitch_key" ]]; then
+      stitch_key=$(grep -E '^[[:space:]]*STITCH_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    fi
+  fi
+
+  # Salin template .env.pero.example jika belum ada
+  local target_env_example="${target_dir}/.env.pero.example"
+  if [[ ! -f "$target_env_example" && -f "${source_dir}/.env.pero.example" ]]; then
+    if [[ "$dry_run" == false ]]; then
+      cp "${source_dir}/.env.pero.example" "$target_env_example"
+      echo "   [🛡️ ] Berkas templat kunci API dibuat: ${target_env_example}"
+    fi
+  fi
+
+  # Deteksi stack spesifik proyek
+  local is_swift=false
+  if [[ -f "${target_dir}/Package.swift" ]] || compgen -G "${target_dir}/*.xcodeproj" > /dev/null 2>&1 || compgen -G "${target_dir}/*.xcworkspace" > /dev/null 2>&1; then
+    is_swift=true
+  fi
+
+  # Deteksi ketersediaan graphify
+  local has_graphify=false
+  if command -v graphify >/dev/null 2>&1 || [[ -d "${target_dir}/graphify-out" ]]; then
+    has_graphify=true
+  fi
+
+  # Bangun payload JSON menggunakan python3 atau node
+  local servers_payload
+  servers_payload=$(python3 -c '
+import json, sys
+
+brave_key = sys.argv[1]
+tavily_key = sys.argv[2]
+stitch_key = sys.argv[3]
+is_swift = (sys.argv[4] == "true")
+has_graphify = (sys.argv[5] == "true")
+
+servers = {
+  "context7": {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"]
+  },
+  "fetch": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-fetch"]
+  },
+  "puppeteer": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+  },
+  "chrome-devtools": {
+    "command": "npx",
+    "args": ["-y", "chrome-devtools-mcp"]
+  }
+}
+
+# Brave Search MCP
+if brave_key:
+  servers["brave-search"] = {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+    "env": {"BRAVE_API_KEY": brave_key}
+  }
+else:
+  servers["brave-search"] = {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+    "env": {"BRAVE_API_KEY": "${BRAVE_API_KEY}"}
+  }
+
+# Tavily Search MCP
+if tavily_key:
+  servers["tavily"] = {
+    "command": "npx",
+    "args": ["-y", "@tavily/mcp-server"],
+    "env": {"TAVILY_API_KEY": tavily_key}
+  }
+else:
+  servers["tavily"] = {
+    "command": "npx",
+    "args": ["-y", "@tavily/mcp-server"],
+    "env": {"TAVILY_API_KEY": "${TAVILY_API_KEY}"}
+  }
+
+# Google Stitch MCP
+if stitch_key:
+  servers["google-stitch"] = {
+    "command": "npx",
+    "args": ["-y", "@_davideast/stitch-mcp"],
+    "env": {"STITCH_API_KEY": stitch_key}
+  }
+else:
+  servers["google-stitch"] = {
+    "command": "npx",
+    "args": ["-y", "@_davideast/stitch-mcp"],
+    "env": {"STITCH_API_KEY": "${STITCH_API_KEY}"}
+  }
+
+# Graphify MCP
+if has_graphify:
+  servers["graphify"] = {
+    "command": "graphify",
+    "args": [".", "--mcp"]
+  }
+
+# Stack-specific (Swift)
+if is_swift:
+  servers["xcodebuild"] = {
+    "command": "npx",
+    "args": ["-y", "xcodebuild-mcp"]
+  }
+
+print(json.dumps(servers))
+' "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" 2>/dev/null || echo '{"context7":{"command":"npx","args":["-y","@upstash/context7-mcp"]},"fetch":{"command":"npx","args":["-y","@modelcontextprotocol/server-fetch"]},"puppeteer":{"command":"npx","args":["-y","@modelcontextprotocol/server-puppeteer"]},"chrome-devtools":{"command":"npx","args":["-y","chrome-devtools-mcp"]}}')
+
+  # 1. Selalu terapkan Universal MCP (.mcp.json di root proyek)
+  merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
+
+  # 2. Terapkan pada Cursor jika aktif
+  if [[ "$enable_cursor" == true ]]; then
+    merge_mcp_json_file "${target_dir}/.cursor/mcp.json" "$servers_payload" "$dry_run"
+  fi
+
+  # 3. Terapkan pada Windsurf jika aktif
+  if [[ "$enable_windsurf" == true ]]; then
+    merge_mcp_json_file "${target_dir}/.codeium/windsurf/mcp_config.json" "$servers_payload" "$dry_run"
+    merge_mcp_json_file "${target_dir}/mcp_config.json" "$servers_payload" "$dry_run"
+  fi
+
+  # 4. Terapkan pada Claude Code jika aktif
+  if [[ "$enable_claude" == true ]]; then
+    merge_mcp_json_file "${target_dir}/.claude/mcp.json" "$servers_payload" "$dry_run"
+  fi
+
+  # 5. Terapkan pada Cline / Roo Code jika aktif
+  if [[ "$enable_cline" == true ]]; then
+    merge_mcp_json_file "${target_dir}/.vscode/cline_mcp_settings.json" "$servers_payload" "$dry_run"
+  fi
+}
+
+# ------------------------------------------------------------------------------
 # 3. Main Operational Logic
 # ------------------------------------------------------------------------------
 main() {
@@ -190,6 +467,7 @@ main() {
   local check_only=false
   local dry_run=false
   local harness_arg="antigravity"
+  local harness_explicit=false
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -203,10 +481,12 @@ main() {
         ;;
       --harness=*)
         harness_arg="${1#*=}"
+        harness_explicit=true
         shift
         ;;
       -H|--harness)
         harness_arg="$2"
+        harness_explicit=true
         shift 2
         ;;
       --version|-v)
@@ -268,6 +548,49 @@ main() {
       echo "   [✗] AGENTS.md: HILANG di root workspace."
       missing=$((missing + 1))
     fi
+
+    echo "-> Memeriksa runtime pendukung & server MCP..."
+    if command -v node >/dev/null 2>&1 && command -v npx >/dev/null 2>&1; then
+      local node_v
+      node_v="$(node -v 2>/dev/null || echo "ok")"
+      echo "   [✓] Node.js / npx: Tersedia (${node_v})."
+    else
+      echo "   [⚠️ ] Node.js / npx: Tidak ditemukan di PATH (Dibutuhkan untuk server MCP npx)."
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+      echo "   [✓] Python 3: Tersedia (Engine JSON Merger aktif)."
+    fi
+
+    # Audit Berkas Konfigurasi MCP
+    local mcp_configs=()
+    [[ -f "${target_dir}/.mcp.json" ]] && mcp_configs+=(".mcp.json (Universal)")
+    [[ -f "${target_dir}/.cursor/mcp.json" ]] && mcp_configs+=(".cursor/mcp.json (Cursor)")
+    [[ -f "${target_dir}/.codeium/windsurf/mcp_config.json" ]] && mcp_configs+=(".codeium/windsurf/mcp_config.json (Windsurf)")
+    [[ -f "${target_dir}/mcp_config.json" ]] && mcp_configs+=("mcp_config.json (Windsurf Root)")
+    [[ -f "${target_dir}/.claude/mcp.json" ]] && mcp_configs+=(".claude/mcp.json (Claude Code)")
+    [[ -f "${target_dir}/.vscode/cline_mcp_settings.json" ]] && mcp_configs+=(".vscode/cline_mcp_settings.json (Cline / Roo Code)")
+
+    if [[ ${#mcp_configs[@]} -gt 0 ]]; then
+      echo "   [✓] Berkas konfigurasi MCP aktif:"
+      for cfg in "${mcp_configs[@]}"; do
+        echo "       - ${cfg}"
+      done
+    else
+      echo "   [ℹ️ ] Belum ada berkas konfigurasi MCP di target. Jalankan 'install.sh ${target_dir}' untuk membuat otomatis."
+    fi
+
+    # Cek kunci pencarian opsional
+    if [[ -n "${BRAVE_API_KEY:-}" ]]; then
+      echo "   [🔑] BRAVE_API_KEY: Terdeteksi di environment."
+    fi
+    if [[ -n "${TAVILY_API_KEY:-}" ]]; then
+      echo "   [🔑] TAVILY_API_KEY: Terdeteksi di environment."
+    fi
+    if [[ -n "${STITCH_API_KEY:-}" ]]; then
+      echo "   [🔑] STITCH_API_KEY: Terdeteksi di environment."
+    fi
+
     echo "================================================================="
     if [[ $missing -eq 0 ]]; then
       echo " ✨ Seluruh ${#SKILLS[@]} modul skill Pero SEHAT 100%!"
@@ -285,11 +608,13 @@ main() {
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "")"
   local source_skills=""
   local source_agents_md=""
+  local source_root=""
 
   if [[ -n "$script_dir" && -d "${script_dir}/skills" && -f "${script_dir}/AGENTS.md" ]]; then
     echo "-> Menggunakan paket lokal (${script_dir})..."
     source_skills="${script_dir}/skills"
     source_agents_md="${script_dir}/AGENTS.md"
+    source_root="${script_dir}"
   else
     echo "-> Mengunduh paket resmi dari GitHub (${REPO_URL})..."
     TEMP_DIR="$(mktemp -d)"
@@ -298,6 +623,7 @@ main() {
       if git clone --depth 1 "$REPO_URL" "${TEMP_DIR}/repo" 2>/dev/null; then
         source_skills="${TEMP_DIR}/repo/skills"
         source_agents_md="${TEMP_DIR}/repo/AGENTS.md"
+        source_root="${TEMP_DIR}/repo"
         downloaded=true
       fi
     fi
@@ -311,6 +637,7 @@ main() {
         if curl -fsSL "$tarball_url" 2>/dev/null | tar -xzf - -C "${TEMP_DIR}/repo" --strip-components=1 2>/dev/null; then
           source_skills="${TEMP_DIR}/repo/skills"
           source_agents_md="${TEMP_DIR}/repo/AGENTS.md"
+          source_root="${TEMP_DIR}/repo"
           downloaded=true
         fi
       fi
@@ -400,30 +727,61 @@ main() {
     echo "   [✓] AGENTS.md sudah berada di root sumber."
   fi
 
-  # Pasang Harness Adapters Sesuai Pilihan
-  echo "-> Menyiapkan adapter asisten pengkodean (Harness: ${harness_arg})..."
+  # Pasang Harness Adapters Sesuai Pilihan & Deteksi Otomatis
   local enable_claude=false
   local enable_cursor=false
   local enable_windsurf=false
   local enable_cline=false
 
-  if [[ "$harness_arg" == "all" ]]; then
-    enable_claude=true
-    enable_cursor=true
-    enable_windsurf=true
-    enable_cline=true
+  if [[ "$harness_explicit" == true ]]; then
+    echo "-> Menyiapkan adapter asisten pengkodean (Harness ditentukan: ${harness_arg})..."
+    if [[ "$harness_arg" == "all" ]]; then
+      enable_claude=true
+      enable_cursor=true
+      enable_windsurf=true
+      enable_cline=true
+    else
+      IFS=',' read -r -a selected_harnesses <<< "$harness_arg"
+      for h in "${selected_harnesses[@]}"; do
+        case "$h" in
+          claude) enable_claude=true ;;
+          cursor) enable_cursor=true ;;
+          windsurf) enable_windsurf=true ;;
+          cline) enable_cline=true ;;
+          antigravity) ;;
+          *) echo "   [⚠️ ] Harness tidak dikenal: $h (Dilewati)" ;;
+        esac
+      done
+    fi
   else
-    IFS=',' read -r -a selected_harnesses <<< "$harness_arg"
-    for h in "${selected_harnesses[@]}"; do
-      case "$h" in
-        claude) enable_claude=true ;;
-        cursor) enable_cursor=true ;;
-        windsurf) enable_windsurf=true ;;
-        cline) enable_cline=true ;;
-        antigravity) ;;
-        *) echo "   [⚠️ ] Harness tidak dikenal: $h (Dilewati)" ;;
-      esac
-    done
+    echo "-> Mendeteksi lingkungan asisten pengkodean (Harness Auto-Detection)..."
+    local any_detected=false
+    if [[ -d "${target_dir}/.cursor" || -f "${target_dir}/.cursorrules" ]]; then
+      enable_cursor=true
+      any_detected=true
+      echo "   [🔍] Terdeteksi konfigurasi Cursor."
+    fi
+    if [[ -d "${target_dir}/.codeium" || -d "${target_dir}/.windsurf" || -f "${target_dir}/.windsurfrules" ]]; then
+      enable_windsurf=true
+      any_detected=true
+      echo "   [🔍] Terdeteksi konfigurasi Windsurf."
+    fi
+    if [[ -d "${target_dir}/.claude" || -f "${target_dir}/CLAUDE.md" ]]; then
+      enable_claude=true
+      any_detected=true
+      echo "   [🔍] Terdeteksi konfigurasi Claude Code."
+    fi
+    if [[ -d "${target_dir}/.vscode" || -f "${target_dir}/.clinerules" ]]; then
+      enable_cline=true
+      any_detected=true
+      echo "   [🔍] Terdeteksi konfigurasi Cline / Roo Code."
+    fi
+
+    # Jika proyek baru tanpa folder harness khusus, aktifkan Cursor & Universal sebagai standar terpopuler
+    if [[ "$any_detected" == false ]]; then
+      enable_cursor=true
+      echo "   [ℹ️ ] Tidak terdeteksi folder IDE khusus, mengaktifkan adapter standar Cursor & Universal."
+    fi
   fi
 
   if [[ "$enable_claude" == true ]]; then
@@ -450,6 +808,9 @@ main() {
   local security_rules=(
     ".env"
     ".env.*"
+    "!.env.example"
+    "!.env.*.example"
+    "!.env.pero.example"
     "*.pem"
     "*.key"
     "*.cert"
@@ -485,9 +846,14 @@ main() {
   fi
 
   # ------------------------------------------------------------------------------
-  # Deteksi Stack Proyek & Penyiapan MCP Dinamis
+  # Penyiapan Server MCP Universal & Otomatis (MCP Auto-Provisioning)
   # ------------------------------------------------------------------------------
-  echo "-> Memeriksa manifest proyek untuk penyelarasan MCP spesifik stack..."
+  setup_mcp_servers "$target_dir" "$dry_run" "$enable_claude" "$enable_cursor" "$enable_windsurf" "$enable_cline" "$source_root"
+
+  # ------------------------------------------------------------------------------
+  # Deteksi Stack Proyek & Informasi Ekstensi
+  # ------------------------------------------------------------------------------
+  echo "-> Memeriksa manifest proyek untuk penyelarasan toolchain spesifik stack..."
   local detected_stacks=()
 
   if [[ -f "${target_dir}/Package.swift" ]] || compgen -G "${target_dir}/*.xcodeproj" > /dev/null 2>&1 || compgen -G "${target_dir}/*.xcworkspace" > /dev/null 2>&1; then
@@ -495,15 +861,15 @@ main() {
   fi
 
   if [[ -f "${target_dir}/pyproject.toml" ]] || [[ -f "${target_dir}/requirements.txt" ]] || [[ -f "${target_dir}/Pipfile" ]]; then
-    detected_stacks+=("Python (Environment & Linter MCP)")
+    detected_stacks+=("Python (Environment & Linter)")
   fi
 
   if [[ -f "${target_dir}/Cargo.toml" ]]; then
-    detected_stacks+=("Rust (Cargo & Analyzer MCP)")
+    detected_stacks+=("Rust (Cargo & Analyzer)")
   fi
 
   if [[ -f "${target_dir}/go.mod" ]]; then
-    detected_stacks+=("Go (gopls Toolchain MCP)")
+    detected_stacks+=("Go (gopls Toolchain)")
   fi
 
   if [[ -f "${target_dir}/package.json" ]]; then
@@ -512,7 +878,7 @@ main() {
 
   if [[ ${#detected_stacks[@]} -gt 0 ]]; then
     for stack in "${detected_stacks[@]}"; do
-      echo "   [⚡] Terdeteksi stack: ${stack} (Siap disinkronkan otomatis)"
+      echo "   [⚡] Terdeteksi stack: ${stack} (Diselaraskan otomatis)"
     done
   else
     echo "   [✓] Repositori universal (Polyglot core aktif tanpa dependensi khusus)."
