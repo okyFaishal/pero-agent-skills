@@ -16,11 +16,11 @@ if [ -z "${BASH_VERSION:-}" ]; then
 fi
 
 # ==============================================================================
-# 🚀 Pero Agent Skills Universal Installer (Standalone v3.2)
+# 🚀 Pero Agent Skills - Antigravity Single-Harness Installer & Updater (v4.0)
 # Creator: Pero (https://github.com/okyFaishal/pero-agent-skills)
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
-#   Or: bash install.sh [TARGET_DIR] [-i|--interactive] [-y|--yes] [--with-graphify] [--check] [--dry-run]
+#   Or: bash install.sh [TARGET_DIR] [--check] [--dry-run]
 # ==============================================================================
 set -euo pipefail
 
@@ -68,10 +68,6 @@ TEMP_DIR=""
 cleanup() {
   local exit_code=$?
   trap - EXIT INT TERM HUP
-  if ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
-    printf "\033[?25h" > /dev/tty 2>/dev/null || true
-    stty echo icanon < /dev/tty 2>/dev/null || true
-  fi
   if [[ -n "${TEMP_DIR:-}" && -d "${TEMP_DIR}" ]]; then
     rm -rf "${TEMP_DIR}"
   fi
@@ -81,113 +77,7 @@ cleanup() {
 trap 'cleanup' EXIT INT TERM HUP
 
 # ------------------------------------------------------------------------------
-# 2. Non-Destructive Harness Adapters
-# ------------------------------------------------------------------------------
-setup_single_adapter() {
-  local target_file="$1"
-  local harness_name="$2"
-  local dry_run="$3"
-  local target_agents_md="$4"
-  local rel_target="AGENTS.md"
-  local file_dir
-  file_dir="$(dirname "$target_file")"
-
-  # Hitung relative path jika adapter berada di subdirektori (misal .cursor/rules/)
-  if [[ "$file_dir" != "$target_dir" && "$file_dir" == "$target_dir"/* ]]; then
-    local rel_sub="${file_dir#"${target_dir}"}"
-    rel_sub="${rel_sub#/}"
-    rel_sub="${rel_sub%/}"
-
-    local depth=0
-    if [[ -n "$rel_sub" ]]; then
-      local old_ifs="$IFS"
-      IFS='/'
-      read -r -a segments <<< "$rel_sub"
-      IFS="$old_ifs"
-      local seg
-      for seg in "${segments[@]}"; do
-        [[ -n "$seg" ]] && ((depth++))
-      done
-    fi
-
-    local up_prefix=""
-    local i
-    for ((i = 0; i < depth; i++)); do
-      up_prefix="../${up_prefix}"
-    done
-    rel_target="${up_prefix}AGENTS.md"
-  fi
-
-  # Pastikan direktori induk target ada sebelum membuat berkas/symlink
-  if [[ ! -d "$file_dir" && "$dry_run" == false ]]; then
-    mkdir -p "$file_dir"
-  fi
-
-  # Skenario 1: Berkas belum ada -> Buat relative symlink
-  if [[ ! -e "$target_file" && ! -L "$target_file" ]]; then
-    if [[ "$dry_run" == true ]]; then
-      echo "   [🔍 DRY-RUN] Akan membuat adapter ${harness_name}: ${target_file} -> ${rel_target}"
-    else
-      ln -s "$rel_target" "$target_file" 2>/dev/null || cp "$target_agents_md" "$target_file"
-      echo "   [✓] Adapter ${harness_name} dibuat (${target_file} -> ${rel_target})."
-    fi
-    return 0
-  fi
-
-  # Skenario 2: Berkas sudah berupa symlink yang menunjuk ke AGENTS.md yang valid
-  if [[ -L "$target_file" ]]; then
-    local current_link
-    current_link="$(readlink "$target_file" 2>/dev/null || echo "")"
-    if [[ "$current_link" == "$rel_target" || "$current_link" == "$target_agents_md" ]]; then
-      echo "   [✓] Adapter ${harness_name} sudah terhubung (${target_file})."
-      return 0
-    else
-      # Jika symlink rusak atau mengarah ke target usang, perbaiki
-      if [[ "$dry_run" == false ]]; then
-        rm -f "$target_file"
-        ln -s "$rel_target" "$target_file" 2>/dev/null || cp "$target_agents_md" "$target_file"
-        echo "   [✓] Adapter ${harness_name} diperbaiki (${target_file} -> ${rel_target})."
-      else
-        echo "   [🔍 DRY-RUN] Akan memperbaiki adapter ${harness_name}: ${target_file} -> ${rel_target}"
-      fi
-      return 0
-    fi
-  fi
-
-  # Skenario 3: Berkas reguler milik pengguna sudah ada -> Non-Destructive Managed Block
-  local start_marker="<!-- PERO_AGENT_SKILLS_START -->"
-  local end_marker="<!-- PERO_AGENT_SKILLS_END -->"
-
-  if grep -Fq "$start_marker" "$target_file" 2>/dev/null; then
-    echo "   [✓] Adapter ${harness_name} (${target_file}) sudah memuat integrasi Pero."
-    return 0
-  fi
-
-  local injection_block
-  injection_block=$(cat << 'EOF'
-
-<!-- PERO_AGENT_SKILLS_START -->
-## Pero Agent Skills Integration
-Proyek ini dilengkapi dengan 30 Pero Agent Skills & Aturan Rekayasa Mandiri.
-- Aturan Tata Kelola & Daftar Skill Lengkap: Silakan patuhi [AGENTS.md](./AGENTS.md)
-- Direktori Skill Operasional: [.agents/skills/](./.agents/skills/)
-<!-- PERO_AGENT_SKILLS_END -->
-EOF
-)
-
-  if [[ "$dry_run" == true ]]; then
-    echo "   [🔍 DRY-RUN] Akan menyisipkan blok rujukan Pero ke berkas yang ada: ${target_file}"
-  else
-    local timestamp
-    timestamp="$(date +%Y%m%d_%H%M%S)"
-    cp "$target_file" "${target_file}.bak_${timestamp}"
-    printf "%s\n" "$injection_block" >> "$target_file"
-    echo "   [🛡️ ] Menambahkan blok rujukan Pero ke berkas: ${target_file} (Cadangan: ${target_file}.bak_${timestamp})."
-  fi
-}
-
-# ------------------------------------------------------------------------------
-# 2.1. Universal MCP Provisioning & Non-Destructive JSON Merger
+# 2. MCP JSON Configuration Merger for Antigravity (Non-Destructive)
 # ------------------------------------------------------------------------------
 merge_mcp_json_file() {
   local target_json="$1"
@@ -199,9 +89,9 @@ merge_mcp_json_file() {
     return 0
   fi
 
-  local target_dir
-  target_dir="$(dirname "$target_json")"
-  mkdir -p "$target_dir"
+  local target_parent
+  target_parent="$(dirname "$target_json")"
+  mkdir -p "$target_parent"
 
   # Cadangkan jika berkas sudah ada sebelumnya
   if [[ -f "$target_json" ]]; then
@@ -215,7 +105,7 @@ merge_mcp_json_file() {
 import json, sys, os
 
 target_file = sys.argv[1]
-new_servers_str = sys.argv[2]
+new_servers = json.loads(sys.argv[2])
 
 data = {}
 if os.path.exists(target_file):
@@ -229,23 +119,18 @@ if os.path.exists(target_file):
 
 if not isinstance(data, dict):
     data = {}
-
 if "mcpServers" not in data or not isinstance(data["mcpServers"], dict):
     data["mcpServers"] = {}
-
-try:
-    new_servers = json.loads(new_servers_str)
-except Exception:
-    new_servers = {}
 
 for s_name, s_cfg in new_servers.items():
     if s_name not in data["mcpServers"]:
         data["mcpServers"][s_name] = s_cfg
     else:
-        # Jika server sudah ada, gabungkan env tanpa menimpa konfigurasi custom pengguna
-        if isinstance(s_cfg, dict) and "env" in s_cfg:
-            existing_s = data["mcpServers"][s_name]
-            if isinstance(existing_s, dict) and "env" in existing_s:
+        existing_s = data["mcpServers"][s_name]
+        if isinstance(existing_s, dict) and "env" in s_cfg:
+            if "env" not in existing_s or not isinstance(existing_s["env"], dict):
+                existing_s["env"] = s_cfg["env"]
+            else:
                 for env_k, env_v in s_cfg["env"].items():
                     if env_k not in existing_s["env"] or not existing_s["env"][env_k]:
                         existing_s["env"][env_k] = env_v
@@ -257,7 +142,7 @@ with open(target_file, "w", encoding="utf-8") as f:
     node -e '
 const fs = require("fs");
 const targetFile = process.argv[1];
-const newServersStr = process.argv[2];
+const newServers = JSON.parse(process.argv[2]);
 
 let data = {};
 if (fs.existsSync(targetFile)) {
@@ -270,17 +155,11 @@ if (fs.existsSync(targetFile)) {
 if (typeof data !== "object" || data === null || Array.isArray(data)) data = {};
 if (!data.mcpServers || typeof data.mcpServers !== "object") data.mcpServers = {};
 
-let newServers = {};
-try {
-  newServers = JSON.parse(newServersStr);
-} catch (e) {}
-
 for (const [sName, sCfg] of Object.entries(newServers)) {
   if (!data.mcpServers[sName]) {
     data.mcpServers[sName] = sCfg;
   }
 }
-
 fs.writeFileSync(targetFile, JSON.stringify(data, null, 2));
 ' "$target_json" "$servers_payload"
   else
@@ -294,21 +173,10 @@ fs.writeFileSync(targetFile, JSON.stringify(data, null, 2));
 setup_mcp_servers() {
   local target_dir="$1"
   local dry_run="$2"
-  local enable_claude="$3"
-  local enable_cursor="$4"
-  local enable_windsurf="$5"
-  local enable_cline="$6"
-  local source_dir="$7"
-  local mcp_selection="${8:-all}"
+  local source_dir="$3"
 
-  if [[ "$mcp_selection" == "none" ]]; then
-    echo "-> Melewati konfigurasi Model Context Protocol (MCP) sesuai pilihan (none)..."
-    return 0
-  fi
+  echo "-> Menyiapkan konfigurasi Model Context Protocol (MCP) untuk Antigravity..."
 
-  echo "-> Menyiapkan konfigurasi Model Context Protocol (MCP) terintegrasi..."
-
-  # Periksa runtime npx / node
   local has_npx=false
   if command -v npx >/dev/null 2>&1; then
     has_npx=true
@@ -317,31 +185,16 @@ setup_mcp_servers() {
     echo "   [⚠️ ] Warning: npx tidak ditemukan di PATH. Pastikan Node.js terpasang untuk menjalankan MCP."
   fi
 
-  # Baca API Key dari environment atau .env lokal jika ada
   local context7_key="${CONTEXT7_API_KEY:-}"
-  local brave_key="${BRAVE_API_KEY:-}"
   local tavily_key="${TAVILY_API_KEY:-}"
   local stitch_key="${STITCH_API_KEY:-}"
 
   if [[ -f "${target_dir}/.env" ]]; then
-    if [[ -z "$context7_key" ]]; then
-      context7_key=$(grep -E '^[[:space:]]*CONTEXT7_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
-    fi
-    if [[ -z "$brave_key" ]]; then
-      brave_key=$(grep -E '^[[:space:]]*BRAVE_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
-    fi
-    if [[ -z "$tavily_key" ]]; then
-      tavily_key=$(grep -E '^[[:space:]]*TAVILY_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
-      if [[ -z "$tavily_key" ]]; then
-        tavily_key=$(grep -E '^[[:space:]]*API_TAVILY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
-      fi
-    fi
-    if [[ -z "$stitch_key" ]]; then
-      stitch_key=$(grep -E '^[[:space:]]*STITCH_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
-    fi
+    [[ -z "$context7_key" ]] && context7_key=$(grep -E '^[[:space:]]*CONTEXT7_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    [[ -z "$tavily_key" ]] && tavily_key=$(grep -E '^[[:space:]]*TAVILY_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    [[ -z "$stitch_key" ]] && stitch_key=$(grep -E '^[[:space:]]*STITCH_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
   fi
 
-  # Salin template .env.pero.example jika belum ada
   local target_env_example="${target_dir}/.env.pero.example"
   if [[ ! -f "$target_env_example" && -f "${source_dir}/.env.pero.example" ]]; then
     if [[ "$dry_run" == false ]]; then
@@ -350,371 +203,56 @@ setup_mcp_servers() {
     fi
   fi
 
-  # Deteksi stack spesifik proyek
-  local is_swift=false
-  if [[ -f "${target_dir}/Package.swift" ]] || compgen -G "${target_dir}/*.xcodeproj" > /dev/null 2>&1 || compgen -G "${target_dir}/*.xcworkspace" > /dev/null 2>&1; then
-    is_swift=true
-  fi
-
-  # Deteksi ketersediaan graphify
   local has_graphify=false
   if command -v graphify >/dev/null 2>&1 || [[ -d "${target_dir}/graphify-out" ]]; then
     has_graphify=true
     echo "   [✓] Server MCP Graphify aktif (Peta relasi kode terdeteksi)."
-  else
-    echo "   [ℹ️ ] Server MCP Graphify dilewati (Belum terpasang di PATH)."
-    echo "       💡 Tips: Pasang terisolasi dengan: uv tool install graphifyy"
   fi
 
-  # Tentukan server MCP yang aktif
-  local enable_mcp_devtools=false
-  local enable_mcp_context7=false
-  local enable_mcp_tavily=false
-  local enable_mcp_stitch=false
-
-  case "$mcp_selection" in
-    all|standard)
-      enable_mcp_devtools=true
-      enable_mcp_context7=true
-      enable_mcp_tavily=true
-      enable_mcp_stitch=true
-      ;;
-    minimal|zero-key)
-      enable_mcp_devtools=true
-      enable_mcp_context7=true
-      enable_mcp_tavily=false
-      enable_mcp_stitch=false
-      ;;
-    *)
-      IFS=',' read -r -a selected_mcps <<< "$mcp_selection"
-      for m in "${selected_mcps[@]}"; do
-        case "$m" in
-          devtools|chrome-devtools) enable_mcp_devtools=true ;;
-          context7) enable_mcp_context7=true ;;
-          tavily) enable_mcp_tavily=true ;;
-          stitch|google-stitch) enable_mcp_stitch=true ;;
-        esac
-      done
-      ;;
-  esac
-
-  local active_list=()
-  [[ "$enable_mcp_devtools" == true ]] && active_list+=("Chrome DevTools")
-  [[ "$enable_mcp_context7" == true ]] && active_list+=("Context7")
-  [[ "$enable_mcp_tavily" == true ]] && active_list+=("Tavily")
-  [[ "$enable_mcp_stitch" == true ]] && active_list+=("Google Stitch")
-  [[ "$has_graphify" == true ]] && active_list+=("Graphify")
-  [[ "$is_swift" == true ]] && active_list+=("Xcodebuild")
-
-  if [[ ${#active_list[@]} -gt 0 ]]; then
-    local old_ifs="$IFS"
-    IFS=', '
-    echo "   [✓] Server MCP yang dikonfigurasi: ${active_list[*]}"
-    IFS="$old_ifs"
-  else
-    echo "   [ℹ️ ] Tidak ada server MCP yang diaktifkan."
-  fi
-
-  # Bangun payload JSON menggunakan python3 atau node
   local servers_payload
   servers_payload=$(python3 -c '
 import json, sys
 
 context7_key = sys.argv[1]
-brave_key = sys.argv[2]
-tavily_key = sys.argv[3]
-stitch_key = sys.argv[4]
-is_swift = (sys.argv[5] == "true")
-has_graphify = (sys.argv[6] == "true")
-enable_devtools = (sys.argv[7] == "true")
-enable_context7 = (sys.argv[8] == "true")
-enable_tavily = (sys.argv[9] == "true")
-enable_stitch = (sys.argv[10] == "true")
+tavily_key = sys.argv[2]
+stitch_key = sys.argv[3]
+has_graphify = (sys.argv[4] == "true")
 
-servers = {}
-
-if enable_devtools:
-  servers["chrome-devtools"] = {
+servers = {
+  "context7": {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"],
+    "env": {"CONTEXT7_API_KEY": context7_key or "${CONTEXT7_API_KEY}"}
+  },
+  "chrome-devtools": {
     "command": "npx",
     "args": ["-y", "chrome-devtools-mcp"]
-  }
-
-# Context7 MCP
-if enable_context7:
-  if context7_key:
-    servers["context7"] = {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"],
-      "env": {"CONTEXT7_API_KEY": context7_key}
-    }
-  else:
-    servers["context7"] = {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"],
-      "env": {"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"}
-    }
-
-# Tavily Search MCP
-if enable_tavily:
-  if tavily_key:
-    servers["tavily"] = {
-      "command": "npx",
-      "args": ["-y", "@tavily/mcp-server"],
-      "env": {"TAVILY_API_KEY": tavily_key}
-    }
-  else:
-    servers["tavily"] = {
-      "command": "npx",
-      "args": ["-y", "@tavily/mcp-server"],
-      "env": {"TAVILY_API_KEY": "${TAVILY_API_KEY}"}
-    }
-
-# Brave Search MCP (Ditambahkan jika kunci tersedia)
-if brave_key:
-  servers["brave-search"] = {
+  },
+  "tavily": {
     "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-    "env": {"BRAVE_API_KEY": brave_key}
+    "args": ["-y", "@tavily/mcp-server"],
+    "env": {"TAVILY_API_KEY": tavily_key or "${TAVILY_API_KEY}"}
+  },
+  "google-stitch": {
+    "command": "npx",
+    "args": ["-y", "@_davideast/stitch-mcp"],
+    "env": {"STITCH_API_KEY": stitch_key or "${STITCH_API_KEY}"}
   }
+}
 
-# Google Stitch MCP
-if enable_stitch:
-  if stitch_key:
-    servers["google-stitch"] = {
-      "command": "npx",
-      "args": ["-y", "@_davideast/stitch-mcp"],
-      "env": {"STITCH_API_KEY": stitch_key}
-    }
-  else:
-    servers["google-stitch"] = {
-      "command": "npx",
-      "args": ["-y", "@_davideast/stitch-mcp"],
-      "env": {"STITCH_API_KEY": "${STITCH_API_KEY}"}
-    }
-
-# Graphify MCP
 if has_graphify:
   servers["graphify"] = {
     "command": "graphify",
     "args": [".", "--mcp"]
   }
 
-# Stack-specific (Swift)
-if is_swift:
-  servers["xcodebuild"] = {
-    "command": "npx",
-    "args": ["-y", "xcodebuild-mcp"]
-  }
-
 print(json.dumps(servers))
-' "$context7_key" "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" "$enable_mcp_devtools" "$enable_mcp_context7" "$enable_mcp_tavily" "$enable_mcp_stitch" 2>/dev/null || echo '{}')
+' "$context7_key" "$tavily_key" "$stitch_key" "$has_graphify" 2>/dev/null || echo '{}')
 
-  # 1. Selalu terapkan Universal MCP (.mcp.json di root proyek)
   merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
-
-  # 2. Terapkan pada Cursor jika aktif
-  if [[ "$enable_cursor" == true ]]; then
-    merge_mcp_json_file "${target_dir}/.cursor/mcp.json" "$servers_payload" "$dry_run"
-  fi
-
-  # 3. Terapkan pada Windsurf jika aktif
-  if [[ "$enable_windsurf" == true ]]; then
-    merge_mcp_json_file "${target_dir}/.codeium/windsurf/mcp_config.json" "$servers_payload" "$dry_run"
-    merge_mcp_json_file "${target_dir}/mcp_config.json" "$servers_payload" "$dry_run"
-  fi
-
-  # 4. Terapkan pada Claude Code jika aktif
-  if [[ "$enable_claude" == true ]]; then
-    merge_mcp_json_file "${target_dir}/.claude/mcp.json" "$servers_payload" "$dry_run"
-  fi
-
-  # 5. Terapkan pada Cline / Roo Code jika aktif
-  if [[ "$enable_cline" == true ]]; then
-    merge_mcp_json_file "${target_dir}/.vscode/cline_mcp_settings.json" "$servers_payload" "$dry_run"
-  fi
 }
 
 # ------------------------------------------------------------------------------
-# 2.5. Isolated Package Provisioning & Interactive Setup Wizard
-# ------------------------------------------------------------------------------
-install_graphify_safe() {
-  local dry_run="$1"
-
-  if command -v graphify >/dev/null 2>&1; then
-    echo "   [✓] Graphify CLI sudah terpasang di sistem ($(command -v graphify))."
-    return 0
-  fi
-
-  echo "-> Memasang Graphify CLI secara terisolasi (Anti-PEP 668)..."
-  if [[ "$dry_run" == true ]]; then
-    echo "   [🔍 DRY-RUN] Akan memasang Graphify via 'uv tool install graphifyy' atau 'pipx install graphifyy'"
-    return 0
-  fi
-
-  if command -v uv >/dev/null 2>&1; then
-    echo "   [⚡] Menjalankan: uv tool install graphifyy"
-    if ( uv tool install graphifyy 2>&1 ); then
-      echo "   [✓] Graphify berhasil dipasang via uv tool."
-    else
-      echo "   [⚠️ ] Warning: Gagal memasang graphify via uv tool. Pemasangan skill Pero tetap dilanjutkan."
-    fi
-  elif command -v pipx >/dev/null 2>&1; then
-    echo "   [⚡] Menjalankan: pipx install graphifyy"
-    if ( pipx install graphifyy 2>&1 ); then
-      echo "   [✓] Graphify berhasil dipasang via pipx."
-    else
-      echo "   [⚠️ ] Warning: Gagal memasang graphify via pipx. Pemasangan skill Pero tetap dilanjutkan."
-    fi
-  else
-    echo "   [⚠️ ] Warning: 'uv' atau 'pipx' tidak ditemukan di PATH."
-    echo "       Untuk melindungi Python sistem (PEP 668), Graphify tidak dipasang via pip global."
-    echo "       Rekomendasi: Pasang uv (https://astral.sh/uv) lalu jalankan: uv tool install graphifyy"
-  fi
-}
-
-prompt_read() {
-  local prompt_text="$1"
-  local default_val="$2"
-  local input_val=""
-
-  if ! ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
-    echo "$default_val"
-    return 0
-  fi
-
-  printf "? %s [Default: %s]: " "$prompt_text" "$default_val" > /dev/tty
-  read -r input_val < /dev/tty || input_val=""
-  if [[ -z "$input_val" ]]; then
-    printf "\033[1A\r\033[K✔ %s › %s\n" "$prompt_text" "$default_val" > /dev/tty
-    echo "$default_val"
-  else
-    printf "\033[1A\r\033[K✔ %s › %s\n" "$prompt_text" "$input_val" > /dev/tty
-    echo "$input_val"
-  fi
-}
-
-prompt_choice() {
-  local prompt_title="$1"
-  local default_idx="${2:-1}"
-  shift 2
-  local options=("$@")
-  local num=${#options[@]}
-
-  if ! ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
-    echo "$default_idx"
-    return 0
-  fi
-
-  echo "" > /dev/tty
-  printf "? %s\n" "$prompt_title" > /dev/tty
-  for i in "${!options[@]}"; do
-    local opt_num=$((i + 1))
-    if [[ "$opt_num" -eq "$default_idx" ]]; then
-      printf "  [%d] %s (Default - Cukup tekan Enter)\n" "$opt_num" "${options[$i]}" > /dev/tty
-    else
-      printf "  [%d] %s\n" "$opt_num" "${options[$i]}" > /dev/tty
-    fi
-  done
-
-  local input_val=""
-  printf "? Pilihan [Default: %s]: " "$default_idx" > /dev/tty
-  read -r input_val < /dev/tty || input_val=""
-
-  local selected_num="$default_idx"
-  if [[ -n "$input_val" && "$input_val" =~ ^[0-9]+$ ]] && (( input_val >= 1 && input_val <= num )); then
-    selected_num="$input_val"
-  fi
-
-  local selected_text="${options[$((selected_num - 1))]}"
-  printf "\033[1A\r\033[K✔ %s › %s\n" "$prompt_title" "$selected_text" > /dev/tty
-  echo "$selected_num"
-}
-
-run_interactive_wizard() {
-  echo "" > /dev/tty
-  echo "=================================================================" > /dev/tty
-  echo " 🧙 Pero Agent Skills Setup Wizard" > /dev/tty
-  echo " Pemandu pemasangan 30 Universal SDLC Skills ke proyek Anda." > /dev/tty
-  echo "=================================================================" > /dev/tty
-  echo "" > /dev/tty
-
-  # 1. Pertanyaan Pertama: Lokasi Folder
-  local default_dir="${target_dir:-.}"
-  local dir_choice
-  dir_choice="$(prompt_read "Lokasi folder target proyek" "${default_dir}")"
-  target_dir="${dir_choice:-$default_dir}"
-
-  # 2. Pertanyaan Kedua: IDE yang Digunakan (Langsung tampilkan semua tanpa auto-detect/universal)
-  local ide_choice
-  ide_choice="$(prompt_choice "Pilih asisten koding (IDE) yang Anda gunakan:" 1 \
-    "Cursor (.cursorrules & .cursor/rules)" \
-    "Claude Code (CLAUDE.md)" \
-    "Windsurf (.windsurfrules)" \
-    "Cline / Roo Code (.clinerules)" \
-    "Semua IDE di atas")"
-
-  case "$ide_choice" in
-    1)
-      harness_arg="cursor"
-      harness_explicit=true
-      ;;
-    2)
-      harness_arg="claude"
-      harness_explicit=true
-      ;;
-    3)
-      harness_arg="windsurf"
-      harness_explicit=true
-      ;;
-    4)
-      harness_arg="cline"
-      harness_explicit=true
-      ;;
-    5)
-      harness_arg="all"
-      harness_explicit=true
-      ;;
-    *)
-      harness_arg="cursor"
-      harness_explicit=true
-      ;;
-  esac
-
-  # 3. Pertanyaan Ketiga: Persetujuan Install MCP (Termasuk yang perlu install aplikasi MCP)
-  local mcp_choice
-  mcp_choice="$(prompt_choice "Persetujuan pemasangan Model Context Protocol (MCP):" 1 \
-    "Ya, pasang konfigurasi MCP standar (Context7, Chrome DevTools, Tavily, Google Stitch)" \
-    "Ya, pasang MCP lengkap + aplikasi pendukung Graphify CLI (uv/pipx)" \
-    "Tidak, lewati pemasangan server MCP")"
-
-  case "$mcp_choice" in
-    1)
-      mcp_arg="all"
-      mcp_explicit=true
-      with_graphify=false
-      ;;
-    2)
-      mcp_arg="all"
-      mcp_explicit=true
-      with_graphify=true
-      ;;
-    3)
-      mcp_arg="none"
-      mcp_explicit=true
-      with_graphify=false
-      ;;
-    *)
-      mcp_arg="all"
-      mcp_explicit=true
-      with_graphify=false
-      ;;
-  esac
-
-  echo "" > /dev/tty
-  echo "🚀 Memulai proses pemasangan..." > /dev/tty
-  echo "" > /dev/tty
-}
-
 # ------------------------------------------------------------------------------
 # 3. Main Operational Logic
 # ------------------------------------------------------------------------------
@@ -722,33 +260,16 @@ main() {
   local target_dir=""
   local check_only=false
   local dry_run=false
-  local harness_arg="antigravity"
-  local harness_explicit=false
-  local mcp_arg="all"
-  local mcp_explicit=false
-  local force_interactive=false
-  local force_non_interactive=false
-  local with_graphify=false
   local is_update=false
-  local original_argc=$#
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
       -u|--update)
         is_update=true
-        force_non_interactive=true
-        shift
-        ;;
-      -i|--interactive)
-        force_interactive=true
         shift
         ;;
       -y|--yes|--non-interactive)
-        force_non_interactive=true
-        shift
-        ;;
-      --with-graphify)
-        with_graphify=true
+        # Dipertahankan untuk kompatibilitas skrip otomasi/CI
         shift
         ;;
       --check)
@@ -759,43 +280,19 @@ main() {
         dry_run=true
         shift
         ;;
-      --harness=*)
-        harness_arg="${1#*=}"
-        harness_explicit=true
-        shift
-        ;;
-      -H|--harness)
-        harness_arg="$2"
-        harness_explicit=true
-        shift 2
-        ;;
-      --mcp=*)
-        mcp_arg="${1#*=}"
-        mcp_explicit=true
-        shift
-        ;;
-      --no-mcp)
-        mcp_arg="none"
-        mcp_explicit=true
-        shift
-        ;;
       --version|-v)
-        echo "pero-agent-skills installer v3.2.0 (standalone)"
+        echo "pero-agent-skills installer v4.0.0 (antigravity single-harness)"
         exit 0
         ;;
       --help|-h)
-        echo "Penggunaan: install.sh [TARGET_DIR] [OPTIONS]"
+        echo "Penggunaan:"
+        echo "  curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash"
+        echo "  Atau: bash install.sh [TARGET_DIR] [OPTIONS]"
         echo ""
         echo "Opsi:"
-        echo "  --interactive, -i     Menjalankan wizard interaktif step-by-step"
-        echo "  --yes, -y             Mode otomatis tanpa prompt (gunakan deteksi cerdas)"
         echo "  --update, -u          Pembaruan instan modul skill & MCP ke versi terbaru"
-        echo "  --with-graphify       Pasang Graphify CLI secara terisolasi (via uv/pipx)"
-        echo "  --check               Memeriksa integritas 30 modul skill dan AGENTS.md"
-        echo "  --dry-run             Menampilkan simulasi tindakan tanpa menyalin berkas"
-        echo "  --harness=<list>      Pasang adapter harness (antigravity, claude, cursor, windsurf, cline, all)"
-        echo "  --mcp=<list>          Pilih server MCP (all, minimal, none, atau daftar: context7,chrome-devtools,tavily,stitch)"
-        echo "  --no-mcp              Lewati pembuatan konfigurasi server MCP"
+        echo "  --check               Memeriksa integritas 30 modul skill, AGENTS.md, dan .mcp.json"
+        echo "  --dry-run             Menampilkan simulasi tindakan tanpa menyalin atau mengubah berkas"
         echo "  --version, -v         Tampilkan versi installer resmi"
         echo "  --help, -h            Tampilkan panduan bantuan ini"
         exit 0
@@ -813,29 +310,6 @@ main() {
     esac
   done
 
-  # Tentukan apakah wizard interaktif harus dijalankan:
-  # 1. Jika --check aktif -> Jangan jalankan wizard.
-  # 2. Jika --yes / -y / --non-interactive -> Jangan jalankan wizard.
-  # 3. Jika --interactive / -i -> Wajib jalankan wizard (jika /dev/tty ada).
-  # 4. Jika dijalankan tanpa argumen (original_argc == 0) dan terminal interaktif fisik tersedia:
-  #    ([ -r /dev/tty ] && [ -w /dev/tty ]) -> Jalankan wizard interaktif ramah (termasuk via curl | bash).
-  local should_run_wizard=false
-  if [[ "$check_only" == false && "$force_non_interactive" == false ]]; then
-    if [[ "$force_interactive" == true ]]; then
-      if ! ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
-        echo "❌ Error: Opsi --interactive memerlukan terminal interaktif fisik (/dev/tty tidak tersedia)." >&2
-        exit 1
-      fi
-      should_run_wizard=true
-    elif [[ "$original_argc" -eq 0 ]] && ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
-      should_run_wizard=true
-    fi
-  fi
-
-  if [[ "$should_run_wizard" == true ]]; then
-    run_interactive_wizard
-  fi
-
   target_dir="${target_dir:-.}"
   if [[ "$dry_run" == false ]]; then
     mkdir -p "$target_dir"
@@ -848,7 +322,7 @@ main() {
   # Mode Pemeriksaan Status Integritas (--check)
   if [[ "$check_only" == true ]]; then
     echo "================================================================="
-    echo " 🚀 Pero Agent Skills Universal Installer (v3.2 Standalone)"
+    echo " 🚀 Pero Agent Skills Health Check (v4.0 Antigravity)"
     echo " 📂 Target Workspace: ${target_dir}"
     echo "================================================================="
     echo "-> Memeriksa status kesehatan ${#SKILLS[@]} modul skill di target workspace..."
@@ -856,6 +330,8 @@ main() {
     for skill in "${SKILLS[@]}"; do
       if [[ -d "${target_skills_dir}/${skill}" && -f "${target_skills_dir}/${skill}/SKILL.md" ]]; then
         echo "   [✓] ${skill}: Sehat & aktif."
+      elif [[ -d "${target_dir}/skills/${skill}" && -f "${target_dir}/skills/${skill}/SKILL.md" ]]; then
+        echo "   [✓] ${skill}: Sehat & aktif (repositori sumber SSOT)."
       else
         echo "   [✗] ${skill}: HILANG atau TIDAK LENGKAP."
         missing=$((missing + 1))
@@ -881,27 +357,14 @@ main() {
       echo "   [✓] Python 3: Tersedia (Engine JSON Merger aktif)."
     fi
 
-    # Audit Berkas Konfigurasi MCP
-    local mcp_configs=()
-    [[ -f "${target_dir}/.mcp.json" ]] && mcp_configs+=(".mcp.json (Universal)")
-    [[ -f "${target_dir}/.cursor/mcp.json" ]] && mcp_configs+=(".cursor/mcp.json (Cursor)")
-    [[ -f "${target_dir}/.codeium/windsurf/mcp_config.json" ]] && mcp_configs+=(".codeium/windsurf/mcp_config.json (Windsurf)")
-    [[ -f "${target_dir}/mcp_config.json" ]] && mcp_configs+=("mcp_config.json (Windsurf Root)")
-    [[ -f "${target_dir}/.claude/mcp.json" ]] && mcp_configs+=(".claude/mcp.json (Claude Code)")
-    [[ -f "${target_dir}/.vscode/cline_mcp_settings.json" ]] && mcp_configs+=(".vscode/cline_mcp_settings.json (Cline / Roo Code)")
-
-    if [[ ${#mcp_configs[@]} -gt 0 ]]; then
-      echo "   [✓] Berkas konfigurasi MCP aktif:"
-      for cfg in "${mcp_configs[@]}"; do
-        echo "       - ${cfg}"
-      done
+    if [[ -f "${target_dir}/.mcp.json" ]]; then
+      echo "   [✓] Konfigurasi MCP aktif: .mcp.json (Antigravity)."
     else
-      echo "   [ℹ️ ] Belum ada berkas konfigurasi MCP di target. Jalankan 'install.sh ${target_dir}' untuk membuat otomatis."
+      echo "   [ℹ️ ] Belum ada .mcp.json di target. Jalankan 'install.sh ${target_dir}' untuk membuat otomatis."
     fi
 
-    # Cek kunci pencarian opsional
-    if [[ -n "${BRAVE_API_KEY:-}" ]]; then
-      echo "   [🔑] BRAVE_API_KEY: Terdeteksi di environment."
+    if [[ -n "${CONTEXT7_API_KEY:-}" ]]; then
+      echo "   [🔑] CONTEXT7_API_KEY: Terdeteksi di environment."
     fi
     if [[ -n "${TAVILY_API_KEY:-}" ]]; then
       echo "   [🔑] TAVILY_API_KEY: Terdeteksi di environment."
@@ -971,9 +434,9 @@ main() {
   # Banner Pemasangan / Pembaruan
   echo "================================================================="
   if [[ "$is_update" == true ]]; then
-    echo " 🔄 Pero Agent Skills Universal Updater (v3.2 Standalone)"
+    echo " 🔄 Pero Agent Skills Updater (v4.0 Antigravity Single-Harness)"
   else
-    echo " 🚀 Pero Agent Skills Universal Installer (v3.2 Standalone)"
+    echo " 🚀 Pero Agent Skills Installer (v4.0 Antigravity Single-Harness)"
   fi
   echo " 📂 Target Workspace: ${target_dir}"
   echo "================================================================="
@@ -1050,80 +513,6 @@ main() {
     echo "   [✓] AGENTS.md sudah berada di root sumber."
   fi
 
-  # Pasang Harness Adapters Sesuai Pilihan & Deteksi Otomatis
-  local enable_claude=false
-  local enable_cursor=false
-  local enable_windsurf=false
-  local enable_cline=false
-
-  if [[ "$harness_explicit" == true ]]; then
-    echo "-> Menyiapkan adapter asisten pengkodean (Harness ditentukan: ${harness_arg})..."
-    if [[ "$harness_arg" == "all" ]]; then
-      enable_claude=true
-      enable_cursor=true
-      enable_windsurf=true
-      enable_cline=true
-    else
-      IFS=',' read -r -a selected_harnesses <<< "$harness_arg"
-      for h in "${selected_harnesses[@]}"; do
-        case "$h" in
-          claude) enable_claude=true ;;
-          cursor) enable_cursor=true ;;
-          windsurf) enable_windsurf=true ;;
-          cline) enable_cline=true ;;
-          antigravity) ;;
-          *) echo "   [⚠️ ] Harness tidak dikenal: $h (Dilewati)" ;;
-        esac
-      done
-    fi
-  else
-    echo "-> Mendeteksi lingkungan asisten pengkodean (Harness Auto-Detection)..."
-    local any_detected=false
-    if [[ -d "${target_dir}/.cursor" || -f "${target_dir}/.cursorrules" ]]; then
-      enable_cursor=true
-      any_detected=true
-      echo "   [🔍] Terdeteksi konfigurasi Cursor."
-    fi
-    if [[ -d "${target_dir}/.codeium" || -d "${target_dir}/.windsurf" || -f "${target_dir}/.windsurfrules" ]]; then
-      enable_windsurf=true
-      any_detected=true
-      echo "   [🔍] Terdeteksi konfigurasi Windsurf."
-    fi
-    if [[ -d "${target_dir}/.claude" || -f "${target_dir}/CLAUDE.md" ]]; then
-      enable_claude=true
-      any_detected=true
-      echo "   [🔍] Terdeteksi konfigurasi Claude Code."
-    fi
-    if [[ -d "${target_dir}/.vscode" || -f "${target_dir}/.clinerules" ]]; then
-      enable_cline=true
-      any_detected=true
-      echo "   [🔍] Terdeteksi konfigurasi Cline / Roo Code."
-    fi
-
-    # Jika proyek baru tanpa folder harness khusus, aktifkan Cursor & Universal sebagai standar terpopuler
-    if [[ "$any_detected" == false ]]; then
-      enable_cursor=true
-      echo "   [ℹ️ ] Tidak terdeteksi folder IDE khusus, mengaktifkan adapter standar Cursor & Universal."
-    fi
-  fi
-
-  if [[ "$enable_claude" == true ]]; then
-    setup_single_adapter "${target_dir}/CLAUDE.md" "Claude Code" "$dry_run" "$target_agents_md"
-  fi
-  if [[ "$enable_cursor" == true ]]; then
-    setup_single_adapter "${target_dir}/.cursorrules" "Cursor (.cursorrules)" "$dry_run" "$target_agents_md"
-    if [[ "$dry_run" == false ]]; then
-      mkdir -p "${target_dir}/.cursor/rules"
-    fi
-    setup_single_adapter "${target_dir}/.cursor/rules/pero-agent-skills.mdc" "Cursor Modern (.cursor/rules)" "$dry_run" "$target_agents_md"
-  fi
-  if [[ "$enable_windsurf" == true ]]; then
-    setup_single_adapter "${target_dir}/.windsurfrules" "Windsurf" "$dry_run" "$target_agents_md"
-  fi
-  if [[ "$enable_cline" == true ]]; then
-    setup_single_adapter "${target_dir}/.clinerules" "Cline / Roo Code" "$dry_run" "$target_agents_md"
-  fi
-
   # Proteksi .gitignore Otomatis (Termasuk .pero/)
   echo "-> Memeriksa perlindungan keamanan di .gitignore..."
   local touched_gitignore=false
@@ -1168,18 +557,10 @@ main() {
     fi
   fi
 
-  # ------------------------------------------------------------------------------
-  # Penyiapan Server MCP Universal & Otomatis (MCP Auto-Provisioning)
-  # ------------------------------------------------------------------------------
-  if [[ "$with_graphify" == true ]]; then
-    install_graphify_safe "$dry_run"
-  fi
+  # Penyiapan Server MCP untuk Antigravity (.mcp.json)
+  setup_mcp_servers "$target_dir" "$dry_run" "$source_root"
 
-  setup_mcp_servers "$target_dir" "$dry_run" "$enable_claude" "$enable_cursor" "$enable_windsurf" "$enable_cline" "$source_root" "$mcp_arg"
-
-  # ------------------------------------------------------------------------------
   # Deteksi Stack Proyek & Informasi Ekstensi
-  # ------------------------------------------------------------------------------
   echo "-> Memeriksa manifest proyek untuk penyelarasan toolchain spesifik stack..."
   local detected_stacks=()
 
@@ -1215,11 +596,13 @@ main() {
   if [[ "$dry_run" == true ]]; then
     echo " 🔍 Simulasi Selesai! Tidak ada berkas yang diubah pada workspace."
   elif [[ "$is_update" == true ]]; then
-    echo " ✨ Pembaruan Berhasil! Seluruh ${#SKILLS[@]} Skill Pero & AGENTS.md terbarui di:"
+    echo " ✨ Pembaruan Berhasil! 30 Skill Pero, AGENTS.md, & .mcp.json terbarui di:"
     echo " 📂 ${target_dir}"
+    echo " 💡 Antigravity siap melanjutkan pekerjaan dengan skill mutakhir."
   else
-    echo " ✨ Berhasil! ${#SKILLS[@]} Skill Pero & AGENTS.md siap digunakan di:"
+    echo " ✨ Berhasil! 30 Skill Pero, AGENTS.md, & .mcp.json siap digunakan di:"
     echo " 📂 ${target_dir}"
+    echo " 💡 Antigravity otomatis membaca skill di .agents/skills/ & aturan di AGENTS.md"
   fi
   echo "================================================================="
 }
