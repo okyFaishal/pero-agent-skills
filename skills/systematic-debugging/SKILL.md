@@ -16,9 +16,10 @@ Skill ini adalah **"Protokol Investigasi Ilmiah & Bedah Akar Masalah"**. Mewajib
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan proses investigasi masalah, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Investigasi Galat Massal Paralel**: **`SUPPORTING SUB-SKILL`**: Gunakan `dispatching-parallel-agents` ketika menghadapi 2 atau lebih berkas pengujian (`*.test.ts`, `test_*.py`) yang gagal dengan akar masalah berbeda di subsistem terpisah, mendelegasikan investigasi tiap berkas tes ke sub-agen paralel mandiri.
-- **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` untuk menulis failing regression test sebelum menerapkan perbaikan bedah (*surgical fix*).
-- **Riset Solusi Eksternal Terukur (Pagar Batas Fase)**: **`SUPPORTING SUB-SKILL`**: Pada Fase 1 (Isolasi Akar Masalah & Pembuatan MRE), penelusuran web **DILARANG KERAS** untuk mencegah halusinasi solusi dini. Penelusuran web via protokol `web-search` (Search MCP ➔ `read_url_content`) hanya diperbolehkan pada Fase 2/3 ketika menghadapi *compiler panic*, crash mesin runtime tingkat rendah, atau bug dependensi pihak ketiga yang telah terisolasi, bebas dari perintah terminal `curl`.
+- **Investigasi Galat Massal Paralel**: **`SUPPORTING SUB-SKILL`**: Gunakan [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md) ketika menghadapi 2 atau lebih berkas pengujian (`*.test.ts`, `test_*.py`) yang gagal dengan akar masalah berbeda di subsistem terpisah, mendelegasikan investigasi tiap berkas tes ke sub-agen paralel mandiri.
+- **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan [`test-driven-development`](../test-driven-development/SKILL.md) untuk menulis failing regression test sebelum menerapkan perbaikan bedah (*surgical fix*).
+- **Riset Solusi Eksternal Terukur (Pagar Batas Fase)**: **`SUPPORTING SUB-SKILL`**: Pada Fase 1 (Isolasi Akar Masalah & Pembuatan MRE), penelusuran web **DILARANG KERAS** untuk mencegah halusinasi solusi dini. Penelusuran web via protokol [`web-search`](../web-search/SKILL.md) (Search MCP ➔ `read_url_content`) hanya diperbolehkan pada Fase 2/3 ketika menghadapi *compiler panic*, crash mesin runtime tingkat rendah, atau bug dependensi pihak ketiga yang telah terisolasi, bebas dari perintah terminal `curl`.
+- **Verifikasi Bebas Regresi**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan bahwa seluruh test suite lulus 100% setelah perbaikan bedah.
 
 ---
 

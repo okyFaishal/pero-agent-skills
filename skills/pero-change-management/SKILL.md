@@ -7,6 +7,7 @@ description: Orchestrate mid-flight scope pivots, feature additions, modificatio
 
 ## Overview
 **Origin**: *Pero Custom SDLC Pipeline - Stage 10 (Universal)*.  
+**Pipeline Navigation**: [Stage 9: Context Validation](../pero-context-validation/SKILL.md) ➔ **Stage 10: Change Management** (Companion / Post-Flight)  
 Skill ini adalah **"Pengatur Lalu Lintas Revisi & Pivot Proyek"**. Bertugas mengorkestrasi perubahan saat pengguna ingin menambah (*ADD*), mengubah (*MODIFY/PIVOT*), atau menghapus (*REMOVE*) fitur di tengah-tengah pengerjaan tugas (*in-flight*) maupun setelah tugas selesai (*post-completion*). Skill ini mencegah terjadinya kode buta (*blind coding*), kerusakan regresi tak terduga (*blast radius unchecked*), dan tugas menggantung (*zombie tasks*).
 
 > **Analogi Sederhana (ELI5):**  
@@ -17,13 +18,13 @@ Skill ini adalah **"Pengatur Lalu Lintas Revisi & Pivot Proyek"**. Bertugas meng
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan manajemen perubahan dan pivot, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Penyelarasan Keputusan Perubahan**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` untuk menyepakati strategi mitigasi risiko bersama pengguna via modal interaktif `ask_question` (2–5 opsi, fleksibel 1 atau 2–4 pertanyaan serentak, batas 3–5 pertanyaan per sesi revisi).
-- **Riset Eksternal & Grounding API Pengganti**: **`CONDITIONAL SUB-SKILL`**: Jika perubahan arah (*MODIFY / PIVOT*) melibatkan penggantian penyedia layanan pihak ketiga (misal: migrasi auth, payment gateway, atau framework baru), agen wajib menggunakan `context-7` atau protokol `web-search` (Search MCP ➔ `read_url_content`) untuk memeriksa panduan migrasi resmi, *deprecation notice*, dan kompatibilitas versi LTS tanpa menggunakan terminal `curl`.
-- **Pencatatan Keputusan CRDR**: **`REQUIRED SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan keputusan perubahan ke `docs/decisions/CRDR-[YYYYMMDDHHmm].md` menggunakan template standar MADR.
-- **Implementasi Teruji**: **`REQUIRED SUB-SKILL`**: Gunakan `test-driven-development` (Red-Green-Refactor) untuk fitur baru atau modifikasi alur.
-- **Verifikasi Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk membuktikan regresi nol (exit code 0).
-- **Sinkronisasi Pasca-Koding**: **`SUPPORTING SUB-SKILL`**: Gunakan `living-doc-sync` untuk memperbarui dokumen hidup dan diagram Mermaid pasca-eksekusi.
-- **Audit Keselarasan Konteks Ulang**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memverifikasi ulang laporan `docs/ValidationReport.md` sebelum branch di-merge.
+- **Penyelarasan Keputusan Perubahan**: **`REQUIRED SUB-SKILL`**: Gunakan [`grilling`](../grilling/SKILL.md) untuk menyepakati strategi mitigasi risiko bersama pengguna via modal interaktif `ask_question` (2–5 opsi, fleksibel 1 atau 2–4 pertanyaan serentak, batas 3–5 pertanyaan per sesi revisi).
+- **Riset Eksternal & Grounding API Pengganti**: **`CONDITIONAL SUB-SKILL`**: Jika perubahan arah (*MODIFY / PIVOT*) melibatkan penggantian penyedia layanan pihak ketiga (misal: migrasi auth, payment gateway, atau framework baru), agen wajib menggunakan [`context-7`](../context-7/SKILL.md) atau protokol [`web-search`](../web-search/SKILL.md) (Search MCP ➔ `read_url_content`) untuk memeriksa panduan migrasi resmi, *deprecation notice*, dan kompatibilitas versi LTS tanpa menggunakan terminal `curl`.
+- **Pencatatan Keputusan CRDR**: **`REQUIRED SUB-SKILL`**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk membukukan keputusan perubahan ke `docs/decisions/CRDR-[YYYYMMDDHHmm].md` menggunakan template standar MADR.
+- **Implementasi Teruji**: **`REQUIRED SUB-SKILL`**: Gunakan [`test-driven-development`](../test-driven-development/SKILL.md) (Red-Green-Refactor) untuk fitur baru atau modifikasi alur.
+- **Verifikasi Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan regresi nol (exit code 0).
+- **Sinkronisasi Pasca-Koding**: **`SUPPORTING SUB-SKILL`**: Gunakan [`living-doc-sync`](../living-doc-sync/SKILL.md) untuk memperbarui dokumen hidup dan diagram Mermaid pasca-eksekusi.
+- **Audit Keselarasan Konteks Ulang**: **`SUPPORTING SUB-SKILL`**: Gunakan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memverifikasi ulang laporan `docs/ValidationReport.md` sebelum branch di-merge.
 
 ---
 

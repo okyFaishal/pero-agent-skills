@@ -16,9 +16,9 @@ Skill ini adalah **"Gerbang Audit Kualitas Dua Tahap & Penjaga Keamanan Kode"**.
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan proses audit peninjauan kode, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Pengawas Mutu Task Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk menjalankan peran Task Reviewer Subagent (verifikasi git diff per task) dan Final Merge Reviewer di akhir cabang.
-- **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` untuk memastikan tidak ada kode berlebih (YAGNI), komentar sepele, atau mock palsu yang lolos review.
-- **Verifikasi Bukti Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk memastikan tes terminal benar-benar hijau sebelum memberi persetujuan (*approval*).
+- **Pengawas Mutu Task Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan [`subagent-driven-development`](../subagent-driven-development/SKILL.md) untuk menjalankan peran Task Reviewer Subagent (verifikasi git diff per task) dan Final Merge Reviewer di akhir cabang.
+- **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan [`anti-slop`](../anti-slop/SKILL.md) untuk memastikan tidak ada kode berlebih (YAGNI), komentar sepele, atau mock palsu yang lolos review.
+- **Verifikasi Bukti Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk memastikan tes terminal benar-benar hijau sebelum memberi persetujuan (*approval*).
 
 ---
 

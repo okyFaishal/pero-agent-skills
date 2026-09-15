@@ -1,6 +1,8 @@
 # Pero Agent Skills (`pero-agent-skills`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Rules: AGENTS.md](https://img.shields.io/badge/Rules-AGENTS.md-purple.svg)](AGENTS.md)
+[![Decisions: ADRs](https://img.shields.io/badge/Decisions-docs%2Fdecisions-blueviolet.svg)](docs/decisions/README.md)
 [![Skills: 30 Universal](https://img.shields.io/badge/Skills-30%20Universal-brightgreen.svg)](#katalog-lengkap-30-skill-universal)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#peta-navigasi-ekosistem-pero)
 
@@ -480,6 +482,8 @@ sequenceDiagram
 ---
 
 ## Empat Pilar Tata Kelola Inti
+
+Aturan tata kelola ini ditetapkan secara mutlak di [`AGENTS.md`](AGENTS.md) dan rekaman keputusan arsitektur dapat ditinjau di [`docs/decisions/`](docs/decisions/README.md):
 
 1. **Skill-First Protocol**: Agent wajib mengecek `.agents/skills/` sebelum mengambil tindakan apa pun.
 2. **Anti-Sycophancy & Technical Rigor**: Kebenaran teknis di atas menyenangkan pengguna. Dilarang menggunakan pujian kosong (*"Ide hebat!"*).

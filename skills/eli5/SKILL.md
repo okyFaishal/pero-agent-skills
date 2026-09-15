@@ -88,3 +88,11 @@ Jika dipanggil untuk menyederhanakan file dokumentasi (`.md`/`.mdx`):
 3. **Pertahankan Integritas:**
    * Jangan menghapus blok kode asli atau diagram penting.
    * Tingkatkan penjelasan naratif di sekitar kode/diagram tersebut.
+
+---
+
+## Hubungan Antar-Skill (*Cross-Skill Integrations*)
+
+- [`llm-council`](../llm-council/SKILL.md): Mensintesis putusan musyawarah teknis 5 dewan AI menjadi penjelasan ringkas dan ramah awam.
+- [`grilling`](../grilling/SKILL.md): Menyusun opsi pertanyaan wawancara klarifikasi kebutuhan agar tidak membingungkan pengguna non-teknis.
+- [`find-skill`](../find-skill/SKILL.md): Memaparkan rasional pemilihan perkakas dan skill rekomendasi dalam bahasa sederhana.

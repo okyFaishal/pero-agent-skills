@@ -1,3 +1,5 @@
+[⬅️ Back to Taste-Skill Guide](../SKILL.md)
+
 # Taste-Skill Reference Appendices
 
 The sections below provide vendored reference content: real install commands, canonical documentation links, and working starter snippets for each design system supported by `taste-skill`. Use them to ground decisions in production reality, not training-data fiction.

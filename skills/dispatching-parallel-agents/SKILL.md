@@ -157,6 +157,7 @@ Kembalikan:
 *   **[`test-driven-development`](../test-driven-development/SKILL.md)**: Standar koding mutlak yang wajib diterapkan oleh setiap sub-agen pelaksana (Red-Green-Refactor).
 *   **[`anti-slop`](../anti-slop/SKILL.md)**: Menjaga agar kode yang dihasilkan sub-agen paralel bersih dari boilerplate YAGNI dan komentar sepele.
 *   **[`verification-before-completion`](../verification-before-completion/SKILL.md)**: Memverifikasi bukti log eksekusi terminal nyata dari setiap sub-agen sebelum integrasi akhir.
+*   **[`llm-council`](../llm-council/SKILL.md)**: Mengambil alih musyawarah bila sub-agen paralel menghasilkan rekomendasi atau temuan arsitektural yang saling bertolak belakang.
 
 ---
 

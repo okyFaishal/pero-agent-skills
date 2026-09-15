@@ -16,9 +16,10 @@ Skill ini adalah **"Penegak Hukum Koding Disiplin & Gerbang Uji Sebelum Implemen
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan siklus pengujian TDD, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Mesin Eksekusi Sub-Agen Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan `subagent-driven-development` untuk menjalankan siklus Red-Green-Refactor di dalam memori terisolasi per kartu tugas.
-- **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan `anti-slop` pada tahap Refactor untuk membuang duplikasi kode, komentar sepele, dan kode tiruan palsu.
-- **Verifikasi Bukti Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan `verification-before-completion` untuk membuktikan kelulusan tes secara faktual di terminal.
+- **Mesin Eksekusi Sub-Agen Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan [`subagent-driven-development`](../subagent-driven-development/SKILL.md) untuk menjalankan siklus Red-Green-Refactor di dalam memori terisolasi per kartu tugas.
+- **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan [`anti-slop`](../anti-slop/SKILL.md) pada tahap Refactor untuk membuang duplikasi kode, komentar sepele, dan kode tiruan palsu.
+- **Verifikasi Bukti Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan kelulusan tes secara faktual di terminal.
+- **Investigasi Kegagalan Tak Terduga**: **`SUPPORTING SUB-SKILL`**: Gunakan [`systematic-debugging`](../systematic-debugging/SKILL.md) jika menghadapi kegagalan uji yang rumit atau regresi tak terduga sebelum mencoba perbaikan asal tebak.
 
 ---
 

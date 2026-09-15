@@ -6,22 +6,24 @@ description: Use when starting a new project, exploring raw user ideas, defining
 # Pero Problem Framing (`pero:problem-framing`)
 
 ## Overview
-**Origin**: *Pero Custom SDLC Pipeline - Stage 1 (Universal)*.
+**Origin**: *Pero Custom SDLC Pipeline - Stage 1 (Universal)*.  
+**Pipeline Navigation**: **Stage 1: Problem Framing** ➔ [Stage 2: PRD Writing](../pero-prd-writing/SKILL.md)
+
 Skill ini bertindak sebagai **"Dokter Diagnosa Masalah yang Bijak"**. Tugasnya adalah membedah ide mentah pengguna menjadi rumusan masalah yang tervalidasi secara mendalam, memisahkan antara "gejala luar" dan "akar masalah asli", serta menentukan batas ruang lingkup secara tegas sebelum buru-buru membuat dokumen PRD atau menulis kode.
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
-- **Riset Multi-Dimensi Paralel & Bukti Empiris Web (Adaptive Squad: 3 Wajib + 1–3 Spesialis)**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan tim agen riset independen secara paralel yang masing-masing dibekali alat `web-search`.
+- **Riset Multi-Dimensi Paralel & Bukti Empiris Web (Adaptive Squad: 3 Wajib + 1–3 Spesialis)**: **`REQUIRED SUB-SKILL`**: Gunakan [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md) untuk mendelegasikan tim agen riset independen secara paralel yang masing-masing dibekali alat [`web-search`](../web-search/SKILL.md).
   - **3 Agen Wajib**: *Persona & Pain Points*, *Pasar & Benchmark Kompetitor*, *Kelayakan Arsitektur Teknis*.
   - **1–3 Agen Spesialis Dinamis (Wajib pilih min. 1, maks. 3)**: Dipilih secara kontekstual sesuai karakteristik ide dari katalog spesialis (*Kepatuhan Regulasi/Privasi, Nilai Finansial/Kesediaan Membayar, Benteng Pertahanan/Moat, atau Inersia Adopsi/Kebiasaan Lama*).
   - **Pagar Pencarian & Kuncian URL Persis**: Setiap agen dibatasi 1–2 pencarian web terarah, wajib menerapkan *Verbatim URL Pinning* (URL disalin karakter demi karakter langsung dari keluaran `search_web` / Search MCP), serta wajib melakukan uji kesehatan tautan pra-terbit via pembaca semantik resmi `read_url_content` atau Fetch MCP untuk memastikan dokumen dapat diakses secara stabil. Dilarang keras menggunakan terminal `curl` (anti-WAF 403 & proteksi SSRF), dilarang membocorkan kode status HTTP ke laporan akhir, dan bukti wajib menjawab klaim kausalitas secara langsung (total menghasilkan minimal 4 hingga 6 bukti empiris tervalidasi).
-- **Musyawarah 5 Sudut Pandang AI Paralel (Fork-Join via `llm-council` & `dispatching-parallel-agents`)**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` yang didelegasikan secara paralel serentak dalam 1-turn via `dispatching-parallel-agents` (`invoke_subagent`) dengan isolasi memori mandiri (*shared-nothing isolation*) dari 5 kursi dewan kanonikal (*Product Strategist / The First Principles, Skeptic Auditor / The Contrarian, Domain Specialist / The Expansionist, Tech Feasibility Lead / The Executor, User Advocate / The Outsider*). Mencegah bias jangkar (*anchoring effect*) dan sikap asal setuju (*sycophancy*) sebelum Ketua Sidang merumuskan sintesis kompromi.
-- **Wawancara Socratic & Stress-Test 2-Tahap**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dalam **2 ronde terpisah**:
+- **Musyawarah 5 Sudut Pandang AI Paralel (Fork-Join via `llm-council` & `dispatching-parallel-agents`)**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan [`llm-council`](../llm-council/SKILL.md) yang didelegasikan secara paralel serentak dalam 1-turn via [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md) (`invoke_subagent`) dengan isolasi memori mandiri (*shared-nothing isolation*) dari 5 kursi dewan kanonikal (*Product Strategist / The First Principles, Skeptic Auditor / The Contrarian, Domain Specialist / The Expansionist, Tech Feasibility Lead / The Executor, User Advocate / The Outsider*). Mencegah bias jangkar (*anchoring effect*) dan sikap asal setuju (*sycophancy*) sebelum Ketua Sidang merumuskan sintesis kompromi.
+- **Wawancara Socratic & Stress-Test 2-Tahap**: **`REQUIRED SUB-SKILL`**: Gunakan [`grilling`](../grilling/SKILL.md) secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** dalam **2 ronde terpisah**:
   1. *Ronde 1 (Tahap 2)*: Membedah akar masalah dengan *Dynamic Depth Root Cause Analysis* (D-RCA: kedalaman dinamis $k \in [3, 8]$ berbasis *First Principles Root Anchor*) via modal `ask_question` dengan opsi konkret (2–5 alternatif), diawali pilihan `(Recommended)`, dan pengelompokan fleksibel (1 mandiri atau 2–4 serentak).
   2. *Ronde 2 (Tahap 4)*: Menguji titik buta (*blind spots*), kritik tajam, dan dilema kompromi (*trade-offs*) hasil sidang Dewan AI paralel via `ask_question` dengan opsi rekomendasi terstruktur.
   Batas volume per ronde berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang atau mensimulasikan jawaban secara mandiri.
-- **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan `pero-context-validation` untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
-- **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PFDR-[YYYYMMDDHHmm].md`.
+- **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
+- **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PFDR-[YYYYMMDDHHmm].md`.
 
 ---
 
@@ -53,7 +55,7 @@ Validasi keabsahan kebutuhan awal terhadap batasan sistem nyata sebelum perancan
 - Memulai proyek baru atau merancang fitur/kemampuan baru berskala besar.
 - Pengguna memiliki ide konseptual yang masih samar, terlalu sempit, atau terlalu luas.
 - Ingin membedah apakah keluhan pengguna adalah akar masalah atau hanya gejala permukaan dengan dukungan bukti empiris.
-- Menghilangkan bias asumsi dan inkonsistensi sebelum masuk ke tahap pembuatan PRD (`pero-prd-writing`).
+- Menghilangkan bias asumsi dan inkonsistensi sebelum masuk ke tahap pembuatan PRD ([`pero-prd-writing`](../pero-prd-writing/SKILL.md)).
 
 ## The 5-Stage Problem Framing Framework
 

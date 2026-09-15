@@ -105,3 +105,12 @@ Sebelum menyatakan pekerjaan selesai atau membuka Pull Request, agen wajib memas
 - [ ] **Block 3: Real Execution** → Seluruh pengujian lulus di terminal nyata (bukan sekadar mock hijau).
 - [ ] **Block 4: Grounded Imports** → Seluruh dependensi terdaftar resmi di manifest proyek.
 
+---
+
+## Hubungan Antar-Skill (*Cross-Skill Integrations*)
+
+- [`taste-skill`](../taste-skill/SKILL.md): Menegakkan desain UI/UX berkarakter dan bebas template AI slop.
+- [`subagent-driven-development`](../subagent-driven-development/SKILL.md): Menjaga kode sub-agen pelaksana tetap ramping, berdaya guna, dan bebas YAGNI.
+- [`code-reviewer`](../code-reviewer/SKILL.md): Menyaring komentar tidak penting, mock palsu, dan kode duplikat saat code review.
+- [`test-driven-development`](../test-driven-development/SKILL.md): Memastikan tes unit memiliki assertion bermakna dan bukan sekadar pengujian formalitas.
+

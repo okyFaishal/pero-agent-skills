@@ -216,6 +216,8 @@ Setelah kelima sub-agen mengembalikan laporannya, Ketua Sidang (agen utama) memp
 *   **[`pero-change-management`](../pero-change-management/SKILL.md)**: Gunakan dewan saat mengevaluasi pivot cakupan drastis atau trade-off perubahan mid-flight.
 *   **[`pero-context-validation`](../pero-context-validation/SKILL.md)**: Gunakan dewan saat menyelesaikan sengketa ketertelusuran dokumen atau mitigasi status NO-GO.
 *   **[`decision-recorder`](../decision-recorder/SKILL.md)**: Simpan langsung hasil sintesis dewan ke arsip keputusan resmi `docs/decisions/`.
+*   **[`subagent-driven-development`](../subagent-driven-development/SKILL.md)**: Gunakan dewan sebagai pemutus kebuntuan jika proses eksekusi tugas otonom mengalami deadlock review perbaikan berulang.
+*   **[`eli5`](../eli5/SKILL.md)**: Gunakan untuk menyederhanakan sintesis pertimbangan dewan yang sarat muatan teknis menjadi bahasa yang ramah awam.
 
 ---
 

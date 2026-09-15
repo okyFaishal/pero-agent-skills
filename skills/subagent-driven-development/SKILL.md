@@ -159,6 +159,7 @@ skills/subagent-driven-development/
 *   **[`pero-change-management`](../pero-change-management/SKILL.md)**: Dipanggil seketika jika pengguna meminta perubahan arah, penambahan fitur baru, atau penghapusan alur di tengah eksekusi backlog, untuk menertibkan status tugas aktif (*pause/supersede*) dan mencegah eksekusi tugas zombie.
 *   **[`verification-before-completion`](../verification-before-completion/SKILL.md)**: Penegak bukti eksekusi terminal sebelum cabang dianggap tuntas.
 *   **[`code-reviewer`](../code-reviewer/SKILL.md)**: Digunakan untuk Task Reviewer dan Final Merge Reviewer.
+*   **[`llm-council`](../llm-council/SKILL.md)**: Dipanggil sebagai pemecah kebuntuan (*circuit breaker*) jika sub-agen pelaksana dan reviewer mengalami deadlock perbaikan berulang.
 
 ---
 

@@ -1,5 +1,7 @@
 # Agent Workspace Rules
 
+> Panduan komprehensif, arsitektur alur kerja, dan katalog 30 skill tersedia di [`README.md`](README.md).
+
 ## 1. Skill-First Protocol (Mandatory Priority)
 - **Check Skills First**: Sebelum mengeksekusi tugas apa pun (analisis, perencanaan, koding, pengujian, debugging, atau riset), Agent WAJIB memeriksa direktori `.agents/skills/` untuk menemukan skill yang relevan.
 - **Strict Compliance**: Jika skill yang sesuai tersedia, Agent WAJIB membaca `SKILL.md` skill tersebut dan mematuhi instruksinya secara ketat.

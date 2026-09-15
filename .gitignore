@@ -22,4 +22,6 @@ temp/
 credentials.json
 
 tests/
-docs/
+docs/*
+!docs/decisions/
+!docs/decisions/**

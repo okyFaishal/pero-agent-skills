@@ -6,17 +6,19 @@ description: Use when converting framed problems into a formal Product Requireme
 # Pero PRD Writing (`pero:prd-writing`)
 
 ## Overview
-**Origin**: *Pero Custom SDLC Pipeline - Stage 2 (Universal)*.
+**Origin**: *Pero Custom SDLC Pipeline - Stage 2 (Universal)*.  
+**Pipeline Navigation**: [Stage 1: Problem Framing](../pero-problem-framing/SKILL.md) ➔ **Stage 2: PRD Writing** ➔ [Stage 3: User Stories](../pero-user-stories/SKILL.md)
+
 Skill ini bertindak sebagai **"Buku Cetak Biru & Resep Utama Produk"**. Tugasnya adalah mengubah rumusan masalah yang telah disepakati di `docs/ProblemFraming.md` menjadi dokumen **Product Requirements Document (PRD)** formal yang komprehensif, menetapkan batasan fitur MVP (P0) vs fitur masa depan (P1/P2), dan menggambarkan alur perjalanan pengguna secara jelas.
 
 ## Sub-Skill Integration (Perkakas Pendukung)
 Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Upstream Context Alignment**: **`MANDATORY`**: Wajib membaca dan memverifikasi `docs/ProblemFraming.md` agar seluruh fitur selaras dengan akar masalah dan tidak melanggar batasan *Non-Goals*.
-- **Dekomposisi Riset Paralel & Benchmark Web**: **`REQUIRED SUB-SKILL`**: Gunakan `dispatching-parallel-agents` untuk mendelegasikan 3 sub-agen spesialis secara paralel yang masing-masing dibekali protokol `web-search` (*Sub-agen 1: Alur Kerja Pengguna & Standar UX Industri, Sub-agen 2: Non-Functional Requirements & Tolok Ukur Kinerja, Sub-agen 3: Matriks Fitur P0/P1/P2 & Komparasi Pasar*). Setiap sub-agen dibatasi 1–2 pencarian via Search MCP, wajib menerapkan *Verbatim URL Pinning*, dan memverifikasi kesehatan tautan via pembaca semantik (`read_url_content` / Fetch MCP) berstatus HTTP 200 tanpa terminal `curl`.
-- **Musyawarah Pemangkasan Scope & Trade-offs**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan `llm-council` untuk menguji ketahanan matriks prioritas fitur P0 (Must-Have) vs P1 (Should-Have) vs P2 (Nice-to-Have) melalui sidang 5 persona AI guna mencegah pembengkakan cakupan (*scope bloat*).
-- **Wawancara Penguncian Scope & Edge Cases**: **`REQUIRED SUB-SKILL`**: Gunakan `grilling` secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** (dengan opsi multi-select untuk fitur MVP atau single-select untuk kebijakan error) beropsi maksimal (2–5 alternatif konkret diawali `(Recommended)`) dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak). Batas volume sesi berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
-- **Audit Konsistensi Hulu-Hilir**: **`REQUIRED SUB-SKILL`**: Gunakan `pero-context-validation` untuk memverifikasi bahwa PRD 100% konsisten dan tidak melanggar batasan *Non-Goals* di `docs/ProblemFraming.md`.
-- **Pencatatan Keputusan PRD**: **`SUPPORTING SUB-SKILL`**: Gunakan `decision-recorder` untuk membukukan kesepakatan cakupan fitur ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
+- **Dekomposisi Riset Paralel & Benchmark Web**: **`REQUIRED SUB-SKILL`**: Gunakan [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md) untuk mendelegasikan 3 sub-agen spesialis secara paralel yang masing-masing dibekali protokol [`web-search`](../web-search/SKILL.md) (*Sub-agen 1: Alur Kerja Pengguna & Standar UX Industri, Sub-agen 2: Non-Functional Requirements & Tolok Ukur Kinerja, Sub-agen 3: Matriks Fitur P0/P1/P2 & Komparasi Pasar*). Setiap sub-agen dibatasi 1–2 pencarian via Search MCP, wajib menerapkan *Verbatim URL Pinning*, dan memverifikasi kesehatan tautan via pembaca semantik (`read_url_content` / Fetch MCP) berstatus HTTP 200 tanpa terminal `curl`.
+- **Musyawarah Pemangkasan Scope & Trade-offs**: **`REQUIRED / STRATEGIC SUB-SKILL`**: Gunakan [`llm-council`](../llm-council/SKILL.md) untuk menguji ketahanan matriks prioritas fitur P0 (Must-Have) vs P1 (Should-Have) vs P2 (Nice-to-Have) melalui sidang 5 persona AI guna mencegah pembengkakan cakupan (*scope bloat*).
+- **Wawancara Penguncian Scope & Edge Cases**: **`REQUIRED SUB-SKILL`**: Gunakan [`grilling`](../grilling/SKILL.md) secara interaktif langsung kepada pengguna via perkakas modal **`ask_question`** (dengan opsi multi-select untuk fitur MVP atau single-select untuk kebijakan error) beropsi maksimal (2–5 alternatif konkret diawali `(Recommended)`) dan pengelompokan pertanyaan fleksibel (1 mandiri atau 2–4 serentak). Batas volume sesi berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang keputusan sepihak.
+- **Audit Konsistensi Hulu-Hilir**: **`REQUIRED SUB-SKILL`**: Gunakan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memverifikasi bahwa PRD 100% konsisten dan tidak melanggar batasan *Non-Goals* di `docs/ProblemFraming.md`.
+- **Pencatatan Keputusan PRD**: **`SUPPORTING SUB-SKILL`**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk membukukan kesepakatan cakupan fitur ke `docs/decisions/PDR-[YYYYMMDDHHmm].md`.
 
 ---
 
