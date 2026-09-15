@@ -19,6 +19,7 @@ Dalam menjalankan proses investigasi masalah, agent WAJIB mengorkestrasi sub-ski
 - **Investigasi Galat Massal Paralel**: **`SUPPORTING SUB-SKILL`**: Gunakan [`dispatching-parallel-agents`](../dispatching-parallel-agents/SKILL.md) ketika menghadapi 2 atau lebih berkas pengujian (`*.test.ts`, `test_*.py`) yang gagal dengan akar masalah berbeda di subsistem terpisah, mendelegasikan investigasi tiap berkas tes ke sub-agen paralel mandiri.
 - **Penegak Siklus Pengujian TDD**: **`REQUIRED SUB-SKILL`**: Gunakan [`test-driven-development`](../test-driven-development/SKILL.md) untuk menulis failing regression test sebelum menerapkan perbaikan bedah (*surgical fix*).
 - **Riset Solusi Eksternal Terukur (Pagar Batas Fase)**: **`SUPPORTING SUB-SKILL`**: Pada Fase 1 (Isolasi Akar Masalah & Pembuatan MRE), penelusuran web **DILARANG KERAS** untuk mencegah halusinasi solusi dini. Penelusuran web via protokol [`web-search`](../web-search/SKILL.md) (Search MCP ➔ `read_url_content`) hanya diperbolehkan pada Fase 2/3 ketika menghadapi *compiler panic*, crash mesin runtime tingkat rendah, atau bug dependensi pihak ketiga yang telah terisolasi, bebas dari perintah terminal `curl`.
+- **Riset Makalah Ilmiah Bersyarat (Khusus Fase 3)**: **`CONDITIONAL SUB-SKILL`**: Gunakan [`scientific-research`](../scientific-research/SKILL.md) dan [`pdf-reader`](../pdf-reader/SKILL.md) HANYA pada Fase 3 ketika hipotesis kegagalan berakar pada **ketidakstabilan numerik (*floating point cancellation*, *loss NaN* pada ML)** atau **deadlock konsensus terdistribusi**. Jika naskah baru diunduh, agen **WAJIB mencatat SHA-256 dan memperbarui `docs/references/MANIFEST.json`** sebelum masuk ke Fase 4. DILARANG KERAS memanggil riset paper pada Fase 1 (MRE) atau untuk bug sintaks, null pointer, query database lambat, dan error HTTP biasa.
 - **Verifikasi Bebas Regresi**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan bahwa seluruh test suite lulus 100% setelah perbaikan bedah.
 
 ---
@@ -81,6 +82,7 @@ Penguncian akar masalah ke dalam test suite permanen sebelum perbaikan bedah dil
 ### Fase 3: Formulate Testable Hypothesis (Rumuskan Hipotesis Ilmiah)
 - Tuliskan hipotesis secara eksplisit: *"Fungsi X gagal karena ketika array Y kosong, baris Z mencoba mengakses indeks 0 tanpa validasi panjang, sehingga memicu panic/TypeError."*
 - Lakukan eksperimen cepat untuk membuktikan hipotesis tersebut (misal: dengan assertion atau breakpoint).
+- **Riset Makalah Terfokus (Khusus Bug Algoritmik/Numerik)**: Jika kegagalan bersumber pada kalkulasi matematika atau model konsensus terdistribusi yang tidak tercakup dalam dokumentasi standar, agen diperbolehkan membuka [`scientific-research`](../scientific-research/SKILL.md) dan [`pdf-reader`](../pdf-reader/SKILL.md). Jika paper baru diunduh, hitung SHA-256 dan catat ke `docs/references/MANIFEST.json` sebelum masuk ke Fase 4. Dilarang mencari paper untuk bug koding biasa.
 
 ---
 

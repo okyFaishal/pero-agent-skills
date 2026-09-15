@@ -18,6 +18,7 @@ Skill ini adalah **"Gerbang Audit Kualitas Dua Tahap & Penjaga Keamanan Kode"**.
 Dalam menjalankan proses audit peninjauan kode, agent WAJIB mengorkestrasi sub-skill berikut:
 - **Pengawas Mutu Task Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan [`subagent-driven-development`](../subagent-driven-development/SKILL.md) untuk menjalankan peran Task Reviewer Subagent (verifikasi git diff per task) dan Final Merge Reviewer di akhir cabang.
 - **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan [`anti-slop`](../anti-slop/SKILL.md) untuk memastikan tidak ada kode berlebih (YAGNI), komentar sepele, atau mock palsu yang lolos review.
+- **Verifikasi Teorema Naskah Akademik (Strictly Read-Only)**: **`CONDITIONAL SUB-SKILL`**: Gunakan [`pdf-reader`](../pdf-reader/SKILL.md) pada Gate 1 HANYA untuk memeriksa keabsahan implementasi kode yang secara eksplisit mengklaim kepatuhan terhadap formula matematis naskah akademik lokal yang terdaftar di `docs/references/MANIFEST.json`. DILARANG KERAS memicu pencarian paper baru (`scientific-research`).
 - **Verifikasi Bukti Terminal**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk memastikan tes terminal benar-benar hijau sebelum memberi persetujuan (*approval*).
 
 ---
@@ -84,6 +85,7 @@ Jalankan compiler dan linter lokal sebelum memberikan penilaian kualitatif:
 - [ ] **Acceptance Criteria**: Seluruh kriteria penerimaan pada PRD/User Story terpenuhi 100%.
 - [ ] **Anti-Bloat (YAGNI)**: Tidak ada kode ekstra, parameter tak terpakai, atau fitur sampingan yang tidak diminta.
 - [ ] **Contract Alignment**: Payload data dan nama endpoint sesuai dengan kontrak API yang disepakati.
+- [ ] **Academic Formula Verification**: Jika kode mengimplementasikan formula/algoritma dari naskah akademik, gunakan [`pdf-reader`](../pdf-reader/SKILL.md) untuk memastikan persamaan, bobot, dan asumsi batas terbukti sesuai dengan naskah rujukan di `docs/references/MANIFEST.json`. Dilarang mengunduh paper baru.
 
 #### Gate 2: Code Quality, Concurrency & Security (Kualitas & Keamanan)
 - [ ] **Sanitasi Input (OWASP)**: Parameter bebas dari celah SQL Injection, Cross-Site Scripting (XSS), dan Path Traversal.

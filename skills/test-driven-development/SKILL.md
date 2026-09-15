@@ -19,6 +19,7 @@ Dalam menjalankan siklus pengujian TDD, agent WAJIB mengorkestrasi sub-skill ber
 - **Mesin Eksekusi Sub-Agen Otonom**: **`SUPPORTING SUB-SKILL`**: Gunakan [`subagent-driven-development`](../subagent-driven-development/SKILL.md) untuk menjalankan siklus Red-Green-Refactor di dalam memori terisolasi per kartu tugas.
 - **Penyaring Kode Bebas Sampah**: **`REQUIRED SUB-SKILL`**: Gunakan [`anti-slop`](../anti-slop/SKILL.md) pada tahap Refactor untuk membuang duplikasi kode, komentar sepele, dan kode tiruan palsu.
 - **Verifikasi Bukti Terminal Nyata**: **`REQUIRED SUB-SKILL`**: Gunakan [`verification-before-completion`](../verification-before-completion/SKILL.md) untuk membuktikan kelulusan tes secara faktual di terminal.
+- **Ekstraksi Golden Test Vectors (Strictly Read-Only)**: **`CONDITIONAL SUB-SKILL`**: Gunakan [`pdf-reader`](../pdf-reader/SKILL.md) pada Fase 1 (RED) HANYA untuk mengekstrak angka uji patokan resmi (*golden test vectors*), dataset benchmark, dan ambang batas galat toleransi $\epsilon$ dari tabel naskah akademik lokal yang terdaftar di `docs/references/MANIFEST.json` untuk modul komputasi ilmiah/kriptografi. DILARANG KERAS memanggil di Fase GREEN dan REFACTOR, serta dilarang memicu `scientific-research`.
 - **Investigasi Kegagalan Tak Terduga**: **`SUPPORTING SUB-SKILL`**: Gunakan [`systematic-debugging`](../systematic-debugging/SKILL.md) jika menghadapi kegagalan uji yang rumit atau regresi tak terduga sebelum mencoba perbaikan asal tebak.
 
 ---
@@ -75,6 +76,7 @@ Tidak ada dispensasi atau alasan "fiturnya terlalu sepele". Fitur sepele tanpa u
 2. Tulis satu skenario uji yang memanggil fungsi, antarmuka, atau parameter yang **belum ada**.
 3. Jalankan test runner lokal di terminal.
 4. **Wajib Diverifikasi**: Pastikan tes menghasilkan status **GAGAL** karena logika fungsi belum tersedia (*Expected Failure*), bukan karena kesalahan sintaks penulisan tes.
+5. **Golden Vectors Akademik (Modul Ilmiah/Kriptografi)**: Jika pengujian menyangkut kalkulasi matematika presisi, gunakan [`pdf-reader`](../pdf-reader/SKILL.md) untuk mengekstrak vektor uji dan toleransi $\epsilon$ resmi dari tabel naskah rujukan lokal di `MANIFEST.json`. Dilarang mengunduh paper baru.
 
 ### Fase 2: GREEN (Hijau — Implementasi Minimal)
 1. Tulis kode implementasi sesederhana mungkin yang hanya cukup untuk meloloskan tes tadi.
