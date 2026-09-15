@@ -68,6 +68,10 @@ TEMP_DIR=""
 cleanup() {
   local exit_code=$?
   trap - EXIT INT TERM HUP
+  if ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
+    printf "\033[?25h" > /dev/tty 2>/dev/null || true
+    stty echo icanon < /dev/tty 2>/dev/null || true
+  fi
   if [[ -n "${TEMP_DIR:-}" && -d "${TEMP_DIR}" ]]; then
     rm -rf "${TEMP_DIR}"
   fi
@@ -596,34 +600,135 @@ prompt_choice() {
   local options=("$@")
   local num=${#options[@]}
 
+  # Jika terminal bukan TTY interaktif, langsung gunakan opsi default
   if ! ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
     echo "$default_idx"
     return 0
   fi
 
-  echo "" > /dev/tty
-  printf "\033[36m?\033[0m \033[1m%s\033[0m\n" "$prompt_title" > /dev/tty
-  for i in "${!options[@]}"; do
-    local opt_num=$((i + 1))
-    if [[ "$opt_num" -eq "$default_idx" ]]; then
-      printf "  \033[36m› [%d] %s\033[0m \033[90m(Rekomendasi - Cukup tekan Enter)\033[0m\n" "$opt_num" "${options[$i]}" > /dev/tty
+  local cur=$((default_idx - 1))
+  if (( cur < 0 || cur >= num )); then
+    cur=0
+  fi
+
+  # Simpan state terminal saat ini
+  local old_stty
+  old_stty=$(stty -g < /dev/tty 2>/dev/null) || old_stty=""
+
+  restore_menu_tty() {
+    printf "\033[?25h" > /dev/tty 2>/dev/null
+    if [[ -n "$old_stty" ]]; then
+      stty "$old_stty" < /dev/tty 2>/dev/null
     else
-      printf "    [%d] %s\n" "$opt_num" "${options[$i]}" > /dev/tty
+      stty echo icanon < /dev/tty 2>/dev/null
+    fi
+  }
+
+  # Masuk ke raw mode (-echo cegah bocor ^[[B ke layar, -icanon baca instan per-karakter)
+  if ! stty -echo -icanon min 1 time 0 < /dev/tty 2>/dev/null; then
+    echo "$default_idx"
+    return 0
+  fi
+
+  trap 'restore_menu_tty; exit 130' INT TERM
+  printf "\033[?25l" > /dev/tty
+
+  echo "" > /dev/tty
+  printf "\033[36m?\033[0m \033[1m%s\033[0m \033[90m(Gunakan ↑/↓ lalu Enter)\033[0m\n" "$prompt_title" > /dev/tty
+  for i in "${!options[@]}"; do
+    if [[ "$i" -eq "$cur" ]]; then
+      printf "  \033[36m› ◉  %s\033[0m\n" "${options[$i]}" > /dev/tty
+    else
+      printf "    \033[90m○  %s\033[0m\n" "${options[$i]}" > /dev/tty
     fi
   done
 
-  local input_val=""
-  printf "\033[36m?\033[0m \033[1mPilihan [Default: %s]\033[0m: " "$default_idx" > /dev/tty
-  read -r input_val < /dev/tty || input_val=""
+  while true; do
+    local key=""
+    IFS= read -r -s -n 1 key < /dev/tty || key=""
 
-  local selected_num="$default_idx"
-  if [[ -n "$input_val" && "$input_val" =~ ^[0-9]+$ ]] && (( input_val >= 1 && input_val <= num )); then
-    selected_num="$input_val"
-  fi
+    # Enter (konfirmasi pilihan saat ini)
+    if [[ -z "$key" || "$key" == $'\n' || "$key" == $'\r' ]]; then
+      break
+    fi
 
-  local selected_text="${options[$((selected_num - 1))]}"
-  printf "\033[1A\r\033[K\033[32m✔\033[0m \033[1m%s\033[0m \033[90m›\033[0m \033[36m%s\033[0m\n" "$prompt_title" "$selected_text" > /dev/tty
-  echo "$selected_num"
+    # Spasi (konfirmasi pilihan saat ini)
+    if [[ "$key" == " " ]]; then
+      break
+    fi
+
+    # Shortcut angka 1..num
+    if [[ "$key" =~ ^[1-9]$ ]]; then
+      local n=$((key - 1))
+      if (( n >= 0 && n < num )); then
+        cur=$n
+        break
+      fi
+    fi
+
+    # Vim keys: k (up), j (down)
+    if [[ "$key" == "k" || "$key" == "K" ]]; then
+      if (( cur > 0 )); then
+        cur=$((cur - 1))
+      else
+        cur=$((num - 1))
+      fi
+    elif [[ "$key" == "j" || "$key" == "J" ]]; then
+      if (( cur < num - 1 )); then
+        cur=$((cur + 1))
+      else
+        cur=0
+      fi
+    elif [[ "$key" == $'\x1b' ]]; then
+      local rest=""
+      read -r -s -n 2 -t 1 rest < /dev/tty || rest=""
+      case "$rest" in
+        "[A"|"OA") # Panah Atas
+          if (( cur > 0 )); then
+            cur=$((cur - 1))
+          else
+            cur=$((num - 1))
+          fi
+          ;;
+        "[B"|"OB") # Panah Bawah
+          if (( cur < num - 1 )); then
+            cur=$((cur + 1))
+          else
+            cur=0
+          fi
+          ;;
+        *)
+          continue
+          ;;
+      esac
+    else
+      continue
+    fi
+
+    # Gambar ulang opsi pilihan dengan penunjuk baru
+    printf "\033[%dA" "$num" > /dev/tty
+    for i in "${!options[@]}"; do
+      if [[ "$i" -eq "$cur" ]]; then
+        printf "\r\033[K  \033[36m› ◉  %s\033[0m\n" "${options[$i]}" > /dev/tty
+      else
+        printf "\r\033[K    \033[90m○  %s\033[0m\n" "${options[$i]}" > /dev/tty
+      fi
+    done
+  done
+
+  # Bersihkan daftar opsi & judul pertanyaan menjadi satu baris konfirmasi ringkas
+  for ((i = 0; i < num; i++)); do
+    printf "\033[1A\r\033[K" > /dev/tty
+  done
+  printf "\033[1A\r\033[K" > /dev/tty
+
+  local selected_text="${options[$cur]}"
+  printf "\033[32m✔\033[0m \033[1m%s\033[0m \033[90m›\033[0m \033[36m%s\033[0m\n" "$prompt_title" "$selected_text" > /dev/tty
+
+  restore_menu_tty
+  trap - INT TERM
+
+  echo "$((cur + 1))"
 }
 
 run_interactive_wizard() {
@@ -631,7 +736,7 @@ run_interactive_wizard() {
   echo "=================================================================" > /dev/tty
   echo " 🧙 Pero Agent Skills Setup Wizard" > /dev/tty
   echo " Pemandu pemasangan 30 Universal SDLC Skills ke proyek Anda." > /dev/tty
-  echo " Cukup tekan [Enter] untuk langsung menggunakan setelan rekomendasi." > /dev/tty
+  echo " Gunakan tombol [↑/↓] lalu [Enter] untuk memilih." > /dev/tty
   echo "=================================================================" > /dev/tty
   echo "" > /dev/tty
 
