@@ -25,3 +25,5 @@ tests/
 docs/*
 !docs/decisions/
 !docs/decisions/**
+!docs/references/
+!docs/references/**

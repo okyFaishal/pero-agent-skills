@@ -1,0 +1,6 @@
+{
+  "$schema": "./manifest.schema.json",
+  "version": "1.0.0",
+  "description": "Central catalog for local academic papers, DOI mappings, and SHA-256 integrity checksums.",
+  "papers": []
+}
