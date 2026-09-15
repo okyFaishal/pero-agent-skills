@@ -295,6 +295,12 @@ setup_mcp_servers() {
   local enable_windsurf="$5"
   local enable_cline="$6"
   local source_dir="$7"
+  local mcp_selection="${8:-all}"
+
+  if [[ "$mcp_selection" == "none" ]]; then
+    echo "-> Melewati konfigurasi Model Context Protocol (MCP) sesuai pilihan (none)..."
+    return 0
+  fi
 
   echo "-> Menyiapkan konfigurasi Model Context Protocol (MCP) terintegrasi..."
 
@@ -356,6 +362,55 @@ setup_mcp_servers() {
     echo "       💡 Tips: Pasang terisolasi dengan: uv tool install graphifyy"
   fi
 
+  # Tentukan server MCP yang aktif
+  local enable_mcp_devtools=false
+  local enable_mcp_context7=false
+  local enable_mcp_tavily=false
+  local enable_mcp_stitch=false
+
+  case "$mcp_selection" in
+    all|standard)
+      enable_mcp_devtools=true
+      enable_mcp_context7=true
+      enable_mcp_tavily=true
+      enable_mcp_stitch=true
+      ;;
+    minimal|zero-key)
+      enable_mcp_devtools=true
+      enable_mcp_context7=true
+      enable_mcp_tavily=false
+      enable_mcp_stitch=false
+      ;;
+    *)
+      IFS=',' read -r -a selected_mcps <<< "$mcp_selection"
+      for m in "${selected_mcps[@]}"; do
+        case "$m" in
+          devtools|chrome-devtools) enable_mcp_devtools=true ;;
+          context7) enable_mcp_context7=true ;;
+          tavily) enable_mcp_tavily=true ;;
+          stitch|google-stitch) enable_mcp_stitch=true ;;
+        esac
+      done
+      ;;
+  esac
+
+  local active_list=()
+  [[ "$enable_mcp_devtools" == true ]] && active_list+=("Chrome DevTools")
+  [[ "$enable_mcp_context7" == true ]] && active_list+=("Context7")
+  [[ "$enable_mcp_tavily" == true ]] && active_list+=("Tavily")
+  [[ "$enable_mcp_stitch" == true ]] && active_list+=("Google Stitch")
+  [[ "$has_graphify" == true ]] && active_list+=("Graphify")
+  [[ "$is_swift" == true ]] && active_list+=("Xcodebuild")
+
+  if [[ ${#active_list[@]} -gt 0 ]]; then
+    local old_ifs="$IFS"
+    IFS=', '
+    echo "   [✓] Server MCP yang dikonfigurasi: ${active_list[*]}"
+    IFS="$old_ifs"
+  else
+    echo "   [ℹ️ ] Tidak ada server MCP yang diaktifkan."
+  fi
+
   # Bangun payload JSON menggunakan python3 atau node
   local servers_payload
   servers_payload=$(python3 -c '
@@ -367,41 +422,48 @@ tavily_key = sys.argv[3]
 stitch_key = sys.argv[4]
 is_swift = (sys.argv[5] == "true")
 has_graphify = (sys.argv[6] == "true")
+enable_devtools = (sys.argv[7] == "true")
+enable_context7 = (sys.argv[8] == "true")
+enable_tavily = (sys.argv[9] == "true")
+enable_stitch = (sys.argv[10] == "true")
 
-servers = {
-  "chrome-devtools": {
+servers = {}
+
+if enable_devtools:
+  servers["chrome-devtools"] = {
     "command": "npx",
     "args": ["-y", "chrome-devtools-mcp"]
   }
-}
 
 # Context7 MCP
-if context7_key:
-  servers["context7"] = {
-    "command": "npx",
-    "args": ["-y", "@upstash/context7-mcp"],
-    "env": {"CONTEXT7_API_KEY": context7_key}
-  }
-else:
-  servers["context7"] = {
-    "command": "npx",
-    "args": ["-y", "@upstash/context7-mcp"],
-    "env": {"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"}
-  }
+if enable_context7:
+  if context7_key:
+    servers["context7"] = {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {"CONTEXT7_API_KEY": context7_key}
+    }
+  else:
+    servers["context7"] = {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"}
+    }
 
 # Tavily Search MCP
-if tavily_key:
-  servers["tavily"] = {
-    "command": "npx",
-    "args": ["-y", "@tavily/mcp-server"],
-    "env": {"TAVILY_API_KEY": tavily_key}
-  }
-else:
-  servers["tavily"] = {
-    "command": "npx",
-    "args": ["-y", "@tavily/mcp-server"],
-    "env": {"TAVILY_API_KEY": "${TAVILY_API_KEY}"}
-  }
+if enable_tavily:
+  if tavily_key:
+    servers["tavily"] = {
+      "command": "npx",
+      "args": ["-y", "@tavily/mcp-server"],
+      "env": {"TAVILY_API_KEY": tavily_key}
+    }
+  else:
+    servers["tavily"] = {
+      "command": "npx",
+      "args": ["-y", "@tavily/mcp-server"],
+      "env": {"TAVILY_API_KEY": "${TAVILY_API_KEY}"}
+    }
 
 # Brave Search MCP (Ditambahkan jika kunci tersedia)
 if brave_key:
@@ -412,18 +474,19 @@ if brave_key:
   }
 
 # Google Stitch MCP
-if stitch_key:
-  servers["google-stitch"] = {
-    "command": "npx",
-    "args": ["-y", "@_davideast/stitch-mcp"],
-    "env": {"STITCH_API_KEY": stitch_key}
-  }
-else:
-  servers["google-stitch"] = {
-    "command": "npx",
-    "args": ["-y", "@_davideast/stitch-mcp"],
-    "env": {"STITCH_API_KEY": "${STITCH_API_KEY}"}
-  }
+if enable_stitch:
+  if stitch_key:
+    servers["google-stitch"] = {
+      "command": "npx",
+      "args": ["-y", "@_davideast/stitch-mcp"],
+      "env": {"STITCH_API_KEY": stitch_key}
+    }
+  else:
+    servers["google-stitch"] = {
+      "command": "npx",
+      "args": ["-y", "@_davideast/stitch-mcp"],
+      "env": {"STITCH_API_KEY": "${STITCH_API_KEY}"}
+    }
 
 # Graphify MCP
 if has_graphify:
@@ -440,7 +503,7 @@ if is_swift:
   }
 
 print(json.dumps(servers))
-' "$context7_key" "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" 2>/dev/null || echo '{"context7":{"command":"npx","args":["-y","@upstash/context7-mcp"],"env":{"CONTEXT7_API_KEY":"${CONTEXT7_API_KEY}"}},"tavily":{"command":"npx","args":["-y","@tavily/mcp-server"],"env":{"TAVILY_API_KEY":"${TAVILY_API_KEY}"}},"chrome-devtools":{"command":"npx","args":["-y","chrome-devtools-mcp"]}}')
+' "$context7_key" "$brave_key" "$tavily_key" "$stitch_key" "$is_swift" "$has_graphify" "$enable_mcp_devtools" "$enable_mcp_context7" "$enable_mcp_tavily" "$enable_mcp_stitch" 2>/dev/null || echo '{}')
 
   # 1. Selalu terapkan Universal MCP (.mcp.json di root proyek)
   merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
@@ -535,10 +598,10 @@ run_interactive_wizard() {
 
   # 2. Coding Assistant / Harness Adapters
   echo "" > /dev/tty
-  echo "🤖 2. Pilih integrasi asisten koding (Harness Adapters):" > /dev/tty
+  echo "🤖 2. Pilih integrasi asisten koding (AI Coding Harness):" > /dev/tty
   echo "   [1] Auto-Detect: Deteksi otomatis sesuai konfigurasi IDE di proyek (Rekomendasi)" > /dev/tty
   echo "   [2] Universal All: Pasang untuk semua IDE (Cursor, Claude Code, Windsurf, Cline)" > /dev/tty
-  echo "   [3] Kustom: Pilih IDE tertentu secara manual" > /dev/tty
+  echo "   [3] Kustom: Pilih AI agent / IDE tertentu secara manual" > /dev/tty
   local harness_choice
   harness_choice="$(prompt_read "   Pilihan [1]: " "1")"
 
@@ -548,29 +611,29 @@ run_interactive_wizard() {
       harness_explicit=true
       ;;
     3)
-      local chosen=()
+      local chosen_harness=()
       local c_cursor
       c_cursor="$(prompt_read "   - Pasang adapter Cursor? [Y/n]: " "y")"
-      [[ "$c_cursor" =~ ^[Yy]$ || -z "$c_cursor" ]] && chosen+=("cursor")
+      [[ "$c_cursor" =~ ^[Yy]$ || -z "$c_cursor" ]] && chosen_harness+=("cursor")
 
       local c_claude
       c_claude="$(prompt_read "   - Pasang adapter Claude Code? [Y/n]: " "y")"
-      [[ "$c_claude" =~ ^[Yy]$ || -z "$c_claude" ]] && chosen+=("claude")
+      [[ "$c_claude" =~ ^[Yy]$ || -z "$c_claude" ]] && chosen_harness+=("claude")
 
       local c_windsurf
       c_windsurf="$(prompt_read "   - Pasang adapter Windsurf? [Y/n]: " "y")"
-      [[ "$c_windsurf" =~ ^[Yy]$ || -z "$c_windsurf" ]] && chosen+=("windsurf")
+      [[ "$c_windsurf" =~ ^[Yy]$ || -z "$c_windsurf" ]] && chosen_harness+=("windsurf")
 
       local c_cline
       c_cline="$(prompt_read "   - Pasang adapter Cline / Roo Code? [Y/n]: " "y")"
-      [[ "$c_cline" =~ ^[Yy]$ || -z "$c_cline" ]] && chosen+=("cline")
+      [[ "$c_cline" =~ ^[Yy]$ || -z "$c_cline" ]] && chosen_harness+=("cline")
 
-      if [[ ${#chosen[@]} -eq 0 ]]; then
+      if [[ ${#chosen_harness[@]} -eq 0 ]]; then
         harness_arg="antigravity"
       else
         local old_ifs="$IFS"
         IFS=','
-        harness_arg="${chosen[*]}"
+        harness_arg="${chosen_harness[*]}"
         IFS="$old_ifs"
       fi
       harness_explicit=true
@@ -581,14 +644,68 @@ run_interactive_wizard() {
       ;;
   esac
 
-  # 3. Optional Knowledge Graph (Graphify)
+  # 3. Model Context Protocol (MCP) Selection
+  echo "" > /dev/tty
+  echo "🔌 3. Pilih konfigurasi Model Context Protocol (MCP):" > /dev/tty
+  echo "   [1] Standar Pero: Context7, Chrome DevTools, Tavily, Google Stitch (Rekomendasi)" > /dev/tty
+  echo "   [2] Minimal / Zero-Key: Context7 & Chrome DevTools saja (Bebas kunci API berbayar)" > /dev/tty
+  echo "   [3] Kustom: Pilih server MCP yang ingin diaktifkan secara manual" > /dev/tty
+  echo "   [4] Lewati: Jangan pasang konfigurasi server MCP (.mcp.json)" > /dev/tty
+  local mcp_choice
+  mcp_choice="$(prompt_read "   Pilihan [1]: " "1")"
+
+  case "$mcp_choice" in
+    2)
+      mcp_arg="minimal"
+      mcp_explicit=true
+      ;;
+    3)
+      local chosen_mcps=()
+      local m_context7
+      m_context7="$(prompt_read "   - Pasang Context7 MCP (Dokumentasi resmi library/API)? [Y/n]: " "y")"
+      [[ "$m_context7" =~ ^[Yy]$ || -z "$m_context7" ]] && chosen_mcps+=("context7")
+
+      local m_devtools
+      m_devtools="$(prompt_read "   - Pasang Chrome DevTools MCP (Debugging browser/frontend)? [Y/n]: " "y")"
+      [[ "$m_devtools" =~ ^[Yy]$ || -z "$m_devtools" ]] && chosen_mcps+=("chrome-devtools")
+
+      local m_tavily
+      m_tavily="$(prompt_read "   - Pasang Tavily Search MCP (Riset web mendalam)? [Y/n]: " "y")"
+      [[ "$m_tavily" =~ ^[Yy]$ || -z "$m_tavily" ]] && chosen_mcps+=("tavily")
+
+      local m_stitch
+      m_stitch="$(prompt_read "   - Pasang Google Stitch MCP (Desain prototipe UI/UX visual)? [Y/n]: " "y")"
+      [[ "$m_stitch" =~ ^[Yy]$ || -z "$m_stitch" ]] && chosen_mcps+=("stitch")
+
+      if [[ ${#chosen_mcps[@]} -eq 0 ]]; then
+        mcp_arg="none"
+      else
+        local old_ifs="$IFS"
+        IFS=','
+        mcp_arg="${chosen_mcps[*]}"
+        IFS="$old_ifs"
+      fi
+      mcp_explicit=true
+      ;;
+    4)
+      mcp_arg="none"
+      mcp_explicit=true
+      ;;
+    *)
+      # Default: All / Standard
+      mcp_arg="all"
+      mcp_explicit=false
+      ;;
+  esac
+
+  # 4. Optional Knowledge Graph (Graphify)
   echo "" > /dev/tty
   if command -v graphify >/dev/null 2>&1; then
-    echo "🌐 3. Peta Graf Kode (Graphify CLI):" > /dev/tty
+    echo "🌐 4. Peta Graf Kode (Graphify CLI):" > /dev/tty
     echo "   [✓] Terdeteksi sudah terpasang di sistem ($(command -v graphify))." > /dev/tty
     with_graphify=false
   else
-    echo "🌐 3. Peta Graf Kode (Graphify CLI untuk X-ray arsitektur):" > /dev/tty
+    echo "🌐 4. Peta Graf Kode (Graphify CLI untuk X-ray arsitektur):" > /dev/tty
     echo "   [1] Lewati: Tetap gunakan deteksi standar tanpa Graphify (Rekomendasi)" > /dev/tty
     echo "   [2] Pasang: Pasang Graphify secara terisolasi via 'uv tool' atau 'pipx'" > /dev/tty
     local g_choice
@@ -600,7 +717,7 @@ run_interactive_wizard() {
     fi
   fi
 
-  # 4. Ringkasan & Konfirmasi
+  # 5. Ringkasan & Konfirmasi
   echo "" > /dev/tty
   echo "-----------------------------------------------------------------" > /dev/tty
   echo "📋 Ringkasan Rencana Pemasangan:" > /dev/tty
@@ -610,6 +727,20 @@ run_interactive_wizard() {
   else
     echo "   - Harness Adapter  : Auto-Detect (Cerdas)" > /dev/tty
   fi
+  case "$mcp_arg" in
+    none)
+      echo "   - Konfigurasi MCP  : Dilewati (Tanpa .mcp.json)" > /dev/tty
+      ;;
+    minimal)
+      echo "   - Konfigurasi MCP  : Minimal (Context7 & Chrome DevTools)" > /dev/tty
+      ;;
+    all)
+      echo "   - Konfigurasi MCP  : Standar Pero (Context7, DevTools, Tavily, Stitch)" > /dev/tty
+      ;;
+    *)
+      echo "   - Konfigurasi MCP  : Kustom (${mcp_arg})" > /dev/tty
+      ;;
+  esac
   if [[ "$with_graphify" == true ]]; then
     echo "   - Pasang Graphify  : Ya (Terisolasi via uv/pipx)" > /dev/tty
   else
@@ -635,6 +766,8 @@ main() {
   local dry_run=false
   local harness_arg="antigravity"
   local harness_explicit=false
+  local mcp_arg="all"
+  local mcp_explicit=false
   local force_interactive=false
   local force_non_interactive=false
   local with_graphify=false
@@ -678,6 +811,16 @@ main() {
         harness_explicit=true
         shift 2
         ;;
+      --mcp=*)
+        mcp_arg="${1#*=}"
+        mcp_explicit=true
+        shift
+        ;;
+      --no-mcp)
+        mcp_arg="none"
+        mcp_explicit=true
+        shift
+        ;;
       --version|-v)
         echo "pero-agent-skills installer v3.2.0 (standalone)"
         exit 0
@@ -693,6 +836,8 @@ main() {
         echo "  --check               Memeriksa integritas 30 modul skill dan AGENTS.md"
         echo "  --dry-run             Menampilkan simulasi tindakan tanpa menyalin berkas"
         echo "  --harness=<list>      Pasang adapter harness (antigravity, claude, cursor, windsurf, cline, all)"
+        echo "  --mcp=<list>          Pilih server MCP (all, minimal, none, atau daftar: context7,chrome-devtools,tavily,stitch)"
+        echo "  --no-mcp              Lewati pembuatan konfigurasi server MCP"
         echo "  --version, -v         Tampilkan versi installer resmi"
         echo "  --help, -h            Tampilkan panduan bantuan ini"
         exit 0
@@ -715,16 +860,16 @@ main() {
   # 2. Jika --yes / -y / --non-interactive -> Jangan jalankan wizard.
   # 3. Jika --interactive / -i -> Wajib jalankan wizard (jika /dev/tty ada).
   # 4. Jika dijalankan tanpa argumen (original_argc == 0) dan terminal interaktif fisik tersedia:
-  #    ([ -t 0 ] && [ -t 1 ] && [ -r /dev/tty ]) -> Jalankan wizard interaktif ramah.
+  #    ([ -r /dev/tty ] && [ -w /dev/tty ]) -> Jalankan wizard interaktif ramah (termasuk via curl | bash).
   local should_run_wizard=false
   if [[ "$check_only" == false && "$force_non_interactive" == false ]]; then
     if [[ "$force_interactive" == true ]]; then
-      if [[ ! -r /dev/tty ]]; then
+      if [[ ! -r /dev/tty || ! -w /dev/tty ]]; then
         echo "❌ Error: Opsi --interactive memerlukan terminal interaktif fisik (/dev/tty tidak tersedia)." >&2
         exit 1
       fi
       should_run_wizard=true
-    elif [[ "$original_argc" -eq 0 && -t 0 && -t 1 && -r /dev/tty ]]; then
+    elif [[ "$original_argc" -eq 0 && -r /dev/tty && -w /dev/tty ]]; then
       should_run_wizard=true
     fi
   fi
@@ -1072,7 +1217,7 @@ main() {
     install_graphify_safe "$dry_run"
   fi
 
-  setup_mcp_servers "$target_dir" "$dry_run" "$enable_claude" "$enable_cursor" "$enable_windsurf" "$enable_cline" "$source_root"
+  setup_mcp_servers "$target_dir" "$dry_run" "$enable_claude" "$enable_cursor" "$enable_windsurf" "$enable_cline" "$source_root" "$mcp_arg"
 
   # ------------------------------------------------------------------------------
   # Deteksi Stack Proyek & Informasi Ekstensi

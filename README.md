@@ -51,6 +51,30 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 > - Konfigurasi server MCP kustom Anda di `.mcp.json` digabungkan secara cerdas (*deep merge*) tanpa menghapus server pribadi Anda.
 > - Seluruh kode program, berkas pengujian, dan dokumen spesifikasi proyek (`docs/`) **100% aman dan tidak pernah disentuh**.
 
+### Panduan Setup Wizard & Opsi CLI
+
+Saat Anda menjalankan perintah `curl ... | bash` di terminal, **Setup Wizard interaktif** otomatis memandu langkah demi langkah:
+1. **Target Direktori**: Menentukan folder proyek yang ingin dipasang.
+2. **Pilihan AI Coding Harness**: Memilih adapter IDE/Agent (Auto-Detect, Universal All, atau Kustom: Cursor, Claude Code, Windsurf, Cline).
+3. **Pilihan Server MCP**: Memilih paket Model Context Protocol (Standar Pero, Minimal Zero-Key tanpa API key berbayar, Kustom per-server, atau Lewati).
+4. **Peta Graf Kode (Graphify)**: Menawarkan instalasi terisolasi Graphify CLI jika belum ada di komputer.
+
+**Opsi Otomatisasi (Headless / CI/CD):**
+Jika ingin melewati wizard dan menginstal otomatis (misalnya pada script CI/CD):
+```bash
+# Instalasi otomatis tanpa prompt (menggunakan deteksi cerdas)
+curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --yes
+
+# Menentukan AI agent tertentu secara eksplisit
+curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --yes --harness=cursor,claude
+
+# Menentukan paket MCP (minimal / zero-key atau custom)
+curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --yes --mcp=minimal
+
+# Memeriksa kesehatan 30 skill tanpa mengubah apa pun
+curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --check
+```
+
 ---
 
 ## Peta Navigasi Ekosistem Pero
