@@ -573,60 +573,190 @@ prompt_read() {
   local default_val="$2"
   local input_val=""
 
-  printf "%s" "$prompt_text" > /dev/tty
+  if ! ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
+    echo "$default_val"
+    return 0
+  fi
+
+  printf "\033[36m?\033[0m \033[1m%s\033[0m \033[90m(Default: %s)\033[0m: " "$prompt_text" > /dev/tty
   read -r input_val < /dev/tty || input_val=""
   if [[ -z "$input_val" ]]; then
+    printf "\033[1A\r\033[K\033[32m✔\033[0m \033[1m%s\033[0m \033[90m›\033[0m \033[36m%s\033[0m\n" "$prompt_text" "$default_val" > /dev/tty
     echo "$default_val"
   else
+    printf "\033[1A\r\033[K\033[32m✔\033[0m \033[1m%s\033[0m \033[90m›\033[0m \033[36m%s\033[0m\n" "$prompt_text" "$input_val" > /dev/tty
     echo "$input_val"
+  fi
+}
+
+prompt_select() {
+  local title="$1"
+  local default_idx="${2:-0}"
+  shift 2
+  local options=("$@")
+  local num=${#options[@]}
+
+  # Jika terminal interaktif dan Python 3 tersedia, render UI panah atas/bawah & Enter ala create-next-app
+  if command -v python3 >/dev/null 2>&1 && ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
+    local res
+    res=$(python3 -c '
+import sys, termios, tty
+
+title = sys.argv[1]
+default_idx = int(sys.argv[2])
+options = sys.argv[3:]
+num = len(options)
+cur = default_idx
+
+try:
+    fd = open("/dev/tty", "r+")
+except Exception:
+    print(default_idx)
+    sys.exit(0)
+
+fd.write(f"\033[36m?\033[0m \033[1m{title}\033[0m\n")
+for i, opt in enumerate(options):
+    if i == cur:
+        fd.write(f"  \033[36m› ◉ {opt}\033[0m\n")
+    else:
+        fd.write(f"    ◯ \033[90m{opt}\033[0m\n")
+fd.flush()
+
+old_settings = termios.tcgetattr(fd.fileno())
+try:
+    tty.setraw(fd.fileno())
+    while True:
+        ch = fd.read(1)
+        if ch == "\x1b":
+            seq = fd.read(2)
+            if seq == "[A": # Up arrow
+                cur = (cur - 1) % num
+            elif seq == "[B": # Down arrow
+                cur = (cur + 1) % num
+        elif ch in ("k", "K"):
+            cur = (cur - 1) % num
+        elif ch in ("j", "J"):
+            cur = (cur + 1) % num
+        elif ch in ("\r", "\n", " "):
+            break
+        elif ch in "123456789":
+            idx = int(ch) - 1
+            if 0 <= idx < num:
+                cur = idx
+                break
+        elif ch == "\x03": # Ctrl+C
+            sys.exit(130)
+
+        # Redraw pilihan
+        fd.write(f"\033[{num}A")
+        for i, opt in enumerate(options):
+            if i == cur:
+                fd.write(f"\r\033[K  \033[36m› ◉ {opt}\033[0m\n")
+            else:
+                fd.write(f"\r\033[K    ◯ \033[90m{opt}\033[0m\n")
+        fd.flush()
+finally:
+    termios.tcsetattr(fd.fileno(), termios.TCSADRAIN, old_settings)
+    # Bersihkan baris pilihan dan tampilkan ringkasan hasil
+    fd.write(f"\033[{num}A")
+    for _ in range(num):
+        fd.write("\r\033[K\033[1B")
+    fd.write(f"\033[{num}A")
+    fd.write(f"\033[1A\r\033[K\033[32m✔\033[0m \033[1m{title}\033[0m \033[90m›\033[0m \033[36m{options[cur]}\033[0m\n")
+    fd.flush()
+    fd.close()
+
+print(cur)
+' "$title" "$default_idx" "${options[@]}" 2>/dev/null)
+    local py_exit=$?
+    if [[ $py_exit -eq 130 ]]; then
+      echo "" > /dev/tty
+      echo "❌ Pemasangan dibatalkan oleh pengguna." > /dev/tty
+      exit 130
+    fi
+    if [[ -n "$res" && "$res" =~ ^[0-9]+$ ]]; then
+      echo "$res"
+      return 0
+    fi
+  fi
+
+  # Fallback terminal sederhana jika kontrol ANSI tidak aktif
+  echo "$title" > /dev/tty
+  for i in "${!options[@]}"; do
+    echo "   [$((i+1))] ${options[$i]}" > /dev/tty
+  done
+  local default_human=$((default_idx + 1))
+  local choice
+  choice="$(prompt_read "Pilihan [${default_human}]" "${default_human}")"
+  if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num )); then
+    echo "$((choice - 1))"
+  else
+    echo "$default_idx"
   fi
 }
 
 run_interactive_wizard() {
   echo "" > /dev/tty
   echo "=================================================================" > /dev/tty
-  echo " 🧙 Selamat Datang di Pero Agent Skills Setup Wizard!" > /dev/tty
-  echo " Pemandu langkah-demi-langkah pemasangan 30 Universal SDLC Skills." > /dev/tty
+  echo " 🧙 Pero Agent Skills Setup Wizard" > /dev/tty
+  echo " Pemandu pemasangan 30 Universal SDLC Skills ke proyek Anda." > /dev/tty
+  echo " Gunakan tombol [↑/↓] lalu [Enter] untuk memilih." > /dev/tty
   echo "=================================================================" > /dev/tty
   echo "" > /dev/tty
 
   # 1. Target Workspace Directory
   local default_dir="${target_dir:-.}"
   local dir_choice
-  dir_choice="$(prompt_read "📂 1. Tentukan direktori target proyek [Default: ${default_dir}]: " "${default_dir}")"
+  dir_choice="$(prompt_read "Direktori target proyek" "${default_dir}")"
   target_dir="${dir_choice:-$default_dir}"
 
-  # 2. Coding Assistant / Harness Adapters
-  echo "" > /dev/tty
-  echo "🤖 2. Pilih integrasi asisten koding (AI Coding Harness):" > /dev/tty
-  echo "   [1] Auto-Detect: Deteksi otomatis sesuai konfigurasi IDE di proyek (Rekomendasi)" > /dev/tty
-  echo "   [2] Universal All: Pasang untuk semua IDE (Cursor, Claude Code, Windsurf, Cline)" > /dev/tty
-  echo "   [3] Kustom: Pilih AI agent / IDE tertentu secara manual" > /dev/tty
-  local harness_choice
-  harness_choice="$(prompt_read "   Pilihan [1]: " "1")"
+  # 2. Fast-Track Gate: Gunakan Rekomendasi (Ala create-next-app)
+  local use_defaults
+  use_defaults="$(prompt_select "Ingin menggunakan konfigurasi rekomendasi Pero?" 0 \
+    "Ya, gunakan rekomendasi (Auto-detect IDE + Standar MCP)" \
+    "Tidak, kustomisasi pengaturan manual")"
 
-  case "$harness_choice" in
-    2)
+  if [[ "$use_defaults" -eq 0 ]]; then
+    # Menggunakan setelan rekomendasi penuh - langsung selesai tanpa pertanyaan tambahan!
+    harness_explicit=false
+    mcp_arg="all"
+    mcp_explicit=false
+    with_graphify=false
+    echo "" > /dev/tty
+    echo "✨ Pengaturan rekomendasi aktif: Auto-Detect IDE & Standar MCP." > /dev/tty
+    echo "" > /dev/tty
+    return 0
+  fi
+
+  # 3. Kustomisasi: AI Coding Harness
+  local harness_idx
+  harness_idx="$(prompt_select "Pilih integrasi asisten koding (AI Coding Harness):" 0 \
+    "Auto-Detect: Deteksi otomatis sesuai folder IDE di proyek" \
+    "Universal All: Pasang untuk semua IDE (Cursor, Claude Code, Windsurf, Cline)" \
+    "Kustom: Pilih asisten koding tertentu secara manual")"
+
+  case "$harness_idx" in
+    1)
       harness_arg="all"
       harness_explicit=true
       ;;
-    3)
+    2)
       local chosen_harness=()
       local c_cursor
-      c_cursor="$(prompt_read "   - Pasang adapter Cursor? [Y/n]: " "y")"
-      [[ "$c_cursor" =~ ^[Yy]$ || -z "$c_cursor" ]] && chosen_harness+=("cursor")
+      c_cursor="$(prompt_select "Pasang adapter Cursor (.cursorrules & .cursor/rules)?" 0 "Ya" "Tidak")"
+      [[ "$c_cursor" -eq 0 ]] && chosen_harness+=("cursor")
 
       local c_claude
-      c_claude="$(prompt_read "   - Pasang adapter Claude Code? [Y/n]: " "y")"
-      [[ "$c_claude" =~ ^[Yy]$ || -z "$c_claude" ]] && chosen_harness+=("claude")
+      c_claude="$(prompt_select "Pasang adapter Claude Code (CLAUDE.md)?" 0 "Ya" "Tidak")"
+      [[ "$c_claude" -eq 0 ]] && chosen_harness+=("claude")
 
       local c_windsurf
-      c_windsurf="$(prompt_read "   - Pasang adapter Windsurf? [Y/n]: " "y")"
-      [[ "$c_windsurf" =~ ^[Yy]$ || -z "$c_windsurf" ]] && chosen_harness+=("windsurf")
+      c_windsurf="$(prompt_select "Pasang adapter Windsurf (.windsurfrules)?" 0 "Ya" "Tidak")"
+      [[ "$c_windsurf" -eq 0 ]] && chosen_harness+=("windsurf")
 
       local c_cline
-      c_cline="$(prompt_read "   - Pasang adapter Cline / Roo Code? [Y/n]: " "y")"
-      [[ "$c_cline" =~ ^[Yy]$ || -z "$c_cline" ]] && chosen_harness+=("cline")
+      c_cline="$(prompt_select "Pasang adapter Cline / Roo Code (.clinerules)?" 0 "Ya" "Tidak")"
+      [[ "$c_cline" -eq 0 ]] && chosen_harness+=("cline")
 
       if [[ ${#chosen_harness[@]} -eq 0 ]]; then
         harness_arg="antigravity"
@@ -639,43 +769,40 @@ run_interactive_wizard() {
       harness_explicit=true
       ;;
     *)
-      # Default: Auto-Detect
       harness_explicit=false
       ;;
   esac
 
-  # 3. Model Context Protocol (MCP) Selection
-  echo "" > /dev/tty
-  echo "🔌 3. Pilih konfigurasi Model Context Protocol (MCP):" > /dev/tty
-  echo "   [1] Standar Pero: Context7, Chrome DevTools, Tavily, Google Stitch (Rekomendasi)" > /dev/tty
-  echo "   [2] Minimal / Zero-Key: Context7 & Chrome DevTools saja (Bebas kunci API berbayar)" > /dev/tty
-  echo "   [3] Kustom: Pilih server MCP yang ingin diaktifkan secara manual" > /dev/tty
-  echo "   [4] Lewati: Jangan pasang konfigurasi server MCP (.mcp.json)" > /dev/tty
-  local mcp_choice
-  mcp_choice="$(prompt_read "   Pilihan [1]: " "1")"
+  # 4. Kustomisasi: Model Context Protocol (MCP)
+  local mcp_idx
+  mcp_idx="$(prompt_select "Pilih konfigurasi Model Context Protocol (MCP):" 0 \
+    "Standar Pero: Context7, Chrome DevTools, Tavily, Google Stitch" \
+    "Minimal / Zero-Key: Context7 & Chrome DevTools saja (Bebas API Key)" \
+    "Kustom: Tentukan server MCP secara manual satu per satu" \
+    "Lewati: Jangan pasang konfigurasi server MCP (.mcp.json)")"
 
-  case "$mcp_choice" in
-    2)
+  case "$mcp_idx" in
+    1)
       mcp_arg="minimal"
       mcp_explicit=true
       ;;
-    3)
+    2)
       local chosen_mcps=()
       local m_context7
-      m_context7="$(prompt_read "   - Pasang Context7 MCP (Dokumentasi resmi library/API)? [Y/n]: " "y")"
-      [[ "$m_context7" =~ ^[Yy]$ || -z "$m_context7" ]] && chosen_mcps+=("context7")
+      m_context7="$(prompt_select "Pasang Context7 MCP (Dokumentasi resmi library/API)?" 0 "Ya" "Tidak")"
+      [[ "$m_context7" -eq 0 ]] && chosen_mcps+=("context7")
 
       local m_devtools
-      m_devtools="$(prompt_read "   - Pasang Chrome DevTools MCP (Debugging browser/frontend)? [Y/n]: " "y")"
-      [[ "$m_devtools" =~ ^[Yy]$ || -z "$m_devtools" ]] && chosen_mcps+=("chrome-devtools")
+      m_devtools="$(prompt_select "Pasang Chrome DevTools MCP (Debugging browser/frontend)?" 0 "Ya" "Tidak")"
+      [[ "$m_devtools" -eq 0 ]] && chosen_mcps+=("chrome-devtools")
 
       local m_tavily
-      m_tavily="$(prompt_read "   - Pasang Tavily Search MCP (Riset web mendalam)? [Y/n]: " "y")"
-      [[ "$m_tavily" =~ ^[Yy]$ || -z "$m_tavily" ]] && chosen_mcps+=("tavily")
+      m_tavily="$(prompt_select "Pasang Tavily Search MCP (Riset web mendalam)?" 0 "Ya" "Tidak")"
+      [[ "$m_tavily" -eq 0 ]] && chosen_mcps+=("tavily")
 
       local m_stitch
-      m_stitch="$(prompt_read "   - Pasang Google Stitch MCP (Desain prototipe UI/UX visual)? [Y/n]: " "y")"
-      [[ "$m_stitch" =~ ^[Yy]$ || -z "$m_stitch" ]] && chosen_mcps+=("stitch")
+      m_stitch="$(prompt_select "Pasang Google Stitch MCP (Desain prototipe UI/UX visual)?" 0 "Ya" "Tidak")"
+      [[ "$m_stitch" -eq 0 ]] && chosen_mcps+=("stitch")
 
       if [[ ${#chosen_mcps[@]} -eq 0 ]]; then
         mcp_arg="none"
@@ -687,37 +814,32 @@ run_interactive_wizard() {
       fi
       mcp_explicit=true
       ;;
-    4)
+    3)
       mcp_arg="none"
       mcp_explicit=true
       ;;
     *)
-      # Default: All / Standard
       mcp_arg="all"
       mcp_explicit=false
       ;;
   esac
 
-  # 4. Optional Knowledge Graph (Graphify)
-  echo "" > /dev/tty
+  # 5. Peta Graf Kode (Graphify CLI)
   if command -v graphify >/dev/null 2>&1; then
-    echo "🌐 4. Peta Graf Kode (Graphify CLI):" > /dev/tty
-    echo "   [✓] Terdeteksi sudah terpasang di sistem ($(command -v graphify))." > /dev/tty
     with_graphify=false
   else
-    echo "🌐 4. Peta Graf Kode (Graphify CLI untuk X-ray arsitektur):" > /dev/tty
-    echo "   [1] Lewati: Tetap gunakan deteksi standar tanpa Graphify (Rekomendasi)" > /dev/tty
-    echo "   [2] Pasang: Pasang Graphify secara terisolasi via 'uv tool' atau 'pipx'" > /dev/tty
-    local g_choice
-    g_choice="$(prompt_read "   Pilihan [1]: " "1")"
-    if [[ "$g_choice" == "2" ]]; then
+    local g_idx
+    g_idx="$(prompt_select "Peta Graf Kode (Graphify CLI untuk X-ray arsitektur):" 0 \
+      "Lewati untuk sekarang (Rekomendasi)" \
+      "Pasang Graphify secara terisolasi via uv/pipx")"
+    if [[ "$g_idx" -eq 1 ]]; then
       with_graphify=true
     else
       with_graphify=false
     fi
   fi
 
-  # 5. Ringkasan & Konfirmasi
+  # 6. Ringkasan & Konfirmasi
   echo "" > /dev/tty
   echo "-----------------------------------------------------------------" > /dev/tty
   echo "📋 Ringkasan Rencana Pemasangan:" > /dev/tty
@@ -747,9 +869,12 @@ run_interactive_wizard() {
     echo "   - Pasang Graphify  : Tidak (Bawaan)" > /dev/tty
   fi
   echo "-----------------------------------------------------------------" > /dev/tty
-  local confirm
-  confirm="$(prompt_read "Mulai proses instalasi sekarang? [Y/n]: " "y")"
-  if [[ ! "$confirm" =~ ^[Yy]$ && -n "$confirm" ]]; then
+
+  local confirm_idx
+  confirm_idx="$(prompt_select "Mulai proses instalasi sekarang?" 0 \
+    "Ya, mulai proses pemasangan" \
+    "Batal")"
+  if [[ "$confirm_idx" -ne 0 ]]; then
     echo "" > /dev/tty
     echo "❌ Pemasangan dibatalkan oleh pengguna." > /dev/tty
     exit 0
@@ -864,12 +989,12 @@ main() {
   local should_run_wizard=false
   if [[ "$check_only" == false && "$force_non_interactive" == false ]]; then
     if [[ "$force_interactive" == true ]]; then
-      if [[ ! -r /dev/tty || ! -w /dev/tty ]]; then
+      if ! ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
         echo "❌ Error: Opsi --interactive memerlukan terminal interaktif fisik (/dev/tty tidak tersedia)." >&2
         exit 1
       fi
       should_run_wizard=true
-    elif [[ "$original_argc" -eq 0 && -r /dev/tty && -w /dev/tty ]]; then
+    elif [[ "$original_argc" -eq 0 ]] && ( true < /dev/tty && true > /dev/tty ) 2>/dev/null; then
       should_run_wizard=true
     fi
   fi
