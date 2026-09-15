@@ -12,7 +12,7 @@ Skill ini adalah **"Mesin Pencari Cerdas & Pemandu Navigasi Keterampilan Agen"**
 > **Analogi Sederhana (ELI5):**  
 > Bayangkan **Resepsionis Navigasi Cerdas di Rumah Sakit Raksasa**:
 > - **AI Tanpa Find-Skill (Tersesat & Salah Kamar)**: Pasien datang dengan keluhan patah tulang, tetapi diarahkan ke dokter gigi hanya karena dokter gigi sedang menganggur.
-> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 30 dokter spesialis yang bertugas (*katalog 30 skill universal*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
+> - **Dengan Find-Skill (Pemandu Tepat Sasaran)**: Resepsionis mendengarkan gejala pasien, memeriksa direktori seluruh 32 dokter spesialis yang bertugas (*katalog 32 skill universal*), mencocokkan jadwal keahlian (*trigger condition*), lalu langsung mengantarkan pasien ke ruang bedah ortopedi yang tepat.
 
 ---
 
@@ -40,7 +40,7 @@ Penanganan percabangan menggunakan pohon taksonomi terstruktur dan mekanisme pen
 
 ---
 
-## Matriks Pemetaan Pemicu 30 Skill (*Trigger-to-Skill Dispatch Matrix*)
+## Matriks Pemetaan Pemicu 32 Skill (*Trigger-to-Skill Dispatch Matrix*)
 
 Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan dipatuhi:
 
@@ -122,7 +122,7 @@ Selain mencocokkan kata kunci tugas, `find-skill` bertindak sebagai **Mesin Peny
    - `package.json` ➡️ Menyiapkan toolchain **Node.js/Web** (Chrome DevTools & modern web guidelines).
 
 2. **Prinsip Nol Penghapusan (*Zero Deletion of Universal Skills*)**:
-   - Seluruh 30 skill universal Pero tetap utuh dan aktif sebagai pondasi utama repositori.
+   - Seluruh 32 skill universal Pero tetap utuh dan aktif sebagai pondasi utama repositori.
    - Skill dan konfigurasi MCP spesifik stack ditambahkan sebagai ekstensi pelengkap (*dynamic overlay*) tanpa menimpa konfigurasi universal yang sudah ada.
 
 3. **Penyelarasan Runtime & Universal MCP (.mcp.json)**:

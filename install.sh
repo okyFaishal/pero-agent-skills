@@ -26,7 +26,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/okyFaishal/pero-agent-skills.git"
 
-# 30 Universal Engineering & SDLC Skills
+# 32 Universal Engineering & SDLC Skills
 SKILLS=(
   "pero-problem-framing"
   "pero-prd-writing"
@@ -41,6 +41,8 @@ SKILLS=(
   "find-skill"
   "context-7"
   "web-search"
+  "scientific-research"
+  "pdf-reader"
   "grilling"
   "test-driven-development"
   "systematic-debugging"
@@ -291,7 +293,7 @@ main() {
         echo ""
         echo "Opsi:"
         echo "  --update, -u          Pembaruan instan modul skill & MCP ke versi terbaru"
-        echo "  --check               Memeriksa integritas 30 modul skill, AGENTS.md, dan .mcp.json"
+        echo "  --check               Memeriksa integritas 32 modul skill, AGENTS.md, dan .mcp.json"
         echo "  --dry-run             Menampilkan simulasi tindakan tanpa menyalin atau mengubah berkas"
         echo "  --version, -v         Tampilkan versi installer resmi"
         echo "  --help, -h            Tampilkan panduan bantuan ini"
@@ -469,7 +471,7 @@ main() {
       mkdir -p "${target_skills_dir}"
     fi
 
-    # Salin 30 Skill Universal
+    # Salin 32 Skill Universal
     echo "-> Menyebarkan ${#SKILLS[@]} modul skill ke ${target_skills_dir}..."
     for skill in "${SKILLS[@]}"; do
       if [[ -d "${source_skills}/${skill}" ]]; then
@@ -596,11 +598,11 @@ main() {
   if [[ "$dry_run" == true ]]; then
     echo " 🔍 Simulasi Selesai! Tidak ada berkas yang diubah pada workspace."
   elif [[ "$is_update" == true ]]; then
-    echo " ✨ Pembaruan Berhasil! 30 Skill Pero, AGENTS.md, & .mcp.json terbarui di:"
+    echo " ✨ Pembaruan Berhasil! 32 Skill Pero, AGENTS.md, & .mcp.json terbarui di:"
     echo " 📂 ${target_dir}"
     echo " 💡 Antigravity siap melanjutkan pekerjaan dengan skill mutakhir."
   else
-    echo " ✨ Berhasil! 30 Skill Pero, AGENTS.md, & .mcp.json siap digunakan di:"
+    echo " ✨ Berhasil! 32 Skill Pero, AGENTS.md, & .mcp.json siap digunakan di:"
     echo " 📂 ${target_dir}"
     echo " 💡 Antigravity otomatis membaca skill di .agents/skills/ & aturan di AGENTS.md"
   fi

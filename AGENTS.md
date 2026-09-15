@@ -1,6 +1,6 @@
 # Agent Workspace Rules
 
-> Panduan komprehensif, arsitektur alur kerja, dan katalog 30 skill tersedia di [`README.md`](README.md).
+> Panduan komprehensif, arsitektur alur kerja, dan katalog 32 skill tersedia di [`README.md`](README.md).
 
 ## 1. Skill-First Protocol (Mandatory Priority)
 - **Check Skills First**: Sebelum mengeksekusi tugas apa pun (analisis, perencanaan, koding, pengujian, debugging, atau riset), Agent WAJIB memeriksa direktori `.agents/skills/` untuk menemukan skill yang relevan.
@@ -24,7 +24,13 @@
 - **Systematic Debugging**: Dilarang melakukan trial-and-error saat debugging. Gunakan `systematic-debugging` untuk menemukan root cause terlebih dahulu.
 - **Evidence Before Assertions**: Dilarang mengklaim pekerjaan selesai tanpa bukti eksekusi nyata dari terminal (`verification-before-completion`).
 - **Environment & Safety**: Patuhi `env-guard`. Dilarang mengekspos credential/secrets, dilarang menjalankan perintah destruktif tanpa konfirmasi, dan dilarang melakukan terminal web scraping via `curl`/`wget` (penegakan proteksi Zero SSRF & anti-WAF 403).
-- **Grounding, Citation Integrity & Web Retrieval**: Validasi dokumentasi teknis via `context-7` atau protokol penelusuran bertingkat `web-search` (Search MCP ➔ Semantic Fetch Reader ➔ Headless Chromium). Dilarang menyedot HTML mentah ke konteks. Bukti empiris wajib membuktikan secara langsung klaim kausal pertanyaan (anti-tangensial; dilarang mengutip akibat/korban semata saat ditanya mekanisme). Sitasi wajib bersih dari kebocoran status transport (dilarang menuliskan `(Status: 200 OK)` atau status HTTP), menggunakan format formal `[Penulis, Tahun]` untuk jurnal atau `[Lembaga/Organisasi]` untuk website resmi. Gunakan `grilling` saat menghadapi trade-off atau kebutuhan yang ambigu.
+- **Grounding, Citation Integrity & Triangulasi Riset**: Terapkan protokol Triangulasi Riset 3-Pilar:
+  1. `context-7`: Rujukan tunggal dokumentasi resmi pustaka, SDK, dan API framework terkini.
+  2. `web-search`: Rujukan fakta web terkini, rilis paket eksternal, dan error komunitas (Search MCP ➔ Semantic Fetch Reader ➔ Headless Chromium). Dilarang menyedot HTML mentah atau memakai `curl`/`wget`.
+  3. `scientific-research`: Rujukan literatur peer-reviewed & pembuktian formal algoritma via Semantic Scholar MCP & JIT [`pdf-reader`]. Naskah fisik disimpan di `docs/references/papers/*.pdf` dan dikunci hash SHA-256 di `docs/references/MANIFEST.json`.
+  - **Izin Akses Terbatas (Hanya 7 Skill)**: `pero-problem-framing` (Deep-Tech Gatekeeper Tahap 1), `pero-system-architecture` (Tier-1 Spesialis 2/3/4), `pero-quality-governance` (Tier-1 Spesialis 1/2/4), `pero-granular-refinement` (Read-Only rumus), `systematic-debugging` (Fase 3 anomali numerik/deadlock), `test-driven-development` (Read-Only Fase RED golden vectors), dan `code-reviewer` (Read-Only Gate 1 verifikasi rumus).
+  - **Zona Terlarang Mutlak (23 Skill Lainnya)**: DILARANG KERAS memanggil riset paper guna mencegah lonjakan token dan kelambatan sistem.
+  - **Integritas Sitasi**: Bukti empiris wajib membuktikan secara langsung klaim kausal (anti-tangensial; dilarang Outcome-Only Fallacy). Sitasi wajib bersih dari kebocoran status transport (dilarang menuliskan `(Status: 200 OK)` atau status HTTP), menggunakan format formal `[Penulis, Tahun]` untuk jurnal atau `[Lembaga/Organisasi]` untuk website resmi. Gunakan `grilling` saat menghadapi trade-off atau kebutuhan yang ambigu.
 - **Anti-Slop Protocol**: Patuhi `anti-slop`. Dilarang menghasilkan kode over-engineered (YAGNI), komentar sepele yang menjelaskan apa yang dilakukan kode, atau kode tiruan/mock palsu.
 
 ## 5. Local Workspace Skills Directory (Complete Pero SDLC & Engineering Suite)
@@ -62,6 +68,8 @@
 28. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri, squad spesialis SDLC, & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
 29. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate berlandaskan gerbang validasi Go (`subagent-driven-development`).
 30. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, 3 dials (Variance, Motion, Density), dashboard, data tables & typography (`taste-skill`).
+31. `scientific-research/` : Orkestrasi penelusuran naskah ilmiah via Semantic Scholar MCP, pengunduhan PDF lokal, pencatatan SHA-256 MANIFEST.json & penegakan sitasi formal `[Penulis, Tahun]` (`scientific-research`).
+32. `pdf-reader/` : Ekstraksi naskah ilmiah 2-tahap JIT (Daftar Isi & irisan bab/rumus target) ramah token berbasis `uv run --with pypdf` (`pdf-reader`).
 
 ## 6. Graphify Codebase Knowledge Graph Protocol (Selective JIT Integration)
 - **Prinsip Dasar**: Graphify adalah instrumen X-Ray berdaya sinyal tinggi untuk membedah relasi kode rumit dan dependensi modul.

@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Rules: AGENTS.md](https://img.shields.io/badge/Rules-AGENTS.md-purple.svg)](AGENTS.md)
 [![Decisions: ADRs](https://img.shields.io/badge/Decisions-docs%2Fdecisions-blueviolet.svg)](docs/decisions/README.md)
-[![Skills: 30 Universal](https://img.shields.io/badge/Skills-30%20Universal-brightgreen.svg)](#katalog-lengkap-30-skill-universal)
+[![Skills: 32 Universal](https://img.shields.io/badge/Skills-32%20Universal-brightgreen.svg)](#katalog-lengkap-32-skill-universal)
 [![Harness: Google Antigravity](https://img.shields.io/badge/Harness-Google%20Antigravity-4285F4.svg)](#instalasi-cepat-1-line-command)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#peta-navigasi-ekosistem-pero)
 
@@ -27,7 +27,7 @@
 
 ## Instalasi Cepat (1-Line Zero-Prompt Command)
 
-Pasang seluruh 30 skill, aturan tata kelola, dan konfigurasi MCP khusus Google Antigravity ke proyek Anda cukup dengan **satu baris perintah tanpa prompt keyboard (*zero-prompt*)**:
+Pasang seluruh 32 skill, aturan tata kelola, dan konfigurasi MCP khusus Google Antigravity ke proyek Anda cukup dengan **satu baris perintah tanpa prompt keyboard (*zero-prompt*)**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
@@ -42,7 +42,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 ```
 
 ### Apa yang Dipasang Otomatis?
-1. **📂 `.agents/skills/`**: 30 modul skill universal (SDLC, TDD, Systematic Debugging, Architecture, UI/UX, dll.) yang langsung dikenali oleh sistem skill Antigravity.
+1. **📂 `.agents/skills/`**: 32 modul skill universal (SDLC, TDD, Systematic Debugging, Architecture, UI/UX, dll.) yang langsung dikenali oleh sistem skill Antigravity.
 2. **📜 `AGENTS.md`**: Aturan workspace baku yang dibaca Antigravity di setiap awal percakapan (Skill-First, Anti-Sycophancy, ELI5, Anti-Slop, TDD, Verification).
 3. **🔌 `.mcp.json`**: Konfigurasi otomatis Model Context Protocol (Context7 untuk dokumentasi API resmi, Chrome DevTools untuk inspeksi UI/browser, Tavily untuk riset web berakurasi tinggi, Google Stitch untuk prototipe UI, dan Graphify untuk peta relasi kode).
 4. **🛡️ `.gitignore`**: Perlindungan otomatis file rahasia (`.env`, `credentials.json`, `*.pem`, `*.key`, `.pero/`).
@@ -56,7 +56,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 ```
 
 > **Aman & Non-Destruktif (Zero Data Loss):**
-> - Seluruh 30 modul skill di `.agents/skills/` otomatis diperbarui ke versi mutakhir.
+> - Seluruh 32 modul skill di `.agents/skills/` otomatis diperbarui ke versi mutakhir.
 > - Berkas aturan `AGENTS.md` Anda otomatis dicadangkan (`AGENTS.md.bak_[timestamp]`) sebelum diselaraskan.
 > - Konfigurasi server MCP kustom Anda di `.mcp.json` digabungkan secara cerdas (*deep merge*) tanpa menghapus server pribadi yang sudah ada.
 > - Seluruh kode program, berkas pengujian, dan dokumen spesifikasi proyek (`docs/`) **100% aman dan tidak pernah disentuh**.
@@ -68,7 +68,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 | `curl ... \| bash` | Pasang / perbarui instan di folder saat ini |
 | `curl ... \| bash -s -- /path/proyek` | Pasang / perbarui di folder spesifik |
 | `curl ... \| bash -s -- --update` | Pembaruan instan modul skill & konfigurasi MCP |
-| `curl ... \| bash -s -- --check` | Memeriksa integritas & kesehatan 30 skill, AGENTS.md, dan .mcp.json |
+| `curl ... \| bash -s -- --check` | Memeriksa integritas & kesehatan 32 skill, AGENTS.md, dan .mcp.json |
 | `curl ... \| bash -s -- --dry-run` | Menampilkan simulasi tindakan tanpa menyalin/mengubah berkas |
 | `curl ... \| bash -s -- --version` | Menampilkan nomor versi installer resmi (v4.0.0) |
 | `curl ... \| bash -s -- --help` | Menampilkan panduan bantuan CLI |
@@ -77,7 +77,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 
 ## Peta Navigasi Ekosistem Pero
 
-Diagram di bawah menggambarkan bagaimana ke-30 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
+Diagram di bawah menggambarkan bagaimana ke-32 skill saling berinteraksi dan mengalir dari tahap ide mentah hingga kode siap rilis:
 
 ```mermaid
 flowchart TB
@@ -98,6 +98,8 @@ flowchart TB
         SDD["subagent-driven-development<br/>(Autonomous Backlog Loop)"]:::tool
         TS["taste-skill<br/>(Anti-Slop UI & 3-Dial Engine)"]:::tool
         ELI5["eli5<br/>(Penjelasan Ramah Awam / ELI5)"]:::tool
+        SR["scientific-research<br/>(Paper Hunt & SHA-256 Manifest)"]:::tool
+        PDF["pdf-reader<br/>(JIT TOC & Target Section Extraction)"]:::tool
     end
 
     subgraph SDLC ["2. Pero SDLC Planning Pipeline (Universal)"]
@@ -161,6 +163,15 @@ flowchart TB
     C7 -.->|"Live API Specs & MCP Specs"| S4
     C7 -.->|"Component & Library Docs"| S5
     C7 -.->|"SDK Signatures & Type Contracts"| S8
+
+    SR -.->|"Literature Research Gatekeeper"| S1
+    SR -.->|"Algorithm & Architecture Papers"| S4
+    SR -.->|"Safety & Governance Papers"| S6
+    SR -.->|"Complex Math / Numerical Docs"| DBG
+
+    PDF -.->|"Target Formulas"| S8
+    PDF -.->|"Golden Vectors"| TDD
+    PDF -.->|"Formula Verification"| REV
 
     DPA -.->|"Parallel Problem Framing"| S1
     DPA -.->|"Parallel Persona & Market Research"| S2
@@ -480,7 +491,7 @@ sequenceDiagram
 
 ---
 
-## Katalog Lengkap 30 Skill Universal
+## Katalog Lengkap 32 Skill Universal
 
 | No | Skill | Kategori | Kapan Digunakan (*Trigger*) | Input ➡️ Output Utama |
 |---|---|---|---|---|
@@ -514,6 +525,8 @@ sequenceDiagram
 | 28 | [`dispatching-parallel-agents`](skills/dispatching-parallel-agents/SKILL.md) | Tooling / Operations | Pendelegasian tugas mandiri & mass debugging ke sub-agen paralel tanpa shared state | Backlog/Error Mandiri ➡️ Eksekusi Sub-Agen Serentak & Lolos Uji |
 | 29 | [`subagent-driven-development`](skills/subagent-driven-development/SKILL.md) | Discipline / Operations | Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate | Task Backlog ➡️ Implementasi Teruji & PR Siap Merge |
 | 30 | [`taste-skill`](skills/taste-skill/SKILL.md) | Tooling / Quality | Merancang landing page, dashboard, data table, wizard & redesign produk bebas AI slop | Brief / Design Tokens ➡️ UI Estetis, Motion Dial & Tipografi Berkarakter |
+| 31 | [`scientific-research`](skills/scientific-research/SKILL.md) | Research / Data | Penelusuran naskah ilmiah formal via Semantic Scholar MCP & pengunduhan PDF lokal ber-hash SHA-256 | Kueri Topik / DOI ➡️ Sitasi Formal, PDF Lokal & `docs/references/MANIFEST.json` |
+| 32 | [`pdf-reader`](skills/pdf-reader/SKILL.md) | Tooling / Research | Ekstraksi naskah ilmiah 2-tahap JIT (Daftar Isi & irisan bab/rumus target) ramah token berbasis `uv run --with pypdf` | Berkas PDF Target ➡️ Ekstraksi Teks / Rumus Spesifik |
 
 ---
 
