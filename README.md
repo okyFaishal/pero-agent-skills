@@ -37,6 +37,20 @@ Atau jika ingin mengarahkan ke folder proyek tertentu:
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- /path/ke/proyek-anda
 ```
 
+### Cara Memperbarui Framework (*Updating Framework*)
+
+Jika Anda ingin memperbarui modul skill dan konfigurasi MCP di proyek Anda ke versi rilis terbaru, cukup jalankan perintah pembaruan instan:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --update
+```
+
+> **Aman & Non-Destruktif (Zero Data Loss):**
+> - Seluruh 30 modul skill di `.agents/skills/` otomatis diperbarui ke versi mutakhir.
+> - Berkas aturan `AGENTS.md` Anda otomatis dicadangkan (`AGENTS.md.bak_[timestamp]`) sebelum diselaraskan.
+> - Konfigurasi server MCP kustom Anda di `.mcp.json` digabungkan secara cerdas (*deep merge*) tanpa menghapus server pribadi Anda.
+> - Seluruh kode program, berkas pengujian, dan dokumen spesifikasi proyek (`docs/`) **100% aman dan tidak pernah disentuh**.
+
 ---
 
 ## Peta Navigasi Ekosistem Pero

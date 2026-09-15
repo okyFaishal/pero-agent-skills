@@ -638,10 +638,16 @@ main() {
   local force_interactive=false
   local force_non_interactive=false
   local with_graphify=false
+  local is_update=false
   local original_argc=$#
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -u|--update)
+        is_update=true
+        force_non_interactive=true
+        shift
+        ;;
       -i|--interactive)
         force_interactive=true
         shift
@@ -682,6 +688,7 @@ main() {
         echo "Opsi:"
         echo "  --interactive, -i     Menjalankan wizard interaktif step-by-step"
         echo "  --yes, -y             Mode otomatis tanpa prompt (gunakan deteksi cerdas)"
+        echo "  --update, -u          Pembaruan instan modul skill & MCP ke versi terbaru"
         echo "  --with-graphify       Pasang Graphify CLI secara terisolasi (via uv/pipx)"
         echo "  --check               Memeriksa integritas 30 modul skill dan AGENTS.md"
         echo "  --dry-run             Menampilkan simulasi tindakan tanpa menyalin berkas"
@@ -858,9 +865,13 @@ main() {
     fi
   fi
 
-  # Banner Pemasangan
+  # Banner Pemasangan / Pembaruan
   echo "================================================================="
-  echo " 🚀 Pero Agent Skills Universal Installer (v3.2 Standalone)"
+  if [[ "$is_update" == true ]]; then
+    echo " 🔄 Pero Agent Skills Universal Updater (v3.2 Standalone)"
+  else
+    echo " 🚀 Pero Agent Skills Universal Installer (v3.2 Standalone)"
+  fi
   echo " 📂 Target Workspace: ${target_dir}"
   echo "================================================================="
 
@@ -1100,6 +1111,9 @@ main() {
   echo "================================================================="
   if [[ "$dry_run" == true ]]; then
     echo " 🔍 Simulasi Selesai! Tidak ada berkas yang diubah pada workspace."
+  elif [[ "$is_update" == true ]]; then
+    echo " ✨ Pembaruan Berhasil! Seluruh ${#SKILLS[@]} Skill Pero & AGENTS.md terbarui di:"
+    echo " 📂 ${target_dir}"
   else
     echo " ✨ Berhasil! ${#SKILLS[@]} Skill Pero & AGENTS.md siap digunakan di:"
     echo " 📂 ${target_dir}"
