@@ -657,17 +657,20 @@ prompt_choice() {
       break
     fi
 
-    # Shortcut angka 1..num
-    if [[ "$key" =~ ^[1-9]$ ]]; then
+    # Tab (pindah ke opsi berikutnya)
+    if [[ "$key" == $'\t' ]]; then
+      if (( cur < num - 1 )); then
+        cur=$((cur + 1))
+      else
+        cur=0
+      fi
+    elif [[ "$key" =~ ^[1-9]$ ]]; then
       local n=$((key - 1))
       if (( n >= 0 && n < num )); then
         cur=$n
         break
       fi
-    fi
-
-    # Vim keys: k (up), j (down)
-    if [[ "$key" == "k" || "$key" == "K" ]]; then
+    elif [[ "$key" == "k" || "$key" == "K" ]]; then
       if (( cur > 0 )); then
         cur=$((cur - 1))
       else
@@ -695,6 +698,16 @@ prompt_choice() {
             cur=$((cur + 1))
           else
             cur=0
+          fi
+          ;;
+        "[C"|"OC") # Panah Kanan (konfirmasi)
+          break
+          ;;
+        "[Z") # Shift + Tab (pindah ke opsi sebelumnya)
+          if (( cur > 0 )); then
+            cur=$((cur - 1))
+          else
+            cur=$((num - 1))
           fi
           ;;
         *)
