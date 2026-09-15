@@ -4,16 +4,18 @@
 [![Rules: AGENTS.md](https://img.shields.io/badge/Rules-AGENTS.md-purple.svg)](AGENTS.md)
 [![Decisions: ADRs](https://img.shields.io/badge/Decisions-docs%2Fdecisions-blueviolet.svg)](docs/decisions/README.md)
 [![Skills: 30 Universal](https://img.shields.io/badge/Skills-30%20Universal-brightgreen.svg)](#katalog-lengkap-30-skill-universal)
+[![Harness: Google Antigravity](https://img.shields.io/badge/Harness-Google%20Antigravity-4285F4.svg)](#instalasi-cepat-1-line-command)
 [![Architecture: Polyglot](https://img.shields.io/badge/Architecture-Polyglot-orange.svg)](#peta-navigasi-ekosistem-pero)
 
-> **Ekosistem Standar SDLC & Rekayasa Agen AI Universal (Polyglot) yang Disiplin, Anti-Sycophancy, dan Berbahasa Ramah (ELI5).**
+> **Ekosistem Standar SDLC & Rekayasa Agen AI Universal Khusus Google Antigravity yang Disiplin, Anti-Sycophancy, Bebas Kode Sampah (Anti-Slop), dan Berbahasa Ramah (ELI5).**
 
 ---
 
 ## Penjelasan Sederhana (ELI5)
 
 > Bayangkan **Pero Agent Skills** ini seperti **Kotak Perkakas Robot Insinyur Ajaib**:
-> - Ketika dipasang di proyek apa pun (Web, Mobile, Backend, AI, Database), asisten AI Anda otomatis bertransformasi menjadi **Insinyur Senior yang Sangat Disiplin**:
+> - Ketika dipasang di proyek apa pun (Web, Mobile, Backend, AI, Database), asisten **Google Antigravity** Anda otomatis bertransformasi menjadi **Insinyur Senior yang Sangat Disiplin**:
+> - **Satu Rumah Asli untuk Antigravity**: Menggunakan struktur direktori asli yang langsung dikenali Antigravity tanpa adapter rumit. Modul skill di `.agents/skills/`, tata kelola di `AGENTS.md`, dan alat MCP di `.mcp.json` langsung aktif seketika.
 > - **Tidak Asal Tebak**: Selalu mendiagnosa akar masalah terlebih dahulu sebelum meresepkan solusi (*Problem Framing & Systematic Debugging*).
 > - **Membangun dengan Denah Matang**: Menyusun fondasi dan aturan kualitas sebelum menyuruh tukang bekerja (*SDLC Pipeline*).
 > - **Anti-Pujian Palsu (*Anti-Sycophancy*)**: Jujur berbasis bukti teknis dan berani menolak ide yang berisiko merusak sistem (*LLM Council*).
@@ -23,13 +25,15 @@
 
 ---
 
-## Instalasi Cepat (1-Line Command)
+## Instalasi Cepat (1-Line Zero-Prompt Command)
 
-Pasang seluruh 30 skill dan aturan tata kelola ke proyek Anda cukup dengan **satu baris perintah**:
+Pasang seluruh 30 skill, aturan tata kelola, dan konfigurasi MCP khusus Google Antigravity ke proyek Anda cukup dengan **satu baris perintah tanpa prompt keyboard (*zero-prompt*)**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash
 ```
+
+Perintah di atas langsung mengeksekusi pemasangan di direktori tempat terminal Anda berada.
 
 Atau jika ingin mengarahkan ke folder proyek tertentu:
 
@@ -37,9 +41,15 @@ Atau jika ingin mengarahkan ke folder proyek tertentu:
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- /path/ke/proyek-anda
 ```
 
+### Apa yang Dipasang Otomatis?
+1. **📂 `.agents/skills/`**: 30 modul skill universal (SDLC, TDD, Systematic Debugging, Architecture, UI/UX, dll.) yang langsung dikenali oleh sistem skill Antigravity.
+2. **📜 `AGENTS.md`**: Aturan workspace baku yang dibaca Antigravity di setiap awal percakapan (Skill-First, Anti-Sycophancy, ELI5, Anti-Slop, TDD, Verification).
+3. **🔌 `.mcp.json`**: Konfigurasi otomatis Model Context Protocol (Context7 untuk dokumentasi API resmi, Chrome DevTools untuk inspeksi UI/browser, Tavily untuk riset web berakurasi tinggi, Google Stitch untuk prototipe UI, dan Graphify untuk peta relasi kode).
+4. **🛡️ `.gitignore`**: Perlindungan otomatis file rahasia (`.env`, `credentials.json`, `*.pem`, `*.key`, `.pero/`).
+
 ### Cara Memperbarui Framework (*Updating Framework*)
 
-Jika Anda ingin memperbarui modul skill dan konfigurasi MCP di proyek Anda ke versi rilis terbaru, cukup jalankan perintah pembaruan instan:
+Jika Anda ingin memperbarui modul skill dan konfigurasi MCP di proyek Anda ke versi rilis terbaru, cukup jalankan perintah yang sama atau gunakan flag `--update`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --update
@@ -48,23 +58,20 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 > **Aman & Non-Destruktif (Zero Data Loss):**
 > - Seluruh 30 modul skill di `.agents/skills/` otomatis diperbarui ke versi mutakhir.
 > - Berkas aturan `AGENTS.md` Anda otomatis dicadangkan (`AGENTS.md.bak_[timestamp]`) sebelum diselaraskan.
-> - Konfigurasi server MCP kustom Anda di `.mcp.json` digabungkan secara cerdas (*deep merge*) tanpa menghapus server pribadi Anda.
+> - Konfigurasi server MCP kustom Anda di `.mcp.json` digabungkan secara cerdas (*deep merge*) tanpa menghapus server pribadi yang sudah ada.
 > - Seluruh kode program, berkas pengujian, dan dokumen spesifikasi proyek (`docs/`) **100% aman dan tidak pernah disentuh**.
 
 ### Opsi Baris Perintah (CLI Options)
 
-Installer dirancang otomatis tanpa prompt (*zero-prompt*) khusus untuk Google Antigravity. Anda dapat menyertakan parameter baris perintah berikut sesuai kebutuhan:
-
-```bash
-# Memeriksa kesehatan 30 skill, AGENTS.md, dan .mcp.json tanpa mengubah apa pun
-curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --check
-
-# Simulasi tindakan pemasangan (dry-run)
-curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- --dry-run
-
-# Memasang atau memperbarui ke direktori proyek spesifik
-curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/install.sh | bash -s -- /path/ke/proyek-anda
-```
+| Perintah | Deskripsi |
+|---|---|
+| `curl ... \| bash` | Pasang / perbarui instan di folder saat ini |
+| `curl ... \| bash -s -- /path/proyek` | Pasang / perbarui di folder spesifik |
+| `curl ... \| bash -s -- --update` | Pembaruan instan modul skill & konfigurasi MCP |
+| `curl ... \| bash -s -- --check` | Memeriksa integritas & kesehatan 30 skill, AGENTS.md, dan .mcp.json |
+| `curl ... \| bash -s -- --dry-run` | Menampilkan simulasi tindakan tanpa menyalin/mengubah berkas |
+| `curl ... \| bash -s -- --version` | Menampilkan nomor versi installer resmi (v4.0.0) |
+| `curl ... \| bash -s -- --help` | Menampilkan panduan bantuan CLI |
 
 ---
 
