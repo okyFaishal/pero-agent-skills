@@ -111,6 +111,9 @@ Dipilih **[Opsi X]** karena:
 - [Alasan utama 1 berbasis data]
 - [Alasan utama 2]
 
+### Landasan Bukti & Referensi Akademik (Empirical Grounding)
+- [Author et al., Year] — "Title", Journal/Conference. DOI: 10.xxxx/yyyy (Ref: docs/references/papers/[paper_id].pdf, SHA-256: [hash])
+
 ## 5. Konsekuensi Teknis
 - **Dampak Positif**: [Manfaat arsitektur yang langsung diperoleh]
 - **Trade-off Negatif**: [Kompromi yang harus diterima]

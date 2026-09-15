@@ -71,6 +71,7 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 9. **Perubahan Audit Integritas & Status Rilis**: Jika ada cascade update atau perubahan status kesiapan rilis → Wajib perbarui `docs/ValidationReport.md` & `docs/decisions/VDR-[YYYYMMDDHHmm].md`.
 10. **Perubahan Dependensi / Cara Menjalankan**: Jika ada package baru atau script run/build berubah → Wajib perbarui `README.md`.
 11. **Perubahan Revisi / Pivot Cakupan Proyek**: Jika ada penambahan, modifikasi alur, atau penghapusan fitur via `pero-change-management` → Wajib perbarui `docs/decisions/CRDR-[YYYYMMDDHHmm].md` dan rekonsiliasi status tugas di `docs/TaskBacklog.md` (atau `docs/task-backlog/`).
+12. **Perubahan Referensi Akademik / Paper Ilmiah**: Jika ada penambahan/pembaruan berkas di `docs/references/papers/` atau pembaruan `docs/references/MANIFEST.json` → Wajib sinkronkan sitasi di `docs/Architecture.md`, `docs/Governance.md`, dan lembar keputusan `docs/decisions/`.
 
 > **Sinergi Tata Kelola Perubahan:**  
 > - [`pero-change-management`](../pero-change-management/SKILL.md) bekerja di **hulu (pra-perubahan)**: Menganalisis dampak kerusakan (*blast radius*), menghentikan tugas zombie (*pause/supersede*), dan merumuskan strategi transisi.  
@@ -91,6 +92,7 @@ Evaluasi dampak perubahan kode terhadap dokumentasi:
 | **Lapis 7: Task Backlog** | `docs/TaskBacklog.md` atau `docs/task-backlog/` / `TDR` | Alur 5 fase backlog, ukuran S/M, dependensi `Depends On`, `Parallel Safe`. |
 | **Lapis 8: Granular Refinement** | `docs/tasks/TASK-[ID].md` / `RDR`| 7 Anatomi presisi, invarian pre/post-conditions, blast radius, Red spec. |
 | **Lapis 9: Context Validation** | `docs/ValidationReport.md` / `VDR`| Matriks ketertelusuran 8-arah, 3 severity tiers, vonis Go/No-Go. |
+| **Lapis Referensi & Bukti Empiris** | `docs/references/MANIFEST.json` | Katalog paper lokal, pemetaan DOI, SHA-256 checksum, dan kutipan teori arsitektur. |
 | **Etalase Ekosistem** | `README.md` | Diagram alur, katalog skill, instruksi instalasi & dependensi. |
 
 ---

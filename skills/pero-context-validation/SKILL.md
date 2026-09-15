@@ -95,9 +95,9 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
 4. **Spesialis 4: Audit Kelengkapan Backlog & Cakupan Tugas (*Task Backlog & Coverage Specialist*)**:
    - *Fokus*: Memeriksa alur `PRD.md` (P0/P1) + `SystemSpec.md` (Gherkin stories) + `DesignSystem.md` $\rightarrow$ `TaskBacklog.md` $\rightarrow$ `docs/tasks/`.
    - *Misi*: Menegakkan *100% Backlog Coverage* (tidak boleh ada user story atau komponen UI yang tidak memiliki kartu tugas), memeriksa batasan ukuran tugas (S/M), `Depends On`, dan `Parallel Safe`.
-5. **Spesialis 5: Audit Sinkronisasi Keputusan (*Decision Records & 10-Type Integrity Specialist*)**:
-   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`, `CRDR`).
-   - *Misi*: Memastikan setiap keputusan masalah, produk, arsitektur, desain, tata kelola, dan perubahan mid-flight terdokumentasi rapi, tidak ada kontradiksi antar keputusan, dan status keputusan (*Accepted vs Superseded*) konsisten.
+5. **Spesialis 5: Audit Sinkronisasi Keputusan & Integritas Referensi Akademik (*Decision Records & Reference Integrity Specialist*)**:
+   - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`, `CRDR`) serta katalog referensi `docs/references/MANIFEST.json`.
+   - *Misi*: Memastikan setiap keputusan masalah, produk, arsitektur, desain, tata kelola, dan perubahan mid-flight terdokumentasi rapi tanpa kontradiksi, memverifikasi secara 100% luring (0 pencarian web) bahwa seluruh sitasi paper di direktori `docs/` terdaftar di `docs/references/MANIFEST.json`, serta memvalidasi kecocokan hash SHA-256 berkas fisik di `docs/references/papers/*.pdf` terhadap catatan manifest.
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
 - Setiap spesialis membaca dokumen target sebelum menjalankan audit.
