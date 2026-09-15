@@ -23,6 +23,7 @@ Dalam menjalankan tahapan ini, agent WAJIB mengorkestrasi sub-skill berikut:
   2. *Ronde 2 (Tahap 4)*: Menguji titik buta (*blind spots*), kritik tajam, dan dilema kompromi (*trade-offs*) hasil sidang Dewan AI paralel via `ask_question` dengan opsi rekomendasi terstruktur.
   Batas volume per ronde berkisar antara **5 hingga 10 pertanyaan terarah**. Agent WAJIB memanggil `ask_question` dan menunggu respon pengguna. DILARANG mengarang atau mensimulasikan jawaban secara mandiri.
 - **Audit Konsistensi Masalah Hulu**: **`SUPPORTING SUB-SKILL`**: Gunakan [`pero-context-validation`](../pero-context-validation/SKILL.md) untuk memastikan rumusan masalah tidak kontradiktif dengan batasan *Non-Goals* atau metrik dampak.
+- **Riset Jurnal Ilmiah Bersyarat (*Deep-Tech Gatekeeper*)**: **`CONDITIONAL SUB-SKILL`**: Gunakan [`scientific-research`](../scientific-research/SKILL.md) pada Tahap 1 hanya jika proyek berkategori *Deep-Tech*, kriptografi baru, algoritma mutakhir, atau keselamatan jiwa. Untuk aplikasi bisnis/SaaS/CRUD standar, sub-skill ini dinonaktifkan secara otomatis.
 - **Pencatatan Keputusan Produk**: **`SUPPORTING SUB-SKILL`**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk membukukan kesepakatan ruang lingkup ke `docs/decisions/PFDR-[YYYYMMDDHHmm].md`.
 
 ---
@@ -112,6 +113,12 @@ Agent utama **WAJIB memilih minimal 1 dan maksimal 3** peran spesialis berikut s
     - Untuk Website Resmi: Wajib mencantumkan nama institusi/pemerintah/organisasi penerbit `[Nama Lembaga/Pemerintah]` (misal: `[WMO - World Meteorological Organization]`).
     - DILARANG KERAS mencantumkan kode status jaringan teknis seperti `(Status: 200 OK)` atau `HTTP 200` pada sitasi teks atau laporan akhir.
   - **Jaring Pengaman Portal Resmi (*Domain Portal Fallback*)**: Jika tautan ke artikel spesifik tidak dapat diakses secara stabil atau gagal verifikasi, agen wajib beralih (*fallback*) ke akar portal dokumentasi resmi vendor yang permanen (misalnya: `https://docs.docker.com/` alih-alih artikel pihak ketiga yang rusak).
+
+#### D. Pintu Penyaring Otomatis Riset Ilmiah (*Deep-Tech Gatekeeper & Circuit Breaker*):
+- **Klasifikasi Ide Awal Proyek**:
+  - *Kategori Deep-Tech, Kriptografi, Algoritma Baru, Keselamatan Kritis (Medis/Avionik), atau Bioinformatika*: Agen 3 (Kelayakan Teknis) dan Agen Spesialis **WAJIB memprioritaskan [`scientific-research`](../scientific-research/SKILL.md)** untuk mengumpulkan bukti kausal berformat formal `[Penulis, Tahun]` langsung dari naskah peer-reviewed ber-DOI.
+  - *1-Shot Fast-Fail Circuit Breaker*: Jika pencarian Semantic Scholar tidak menemukan naskah relevan dalam 1 kali percobaan atau kuota/koneksi terhambat, agen seketika jatuh (*failover*) ke `web-search` dalam putaran yang sama tanpa menunda jalannya framing.
+  - *Kategori Aplikasi Bisnis Standar, SaaS, Web, CRUD, atau Utilitas Harian*: Agen **DILARANG KERAS memanggil Semantic Scholar** untuk mencegah kelumpuhan analisis (*analysis paralysis*) dan pemborosan token; agen wajib murni mengandalkan suara pengguna, data kompetitor, dan `web-search`.
 
 ### 2. Diagnosa Akar Masalah Dinamis (Dynamic Depth RCA & `grilling` - Ronde 1 Chat via `ask_question`)
 - **RAMBU HENTI WAJIB (MANDATORY PAUSE GATE - RONDE 1)**:
