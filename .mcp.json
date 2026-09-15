@@ -37,6 +37,16 @@
         "STITCH_API_KEY": "${STITCH_API_KEY}"
       }
     },
+    "semantic-scholar": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@xbghc/semanticscholar-mcp"
+      ],
+      "env": {
+        "SEMANTIC_SCHOLAR_API_KEY": "${SEMANTIC_SCHOLAR_API_KEY}"
+      }
+    },
     "graphify": {
       "command": "graphify",
       "args": [

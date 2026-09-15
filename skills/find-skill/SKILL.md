@@ -58,7 +58,7 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Kelola Perubahan** | "Ubah fitur", "pivot cakupan", "tambah requirement baru", "hapus alur", "change management", "CRDR", "blast radius perubahan" | [`pero-change-management`](../pero-change-management/SKILL.md) |
 | **Riset Docs Resmi** | "Dokumentasi resmi", "API library", "Context7", "package specs" | [`context-7`](../context-7/SKILL.md) |
 | **Riset Web/Error** | "Cari solusi web", "error di internet", "changelog release", "search" | [`web-search`](../web-search/SKILL.md) |
-| **Riset Jurnal Ilmiah** | "Cari jurnal", "paper ilmiah", "Semantic Scholar", "teorema algoritma", "naskah akademik", "DOI", "academic research" | [`scientific-research`](../scientific-research/SKILL.md) |
+| **Riset Jurnal Ilmiah** | "Cari jurnal", "paper ilmiah", "Semantic Scholar", "semantic-scholar", "mcp semantic scholar", "academic search", "teorema algoritma", "naskah akademik", "DOI", "academic research" | [`scientific-research`](../scientific-research/SKILL.md) |
 | **Baca PDF Naskah** | "Baca PDF paper", "ekstrak rumus PDF", "JIT PDF reader", "baca naskah lokal", "pdf-reader" | [`pdf-reader`](../pdf-reader/SKILL.md) |
 | **Stress-Test Ide** | "Grill me", "uji ide ini", "trade-off arsitektur", "bedah keputusan" | [`grilling`](../grilling/SKILL.md) |
 | **Musyawarah Dewan** | "Council this", "run the council", "dewan AI", "war room", "multi-perspektif", "debatkan opsi", "trade-off besar" | [`llm-council`](../llm-council/SKILL.md) |

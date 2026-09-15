@@ -16,8 +16,15 @@ Skill ini adalah **"Pustaka & Pengawal Riset Jurnal Ilmiah Peer-Reviewed"**. Ber
 
 ---
 
-## Sub-Skill Integration (Perkakas Pendukung)
-- **Pengamanan Kunci Kredensial**: Gunakan [`env-guard`](../env-guard/SKILL.md) untuk melindungi `SEMANTIC_SCHOLAR_API_KEY`.
+## Sub-Skill Integration & Model Context Protocol (MCP)
+- **Server MCP Resmi**: Ditenagai oleh server `semantic-scholar` di `.mcp.json` berbasis paket `@xbghc/semanticscholar-mcp` (Node.js/npx, MIT License).
+- **Koleksi Perkakas MCP**:
+  - `search_papers`: Pencarian naskah akademik berdasarkan kata kunci, tahun, bidang studi, dan kutipan.
+  - `get_paper`: Mengambil rincian naskah lengkap (mendukung DOI, ArXiv, PubMed ID, atau Semantic Scholar ID).
+  - `get_paper_citations` & `get_paper_references`: Memetakan graf sitasi kausal dan referensi naskah terkait.
+  - `get_recommendations`: Rekomendasi naskah yang relevan berdasarkan paper unggulan.
+- **Academic-First Priority**: Untuk perancangan algoritma, model matematis, konkurensi, kriptografi, dan arsitektur sistem, pemanggilan server Semantic Scholar adalah **prioritas garda utama (Tier-1)** sebelum beralih ke pencarian web biasa.
+- **Pengamanan Kunci Kredensial**: Gunakan [`env-guard`](../env-guard/SKILL.md) untuk melindungi `SEMANTIC_SCHOLAR_API_KEY` (server tetap dapat berjalan tanpa kunci dengan kuota publik).
 - **Pencatatan Keputusan Formal**: Gunakan [`decision-recorder`](../decision-recorder/SKILL.md) untuk menyematkan sitasi formal ke dalam `ADR` atau `GDR`.
 - **Pembaca Naskah Terfokus**: Teruskan berkas naskah yang berhasil diunduh ke [`pdf-reader`](../pdf-reader/SKILL.md) untuk ekstraksi rumus secara hemat token.
 

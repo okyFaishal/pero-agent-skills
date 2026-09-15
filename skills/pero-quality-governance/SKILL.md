@@ -100,6 +100,7 @@ Mendelegasikan tim 5 agen spesialis tata kelola tetap via `dispatching-parallel-
   - Agen berstatus `N/A` **DILARANG melakukan pencarian (0 search)** dan **DILARANG mengarang regulasi palsu**.
 
 #### C. Pagar Batas Riset & Pencarian (*Guardrails*):
+- **Academic-First Priority**: Spesialis 1 (Security), Spesialis 2 (Concurrency), dan Spesialis 4 (TDD/Mutation Testing) **WAJIB memanggil `scientific-research` (Semantic Scholar MCP) sebagai rujukan garda utama (Tier-1)** sebelum beralih ke pencarian web biasa. Web search hanya digunakan sebagai cadangan jika tidak ada literatur ilmiah yang relevan.
 - Untuk domain yang relevan: **Minimal 2 pencarian terarah** (wajib merujuk dokumentasi resmi Context7 atau standar industri) dan **Maksimal 5 pencarian terarah** per agen.
 - Untuk domain `N/A`: **0 pencarian**.
 - Setiap agen spesialis aktif wajib menyertakan minimal 1 tautan URL / rujukan resmi dalam laporannya.

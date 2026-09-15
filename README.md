@@ -44,7 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/okyFaishal/pero-agent-skills/main/i
 ### Apa yang Dipasang Otomatis?
 1. **📂 `.agents/skills/`**: 32 modul skill universal (SDLC, TDD, Systematic Debugging, Architecture, UI/UX, dll.) yang langsung dikenali oleh sistem skill Antigravity.
 2. **📜 `AGENTS.md`**: Aturan workspace baku yang dibaca Antigravity di setiap awal percakapan (Skill-First, Anti-Sycophancy, ELI5, Anti-Slop, TDD, Verification).
-3. **🔌 `.mcp.json`**: Konfigurasi otomatis Model Context Protocol (Context7 untuk dokumentasi API resmi, Chrome DevTools untuk inspeksi UI/browser, Tavily untuk riset web berakurasi tinggi, Google Stitch untuk prototipe UI, dan Graphify untuk peta relasi kode).
+3. **🔌 `.mcp.json`**: Konfigurasi otomatis Model Context Protocol (Semantic Scholar untuk riset naskah akademik peer-reviewed, Context7 untuk dokumentasi API resmi, Chrome DevTools untuk inspeksi UI/browser, Tavily untuk riset web berakurasi tinggi, Google Stitch untuk prototipe UI, dan Graphify untuk peta relasi kode).
 4. **🛡️ `.gitignore`**: Perlindungan otomatis file rahasia (`.env`, `credentials.json`, `*.pem`, `*.key`, `.pero/`).
 
 ### Cara Memperbarui Framework (*Updating Framework*)
@@ -263,7 +263,7 @@ flowchart TD
     %% Cabang 1: Tahap S1 - Problem Framing
     Q_CAT -->|"[S1] Mulai ide baru / Eksplorasi masalah"| SK_PF["pero-problem-framing<br/>(Akar Masalah & Non-Goals)"]
     SK_PF -->|"Ide masih ambigu & butuh stress-test?"| SK_GRL1["grilling<br/>(Wawancara Mendalam & Uji Asumsi)"]
-    SK_PF -->|"Riset masalah & pasar masif paralel?"| SK_DPA_S1["dispatching-parallel-agents<br/>(Sub-Agen Riset Masalah Paralel)"]
+    SK_PF -->|"Deep-Tech: Riset naskah akademik?"| SK_SR_S1["scientific-research<br/>(Semantic Scholar MCP)"]
     SK_PF -->|"Validasi data pasar & fakta eksternal?"| SK_WS_S1["web-search<br/>(Riset Web Terarah & Sitasi)"]
     SK_PF -->|"Pivot berisiko / Dilema arah strategis?"| SK_COU1["llm-council<br/>(Musyawarah 5 Penasihat AI)"]
 
@@ -282,8 +282,9 @@ flowchart TD
     %% Cabang 4: Tahap S4 - Arsitektur & Teknologi
     Q_CAT -->|"[S4] Rancang arsitektur & teknologi sistem"| SK_ARCH["pero-system-architecture<br/>(Tech Stack & Server MCP)"]
     SK_ARCH -->|"Eksplorasi prototipe / spike paralel?"| SK_DPA_S4["dispatching-parallel-agents<br/>(Sub-Agen Prototipe & Spike)"]
+    SK_ARCH -->|"Tier-1: Riset naskah ilmiah via Semantic Scholar?"| SK_SR_S4["scientific-research<br/>(Jurnal Ilmiah & SHA-256 Manifest)"]
     SK_ARCH -->|"Butuh dokumentasi resmi library via MCP?"| SK_C7["context-7<br/>(Dokumentasi Resmi API / MCP)"]
-    SK_ARCH -->|"Riset arsitektur eksternal & benchmark?"| SK_WS_S4["web-search<br/>(Riset Web Terarah)"]
+    SK_ARCH -->|"Fallback: Riset arsitektur eksternal & benchmark?"| SK_WS_S4["web-search<br/>(Riset Web Terarah)"]
     SK_ARCH -->|"Trade-off arsitektur berat / Dilema stack?"| SK_COU3["llm-council<br/>(Musyawarah Arsitektur Dewan)"]
     SK_ARCH -->|"Catat riwayat keputusan arsitektur?"| SK_ADR["decision-recorder<br/>(Dokumentasi 10 Tipe: PFDR s/d CRDR)"]
     SK_ARCH --> SK_UIUX

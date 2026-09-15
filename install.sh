@@ -190,11 +190,13 @@ setup_mcp_servers() {
   local context7_key="${CONTEXT7_API_KEY:-}"
   local tavily_key="${TAVILY_API_KEY:-}"
   local stitch_key="${STITCH_API_KEY:-}"
+  local semantic_scholar_key="${SEMANTIC_SCHOLAR_API_KEY:-}"
 
   if [[ -f "${target_dir}/.env" ]]; then
     [[ -z "$context7_key" ]] && context7_key=$(grep -E '^[[:space:]]*CONTEXT7_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
     [[ -z "$tavily_key" ]] && tavily_key=$(grep -E '^[[:space:]]*TAVILY_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
     [[ -z "$stitch_key" ]] && stitch_key=$(grep -E '^[[:space:]]*STITCH_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    [[ -z "$semantic_scholar_key" ]] && semantic_scholar_key=$(grep -E '^[[:space:]]*SEMANTIC_SCHOLAR_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
   fi
 
   local target_env_example="${target_dir}/.env.pero.example"
@@ -218,7 +220,8 @@ import json, sys
 context7_key = sys.argv[1]
 tavily_key = sys.argv[2]
 stitch_key = sys.argv[3]
-has_graphify = (sys.argv[4] == "true")
+semantic_scholar_key = sys.argv[4]
+has_graphify = (sys.argv[5] == "true")
 
 servers = {
   "context7": {
@@ -239,6 +242,11 @@ servers = {
     "command": "npx",
     "args": ["-y", "@_davideast/stitch-mcp"],
     "env": {"STITCH_API_KEY": stitch_key or "${STITCH_API_KEY}"}
+  },
+  "semantic-scholar": {
+    "command": "npx",
+    "args": ["-y", "@xbghc/semanticscholar-mcp"],
+    "env": {"SEMANTIC_SCHOLAR_API_KEY": semantic_scholar_key or "${SEMANTIC_SCHOLAR_API_KEY}"}
   }
 }
 
@@ -249,7 +257,7 @@ if has_graphify:
   }
 
 print(json.dumps(servers))
-' "$context7_key" "$tavily_key" "$stitch_key" "$has_graphify" 2>/dev/null || echo '{}')
+' "$context7_key" "$tavily_key" "$stitch_key" "$semantic_scholar_key" "$has_graphify" 2>/dev/null || echo '{}')
 
   merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
 }

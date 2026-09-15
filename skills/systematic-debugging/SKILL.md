@@ -82,7 +82,7 @@ Penguncian akar masalah ke dalam test suite permanen sebelum perbaikan bedah dil
 ### Fase 3: Formulate Testable Hypothesis (Rumuskan Hipotesis Ilmiah)
 - Tuliskan hipotesis secara eksplisit: *"Fungsi X gagal karena ketika array Y kosong, baris Z mencoba mengakses indeks 0 tanpa validasi panjang, sehingga memicu panic/TypeError."*
 - Lakukan eksperimen cepat untuk membuktikan hipotesis tersebut (misal: dengan assertion atau breakpoint).
-- **Riset Makalah Terfokus (Khusus Bug Algoritmik/Numerik)**: Jika kegagalan bersumber pada kalkulasi matematika atau model konsensus terdistribusi yang tidak tercakup dalam dokumentasi standar, agen diperbolehkan membuka [`scientific-research`](../scientific-research/SKILL.md) dan [`pdf-reader`](../pdf-reader/SKILL.md). Jika paper baru diunduh, hitung SHA-256 dan catat ke `docs/references/MANIFEST.json` sebelum masuk ke Fase 4. Dilarang mencari paper untuk bug koding biasa.
+- **Riset Makalah Terfokus & Academic-First Priority (Khusus Bug Algoritmik/Numerik/Konkurensi)**: Jika kegagalan bersumber pada kalkulasi matematika, pembulatan floating point, atau model konsensus terdistribusi yang tidak tercakup dalam dokumentasi standar, agen **WAJIB memanggil [`scientific-research`](../scientific-research/SKILL.md) dan [`pdf-reader`](../pdf-reader/SKILL.md) terlebih dahulu** untuk memvalidasi teorema formal sebelum mencari solusi forum di web. Jika paper baru diunduh, hitung SHA-256 dan catat ke `docs/references/MANIFEST.json` sebelum masuk ke Fase 4. Dilarang mencari paper untuk bug koding/sintaks biasa.
 
 ---
 
