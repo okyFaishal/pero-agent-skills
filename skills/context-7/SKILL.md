@@ -74,7 +74,7 @@ Panggil tool MCP `query-docs` dengan parameter library ID dan kata kunci query y
 1. **Verifikasi Signature & Tipe**: Cocokkan argumen fungsi, nama return type, dan exception yang dilempar dengan hasil dokumentasi.
 2. **Periksa Fitur Usang (*Deprecations*)**: Pastikan metode yang ditulis tidak lagi menggunakan API yang sudah diberi tanda deprecated pada versi target proyek.
 3. **Mekanisme Fallback (Jika MCP Context7 Offline / Tidak Tersedia)**:
-   - Gunakan skill `web-search` via Search MCP (`search_web`, Brave Search, atau Tavily) untuk mencari halaman dokumentasi resmi dengan pembatasan domain (misal: `site:docs.pydantic.dev v2 model_validate`).
+   - Gunakan skill `web-search` via Search MCP (`search_web` atau Tavily) untuk mencari halaman dokumentasi resmi dengan pembatasan domain (misal: `site:docs.pydantic.dev v2 model_validate`).
    - Ekstrak isi dokumentasi menggunakan pembaca semantik bersih (`read_url_content` atau Fetch MCP) untuk mendapatkan format markdown murni tanpa sampah HTML.
    - DILARANG KERAS menggunakan perintah terminal `curl` atau scraping shell mentah.
 

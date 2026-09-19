@@ -107,7 +107,7 @@ Untuk mencegah pemborosan token dari kode HTML mentah, menghindari blokir sistem
 flowchart TD
     Q["Kebutuhan Informasi Eksternal"] --> T0["1. Repositori Lokal & Konteks Kode<br/>(Cek berkas lokal, docs/, dan types)"]
     T0 -->|Perlu Dokumen Paket| T1["2. Dokumentasi Resmi Paket via context-7<br/>(Standar API, types, rilis mutakhir)"]
-    T1 -->|Perlu Riset Publik/Web| T2["3. Mesin Pencari Khusus: Search MCP / Native<br/>(search_web, Brave Search, Tavily)"]
+    T1 -->|Perlu Riset Publik/Web| T2["3. Mesin Pencari Khusus: Search MCP / Native<br/>(search_web, Tavily)"]
     T2 -->|Dapatkan URL Terpilih| T3["4. Pembaca Semantik Bersih: Fetch MCP / Reader<br/>(read_url_content, fetch MCP -> Markdown)"]
     T3 -->|Halaman Butuh JS/SPA| T4["5. Penelusur Headless: Chrome DevTools / Puppeteer<br/>(puppeteer_navigate untuk client-rendered UI)"]
 ```
@@ -115,7 +115,7 @@ flowchart TD
 1. **Pemeriksaan Dokumen & Konteks Lokal**: Sebelum melompat ke internet, periksa selalu repositori lokal, berkas spesifikasi, atau referensi di `docs/`.
 2. **Dokumentasi Resmi Paket (via `context-7`)**: Jika membutuhkan panduan pustaka atau SDK populer, gunakan `context-7` untuk mengambil dokumentasi resmi secara langsung.
 3. **Mesin Pencari Khusus (*Search MCP / Native Tool*)**:
-   - Manfaatkan perkakas mesin pencari bawaan seperti `search_web`, Brave Search (`brave_web_search`), atau Tavily (`tavily_search`).
+   - Manfaatkan perkakas mesin pencari bawaan seperti `search_web` atau Tavily (`tavily_search`).
    - Lakukan penelusuran berfokus untuk menemukan URL rujukan primer (dokumentasi resmi, rilis GitHub, atau standar RFC).
 4. **Pembaca Semantik Bersih (*Fetch MCP / Reader Tool*)**:
    - Ambil isi konten tautan menggunakan pembaca semantik seperti `read_url_content` atau Fetch MCP (`fetch`).

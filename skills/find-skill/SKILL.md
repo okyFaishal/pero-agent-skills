@@ -58,7 +58,7 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 | **Kelola Perubahan** | "Ubah fitur", "pivot cakupan", "tambah requirement baru", "hapus alur", "change management", "CRDR", "blast radius perubahan" | [`pero-change-management`](../pero-change-management/SKILL.md) |
 | **Riset Docs Resmi** | "Dokumentasi resmi", "API library", "Context7", "package specs" | [`context-7`](../context-7/SKILL.md) |
 | **Riset Web/Error** | "Cari solusi web", "error di internet", "changelog release", "search" | [`web-search`](../web-search/SKILL.md) |
-| **Riset Jurnal Ilmiah** | "Cari jurnal", "paper ilmiah", "Semantic Scholar", "semantic-scholar", "mcp semantic scholar", "academic search", "teorema algoritma", "naskah akademik", "DOI", "academic research" | [`scientific-research`](../scientific-research/SKILL.md) |
+| **Riset Jurnal Ilmiah** | "Cari jurnal", "paper ilmiah", "Semantic Scholar", "semantic-scholar", "mcp semantic scholar", "OpenAlex", "openalex", "mcp openalex", "openalex-mcp", "katalog openalex", "academic search", "teorema algoritma", "naskah akademik", "DOI", "academic research" | [`scientific-research`](../scientific-research/SKILL.md) |
 | **Baca PDF Naskah** | "Baca PDF paper", "ekstrak rumus PDF", "JIT PDF reader", "baca naskah lokal", "pdf-reader" | [`pdf-reader`](../pdf-reader/SKILL.md) |
 | **Stress-Test Ide** | "Grill me", "uji ide ini", "trade-off arsitektur", "bedah keputusan" | [`grilling`](../grilling/SKILL.md) |
 | **Musyawarah Dewan** | "Council this", "run the council", "dewan AI", "war room", "multi-perspektif", "debatkan opsi", "trade-off besar" | [`llm-council`](../llm-council/SKILL.md) |
@@ -87,16 +87,16 @@ Gunakan tabel pemetaan di bawah ini untuk menentukan skill yang wajib dibuka dan
 Ketika sebuah tugas menyentuh beberapa domain sekaligus, ikuti hierarki aktivasi berurutan berikut:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                 HIERARKI RESOLUSI MULTI-SKILL               │
-├─────────────────────────────────────────────────────────────┤
-│ 1. Security & Safety (env-guard)                            │
-│ 2. Tooling & Research (find-skill, context-7, web, scholar) │
-│ 3. SDLC Planning Phase (problem-framing s/d refinement)     │
-│ 4. Governance & Contracts (api-contract, schema-validator)  │
-│ 5. Execution Loop (git-ops -> tdd -> anti-slop -> debug)    │
-│ 6. Gatekeeper & Delivery (verification-before-comp -> rev)  │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│                    HIERARKI RESOLUSI MULTI-SKILL                     │
+├──────────────────────────────────────────────────────────────────────┤
+│ 1. Security & Safety (env-guard)                                     │
+│ 2. Tooling & Research (find-skill, context-7, web, openalex/scholar) │
+│ 3. SDLC Planning Phase (problem-framing s/d refinement)              │
+│ 4. Governance & Contracts (api-contract, schema-validator)           │
+│ 5. Execution Loop (git-ops -> tdd -> anti-slop -> debug)             │
+│ 6. Gatekeeper & Delivery (verification-before-comp -> rev)           │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -163,12 +163,12 @@ Selain mencocokkan kata kunci tugas, `find-skill` bertindak sebagai **Mesin Peny
      }
      ```
    - **Ekstensi Mesin Pencari & Visual Prototype (*Key-Aware Extensions*)**:
-     - `brave-search` (`@modelcontextprotocol/server-brave-search`): Menggunakan `BRAVE_API_KEY`.
+     - `openalex` (`@cyanheads/openalex-mcp-server`): Menggunakan `OPENALEX_MAILTO` (Polite Pool) dan `OPENALEX_API_KEY`.
      - `tavily` (`@tavily/mcp-server`): Menggunakan `TAVILY_API_KEY`.
      - `google-stitch` (`@_davideast/stitch-mcp`): Menggunakan `STITCH_API_KEY`.
      - Kunci API dikelola secara aman via `.env` dan didokumentasikan di `.env.pero.example`.
    - **Alur Penurunan Anggun (*Graceful Degradation Paths*)**:
-     - *Jika tersedia API Key*: Gunakan server MCP Brave Search (`brave_web_search`) atau Tavily (`tavily_search`).
+     - *Jika tersedia API Key*: Gunakan perkakas pencarian bawaan (`search_web`) atau server MCP Tavily (`tavily_search`).
      - *Jika tanpa API Key*: Gunakan perkakas pembaca semantik resmi (`read_url_content` / Fetch MCP), dokumentasi resmi via `context7`, atau peramban headless (`puppeteer` / `chrome-devtools`).
      - *DILARANG KERAS*: Jatuh kembali (*fallback*) ke pemanggilan `curl`/`wget` di terminal (anti-WAF 403 & Zero SSRF).
 

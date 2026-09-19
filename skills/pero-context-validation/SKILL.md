@@ -88,7 +88,7 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
    - *Misi*: Mendeteksi *Phantom Features* (fitur di PRD/Spec tanpa akar masalah di Framing) dan *Orphaned Pain Points* (masalah pengguna yang tidak tersentuh fitur P0/MVP).
 2. **Spesialis 2: Audit Integritas Arsitektur, Desain UI & Diagram (*Architecture, DesignSystem & Mermaid Specialist*)**:
    - *Fokus*: Memeriksa alur `SystemSpec.md` $\rightarrow$ `Architecture.md` $\rightarrow$ `DesignSystem.md`.
-   - *Misi*: Memvalidasi kelengkapan modul per entitas, kesesuaian token desain & wireframe terhadap alur pengguna, serta audit sintaksis diagram Mermaid di seluruh repositori.
+   - *Misi*: Memvalidasi kelengkapan modul per entitas, kesesuaian token desain & wireframe terhadap alur pengguna, serta audit sintaksis diagram Mermaid di seluruh repositori (termasuk inspeksi simpul diagram Mermaid agar memvalidasi penyebutan OpenAlex MCP alih-alih Semantic Scholar).
 3. **Spesialis 3: Audit Kepatuhan Tata Kelola & Keamanan (*Governance, Concurrency & Security Specialist*)**:
    - *Fokus*: Memeriksa alur `Architecture.md` + `DesignSystem.md` $\rightarrow$ `Governance.md`.
    - *Misi*: Memverifikasi model konkurensi (Actor/Mutex/Channel), aturan thread-safety, protokol proteksi kredensial `env-guard`, protokol anti-slop, aturan aksesibilitas WCAG, dan aturan lockfile / supply chain security.
@@ -97,7 +97,7 @@ Mendelegasikan tim 5 agen spesialis audit tetap via `dispatching-parallel-agents
    - *Misi*: Menegakkan *100% Backlog Coverage* (tidak boleh ada user story atau komponen UI yang tidak memiliki kartu tugas), memeriksa batasan ukuran tugas (S/M), `Depends On`, dan `Parallel Safe`.
 5. **Spesialis 5: Audit Sinkronisasi Keputusan & Integritas Referensi Akademik (*Decision Records & Reference Integrity Specialist*)**:
    - *Fokus*: Memeriksa seluruh berkas di `docs/decisions/` (`PFDR`, `PDR`, `SDR`, `ADR`, `DDR`, `GDR`, `TDR`, `RDR`, `VDR`, `CRDR`) serta katalog referensi `docs/references/MANIFEST.json`.
-   - *Misi*: Memastikan setiap keputusan masalah, produk, arsitektur, desain, tata kelola, dan perubahan mid-flight terdokumentasi rapi tanpa kontradiksi, memverifikasi secara 100% luring (0 pencarian web) bahwa seluruh sitasi paper di direktori `docs/` terdaftar di `docs/references/MANIFEST.json`, serta memvalidasi kecocokan hash SHA-256 berkas fisik di `docs/references/papers/*.pdf` terhadap catatan manifest.
+   - *Misi*: Memastikan setiap keputusan masalah, produk, arsitektur, desain, tata kelola, dan perubahan mid-flight terdokumentasi rapi tanpa kontradiksi, memverifikasi secara 100% luring (0 pencarian web) bahwa seluruh sitasi paper di direktori `docs/` terdaftar di `docs/references/MANIFEST.json` dengan OpenAlex Work ID yang valid (`W[0-9]+`) dan/atau format tautan kanonikal DOI (`https://doi.org/10.xxxx/...`), serta memvalidasi kecocokan hash SHA-256 berkas fisik di `docs/references/papers/*.pdf` terhadap catatan manifest.
 
 #### B. Mekanisme Evaluasi Relevansi Awal & Pintu Keluar Dini (*Relevance Pre-Flight Check & Early Exit*):
 - Setiap spesialis membaca dokumen target sebelum menjalankan audit.

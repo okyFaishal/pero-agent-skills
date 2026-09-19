@@ -78,7 +78,7 @@ Penetapan kebutuhan non-fungsional terukur (latensi, throughput, keandalan, dan 
   - *Sub-agen 1 (Alur Pengguna & Standar UX)*: Meneliti pola navigasi standar industri, alur onboarding, penanganan sesi login, dan praktik terbaik UX untuk alur kerja serupa.
   - *Sub-agen 2 (Non-Functional Requirements & Tolok Ukur Kinerja)*: Meneliti standar industri untuk batas latency API, target uptime, kepatuhan keamanan data, dan sanitasi input OWASP.
   - *Sub-agen 3 (Draf Matriks Fitur P0/P1/P2)*: Meneliti fitur minimum kompetitor di segmen serupa untuk membedakan mana fitur dasar mutlak (*table stakes*) dan mana fitur pelengkap.
-- **Pagar Pencarian & Verifikasi Bersih**: Setiap sub-agen dibatasi maksimal 1–2 pencarian via Search MCP (`search_web`/Brave/Tavily), wajib menerapkan *Verbatim URL Pinning*, dan memverifikasi isi halaman via pembaca semantik (`read_url_content` atau Fetch MCP) dengan status HTTP 200. DILARANG KERAS menggunakan perintah terminal `curl` untuk scraping.
+- **Pagar Pencarian & Verifikasi Bersih**: Setiap sub-agen dibatasi maksimal 1–2 pencarian via Search MCP (`search_web` / Tavily), wajib menerapkan *Verbatim URL Pinning*, dan memverifikasi isi halaman via pembaca semantik (`read_url_content` atau Fetch MCP) dengan status HTTP 200. DILARANG KERAS menggunakan perintah terminal `curl` untuk scraping.
 
 ### 2. Musyawarah Pemangkasan Scope oleh Dewan 5 AI (via `llm-council`)
 - Menyidangkan draf matriks fitur ke 5 persona dewan AI (*Product Strategist, Skeptic Auditor, Domain Specialist, Tech Feasibility, User Advocate*) melalui *blind peer-review*.

@@ -59,9 +59,9 @@ Pemblokiran akses jaringan agen ke subnet privat, antarmuka loopback lokal, dan 
 ### Pilar 1: Secret Redaction (Penyensoran Kunci Otomatis)
 1. **Dilarang Mencetak File Sensitif**:
    - ❌ Dilarang membaca file `.env`, `.env.local`, `credentials.json`, `*.pem`, `*.key` dengan tujuan mencetak nilainya ke layar obrolan.
-   - ✅ Hanya tampilkan nama variabel (*key only*), bukan nilainya (contoh: `DATABASE_URL=***REDACTED***`).
+   - ✅ Hanya tampilkan nama variabel (*key only*), bukan nilainya (contoh: `DATABASE_URL=***REDACTED***`, `OPENALEX_API_KEY=***REDACTED***`, `OPENALEX_MAILTO=***REDACTED***`).
 2. **Pola Regex Sensor Kredensial**:
-   - Sensor string yang cocok dengan format token: `/(bearer\s+)?[a-zA-Z0-9_-]{20,}/i`, `ghp_[a-zA-Z0-9]{36}`, `sk-[a-zA-Z0-9]{48}`, `AIza[0-9A-Za-z-_]{35}`.
+   - Sensor string yang cocok dengan format token: `/(bearer\s+)?[a-zA-Z0-9_-]{20,}/i`, `ghp_[a-zA-Z0-9]{36}`, `sk-[a-zA-Z0-9]{48}`, `AIza[0-9A-Za-z-_]{35}`, serta kunci API peladen MCP pihak ketiga (misalnya `OPENALEX_API_KEY`, `TAVILY_API_KEY`, `STITCH_API_KEY`).
 3. **Proteksi Version Control**:
    - Selalu pastikan file `.env`, `.env.*`, `*.pem`, `*.key`, `serviceAccountKey.json` terdaftar di `.gitignore`.
 
