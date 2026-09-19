@@ -25,7 +25,7 @@
 - **Evidence Before Assertions**: Dilarang mengklaim pekerjaan selesai tanpa bukti eksekusi nyata dari terminal (`verification-before-completion`).
 - **Environment & Safety**: Patuhi `env-guard`. Dilarang mengekspos credential/secrets, dilarang menjalankan perintah destruktif tanpa konfirmasi, dan dilarang melakukan terminal web scraping via `curl`/`wget` (penegakan proteksi Zero SSRF & anti-WAF 403).
 - **Grounding, Citation Integrity & Triangulasi Riset (Academic-First Protocol)**: Terapkan protokol Triangulasi Riset 3-Pilar dengan prioritas penelusuran berjenjang:
-  1. `scientific-research` (Tier-1 Primary Grounding via Semantic Scholar MCP & JIT [`pdf-reader`]): Rujukan garda utama yang **WAJIB diprioritaskan terlebih dahulu** untuk memvalidasi teori algoritma, kriptografi, konkurensi, batas toleransi numerik, dan arsitektur sistem sebelum mencari di web. Naskah fisik disimpan di `docs/references/papers/*.pdf` dan dikunci hash SHA-256 di `docs/references/MANIFEST.json`.
+  1. `scientific-research` (Tier-1 Primary Grounding via OpenAlex MCP & JIT [`pdf-reader`]): Rujukan garda utama yang **WAJIB diprioritaskan terlebih dahulu** untuk memvalidasi teori algoritma, kriptografi, konkurensi, batas toleransi numerik, dan arsitektur sistem sebelum mencari di web. Naskah fisik disimpan di `docs/references/papers/*.pdf` dan dikunci hash SHA-256 di `docs/references/MANIFEST.json`.
   2. `context-7` (Official SDK & Library Syntax): Rujukan tunggal dokumentasi resmi pustaka, SDK, dan API framework terkini untuk penulisan kode nyata.
   3. `web-search` (Dynamic Web Fallback via Tavily/Search MCP ➔ Semantic Fetch Reader ➔ Headless Chromium): Rujukan sekunder/cadangan untuk fakta web terkini, rilis paket eksternal, dan error komunitas harian jika topik murni produk komersial yang belum memiliki kajian akademik. Dilarang menyedot HTML mentah atau memakai `curl`/`wget`.
   - **Pemisahan Peran Fungsional**: Gunakan `scientific-research` untuk konsep/teori/algoritma, `context-7` untuk sintaks/API library, `web-search` untuk rilis/dependensi, dan `chrome-devtools` untuk inspeksi visual UI/DOM runtime.
@@ -69,7 +69,7 @@
 28. `dispatching-parallel-agents/` : Pendelegasian tugas mandiri, squad spesialis SDLC, & mass debugging ke sub-agen paralel tanpa shared state (`dispatching-parallel-agents`).
 29. `subagent-driven-development/` : Eksekusi backlog otonom berkelanjutan via sub-agen segar & task review gate berlandaskan gerbang validasi Go (`subagent-driven-development`).
 30. `taste-skill/` : Standar estetika visual anti-slop, inferensi brief, 3 dials (Variance, Motion, Density), dashboard, data tables & typography (`taste-skill`).
-31. `scientific-research/` : Orkestrasi penelusuran naskah ilmiah via Semantic Scholar MCP, pengunduhan PDF lokal, pencatatan SHA-256 MANIFEST.json & penegakan sitasi formal `[Penulis, Tahun]` (`scientific-research`).
+31. `scientific-research/` : Orkestrasi penelusuran naskah ilmiah via OpenAlex MCP, pengunduhan PDF lokal, pencatatan SHA-256 MANIFEST.json & penegakan sitasi formal `[Penulis, Tahun]` (`scientific-research`).
 32. `pdf-reader/` : Ekstraksi naskah ilmiah 2-tahap JIT (Daftar Isi & irisan bab/rumus target) ramah token berbasis `uv run --with pypdf` (`pdf-reader`).
 
 ## 6. Graphify Codebase Knowledge Graph Protocol (Selective JIT Integration)
