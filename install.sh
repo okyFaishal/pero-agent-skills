@@ -187,16 +187,26 @@ setup_mcp_servers() {
     echo "   [⚠️ ] Warning: npx tidak ditemukan di PATH. Pastikan Node.js terpasang untuk menjalankan MCP."
   fi
 
+  if command -v node >/dev/null 2>&1; then
+    local node_version
+    node_version=$(node -v | sed 's/^v//' | cut -d. -f1)
+    if (( node_version < 18 )); then
+      echo "   [⚠️] Peringatan: Versi Node.js ($node_version) di bawah v18. Beberapa peladen MCP mungkin memerlukan Node.js v18+."
+    fi
+  fi
+
   local context7_key="${CONTEXT7_API_KEY:-}"
   local tavily_key="${TAVILY_API_KEY:-}"
   local stitch_key="${STITCH_API_KEY:-}"
-  local semantic_scholar_key="${SEMANTIC_SCHOLAR_API_KEY:-}"
+  local openalex_mailto="${OPENALEX_MAILTO:-}"
+  local openalex_api_key="${OPENALEX_API_KEY:-}"
 
   if [[ -f "${target_dir}/.env" ]]; then
     [[ -z "$context7_key" ]] && context7_key=$(grep -E '^[[:space:]]*CONTEXT7_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
     [[ -z "$tavily_key" ]] && tavily_key=$(grep -E '^[[:space:]]*TAVILY_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
     [[ -z "$stitch_key" ]] && stitch_key=$(grep -E '^[[:space:]]*STITCH_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
-    [[ -z "$semantic_scholar_key" ]] && semantic_scholar_key=$(grep -E '^[[:space:]]*SEMANTIC_SCHOLAR_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    [[ -z "$openalex_mailto" ]] && openalex_mailto=$(grep -E '^[[:space:]]*OPENALEX_MAILTO=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
+    [[ -z "$openalex_api_key" ]] && openalex_api_key=$(grep -E '^[[:space:]]*OPENALEX_API_KEY=' "${target_dir}/.env" 2>/dev/null | head -n 1 | cut -d= -f2- | tr -d '"'\'' ' || echo "")
   fi
 
   local target_env_example="${target_dir}/.env.pero.example"
@@ -220,8 +230,9 @@ import json, sys
 context7_key = sys.argv[1]
 tavily_key = sys.argv[2]
 stitch_key = sys.argv[3]
-semantic_scholar_key = sys.argv[4]
-has_graphify = (sys.argv[5] == "true")
+openalex_mailto = sys.argv[4]
+openalex_api_key = sys.argv[5]
+has_graphify = (sys.argv[6] == "true")
 
 servers = {
   "context7": {
@@ -243,10 +254,13 @@ servers = {
     "args": ["-y", "@_davideast/stitch-mcp"],
     "env": {"STITCH_API_KEY": stitch_key or "${STITCH_API_KEY}"}
   },
-  "semantic-scholar": {
+  "openalex": {
     "command": "npx",
-    "args": ["-y", "@xbghc/semanticscholar-mcp"],
-    "env": {"SEMANTIC_SCHOLAR_API_KEY": semantic_scholar_key or "${SEMANTIC_SCHOLAR_API_KEY}"}
+    "args": ["-y", "@cyanheads/openalex-mcp-server"],
+    "env": {
+      "OPENALEX_MAILTO": openalex_mailto or "${OPENALEX_MAILTO}",
+      "OPENALEX_API_KEY": openalex_api_key or "${OPENALEX_API_KEY}"
+    }
   }
 }
 
@@ -257,7 +271,7 @@ if has_graphify:
   }
 
 print(json.dumps(servers))
-' "$context7_key" "$tavily_key" "$stitch_key" "$semantic_scholar_key" "$has_graphify" 2>/dev/null || echo '{}')
+' "$context7_key" "$tavily_key" "$stitch_key" "$openalex_mailto" "$openalex_api_key" "$has_graphify" 2>/dev/null || echo '{}')
 
   merge_mcp_json_file "${target_dir}/.mcp.json" "$servers_payload" "$dry_run"
 }

@@ -37,14 +37,15 @@
         "STITCH_API_KEY": "${STITCH_API_KEY}"
       }
     },
-    "semantic-scholar": {
+    "openalex": {
       "command": "npx",
       "args": [
         "-y",
-        "@xbghc/semanticscholar-mcp"
+        "@cyanheads/openalex-mcp-server"
       ],
       "env": {
-        "SEMANTIC_SCHOLAR_API_KEY": "${SEMANTIC_SCHOLAR_API_KEY}"
+        "OPENALEX_MAILTO": "${OPENALEX_MAILTO}",
+        "OPENALEX_API_KEY": "${OPENALEX_API_KEY}"
       }
     },
     "graphify": {
